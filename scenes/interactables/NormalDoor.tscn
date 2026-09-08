@@ -1,0 +1,43 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/interactables/normal_door.gd" id="1_door"]
+
+[sub_resource type="BoxMesh" id="DoorMesh"]
+size = Vector3(1.35, 2.35, 0.14)
+
+[sub_resource type="StandardMaterial3D" id="DoorMaterial"]
+albedo_color = Color(0.25, 0.28, 0.26, 1)
+metallic = 0.15
+roughness = 0.78
+
+[sub_resource type="BoxShape3D" id="DoorShape"]
+size = Vector3(1.35, 2.35, 0.14)
+
+[sub_resource type="BoxShape3D" id="SafetyShape"]
+size = Vector3(1.7, 2.35, 1.0)
+
+[node name="NormalDoor" type="Node3D"]
+script = ExtResource("1_door")
+
+[node name="DoorPivot" type="Node3D" parent="."]
+
+[node name="DoorLeaf" type="AnimatableBody3D" parent="DoorPivot"]
+collision_layer = 1
+collision_mask = 2
+sync_to_physics = true
+
+[node name="Visual" type="MeshInstance3D" parent="DoorPivot/DoorLeaf"]
+mesh = SubResource("DoorMesh")
+material_override = SubResource("DoorMaterial")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DoorPivot/DoorLeaf"]
+shape = SubResource("DoorShape")
+
+[node name="DoorwaySafety" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 2
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DoorwaySafety"]
+shape = SubResource("SafetyShape")

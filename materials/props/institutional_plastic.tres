@@ -1,0 +1,7 @@
+[gd_resource type="StandardMaterial3D" format=3]
+
+[resource]
+resource_name = "Institutional Plastic"
+albedo_color = Color(0.39, 0.43, 0.40, 1)
+roughness = 0.78
+

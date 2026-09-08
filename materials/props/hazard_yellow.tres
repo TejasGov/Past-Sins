@@ -1,0 +1,7 @@
+[gd_resource type="StandardMaterial3D" format=3]
+
+[resource]
+resource_name = "Hazard Yellow"
+albedo_color = Color(0.58, 0.47, 0.12, 1)
+roughness = 0.82
+

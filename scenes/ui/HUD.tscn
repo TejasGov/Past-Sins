@@ -1,0 +1,334 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/hud.gd" id="1_hud"]
+
+[sub_resource type="StyleBoxFlat" id="PanelStyle"]
+bg_color = Color(0.025, 0.04, 0.05, 0.86)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.18, 0.48, 0.5, 0.72)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="BarBackground"]
+bg_color = Color(0.05, 0.07, 0.08, 0.9)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="BarFill"]
+bg_color = Color(0.8, 0.22, 0.12, 0.95)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="PromptStyle"]
+bg_color = Color(0.015, 0.025, 0.03, 0.88)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.25, 0.7, 0.75, 0.5)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+content_margin_left = 18.0
+content_margin_top = 10.0
+content_margin_right = 18.0
+content_margin_bottom = 10.0
+
+[sub_resource type="StyleBoxFlat" id="MemoryPanel"]
+bg_color = Color(0.015, 0.035, 0.055, 0.94)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.2, 0.72, 0.92, 0.8)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StatusStyle"]
+bg_color = Color(0.025, 0.03, 0.028, 0.94)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.72, 0.58, 0.24, 0.8)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+content_margin_left = 14.0
+content_margin_top = 8.0
+content_margin_right = 14.0
+content_margin_bottom = 8.0
+
+[node name="HUD" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_hud")
+
+[node name="Vignette" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.0, 0.025, 0.035, 0.045)
+
+[node name="MissionLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 28.0
+offset_top = 24.0
+offset_right = 420.0
+offset_bottom = 76.0
+theme_override_colors/font_color = Color(0.65, 0.78, 0.8, 0.9)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.9)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 16
+text = "BLACKSITE: GHOST EXIT\nOBJECTIVE — FIND A WAY OUT"
+
+[node name="SuspicionPanel" type="PanelContainer" parent="."]
+layout_mode = 0
+offset_left = 972.0
+offset_top = 24.0
+offset_right = 1252.0
+offset_bottom = 132.0
+theme_override_styles/panel = SubResource("PanelStyle")
+
+[node name="Margin" type="MarginContainer" parent="SuspicionPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 10
+
+[node name="Layout" type="VBoxContainer" parent="SuspicionPanel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="Row" type="HBoxContainer" parent="SuspicionPanel/Margin/Layout"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="SuspicionPanel/Margin/Layout/Row"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.62, 0.72, 0.74, 1)
+theme_override_font_sizes/font_size = 13
+text = "SUSPICION"
+
+[node name="SuspicionValue" type="Label" parent="SuspicionPanel/Margin/Layout/Row"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.94, 0.94, 1)
+theme_override_font_sizes/font_size = 16
+text = "000%"
+horizontal_alignment = 2
+
+[node name="SuspicionBar" type="ProgressBar" parent="SuspicionPanel/Margin/Layout"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+theme_override_styles/background = SubResource("BarBackground")
+theme_override_styles/fill = SubResource("BarFill")
+show_percentage = false
+
+[node name="SuspicionState" type="Label" parent="SuspicionPanel/Margin/Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.56, 0.84, 0.69, 1)
+theme_override_font_sizes/font_size = 17
+text = "NORMAL"
+horizontal_alignment = 2
+
+[node name="InteractionPrompt" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 476.0
+offset_top = 630.0
+offset_right = 804.0
+offset_bottom = 681.0
+theme_override_colors/font_color = Color(0.85, 0.97, 0.98, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("PromptStyle")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Crosshair" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -8.0
+offset_top = -15.0
+offset_right = 8.0
+offset_bottom = 15.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.78, 0.9, 0.9, 0.82)
+theme_override_font_sizes/font_size = 20
+text = "+"
+horizontal_alignment = 1
+
+[node name="StatusMessage" type="Label" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 440.0
+offset_top = 154.0
+offset_right = -440.0
+offset_bottom = 200.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.96, 0.9, 0.7, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 17
+theme_override_styles/normal = SubResource("StatusStyle")
+text = "KEY REQUIRED"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Controls" type="Label" parent="."]
+layout_mode = 0
+offset_left = 28.0
+offset_top = 646.0
+offset_right = 380.0
+offset_bottom = 696.0
+theme_override_colors/font_color = Color(0.45, 0.55, 0.57, 0.9)
+theme_override_font_sizes/font_size = 12
+text = "WASD MOVE   SHIFT SPRINT   C CROUCH\nSPACE JUMP   E INTERACT   ESC RELEASE MOUSE"
+
+[node name="MemoryOverlay" type="ColorRect" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.005, 0.02, 0.04, 0.96)
+
+[node name="ScanlineTop" type="ColorRect" parent="MemoryOverlay"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 5.0
+grow_horizontal = 2
+color = Color(0.1, 0.75, 1, 0.9)
+
+[node name="MemoryPanel" type="PanelContainer" parent="MemoryOverlay"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -370.0
+offset_top = -280.0
+offset_right = 370.0
+offset_bottom = 280.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("MemoryPanel")
+
+[node name="Margin" type="MarginContainer" parent="MemoryOverlay/MemoryPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 38
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 38
+theme_override_constants/margin_bottom = 30
+
+[node name="Layout" type="VBoxContainer" parent="MemoryOverlay/MemoryPanel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Eyebrow" type="Label" parent="MemoryOverlay/MemoryPanel/Margin/Layout"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.72, 0.92, 1)
+theme_override_font_sizes/font_size = 13
+text = "MEMORY RECONSTRUCTION // FRAGMENT 001"
+horizontal_alignment = 1
+
+[node name="MemoryTitle" type="Label" parent="MemoryOverlay/MemoryPanel/Margin/Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.88, 0.96, 1, 1)
+theme_override_font_sizes/font_size = 29
+text = "A FAMILIAR VOICE"
+horizontal_alignment = 1
+
+[node name="MemoryTranscript" type="Label" parent="MemoryOverlay/MemoryPanel/Margin/Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.72, 0.85, 0.9, 1)
+theme_override_font_sizes/font_size = 17
+text = "Darkness."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MemoryClue" type="Label" parent="MemoryOverlay/MemoryPanel/Margin/Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.77, 0.25, 1)
+theme_override_font_sizes/font_size = 18
+text = "PRACTICAL CLUE RECOVERED: 2718"
+horizontal_alignment = 1
+
+[node name="FailureOverlay" type="ColorRect" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.08, 0.005, 0.008, 0.97)
+
+[node name="Detained" type="Label" parent="FailureOverlay"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -300.0
+offset_top = -75.0
+offset_right = 300.0
+offset_bottom = 75.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 0.14, 0.19, 1)
+theme_override_font_sizes/font_size = 58
+text = "DETAINED"
+horizontal_alignment = 1
+vertical_alignment = 1

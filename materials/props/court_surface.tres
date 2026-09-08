@@ -1,0 +1,7 @@
+[gd_resource type="StandardMaterial3D" format=3]
+
+[resource]
+resource_name = "Worn Court Surface"
+albedo_color = Color(0.31, 0.25, 0.2, 1)
+roughness = 0.94
+

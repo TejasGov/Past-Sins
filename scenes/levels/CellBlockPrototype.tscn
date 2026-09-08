@@ -1,0 +1,81 @@
+[gd_scene load_steps=14 format=3]
+
+[ext_resource type="Script" path="res://scripts/levels/cell_block_prototype.gd" id="1_level"]
+[ext_resource type="PackedScene" path="res://scenes/ui/HUD.tscn" id="2_hud"]
+[ext_resource type="PackedScene" path="res://scenes/levels/floors/B2Floor.tscn" id="3_b2"]
+[ext_resource type="PackedScene" path="res://scenes/levels/floors/B1Floor.tscn" id="4_b1"]
+[ext_resource type="PackedScene" path="res://scenes/levels/floors/GroundFloor.tscn" id="5_ground"]
+[ext_resource type="PackedScene" path="res://scenes/levels/floors/Floor1.tscn" id="6_floor1"]
+[ext_resource type="PackedScene" path="res://scenes/levels/floors/AtriumCellFloor.tscn" id="7_atrium"]
+[ext_resource type="PackedScene" path="res://scenes/levels/floors/Floor4.tscn" id="8_floor4"]
+[ext_resource type="PackedScene" path="res://scenes/levels/floors/Roof.tscn" id="9_roof"]
+[ext_resource type="Script" path="res://scripts/debug/containment_audit.gd" id="10_audit"]
+[ext_resource type="PackedScene" path="res://scenes/props/EnvironmentalDressing.tscn" id="11_props"]
+[ext_resource type="PackedScene" path="res://scenes/levels/zones/OutdoorYard.tscn" id="12_yard"]
+
+[sub_resource type="Environment" id="Environment_prison"]
+background_mode = 1
+background_color = Color(0.021, 0.022, 0.02, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.52, 0.51, 0.47, 1)
+ambient_light_energy = 0.42
+reflected_light_source = 2
+tonemap_mode = 2
+
+[node name="CellBlockPrototype" type="Node3D"]
+script = ExtResource("1_level")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_prison")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+rotation_degrees = Vector3(-58, -35, 0)
+light_color = Color(0.79, 0.79, 0.74, 1)
+light_energy = 0.38
+shadow_enabled = false
+
+[node name="Floors" type="Node3D" parent="."]
+
+[node name="B2" parent="Floors" instance=ExtResource("3_b2")]
+position = Vector3(0, -12, 0)
+
+[node name="B1" parent="Floors" instance=ExtResource("4_b1")]
+position = Vector3(0, -8, 0)
+
+[node name="GroundFloor" parent="Floors" instance=ExtResource("5_ground")]
+position = Vector3(0, -4, 0)
+
+[node name="Floor1" parent="Floors" instance=ExtResource("6_floor1")]
+
+[node name="Floor2" parent="Floors" instance=ExtResource("7_atrium")]
+position = Vector3(0, 4, 0)
+floor_number = 2
+
+[node name="Floor3" parent="Floors" instance=ExtResource("7_atrium")]
+position = Vector3(0, 8, 0)
+floor_number = 3
+is_parth_floor = true
+
+[node name="Floor4" parent="Floors" instance=ExtResource("8_floor4")]
+position = Vector3(0, 12, 0)
+
+[node name="Roof" parent="Floors" instance=ExtResource("9_roof")]
+position = Vector3(0, 16, 0)
+
+[node name="OutdoorYard" parent="Floors" instance=ExtResource("12_yard")]
+position = Vector3(0, -4, 21)
+
+[node name="EnvironmentalDressing" parent="." instance=ExtResource("11_props")]
+
+[node name="Actors" type="Node3D" parent="."]
+
+[node name="Interactables" type="Node3D" parent="."]
+
+[node name="PatrolPoints" type="Node3D" parent="."]
+
+[node name="ContainmentAudit" type="Node" parent="."]
+script = ExtResource("10_audit")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="HUD" parent="CanvasLayer" instance=ExtResource("2_hud")]

@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" format=3]
+
+[resource]
+resource_name = "Security Dark Gray"
+albedo_color = Color(0.105, 0.12, 0.115, 1)
+metallic = 0.2
+roughness = 0.82
+

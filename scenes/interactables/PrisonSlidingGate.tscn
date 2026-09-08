@@ -1,0 +1,54 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://scripts/interactables/prison_sliding_gate.gd" id="1_gate"]
+
+[sub_resource type="BoxShape3D" id="GateShape"]
+size = Vector3(1.5, 2.5, 0.16)
+
+[sub_resource type="BoxShape3D" id="SafetyShape"]
+size = Vector3(1.8, 2.5, 1.0)
+
+[sub_resource type="BoxMesh" id="FramePostMesh"]
+size = Vector3(0.16, 2.7, 0.24)
+
+[sub_resource type="BoxMesh" id="FrameHeaderMesh"]
+size = Vector3(1.8, 0.16, 0.24)
+
+[sub_resource type="StandardMaterial3D" id="FrameMaterial"]
+albedo_color = Color(0.24, 0.27, 0.26, 1)
+metallic = 0.55
+roughness = 0.48
+
+[node name="PrisonSlidingGate" type="Node3D"]
+script = ExtResource("1_gate")
+
+[node name="FrameLeft" type="MeshInstance3D" parent="."]
+mesh = SubResource("FramePostMesh")
+material_override = SubResource("FrameMaterial")
+
+[node name="FrameRight" type="MeshInstance3D" parent="."]
+mesh = SubResource("FramePostMesh")
+material_override = SubResource("FrameMaterial")
+
+[node name="FrameHeader" type="MeshInstance3D" parent="."]
+mesh = SubResource("FrameHeaderMesh")
+material_override = SubResource("FrameMaterial")
+
+[node name="GateLeaf" type="AnimatableBody3D" parent="."]
+collision_layer = 1
+collision_mask = 2
+sync_to_physics = true
+
+[node name="Visuals" type="Node3D" parent="GateLeaf"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GateLeaf"]
+shape = SubResource("GateShape")
+
+[node name="DoorwaySafety" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 2
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DoorwaySafety"]
+shape = SubResource("SafetyShape")

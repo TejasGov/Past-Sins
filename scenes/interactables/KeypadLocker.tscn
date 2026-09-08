@@ -1,0 +1,66 @@
+[gd_scene load_steps=9 format=3]
+
+[ext_resource type="Script" path="res://scripts/interactables/keypad_locker.gd" id="1_locker"]
+
+[sub_resource type="BoxMesh" id="LockerBodyMesh"]
+size = Vector3(1.2, 2.2, 0.75)
+
+[sub_resource type="BoxMesh" id="LockerDoorMesh"]
+size = Vector3(1.1, 2.05, 0.10)
+
+[sub_resource type="BoxMesh" id="KeypadMesh"]
+size = Vector3(0.28, 0.42, 0.10)
+
+[sub_resource type="BoxShape3D" id="LockerShape"]
+size = Vector3(1.1, 2.05, 0.14)
+
+[sub_resource type="StandardMaterial3D" id="LockerInteriorMaterial"]
+albedo_color = Color(0.055, 0.065, 0.07, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="DoorMaterial"]
+albedo_color = Color(0.31, 0.37, 0.37, 1)
+metallic = 0.5
+roughness = 0.58
+
+[sub_resource type="StandardMaterial3D" id="KeypadMaterial"]
+albedo_color = Color(0.08, 0.45, 0.55, 1)
+emission_enabled = true
+emission = Color(0.04, 0.25, 0.32, 1)
+emission_energy_multiplier = 2.0
+
+[node name="KeypadLocker" type="Node3D"]
+script = ExtResource("1_locker")
+
+[node name="Interior" type="MeshInstance3D" parent="."]
+mesh = SubResource("LockerBodyMesh")
+material_override = SubResource("LockerInteriorMaterial")
+
+[node name="AccessCard" type="Label3D" parent="Interior"]
+position = Vector3(0, 0, -0.44)
+text = "MAINTENANCE\nACCESS CARD"
+font_size = 38
+outline_size = 8
+modulate = Color(1, 0.75, 0.18, 1)
+pixel_size = 0.006
+
+[node name="DoorPivot" type="Node3D" parent="."]
+position = Vector3(-0.55, 0, -0.43)
+
+[node name="Door" type="MeshInstance3D" parent="DoorPivot"]
+position = Vector3(0.55, 0, 0)
+mesh = SubResource("LockerDoorMesh")
+material_override = SubResource("DoorMaterial")
+
+[node name="Keypad" type="MeshInstance3D" parent="DoorPivot"]
+position = Vector3(0.86, 0.36, -0.1)
+mesh = SubResource("KeypadMesh")
+material_override = SubResource("KeypadMaterial")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="DoorPivot"]
+collision_layer = 5
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DoorPivot/StaticBody3D"]
+position = Vector3(0.55, 0, 0)
+shape = SubResource("LockerShape")

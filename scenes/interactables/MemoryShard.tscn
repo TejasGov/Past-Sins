@@ -1,0 +1,48 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/interactables/memory_shard.gd" id="1_memory"]
+
+[sub_resource type="SphereShape3D" id="ShardShape"]
+radius = 0.5
+
+[sub_resource type="PrismMesh" id="ShardMesh"]
+size = Vector3(0.32, 0.7, 0.18)
+
+[sub_resource type="StandardMaterial3D" id="ShardMaterial"]
+transparency = 1
+albedo_color = Color(0.28, 0.82, 1, 0.78)
+metallic = 0.15
+roughness = 0.2
+emission_enabled = true
+emission = Color(0.08, 0.48, 0.9, 1)
+emission_energy_multiplier = 3.2
+
+[sub_resource type="StandardMaterial3D" id="RingMaterial"]
+transparency = 1
+albedo_color = Color(0.25, 0.68, 1, 0.25)
+shading_mode = 0
+
+[node name="MemoryShard" type="Area3D"]
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("1_memory")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("ShardShape")
+
+[node name="ShardVisual" type="MeshInstance3D" parent="."]
+rotation = Vector3(0.25, 0.3, 0.15)
+mesh = SubResource("ShardMesh")
+material_override = SubResource("ShardMaterial")
+
+[node name="Ring" type="MeshInstance3D" parent="ShardVisual"]
+rotation = Vector3(1.5708, 0, 0)
+mesh = SubResource("ShardMesh")
+scale = Vector3(1.8, 0.12, 1.8)
+material_override = SubResource("RingMaterial")
+
+[node name="Glow" type="OmniLight3D" parent="."]
+light_color = Color(0.22, 0.66, 1, 1)
+light_energy = 2.0
+omni_range = 3.5
+

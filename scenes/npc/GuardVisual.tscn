@@ -1,0 +1,266 @@
+[gd_scene load_steps=28 format=3]
+
+[ext_resource type="Script" path="res://scripts/visuals/guard_visual.gd" id="1_visual"]
+
+[sub_resource type="StandardMaterial3D" id="UniformMaterial"]
+albedo_color = Color(0.075, 0.095, 0.105, 1)
+roughness = 0.88
+
+[sub_resource type="StandardMaterial3D" id="UniformSecondaryMaterial"]
+albedo_color = Color(0.12, 0.145, 0.145, 1)
+roughness = 0.82
+
+[sub_resource type="StandardMaterial3D" id="VestMaterial"]
+albedo_color = Color(0.105, 0.13, 0.12, 1)
+roughness = 0.95
+
+[sub_resource type="StandardMaterial3D" id="SkinMaterial"]
+albedo_color = Color(0.45, 0.285, 0.185, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="BootMaterial"]
+albedo_color = Color(0.018, 0.022, 0.024, 1)
+roughness = 0.62
+
+[sub_resource type="StandardMaterial3D" id="MetalMaterial"]
+albedo_color = Color(0.36, 0.4, 0.39, 1)
+metallic = 0.75
+roughness = 0.38
+
+[sub_resource type="StandardMaterial3D" id="BadgeMaterial"]
+albedo_color = Color(0.7, 0.54, 0.16, 1)
+metallic = 0.45
+roughness = 0.5
+
+[sub_resource type="BoxMesh" id="TorsoMesh"]
+size = Vector3(0.62, 0.68, 0.32)
+
+[sub_resource type="BoxMesh" id="HipsMesh"]
+size = Vector3(0.54, 0.28, 0.3)
+
+[sub_resource type="BoxMesh" id="VestMesh"]
+size = Vector3(0.67, 0.56, 0.09)
+
+[sub_resource type="BoxMesh" id="BeltMesh"]
+size = Vector3(0.61, 0.1, 0.37)
+
+[sub_resource type="BoxMesh" id="BuckleMesh"]
+size = Vector3(0.11, 0.08, 0.05)
+
+[sub_resource type="BoxMesh" id="PouchMesh"]
+size = Vector3(0.14, 0.16, 0.09)
+
+[sub_resource type="CylinderMesh" id="NeckMesh"]
+top_radius = 0.085
+bottom_radius = 0.1
+height = 0.14
+
+[sub_resource type="CapsuleMesh" id="HeadMesh"]
+radius = 0.2
+height = 0.42
+
+[sub_resource type="BoxMesh" id="NoseMesh"]
+size = Vector3(0.065, 0.08, 0.08)
+
+[sub_resource type="SphereMesh" id="EyeMesh"]
+radius = 0.018
+height = 0.036
+
+[sub_resource type="CylinderMesh" id="CapCrownMesh"]
+top_radius = 0.205
+bottom_radius = 0.225
+height = 0.12
+
+[sub_resource type="CylinderMesh" id="CapTopMesh"]
+top_radius = 0.23
+bottom_radius = 0.23
+height = 0.035
+
+[sub_resource type="BoxMesh" id="CapBrimMesh"]
+size = Vector3(0.34, 0.045, 0.16)
+
+[sub_resource type="CapsuleMesh" id="UpperArmMesh"]
+radius = 0.1
+height = 0.43
+
+[sub_resource type="CapsuleMesh" id="ForearmMesh"]
+radius = 0.085
+height = 0.36
+
+[sub_resource type="CapsuleMesh" id="HandMesh"]
+radius = 0.082
+height = 0.17
+
+[sub_resource type="CapsuleMesh" id="ThighMesh"]
+radius = 0.13
+height = 0.44
+
+[sub_resource type="CapsuleMesh" id="ShinMesh"]
+radius = 0.115
+height = 0.34
+
+[sub_resource type="BoxMesh" id="BootMesh"]
+size = Vector3(0.24, 0.16, 0.36)
+
+[node name="GuardVisual" type="Node3D"]
+script = ExtResource("1_visual")
+
+[node name="Body" type="Node3D" parent="."]
+
+[node name="Torso" type="MeshInstance3D" parent="Body"]
+position = Vector3(0, 0.26, 0)
+mesh = SubResource("TorsoMesh")
+material_override = SubResource("UniformMaterial")
+
+[node name="Hips" type="MeshInstance3D" parent="Body"]
+position = Vector3(0, -0.14, 0)
+mesh = SubResource("HipsMesh")
+material_override = SubResource("UniformSecondaryMaterial")
+
+[node name="SecurityVest" type="MeshInstance3D" parent="Body"]
+position = Vector3(0, 0.28, -0.19)
+mesh = SubResource("VestMesh")
+material_override = SubResource("VestMaterial")
+
+[node name="Badge" type="MeshInstance3D" parent="Body"]
+position = Vector3(-0.19, 0.42, -0.247)
+mesh = SubResource("BuckleMesh")
+material_override = SubResource("BadgeMaterial")
+
+[node name="Radio" type="MeshInstance3D" parent="Body"]
+position = Vector3(0.2, 0.43, -0.25)
+scale = Vector3(0.82, 1.35, 0.78)
+mesh = SubResource("PouchMesh")
+material_override = SubResource("BootMaterial")
+
+[node name="UtilityBelt" type="MeshInstance3D" parent="Body"]
+position = Vector3(0, -0.08, 0)
+mesh = SubResource("BeltMesh")
+material_override = SubResource("BootMaterial")
+
+[node name="BeltBuckle" type="MeshInstance3D" parent="Body"]
+position = Vector3(0, -0.08, -0.205)
+mesh = SubResource("BuckleMesh")
+material_override = SubResource("MetalMaterial")
+
+[node name="LeftBeltPouch" type="MeshInstance3D" parent="Body"]
+position = Vector3(-0.2, -0.08, -0.215)
+mesh = SubResource("PouchMesh")
+material_override = SubResource("BootMaterial")
+
+[node name="RightBeltPouch" type="MeshInstance3D" parent="Body"]
+position = Vector3(0.2, -0.08, -0.215)
+mesh = SubResource("PouchMesh")
+material_override = SubResource("BootMaterial")
+
+[node name="Neck" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.67, 0)
+mesh = SubResource("NeckMesh")
+material_override = SubResource("SkinMaterial")
+
+[node name="Head" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.87, 0)
+mesh = SubResource("HeadMesh")
+material_override = SubResource("SkinMaterial")
+
+[node name="Nose" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.87, -0.205)
+mesh = SubResource("NoseMesh")
+material_override = SubResource("SkinMaterial")
+
+[node name="LeftEye" type="MeshInstance3D" parent="."]
+position = Vector3(-0.07, 0.93, -0.187)
+mesh = SubResource("EyeMesh")
+material_override = SubResource("BootMaterial")
+
+[node name="RightEye" type="MeshInstance3D" parent="."]
+position = Vector3(0.07, 0.93, -0.187)
+mesh = SubResource("EyeMesh")
+material_override = SubResource("BootMaterial")
+
+[node name="CapCrown" type="MeshInstance3D" parent="."]
+position = Vector3(0, 1.075, 0)
+mesh = SubResource("CapCrownMesh")
+material_override = SubResource("UniformSecondaryMaterial")
+
+[node name="CapTop" type="MeshInstance3D" parent="."]
+position = Vector3(0, 1.14, 0)
+mesh = SubResource("CapTopMesh")
+material_override = SubResource("UniformSecondaryMaterial")
+
+[node name="CapBrim" type="MeshInstance3D" parent="."]
+position = Vector3(0, 1.035, -0.18)
+mesh = SubResource("CapBrimMesh")
+material_override = SubResource("UniformSecondaryMaterial")
+
+[node name="LeftArmPivot" type="Node3D" parent="."]
+position = Vector3(-0.43, 0.5, 0)
+
+[node name="UpperArm" type="MeshInstance3D" parent="LeftArmPivot"]
+position = Vector3(0, -0.2, 0)
+mesh = SubResource("UpperArmMesh")
+material_override = SubResource("UniformMaterial")
+
+[node name="Forearm" type="MeshInstance3D" parent="LeftArmPivot"]
+position = Vector3(0, -0.59, 0)
+mesh = SubResource("ForearmMesh")
+material_override = SubResource("UniformSecondaryMaterial")
+
+[node name="Hand" type="MeshInstance3D" parent="LeftArmPivot"]
+position = Vector3(0, -0.85, 0)
+mesh = SubResource("HandMesh")
+material_override = SubResource("SkinMaterial")
+
+[node name="RightArmPivot" type="Node3D" parent="."]
+position = Vector3(0.43, 0.5, 0)
+
+[node name="UpperArm" type="MeshInstance3D" parent="RightArmPivot"]
+position = Vector3(0, -0.2, 0)
+mesh = SubResource("UpperArmMesh")
+material_override = SubResource("UniformMaterial")
+
+[node name="Forearm" type="MeshInstance3D" parent="RightArmPivot"]
+position = Vector3(0, -0.59, 0)
+mesh = SubResource("ForearmMesh")
+material_override = SubResource("UniformSecondaryMaterial")
+
+[node name="Hand" type="MeshInstance3D" parent="RightArmPivot"]
+position = Vector3(0, -0.85, 0)
+mesh = SubResource("HandMesh")
+material_override = SubResource("SkinMaterial")
+
+[node name="LeftLegPivot" type="Node3D" parent="."]
+position = Vector3(-0.18, -0.2, 0)
+
+[node name="Thigh" type="MeshInstance3D" parent="LeftLegPivot"]
+position = Vector3(0, -0.18, 0)
+mesh = SubResource("ThighMesh")
+material_override = SubResource("UniformMaterial")
+
+[node name="Shin" type="MeshInstance3D" parent="LeftLegPivot"]
+position = Vector3(0, -0.5, 0)
+mesh = SubResource("ShinMesh")
+material_override = SubResource("UniformSecondaryMaterial")
+
+[node name="Boot" type="MeshInstance3D" parent="LeftLegPivot"]
+position = Vector3(0, -0.71, -0.07)
+mesh = SubResource("BootMesh")
+material_override = SubResource("BootMaterial")
+
+[node name="RightLegPivot" type="Node3D" parent="."]
+position = Vector3(0.18, -0.2, 0)
+
+[node name="Thigh" type="MeshInstance3D" parent="RightLegPivot"]
+position = Vector3(0, -0.18, 0)
+mesh = SubResource("ThighMesh")
+material_override = SubResource("UniformMaterial")
+
+[node name="Shin" type="MeshInstance3D" parent="RightLegPivot"]
+position = Vector3(0, -0.5, 0)
+mesh = SubResource("ShinMesh")
+material_override = SubResource("UniformSecondaryMaterial")
+
+[node name="Boot" type="MeshInstance3D" parent="RightLegPivot"]
+position = Vector3(0, -0.71, -0.07)
+mesh = SubResource("BootMesh")
+material_override = SubResource("BootMaterial")

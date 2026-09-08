@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/ai/guard.gd" id="1_guard"]
+[ext_resource type="PackedScene" path="res://scenes/npc/GuardVisual.tscn" id="2_visual"]
+
+[sub_resource type="CapsuleShape3D" id="GuardShape"]
+radius = 0.4
+height = 1.9
+
+[node name="Guard" type="CharacterBody3D"]
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("1_guard")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("GuardShape")
+
+[node name="GuardVisual" parent="." instance=ExtResource("2_visual")]
+
+[node name="StatusLight" type="OmniLight3D" parent="."]
+position = Vector3(0, 0.95, -0.38)
+light_color = Color(0.2, 0.8, 0.55, 1)
+light_energy = 1.4
+omni_range = 2.2
+
+[node name="DebugVision" type="MeshInstance3D" parent="."]
+position = Vector3(0, -0.93, 0)
+cast_shadow = 0
