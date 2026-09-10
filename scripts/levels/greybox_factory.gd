@@ -1,4 +1,10 @@
+
+
+
 extends RefCounted
+
+const CCTV_CAMERA_SCENE := preload("res://scenes/props/security/CCTVCamera.tscn")
+const METAL_DETECTOR_SCENE := preload("res://scenes/props/security/MetalDetector.tscn")
 
 var _root: Node3D
 var _collision_root: StaticBody3D
@@ -44,6 +50,35 @@ func oriented_box(piece_name: String, transform: Transform3D, size: Vector3, col
 	return visual
 
 
+func cylinder(piece_name: String, center: Vector3, radius: float, height: float, color: Color, collision := true, rotation := Vector3.ZERO) -> MeshInstance3D:
+	var visual := MeshInstance3D.new()
+	visual.name = piece_name
+	var mesh := CylinderMesh.new()
+	mesh.top_radius = radius
+	mesh.bottom_radius = radius
+	mesh.height = height
+	mesh.radial_segments = 10
+	mesh.rings = 1
+	visual.mesh = mesh
+	visual.position = center
+	visual.rotation = rotation
+	visual.material_override = _material(color)
+	visual.layers = _visual_layer_mask
+	visual.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	_root.add_child(visual)
+	if collision:
+		var shape_node := CollisionShape3D.new()
+		shape_node.name = "Shape"
+		var shape := CylinderShape3D.new()
+		shape.radius = radius
+		shape.height = height
+		shape_node.shape = shape
+		shape_node.position = center
+		shape_node.rotation = rotation
+		_collision_root.add_child(shape_node)
+	return visual
+
+
 func emissive_box(piece_name: String, center: Vector3, size: Vector3, color: Color, energy := 1.0) -> MeshInstance3D:
 	var visual := box(piece_name, center, size, color.darkened(0.45), false)
 	visual.material_override = _emissive_material(color, energy)
@@ -56,9 +91,12 @@ func ceiling_light(piece_name: String, center: Vector3, color: Color, energy := 
 	# when it is outside the active per-object light budget.
 	emissive_box("%sFixture" % piece_name, center, fixture_size, color, 0.85)
 	# Floors are spaced four metres apart and the slab underside is at y=3.8.
-	# This short stem prevents the inexpensive fixture from reading as suspended
-	# in mid-air while remaining non-colliding overhead detail.
-	box("%sMount" % piece_name, center + Vector3.UP * 0.15, Vector3(0.12, 0.3, 0.12), color.darkened(0.45), false)
+	# Size each stem from the fixture top to that underside; this also supports
+	# deliberately lower interrogation fixtures without leaving a visible gap.
+	var fixture_top := center.y + fixture_size.y * 0.5
+	var mount_height := maxf(0.12, 3.8 - fixture_top)
+	var mount_center := fixture_top + mount_height * 0.5
+	box("%sMount" % piece_name, Vector3(center.x, mount_center, center.z), Vector3(0.12, mount_height, 0.12), color.darkened(0.45), false)
 	var light := OmniLight3D.new()
 	light.name = piece_name
 	light.position = center + Vector3.DOWN * 0.18
@@ -69,6 +107,8 @@ func ceiling_light(piece_name: String, center: Vector3, color: Color, energy := 
 	light.light_cull_mask = _visual_layer_mask
 	light.shadow_enabled = false
 	_root.add_child(light)
+	light.add_to_group("campus_indoor_lights")
+	light.set_meta("automatic_night_light", true)
 	return light
 
 
@@ -353,3 +393,52 @@ func _box_mesh(size: Vector3) -> BoxMesh:
 	mesh.size = size
 	_box_meshes[key] = mesh
 	return mesh
+
+
+func cctv_camera(camera_name: String, position: Vector3, mount_type: int = 0, pan_deg: float = 0.0, tilt_deg: float = -20.0, root_yaw_deg: float = 0.0, pole_height: float = 3.4) -> CCTVCamera:
+	var camera := CCTV_CAMERA_SCENE.instantiate() as CCTVCamera
+	camera.name = camera_name
+	camera.position = position
+	camera.rotation_degrees.y = root_yaw_deg
+	camera.mount_type = mount_type as CCTVCamera.MountType
+	camera.pan_degrees = pan_deg
+	camera.tilt_degrees = tilt_deg
+	camera.pole_height = pole_height
+	camera.visual_layer_mask = _visual_layer_mask
+	_root.add_child(camera)
+	return camera
+
+
+func metal_detector(detector_name: String, position: Vector3, rotation_y_deg: float = 0.0) -> MetalDetector:
+	var detector := METAL_DETECTOR_SCENE.instantiate() as MetalDetector
+	detector.name = detector_name
+	detector.position = position
+	detector.rotation_degrees.y = rotation_y_deg
+	detector.visual_layer_mask = _visual_layer_mask
+	_root.add_child(detector)
+	return detector
+
+
+func server_rack(piece_name: String, center: Vector3, size := Vector3(0.9, 2.2, 0.95), color := Color("1c2225")) -> void:
+	box(piece_name, center, size, color)
+	box("%sGlassDoor" % piece_name, center + Vector3(0, 0, size.z * 0.5 + 0.01), Vector3(size.x - 0.1, size.y - 0.2, 0.02), Color("12242b"), false)
+	for index in range(5):
+		var y_off := -0.8 + float(index) * 0.4
+		var led_color := Color("00ff66") if index % 2 == 0 else Color("ff9900")
+		emissive_box("%sLED_%s" % [piece_name, index], center + Vector3(size.x * 0.38, y_off, size.z * 0.5 + 0.02), Vector3(0.04, 0.03, 0.02), led_color, 1.8)
+
+
+func security_map_board(piece_name: String, position: Vector3, rotation_degrees: Vector3, size := Vector3(2.4, 1.4, 0.08)) -> void:
+	var frame := box(piece_name, position, size, Color("202628"))
+	frame.rotation_degrees = rotation_degrees
+	var emissive_map := emissive_box("%sMapDisplay" % piece_name, position + Vector3(0, 0, 0.02), Vector3(size.x - 0.1, size.y - 0.1, 0.02), Color("0d332e"), 1.2)
+	emissive_map.rotation_degrees = rotation_degrees
+	self.sign("FACILITY SECURITY MAP", position + Vector3(0, size.y * 0.35, 0.06), rotation_degrees, Color("4ff0d0"), 0.004)
+
+
+func monitor_wall_screen(piece_name: String, center: Vector3, size: Vector3, camera_label: String, screen_color := Color("183e42")) -> MeshInstance3D:
+	box("%sFrame" % piece_name, center, Vector3(size.x + 0.08, size.y + 0.08, 0.1), Color("161a1c"))
+	var display := emissive_box(piece_name, center + Vector3(0, 0, 0.05), size, screen_color, 0.95)
+	if not camera_label.is_empty():
+		self.sign(camera_label, center + Vector3(0, 0, 0.07), Vector3.ZERO, Color("76f5ff"), 0.0035)
+	return display

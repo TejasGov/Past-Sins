@@ -1,0 +1,42 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/dev/dev_return_terminal.gd" id="1_terminal"]
+
+[sub_resource type="BoxMesh" id="TerminalMesh"]
+size = Vector3(1.15, 1.75, 0.28)
+
+[sub_resource type="StandardMaterial3D" id="TerminalMaterial"]
+albedo_color = Color(0.055, 0.085, 0.098, 1)
+roughness = 0.72
+
+[sub_resource type="BoxShape3D" id="TerminalShape"]
+size = Vector3(1.15, 1.75, 0.28)
+
+[node name="DevReturnTerminal" type="StaticBody3D"]
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("1_terminal")
+
+[node name="Body" type="MeshInstance3D" parent="."]
+mesh = SubResource("TerminalMesh")
+material_override = SubResource("TerminalMaterial")
+cast_shadow = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("TerminalShape")
+
+[node name="Screen" type="Label3D" parent="."]
+position = Vector3(0, 0.18, 0.151)
+text = "RETURN TO\nDEV HUB"
+font_size = 42
+pixel_size = 0.004
+modulate = Color(0.95, 0.78, 0.29, 1)
+outline_size = 6
+
+[node name="Prompt" type="Label3D" parent="."]
+position = Vector3(0, -0.54, 0.151)
+text = "[E] ACTIVATE"
+font_size = 32
+pixel_size = 0.0035
+modulate = Color(0.65, 0.82, 0.83, 1)
+outline_size = 5

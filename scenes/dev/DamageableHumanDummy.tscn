@@ -1,0 +1,50 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://scripts/dev/damageable_human_dummy.gd" id="1_dummy"]
+[ext_resource type="PackedScene" path="res://scenes/components/HealthComponent.tscn" id="2_health"]
+
+[sub_resource type="BoxMesh" id="BaseMesh"]
+size = Vector3(1.55, 0.16, 1.2)
+
+[sub_resource type="StandardMaterial3D" id="BaseMaterial"]
+albedo_color = Color(0.22, 0.27, 0.29, 1)
+roughness = 0.9
+
+[sub_resource type="BoxShape3D" id="BaseShape"]
+size = Vector3(1.55, 0.16, 1.2)
+
+[sub_resource type="BoxMesh" id="PostMesh"]
+size = Vector3(0.12, 1.25, 0.12)
+
+[node name="DamageableHumanDummy" type="Node3D"]
+script = ExtResource("1_dummy")
+
+[node name="HealthComponent" parent="." instance=ExtResource("2_health")]
+
+[node name="GroundedStand" type="StaticBody3D" parent="."]
+
+[node name="Base" type="MeshInstance3D" parent="GroundedStand"]
+position = Vector3(0, 0.08, 0)
+mesh = SubResource("BaseMesh")
+material_override = SubResource("BaseMaterial")
+cast_shadow = 0
+
+[node name="Post" type="MeshInstance3D" parent="GroundedStand"]
+position = Vector3(0, 0.7, 0.18)
+mesh = SubResource("PostMesh")
+material_override = SubResource("BaseMaterial")
+cast_shadow = 0
+
+[node name="BaseCollision" type="CollisionShape3D" parent="GroundedStand"]
+position = Vector3(0, 0.08, 0)
+shape = SubResource("BaseShape")
+
+[node name="Body" type="Node3D" parent="."]
+
+[node name="StatusLabel" type="Label3D" parent="."]
+position = Vector3(0, 3.35, 0)
+text = "TEST TARGET"
+font_size = 44
+pixel_size = 0.003
+modulate = Color(0.84, 0.88, 0.88, 1)
+outline_size = 6

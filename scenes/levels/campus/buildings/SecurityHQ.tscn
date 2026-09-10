@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/levels/campus/buildings/security_hq.gd" id="1_shq"]
+
+[node name="SecurityHQ" type="Node3D"]
+script = ExtResource("1_shq")

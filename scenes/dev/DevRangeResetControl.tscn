@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/dev/dev_range_reset_control.gd" id="1_control"]
+
+[sub_resource type="BoxShape3D" id="ControlShape"]
+size = Vector3(4.8, 0.72, 0.14)
+
+[node name="DevRangeResetControl" type="StaticBody3D"]
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("1_control")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("ControlShape")

@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/interactables/PrisonSlidingGate.tscn" id="1"]
+[ext_resource type="Script" path="res://scripts/levels/campus/modules/campus_telescopic_gate.gd" id="2"]
+
+[node name="CampusTelescopicGate" instance=ExtResource("1")]
+script = ExtResource("2")
+reader_light_enabled = false

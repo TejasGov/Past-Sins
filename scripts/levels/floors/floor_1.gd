@@ -53,5 +53,6 @@ func _ready() -> void:
 	g.sign("GYM", Vector3(0, 2.8, -11.85), Vector3(0, 0, 0), Color("9bd0d6"), 0.009)
 	g.sign("EXERCISE AREA", Vector3(-6.8, 2.5, 0), Vector3(0, -90, 0), Color("9fb8bb"), 0.006)
 	g.sign("SHOWERS / CHANGING", Vector3(0, 2.55, -12.15), Vector3(0, 180, 0), Color("8bc4cc"), 0.005)
+	g.sign("8 SHOWERS — TOILETS — URINALS", Vector3(10.5, 2.7, -20.7), Vector3(0, 0, 0), Color("9ed4d8"), 0.0038)
 	g.sign("RECREATION", Vector3(0, 2.55, 12.15), Vector3(0, 0, 0), Color("b6c5c5"), 0.006)
 	g.sign("SERVICE STAIR", Vector3(11.55, 2.5, 19.5), Vector3(0, -90, 0), Color("c6b887"), 0.0045)

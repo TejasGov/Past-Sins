@@ -11,6 +11,7 @@ const KEY_PICKUP_SCENE := preload("res://scenes/interactables/KeyPickup.tscn")
 
 const FLOOR_3_Y := 8.0
 const FLOOR_3_VISUAL_LAYER := 64
+const CELL_MASTER_KEY_ID: StringName = &"cell_master_key"
 
 @onready var actors: Node3D = $Actors
 @onready var interactables: Node3D = $Interactables
@@ -89,12 +90,11 @@ func _spawn_access_content() -> void:
 	_spawn_normal_door("KitchenDoor", Vector3(2.5, -8, -12), 90.0, "Kitchen Door", NormalDoor.MotionType.SLIDE, 1.0, 4)
 	_spawn_normal_door("StorageDoor", Vector3(7, -8, 8), 90.0, "Storage Door", NormalDoor.MotionType.SLIDE, 1.0, 4)
 	_spawn_normal_door("SecurityOfficeDoor", Vector3(-10, 12, 4.8), 0.0, "Security Office Door", NormalDoor.MotionType.SWING, 1.0, 128)
-	_spawn_normal_door("EvidenceStorageDoor", Vector3(9, 12, 4.8), 0.0, "Evidence Storage Door", NormalDoor.MotionType.SLIDE, 1.0, 128)
+	_spawn_normal_door("EvidenceStorageDoor", Vector3(9, 12, 4.8), 0.0, "Cell Key Storage", NormalDoor.MotionType.SLIDE, 1.0, 128, &"security_key", &"cell_key_storage", true)
 	_spawn_normal_door("InterrogationDoor", Vector3(5, -12, -1.5), 0.0, "Interrogation Door", NormalDoor.MotionType.SLIDE, 1.0, 2)
 
 	# Prison gates fill the open center passage in the static barred thresholds.
 	# High-security B2/F4 keys intentionally have no pickup in this prototype.
-	_spawn_prison_gate("ParthCellGate", Vector3(-12.88, 8, -12.5), 90.0, "Cell 07 Gate", &"", &"parth_cell_gate", 1.0, 64, 1.2, 1.4, false)
 	_spawn_prison_gate("Floor3NorthWingGate", Vector3(-10, 8, -14.0), 0.0, "Floor 3 North Wing Gate", &"cellblock_key", &"floor3_north_wing_gate", 1.0, 64)
 	_spawn_prison_gate("Floor2WingGate", Vector3(10, 4, 14.0), 0.0, "Floor 2 Wing Gate", &"cellblock_key", &"floor2_wing_gate", 1.0, 32)
 	_spawn_prison_gate("Floor2NorthWestGate", Vector3(-10, 4, -14.0), 0.0, "Floor 2 North High Security Gate", &"cellblock_key", &"floor2_north_west_gate", -1.0, 32)
@@ -104,11 +104,14 @@ func _spawn_access_content() -> void:
 	_spawn_prison_gate("Floor3SouthWestGate", Vector3(-10, 8, 14.0), 0.0, "Floor 3 South High Security Gate", &"cellblock_key", &"floor3_south_west_gate", -1.0, 64)
 	_spawn_prison_gate("Floor3SouthEastGate", Vector3(10, 8, 14.0), 0.0, "Floor 3 South High Security Gate", &"cellblock_key", &"floor3_south_east_gate", 1.0, 64)
 	_spawn_prison_gate("GroundSecureGate", Vector3(12.75, -4, 9.5), 0.0, "Ground Secure Gate", &"service_key", &"ground_secure_gate", 1.0, 8, 1.3, 1.45)
-	_spawn_prison_gate("YardSecurityGate", Vector3(0, -4, 20.82), 0.0, "Exercise Yard Gate", &"", &"yard_security_gate", 1.0, 8, 3.0, 3.25, false)
+	# This is the deliberate, unlocked yard door: a wide prison sliding gate
+	# aligned with both the building opening and the yard fence opening.
+	_spawn_prison_gate("YardSecurityGate", Vector3(0, -4, 20.82), 0.0, "Yard Security Door", &"", &"yard_security_gate", 1.0, 8, 3.0, 3.25, false, &"", false, Color("a77723"), "YARD EXIT")
 	_spawn_prison_gate("B1MedicalGate", Vector3(-4, -8, 1.5), 0.0, "Medical Service Gate", &"medical_key", &"b1_medical_gate", 1.0, 4)
 	_spawn_prison_gate("B2AccessGate", Vector3(10.0, -12, 13.0), 90.0, "B2 Access Gate", &"lab_key", &"b2_access_gate", 1.0, 2, 1.3, 1.45)
-	_spawn_prison_gate("Floor4SecurityGate", Vector3(3.75, 12, -4.5), 0.0, "Surveillance Security Gate", &"security_key", &"floor4_security_gate", 1.0, 128)
-	_spawn_prison_gate("Floor4WestSecurityGate", Vector3(-6.75, 12, -4.5), 0.0, "Surveillance West Gate", &"security_key", &"floor4_west_security_gate", -1.0, 128)
+	_spawn_prison_gate("Floor4SecurityGate", Vector3(8.5, 12, -4.5), 0.0, "Surveillance Security Gate", &"security_key", &"floor4_security_gate", 1.0, 128)
+	_spawn_prison_gate("Floor4WestSecurityGate", Vector3(-8.5, 12, -4.5), 0.0, "Surveillance West Gate", &"security_key", &"floor4_west_security_gate", -1.0, 128)
+	_spawn_cell_doors_and_floor4_keys()
 	# The maintenance cell remains architecturally separate from the prisoner
 	# gallery while preserving the existing service-key route.
 	_spawn_prison_gate("Floor3StaffGate", Vector3(12.88, 8, 17.5), 90.0, "Maintenance Staff Gate", &"service_key", &"floor3_staff_gate", -1.0, 64, 1.3, 1.45)
@@ -118,6 +121,66 @@ func _spawn_access_content() -> void:
 	_spawn_key_pickup("CellBlockKeyPickup", Vector3(-10.2, 9.0, -8.5), &"cellblock_key", "Cell Block Key", 64)
 	_spawn_key_pickup("ServiceKeyPickup", Vector3(-10.0, 5.0, 7.5), &"service_key", "Service Key", 32)
 	_spawn_key_pickup("MedicalKeyPickup", Vector3(-5.0, -3.0, 16.0), &"medical_key", "Medical Key", 8)
+
+
+func _spawn_cell_doors_and_floor4_keys() -> void:
+	# Each actual prisoner cell gets one independently addressable sliding door.
+	# The facility-wide master key is deliberately not spawned; it is reserved
+	# for the future police-chief NPC. Individual keys are catalogued in the
+	# secure Floor 4 evidence/key-storage room.
+	var centers := [-17.5, -12.5, -7.5, -2.5, 2.5, 7.5, 12.5, 17.5]
+	var storage_index := 0
+	for floor_number in [2, 3]:
+		var floor_y := 4.0 if floor_number == 2 else 8.0
+		var visual_layer := 32 if floor_number == 2 else 64
+		for west_side in [true, false]:
+			var side_id := "west" if west_side else "east"
+			var side_label := "West" if west_side else "East"
+			var front_x := -12.88 if west_side else 12.88
+			for index in range(centers.size()):
+				# Floor 3 east terminal bay is the established staff-maintenance
+				# room and already has its own service gate.
+				if floor_number == 3 and not west_side and index == 7:
+					continue
+				var is_parth_cell: bool = floor_number == 3 and bool(west_side) and index == 1
+				var replaces_maintenance_pair: bool = floor_number == 3 and not bool(west_side) and index == centers.size() - 2
+				var is_special_cell: bool = index == 0 or index == centers.size() - 1 or replaces_maintenance_pair
+				var cell_id := "floor%d_%s_cell_%02d" % [floor_number, side_id, index + 1]
+				var key_id := StringName("%s_key" % cell_id)
+				var gate_name := "ParthCellGate" if is_parth_cell else "Floor%d%sCell%02dGate" % [floor_number, side_label, index + 1]
+				var display_name := "Cell 07 Gate" if is_parth_cell else "Floor %d %s Cell %02d" % [floor_number, side_label, index + 1]
+				var gate := _spawn_prison_gate(
+					gate_name,
+					Vector3(front_x, floor_y, centers[index]),
+					90.0,
+					display_name,
+					key_id,
+					StringName(cell_id),
+					1.0,
+					visual_layer,
+					1.2,
+					1.4,
+					not is_parth_cell,
+					CELL_MASTER_KEY_ID,
+					is_special_cell
+				)
+				gate.add_to_group("cell_doors")
+				gate.set_meta("cell_access_id", cell_id)
+
+				var column := storage_index % 8
+				var row := storage_index / 8
+				var key_position := Vector3(16.2, 12.65 + row * 0.8, 11.7 + column * 1.1)
+				var key_pickup := _spawn_key_pickup(
+					"%sKeyPickup" % gate_name,
+					key_position,
+					key_id,
+					"Floor %d %s Cell %02d Key" % [floor_number, side_label, index + 1],
+					128,
+					-90.0
+				)
+				key_pickup.add_to_group("cell_key_pickups")
+				key_pickup.set_meta("cell_access_id", cell_id)
+				storage_index += 1
 
 
 func _spawn_high_security_guards() -> void:
@@ -176,30 +239,37 @@ func _spawn_normal_door(node_name: String, world_position: Vector3, yaw_degrees:
 	_set_visual_layer(door, visual_layer)
 
 
-func _spawn_prison_gate(node_name: String, world_position: Vector3, yaw_degrees: float, gate_name: String, key_id: StringName, access_id: StringName, direction: float, visual_layer: int, width := 1.5, travel := 1.7, locked := true) -> void:
+func _spawn_prison_gate(node_name: String, world_position: Vector3, yaw_degrees: float, gate_name: String, key_id: StringName, access_id: StringName, direction: float, visual_layer: int, width := 1.5, travel := 1.7, locked := true, master_key_id: StringName = &"", glass := false, gate_color := Color("343a38"), panel_label := "") -> PrisonSlidingGate:
 	var gate := PRISON_GATE_SCENE.instantiate() as PrisonSlidingGate
 	gate.name = node_name
 	gate.position = world_position
 	gate.rotation_degrees.y = yaw_degrees
 	gate.display_name = gate_name
 	gate.required_key_id = key_id
+	gate.master_key_id = master_key_id
 	gate.persistent_access_id = access_id
 	gate.starts_locked = locked
 	gate.open_direction = direction
 	gate.gate_width = width
 	gate.slide_distance = travel
+	gate.bulletproof_glass = glass
+	gate.gate_color = gate_color
+	gate.panel_label = panel_label
 	interactables.add_child(gate)
 	_set_visual_layer(gate, visual_layer)
+	return gate
 
 
-func _spawn_key_pickup(node_name: String, world_position: Vector3, key_id: StringName, key_name: String, visual_layer: int) -> void:
+func _spawn_key_pickup(node_name: String, world_position: Vector3, key_id: StringName, key_name: String, visual_layer: int, yaw_degrees := 0.0) -> KeyPickup:
 	var pickup := KEY_PICKUP_SCENE.instantiate() as KeyPickup
 	pickup.name = node_name
 	pickup.position = world_position
+	pickup.rotation_degrees.y = yaw_degrees
 	pickup.key_id = key_id
 	pickup.display_name = key_name
 	interactables.add_child(pickup)
 	_set_visual_layer(pickup, visual_layer)
+	return pickup
 
 
 func _set_visual_layer(root: Node, layer_mask: int) -> void:
@@ -210,6 +280,9 @@ func _set_visual_layer(root: Node, layer_mask: int) -> void:
 
 
 func _on_player_caught(_guard: Node) -> void:
+	if DevModeManager.blocks_player_failure():
+		SuspicionSystem.reset()
+		return
 	if _failure_in_progress:
 		return
 	_failure_in_progress = true

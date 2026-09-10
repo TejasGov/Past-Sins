@@ -33,6 +33,7 @@ signal movement_state_changed(is_sprinting: bool, is_crouching: bool)
 @onready var interaction_ray: RayCast3D = $Head/Camera3D/InteractionRay
 @onready var body_collider: CollisionShape3D = $CollisionShape3D
 @onready var stand_clearance: ShapeCast3D = $StandClearance
+@onready var swimming: Node = get_node_or_null("Swimming")
 
 var control_enabled := true
 var is_sprinting := false
@@ -82,6 +83,13 @@ func _physics_process(delta: float) -> void:
 
 	var was_sprinting := is_sprinting
 	var was_crouching := is_crouching
+	if swimming and swimming.update_water():
+		swimming.move_in_water(delta)
+		if was_sprinting != is_sprinting or was_crouching != is_crouching:
+			movement_state_changed.emit(is_sprinting, is_crouching)
+		if Input.is_action_just_pressed("interact") and is_instance_valid(_current_interactable):
+			_current_interactable.call("interact", self)
+		return
 	var input_vector := Input.get_vector("move_left", "move_right", "move_forward", "move_back")
 	var wants_to_crouch := Input.is_action_pressed("crouch")
 	if wants_to_crouch:

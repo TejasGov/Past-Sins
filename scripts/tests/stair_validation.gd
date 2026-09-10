@@ -94,7 +94,25 @@ func _run_validation() -> void:
 	for stair in stairs:
 		_validate_stair(stair)
 
-	print("STAIR_VALIDATION: PASS — all 7 vertical connections have clear flights and landings")
+	# Regression: the shared atrium camera used to be a pole placed on the
+	# Floor 3 -> Floor 4 flight. It must remain overhead and outside the lane.
+	for floor_name in ["Floor2", "Floor3"]:
+		var atrium_camera := level.get_node("Floors/%s/CellCamAtriumBridge" % floor_name) as CCTVCamera
+		assert(atrium_camera.mount_type == CCTVCamera.MountType.CEILING, "%s atrium CCTV is a floor obstruction" % floor_name)
+		assert(absf(atrium_camera.global_position.x) >= 9.5, "%s atrium CCTV overlaps a stair/bridge lane" % floor_name)
+
+	# Regression: the Floor 4 east security door must be reachable from the
+	# arrival landing without stepping over the central atrium void.
+	var floor4_gate := level.get_node("Interactables/Floor4SecurityGate") as PrisonSlidingGate
+	assert(floor4_gate.global_position.is_equal_approx(Vector3(8.5, 12.0, -4.5)), "Floor 4 security gate is not aligned to the east gallery")
+	for point in [
+		Vector3(8.5, 12.95, 0.0), Vector3(8.5, 12.95, -2.0),
+		Vector3(8.5, 12.95, -3.35), Vector3(8.5, 12.95, -4.5),
+		Vector3(8.5, 12.95, -5.8),
+	]:
+		_assert_capsule_clear("Floor 4 security approach", point)
+
+	print("STAIR_VALIDATION: PASS — all 7 vertical connections, CCTV clearance, and Floor 4 security approach")
 	get_tree().quit(0)
 
 

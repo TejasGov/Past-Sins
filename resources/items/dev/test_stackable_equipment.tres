@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ItemDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/inventory/item_definition.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+item_id = &"dev_test_stackable_equipment"
+display_name = "TEST STACKABLE EQUIPMENT"
+category = 2
+stackable = true
+dev_only = true

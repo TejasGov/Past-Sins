@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/weapons/pistol_visual.gd" id="1_visual"]
+
+[node name="PistolWorldVisual" type="Node3D"]
+position = Vector3(0, 0.38, 0)
+rotation_degrees = Vector3(0, -90, -8)
+scale = Vector3(0.8, 0.8, 0.8)
+script = ExtResource("1_visual")

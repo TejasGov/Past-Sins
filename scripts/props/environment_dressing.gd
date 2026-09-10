@@ -58,6 +58,8 @@ const TOWEL_HOOKS := preload("res://scenes/props/prison/TowelHooks.tscn")
 const WASH_BASIN := preload("res://scenes/props/prison/WashBasin.tscn")
 const MIRROR := preload("res://scenes/props/prison/Mirror.tscn")
 const TOILET := preload("res://scenes/props/prison/Toilet.tscn")
+const URINAL := preload("res://scenes/props/prison/Urinal.tscn")
+const URINAL_DIVIDER := preload("res://scenes/props/prison/UrinalDivider.tscn")
 const HOSPITAL_BED := preload("res://scenes/props/medical/HospitalBed.tscn")
 const BEDSIDE_TABLE := preload("res://scenes/props/medical/BedsideTable.tscn")
 const MEDICAL_CART := preload("res://scenes/props/medical/MedicalCart.tscn")
@@ -140,6 +142,7 @@ func _build_b2_dressing() -> void:
 	_place(LAB_GLASSWARE, "B2Glassware", Vector3(-9.3, -10.73, -5.5), 0, 2, "B2 Laboratory")
 	_place(COMPUTER_TERMINAL, "B2LabComputer", Vector3(-11.9, -10.73, -5.5), 0, 2, "B2 Laboratory")
 	_place(NIDRA_TERMINAL, "B2NidraTerminal", Vector3(-5.0, -12, -7.0), -90, 2, "B2 Laboratory")
+	_place(EQUIPMENT_TABLE, "B2InstrumentTable", Vector3(-5.0, -12, -11.5), 90, 2, "B2 Laboratory")
 	_place(SUBJECT_STORAGE, "B2SubjectStorageA", Vector3(-12.5, -12, -19.4), 0, 2, "B2 Laboratory")
 	_place(SUBJECT_STORAGE, "B2SubjectStorageB", Vector3(-10.8, -12, -19.4), 0, 2, "B2 Laboratory")
 	_place(LAB_SIGN, "B2NeuralResponseSign", Vector3(-16.8, -12, -12.0), 90, 2, "B2 Laboratory", "NEURAL RESPONSE")
@@ -179,7 +182,9 @@ func _build_b1_dressing() -> void:
 		_place(MEDICAL_STOOL, "B1MedicalStool%02d" % index, Vector3(-9.0, -8, [-14.5, -9.5, -4.5][index]), 0, 4, "B1 Medical")
 	_place(MEDICINE_CABINET, "B1MedicineCabinetA", Vector3(-15.2, -8, 1.15), 180, 4, "B1 Medical Secure Storage")
 	_place(MEDICINE_CABINET, "B1MedicineCabinetB", Vector3(-13.4, -8, 1.15), 180, 4, "B1 Medical Secure Storage")
-	_place(SMALL_WALL_SAFE, "B1MedicineWallSafe", Vector3(-14.3, -8, 1.12), 180, 4, "B1 Medical Secure Storage")
+	# Mount the safe above the cabinet line so each fixture remains readable and
+	# its collision does not overlap the medicine cabinets below it.
+	_place(SMALL_WALL_SAFE, "B1MedicineWallSafe", Vector3(-14.3, -6.8, 1.12), 180, 4, "B1 Medical Secure Storage")
 	_place(MEDICAL_SINK, "B1MedicalSink", Vector3(-2.68, -8, -18.0), -90, 4, "B1 Medical")
 	_place(DOCTOR_DESK, "B1DoctorDesk", Vector3(-6.2, -8, -18.0), 180, 4, "B1 Medical")
 	_place(EQUIPMENT_TABLE, "B1EquipmentTable", Vector3(-6.0, -8, -8.0), 90, 4, "B1 Medical")
@@ -254,21 +259,28 @@ func _build_floor_1_dressing() -> void:
 	_place(BENCH, "GymRestBench", Vector3(-14.0, 0, 10.0), 0, 16, "Floor 1 Gym")
 	_place(METAL_SHELVING, "GymTowelShelf", Vector3(15.7, 0, 8.0), -90, 16, "Floor 1 Gym")
 	_place(SHOWER_FLOOR, "ShowerTileFloor", Vector3(6.5, 0, -16.5), 0, 16, "Floor 1 Showers")
-	for index in range(5):
-		var fixture_x := float(index) * 3.0
+	for index in range(8):
+		var fixture_x := -2.5 + float(index) * 2.1
 		_place(SHOWER_FIXTURE, "ShowerFixture%02d" % index, Vector3(fixture_x, 0, -20.78), 0, 16, "Floor 1 Showers")
-		_place(FLOOR_DRAIN, "ShowerDrain%02d" % index, Vector3(fixture_x, 0, -18.0), 0, 16, "Floor 1 Showers")
-	for index in range(5):
-		_place(SHOWER_HALF_WALL, "ShowerHalfWall%02d" % index, Vector3(1.5 + index * 3.0, 0, -18.0), 0, 16, "Floor 1 Showers")
+		_place(FLOOR_DRAIN, "ShowerDrain%02d" % index, Vector3(fixture_x, 0, -18.55), 0, 16, "Floor 1 Showers")
+	for index in range(7):
+		_place(SHOWER_HALF_WALL, "ShowerHalfWall%02d" % index, Vector3(-1.45 + index * 2.1, 0, -19.25), 0, 16, "Floor 1 Showers")
 	for index in range(2):
-		var basin_x := 9.0 + index * 2.5
-		_place(WASH_BASIN, "ShowerBasin%02d" % index, Vector3(basin_x, 0, -12.2), 180, 16, "Floor 1 Washroom")
-		_place(MIRROR, "ShowerMirror%02d" % index, Vector3(basin_x, 0, -12.16), 180, 16, "Floor 1 Washroom")
-	_place(TOWEL_HOOKS, "ShowerTowelHooks", Vector3(6.5, 0, -12.16), 180, 16, "Floor 1 Showers")
-	_place(TOILET, "ShowerToiletNorth", Vector3(16.5, 0, -18.5), -90, 16, "Floor 1 Toilets")
-	_place(TOILET, "ShowerToiletSouth", Vector3(16.5, 0, -14.5), -90, 16, "Floor 1 Toilets")
-	_place(SHOWER_HALF_WALL, "ToiletPrivacyWallNorth", Vector3(13.7, 0, -18.5), 0, 16, "Floor 1 Toilets")
-	_place(SHOWER_HALF_WALL, "ToiletPrivacyWallSouth", Vector3(13.7, 0, -14.5), 0, 16, "Floor 1 Toilets")
+		var basin_z := -19.0 + index * 3.0
+		_place(WASH_BASIN, "ShowerBasin%02d" % index, Vector3(-3.82, 0, basin_z), 90, 16, "Floor 1 Washroom")
+		_place(MIRROR, "ShowerMirror%02d" % index, Vector3(-3.78, 0, basin_z), 90, 16, "Floor 1 Washroom")
+	_place(TOWEL_HOOKS, "ShowerTowelHooks", Vector3(-3.78, 0, -13.5), 90, 16, "Floor 1 Showers")
+	for index in range(8):
+		var toilet_z := -20.0 + float(index)
+		_place(TOILET, "ShowerToilet%02d" % index, Vector3(16.35, 0, toilet_z), -90, 16, "Floor 1 Toilets")
+	for index in range(7):
+		_place(SHOWER_HALF_WALL, "ToiletPrivacyWall%02d" % index, Vector3(15.25, 0, -19.5 + float(index)), 90, 16, "Floor 1 Toilets")
+	var urinal_positions := [-2.5, -0.8, 0.9, 2.2, 5.3, 7.0, 8.7, 10.4]
+	for index in range(urinal_positions.size()):
+		_place(URINAL, "ShowerUrinal%02d" % index, Vector3(urinal_positions[index], 0, -12.22), 180, 16, "Floor 1 Urinals")
+	var urinal_dividers := [-1.65, 0.05, 1.55, 6.15, 7.85, 9.55]
+	for index in range(urinal_dividers.size()):
+		_place(URINAL_DIVIDER, "UrinalDivider%02d" % index, Vector3(urinal_dividers[index], 0, -12.25), 180, 16, "Floor 1 Urinals")
 	for index in range(3):
 		_place(LOCKER, "ChangingLocker%02d" % index, Vector3(-13.0 + index * 2.1, 0, -20.55), 0, 16, "Floor 1 Changing")
 	_place(LOCKER, "ChangingLocker03", Vector3(-6.7, 0, -20.55), 0, 16, "Floor 1 Changing")
@@ -289,7 +301,8 @@ func _build_floor_4_dressing() -> void:
 	_place(SECURITY_CONSOLE, "Floor4StaffConsole", Vector3(-1.0, 12, 8.0), 180, 128, "Floor 4 Security Office")
 	_place(FILING_CABINET, "Floor4OfficeFilesA", Vector3(-15.7, 12, 8.0), 90, 128, "Floor 4 Security Office")
 	_place(FILING_CABINET, "Floor4OfficeFilesB", Vector3(-15.7, 12, 10.0), 90, 128, "Floor 4 Security Office")
-	_place(STORAGE_CRATE, "Floor4EvidenceCrateA", Vector3(8.0, 12, 14.0), 0, 128, "Floor 4 Evidence")
-	_place(STORAGE_CRATE, "Floor4EvidenceCrateB", Vector3(10.0, 12, 14.0), 0, 128, "Floor 4 Evidence")
+	# Keep movable-looking storage clear of the roof-stair landing and approach.
+	_place(STORAGE_CRATE, "Floor4EvidenceCrateA", Vector3(7.2, 12, 13.5), 0, 128, "Floor 4 Evidence")
+	_place(STORAGE_CRATE, "Floor4EvidenceCrateB", Vector3(7.2, 12, 19.0), 0, 128, "Floor 4 Evidence")
 	_place(WALL_CLOCK, "Floor4ControlClock", Vector3(0, 12, -20.8), 0, 128, "Floor 4 Control")
 	_place(TRASH_BIN, "Floor4OfficeBin", Vector3(-6.5, 12, 18.5), 0, 128, "Floor 4 Security Office")

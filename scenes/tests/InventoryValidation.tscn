@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/tests/inventory_validation.gd" id="1_validation"]
+
+[node name="InventoryValidation" type="Node"]
+script = ExtResource("1_validation")

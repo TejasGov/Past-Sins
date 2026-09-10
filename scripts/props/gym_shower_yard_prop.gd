@@ -30,6 +30,11 @@ enum PropKind {
 	CCTV_CAMERA,
 	SEARCHLIGHT,
 	OBSERVATION_POST,
+	URINAL,
+	URINAL_DIVIDER,
+	FLOWER_CLUSTER,
+	OFFICER_GAZEBO,
+	YARD_SECURITY_POST,
 }
 
 const PAINTED_METAL := preload("res://materials/props/painted_metal.tres")
@@ -87,6 +92,11 @@ func _build_prop() -> void:
 		PropKind.CCTV_CAMERA: _build_cctv()
 		PropKind.SEARCHLIGHT: _build_searchlight()
 		PropKind.OBSERVATION_POST: _build_observation_post()
+		PropKind.URINAL: _build_urinal()
+		PropKind.URINAL_DIVIDER: _build_urinal_divider()
+		PropKind.FLOWER_CLUSTER: _build_flower_cluster()
+		PropKind.OFFICER_GAZEBO: _build_officer_gazebo()
+		PropKind.YARD_SECURITY_POST: _build_yard_security_post()
 
 
 func _box(part_name: String, center: Vector3, size: Vector3, material: Material, collision := true, rotation := Vector3.ZERO) -> MeshInstance3D:
@@ -233,8 +243,8 @@ func _build_punching_bag() -> void:
 
 
 func _build_shower_floor() -> void:
-	_box("TileField", Vector3(0, 0.018, 0), Vector3(12.5, 0.036, 8.2), SHOWER_TILE, false)
-	for x in [-4.0, 0.0, 4.0]:
+	_box("TileField", Vector3(0, 0.018, 0), Vector3(20.5, 0.036, 8.2), SHOWER_TILE, false)
+	for x in [-8.0, -4.0, 0.0, 4.0, 8.0]:
 		_box("TileJointX%s" % x, Vector3(x, 0.039, 0), Vector3(0.025, 0.01, 8.1), SECURITY_DARK, false)
 	for z in [-2.7, 0.0, 2.7]:
 		_box("TileJointZ%s" % z, Vector3(0, 0.04, z), Vector3(12.4, 0.01, 0.025), SECURITY_DARK, false)
@@ -342,3 +352,51 @@ func _build_observation_post() -> void:
 	_box("Platform", Vector3(0, 2.7, 0), Vector3(1.8, 0.18, 1.8), PAINTED_METAL)
 	_box("Shelter", Vector3(0, 3.35, 0), Vector3(1.65, 1.2, 1.65), SECURITY_DARK, false)
 	_box("Roof", Vector3(0, 4.05, 0), Vector3(2.0, 0.14, 2.0), PAINTED_METAL, false)
+
+
+func _build_urinal() -> void:
+	_box("WallPlate", Vector3(0, 0.92, 0.05), Vector3(0.52, 1.25, 0.1), PAINTED_METAL)
+	_box("BasinBody", Vector3(0, 0.72, 0.22), Vector3(0.5, 0.72, 0.38), DIRTY_OFF_WHITE)
+	_cylinder("Bowl", Vector3(0, 0.58, 0.38), 0.22, 0.12, DIRTY_OFF_WHITE, false)
+	_box("FlushPipe", Vector3(0, 1.42, 0.11), Vector3(0.055, 0.42, 0.055), STAINLESS_STEEL, false)
+	_box("FlushValve", Vector3(0, 1.61, 0.13), Vector3(0.16, 0.13, 0.11), STAINLESS_STEEL, false)
+
+
+func _build_urinal_divider() -> void:
+	_box("DividerPanel", Vector3(0, 1.15, 0.42), Vector3(0.08, 1.65, 0.84), SHOWER_TILE)
+	_box("DividerCap", Vector3(0, 2.0, 0.42), Vector3(0.12, 0.08, 0.88), STAINLESS_STEEL, false)
+
+
+func _build_flower_cluster() -> void:
+	var flower_material := StandardMaterial3D.new()
+	flower_material.albedo_color = Color("b85d72")
+	flower_material.roughness = 0.82
+	_box("FlowerBed", Vector3(0, 0.12, 0), Vector3(1.4, 0.24, 0.72), CONCRETE)
+	for index in range(6):
+		var x := -0.52 + (index % 3) * 0.52
+		var z := -0.2 + (index / 3) * 0.4
+		_cylinder("Stem%02d" % index, Vector3(x, 0.42, z), 0.025, 0.55, YARD_GREEN, false)
+		_cylinder("Flower%02d" % index, Vector3(x, 0.72, z), 0.12, 0.08, flower_material, false)
+
+
+func _build_officer_gazebo() -> void:
+	_box("GazeboSlab", Vector3(0, 0.1, 0), Vector3(5.2, 0.2, 4.2), CONCRETE)
+	for x in [-2.35, 2.35]:
+		for z in [-1.85, 1.85]:
+			_box("GazeboPost_%s_%s" % [x, z], Vector3(x, 1.55, z), Vector3(0.16, 3.0, 0.16), PAINTED_METAL)
+	_box("GazeboRoof", Vector3(0, 3.15, 0), Vector3(5.6, 0.22, 4.6), SECURITY_DARK)
+	for z in [-1.25, 1.25]:
+		_box("GazeboBench%s" % z, Vector3(0, 0.55, z), Vector3(3.5, 0.16, 0.5), PAINTED_METAL)
+		for x in [-1.45, 1.45]:
+			_box("GazeboBenchLeg_%s_%s" % [x, z], Vector3(x, 0.28, z), Vector3(0.12, 0.55, 0.34), PAINTED_METAL)
+
+
+func _build_yard_security_post() -> void:
+	_box("PostFoundation", Vector3(0, 0.1, 0), Vector3(3.4, 0.2, 3.0), CONCRETE)
+	_box("PostRearWall", Vector3(0, 1.5, -1.35), Vector3(3.2, 2.8, 0.16), SECURITY_DARK)
+	for x in [-1.5, 1.5]:
+		_box("PostSide%s" % x, Vector3(x, 1.5, 0), Vector3(0.16, 2.8, 2.8), SECURITY_DARK)
+	_box("PostFrontLower", Vector3(0, 0.58, 1.35), Vector3(3.2, 1.0, 0.16), PAINTED_METAL)
+	_box("PostWindow", Vector3(0, 1.75, 1.35), Vector3(2.65, 0.95, 0.08), STAINLESS_STEEL, false)
+	_box("PostRoof", Vector3(0, 3.0, 0), Vector3(3.7, 0.2, 3.3), SECURITY_DARK)
+	_box("PostDesk", Vector3(0, 0.9, 0.75), Vector3(2.3, 0.14, 0.55), PAINTED_METAL)

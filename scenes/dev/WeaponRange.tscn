@@ -1,0 +1,62 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://scripts/dev/weapon_range.gd" id="1_range"]
+[ext_resource type="Script" path="res://scripts/dev/dev_damage_test_tool.gd" id="2_damage_tool"]
+[ext_resource type="PackedScene" path="res://scenes/dev/DevInventoryFeedback.tscn" id="3_inventory_feedback"]
+
+[sub_resource type="Environment" id="Environment"]
+background_mode = 1
+background_color = Color(0.015, 0.021, 0.024, 1)
+ambient_light_source = 3
+ambient_light_color = Color(0.62, 0.68, 0.67, 1)
+ambient_light_energy = 0.92
+reflected_light_source = 2
+tonemap_mode = 2
+
+[sub_resource type="ProceduralSkyMaterial" id="SkyMaterial"]
+sky_top_color = Color(0.018, 0.026, 0.03, 1)
+sky_horizon_color = Color(0.05, 0.065, 0.07, 1)
+
+[sub_resource type="Sky" id="Sky"]
+sky_material = SubResource("SkyMaterial")
+
+[node name="WeaponRange" type="Node3D"]
+script = ExtResource("1_range")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment")
+
+[node name="Geometry" type="Node3D" parent="."]
+
+[node name="Lighting" type="Node3D" parent="."]
+
+[node name="Stations" type="Node3D" parent="."]
+
+[node name="Interactables" type="Node3D" parent="."]
+
+[node name="Actors" type="Node3D" parent="."]
+
+[node name="DamageTestTool" type="Node" parent="."]
+script = ExtResource("2_damage_tool")
+
+[node name="InventoryFeedback" parent="." instance=ExtResource("3_inventory_feedback")]
+
+[node name="Spawn" type="Marker3D" parent="."]
+position = Vector3(0, 0.95, 41.5)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="EquipmentSpawn" type="Marker3D" parent="."]
+position = Vector3(-12.8, 0.95, 42.5)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="FiringSpawn" type="Marker3D" parent="."]
+position = Vector3(1.8, 0.95, 32.0)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="DamageSpawn" type="Marker3D" parent="."]
+position = Vector3(-12.8, 0.95, 21.5)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="StealthSpawn" type="Marker3D" parent="."]
+position = Vector3(-4.8, 0.95, 0.5)
+rotation_degrees = Vector3(0, 180, 0)

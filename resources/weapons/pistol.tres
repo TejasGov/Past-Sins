@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="FirearmDefinition" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/weapons/firearm_definition.gd" id="1_definition"]
+[ext_resource type="PackedScene" path="res://scenes/weapons/visuals/PistolFirstPersonVisual.tscn" id="2_first_person"]
+[ext_resource type="PackedScene" path="res://scenes/weapons/visuals/PistolWorldVisual.tscn" id="3_world"]
+
+[resource]
+script = ExtResource("1_definition")
+item_id = &"pistol"
+display_name = "Pistol"
+category = 0
+dev_only = true
+weapon_id = &"pistol"
+magazine_size = 8
+fire_mode = 0
+shot_interval = 0.5
+reload_time = 1.5
+initial_reserve_ammo = 24
+reserve_ammo_capacity = 24
+hitscan_range = 120.0
+hip_fire_spread_degrees = 0.8
+ads_spread_degrees = 0.08
+lower_body_damage = 30.0
+torso_damage = 70.0
+head_damage = 120.0
+first_person_visual_scene = ExtResource("2_first_person")
+world_visual_scene = ExtResource("3_world")

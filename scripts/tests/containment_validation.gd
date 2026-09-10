@@ -52,8 +52,11 @@ func _run_validation() -> void:
 	_assert_clear("Floor 1 shower doorway", Vector3(3.75, 1.0, -12.0))
 
 	# Floor 2 — one cell-front panel is solid and the center cell opening remains
-	# the only way into that cell.
+	# the only way into that cell after its individual sliding gate is opened.
 	_assert_blocked("Floor 2 cell front", Vector3(13.0, 5.0, 1.0))
+	var floor2_cell_gate := level.get_node("Interactables/Floor2EastCell05Gate") as PrisonSlidingGate
+	assert(AccessManager.add_key(floor2_cell_gate.required_key_id, "Containment Test Cell Key"))
+	await _open(floor2_cell_gate)
 	_assert_clear("Floor 2 cell doorway", Vector3(13.0, 5.0, 2.5))
 	_assert_blocked("Floor 2 cell side wall", Vector3(15.0, 5.0, 0.0))
 	_assert_blocked("Floor 2 cell rear wall", Vector3(16.85, 5.0, 2.5))
@@ -69,6 +72,7 @@ func _run_validation() -> void:
 	await _open(level.get_node("Interactables/SecurityOfficeDoor"))
 	_assert_blocked("Floor 4 security office wall", Vector3(-13.0, 13.0, 4.8))
 	_assert_clear("Floor 4 security office doorway", Vector3(-10.0, 13.0, 4.8))
+	assert(AccessManager.add_key(&"security_key", "Containment Test Security Key"))
 	await _open(level.get_node("Interactables/EvidenceStorageDoor"))
 	_assert_blocked("Floor 4 evidence wall", Vector3(13.0, 13.0, 4.8))
 	_assert_clear("Floor 4 evidence doorway", Vector3(9.0, 13.0, 4.8))
@@ -80,7 +84,7 @@ func _run_validation() -> void:
 func _open(interactable: Node) -> void:
 	interactable.set("animation_duration", 0.05)
 	interactable.call("interact", null)
-	await get_tree().create_timer(0.12).timeout
+	await get_tree().create_timer(0.4).timeout
 	await get_tree().physics_frame
 
 

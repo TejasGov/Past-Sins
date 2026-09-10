@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/levels/campus/interiors/cellhouse_a_interior.gd" id="1_interior"]
+
+[node name="CellhouseAInterior" type="Node3D"]
+script = ExtResource("1_interior")
+

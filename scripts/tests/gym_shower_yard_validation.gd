@@ -21,9 +21,13 @@ func _run_validation() -> void:
 		"GymFlatBenchPress", "GymSquatRack", "GymDumbbellRack",
 		"GymExerciseBike", "GymCableMachine", "GymPunchingBag",
 		"ShowerTileFloor", "ShowerFixture00", "ShowerDrain00",
-		"ShowerBasin00", "ShowerMirror00", "ShowerToiletNorth",
+		"ShowerBasin00", "ShowerMirror00", "ShowerToilet00", "ShowerUrinal00",
 	]:
 		assert(dressing.has_node(required_prop), "Missing detailed prop: %s" % required_prop)
+	assert(dressing.find_children("ShowerFixture*", "Node3D", false, false).size() == 8, "Expanded washroom needs at least eight showers")
+	assert(dressing.find_children("ShowerToilet*", "Node3D", false, false).size() == 8, "Expanded washroom needs at least eight toilets")
+	assert(dressing.find_children("ShowerUrinal*", "Node3D", false, false).size() == 8, "Expanded washroom needs at least eight urinals")
+	assert(dressing.find_children("UrinalDivider*", "Node3D", false, false).size() >= 6, "Urinal banks lack separating panels")
 
 	# Central gym and shower approach lanes retain standing-player clearance.
 	for point in [
@@ -40,13 +44,21 @@ func _run_validation() -> void:
 		"NorthBasketballHoop", "SouthBasketballHoop", "YardPullUpBarA",
 		"YardParallelBars", "GardenBenchNorth",
 		"WestYardCamera", "NorthWestObservationPost", "YardSearchlightWest",
+		"OfficerGazebo", "YardSecurityPost", "CommunityPoolWater",
+		"WalkingTrackWest",
 	]:
 		assert(yard.has_node(required_yard_prop), "Missing yard detail: %s" % required_yard_prop)
+	assert(yard.find_children("YardFlowers*", "Node3D", false, false).size() == 4, "Expected four planted flower clusters")
 	assert(yard.find_children("YardTree*", "Node3D", false, false).size() == 3, "Expected three lightweight yard trees")
 
 	# Closed gate contains the yard; opening it clears a player-sized route in
 	# both directions, followed by an unobstructed central path.
 	var gate := level.get_node("Interactables/YardSecurityGate") as PrisonSlidingGate
+	assert(gate.display_name == "Yard Security Door", "Yard entrance is not identified as a door")
+	assert(gate.panel_label == "YARD EXIT" and gate.gate_color == Color("a77723"), "Yard door is not visually distinguishable")
+	assert(is_equal_approx(gate.gate_width, 3.0), "Yard security door does not fill the three-metre opening")
+	assert(gate.global_position.is_equal_approx(Vector3(0, -4, 20.82)), "Yard security door is misaligned with the building/fence opening")
+	assert(not gate.starts_locked and gate.get_interaction_prompt(null) == "[E] Open Gate", "Yard security door is not immediately usable")
 	assert(_blocked(Vector3(0, -3.05, 20.82)), "Closed yard gate has no collision")
 	gate.animation_duration = 0.05
 	gate.interact(null)
@@ -58,16 +70,16 @@ func _run_validation() -> void:
 	# Representative low and jumping-height probes confirm that the perimeter is
 	# continuous and cannot be cleared by the player's normal jump.
 	for point in [
-		Vector3(-18, -3.05, 35), Vector3(18, -3.05, 35),
-		Vector3(0, -3.05, 55), Vector3(-8, -3.05, 21),
-		Vector3(-18, 0.0, 35), Vector3(18, 0.0, 35), Vector3(0, 0.0, 55),
+		Vector3(-27, -3.05, 45), Vector3(27, -3.05, 45),
+		Vector3(0, -3.05, 71), Vector3(-8, -3.05, 21),
+		Vector3(-27, 0.0, 45), Vector3(27, 0.0, 45), Vector3(0, 0.0, 71),
 	]:
 		assert(_blocked(point), "Yard perimeter gap at %s" % point)
 
 	for guard in get_tree().get_nodes_in_group("guards"):
 		assert(not (guard.global_position.y < -2.0 and guard.global_position.z > 21.0), "NPC was added to the outdoor yard")
 
-	print("GYM_SHOWER_YARD_VALIDATION: PASS — detailed equipment, clear routes, secure yard perimeter")
+	print("GYM_SHOWER_YARD_VALIDATION: PASS — 8 showers/toilets/urinals, pool, track, court, officer area, secure mesh perimeter")
 	get_tree().quit(0)
 
 

@@ -27,11 +27,13 @@ func _run_validation() -> void:
 			var z := (point as Node3D).global_position.z
 			assert(z <= -14.0 if north_zone else z >= 14.0, "%s patrol leaves its gated zone" % guard.name)
 
-	var floor2_bars := _count_special_cell_bars(level.get_node("Floors/Floor2"))
-	var floor3_bars := _count_special_cell_bars(level.get_node("Floors/Floor3"))
-	assert(floor2_bars == 20, "Floor 2 high-security cells are incomplete: found %d bars" % floor2_bars)
-	# The fourth terminal room on Floor 3 remains the existing maintenance/keypad room.
-	assert(floor3_bars == 15, "Floor 3 high-security cells are incomplete: found %d bars" % floor3_bars)
+	var glass_by_floor := {4: 0, 8: 0}
+	for door in get_tree().get_nodes_in_group("high_security_glass_doors"):
+		glass_by_floor[int((door as Node3D).position.y)] += 1
+	assert(glass_by_floor[4] == 4, "Floor 2 high-security rooms need four ballistic-glass doors")
+	# The terminal maintenance/keypad room remains intact; its neighboring cell
+	# supplies the second southern high-security room.
+	assert(glass_by_floor[8] == 4, "Floor 3 high-security zones each need two ballistic-glass rooms")
 
 	var zone_gate_counts := {4: 0, 8: 0}
 	for item in level.get_node("Interactables").get_children():
@@ -41,13 +43,5 @@ func _run_validation() -> void:
 				zone_gate_counts[floor_y] += 1
 	assert(zone_gate_counts[4] == 4 and zone_gate_counts[8] == 4, "Every north/south zone needs gates on both approaches")
 
-	print("HIGH_SECURITY_VALIDATION: PASS — 7 special cells, 8 zone gates, 4 confined patrol guards")
+	print("HIGH_SECURITY_VALIDATION: PASS — 8 ballistic-glass special cells, 8 zone gates, 4 confined patrol guards")
 	get_tree().quit(0)
-
-
-func _count_special_cell_bars(floor_root: Node) -> int:
-	var count := 0
-	for child in floor_root.get_children():
-		if child is MeshInstance3D and child.name.contains("HighSecurityCell") and child.name.contains("DoorBar"):
-			count += 1
-	return count

@@ -37,8 +37,9 @@ func _run_validation() -> void:
 	assert(gate.get_interaction_prompt(null) == "[E] Unlock Gate")
 
 	gate.interact(null)
-	assert(not gate.is_locked and gate.is_open)
-	await get_tree().create_timer(gate.animation_duration + 0.15).timeout
+	assert(not gate.is_locked)
+	await get_tree().create_timer(gate.animation_duration + 0.4).timeout
+	assert(gate.is_open)
 	await get_tree().process_frame
 	assert(gate.blocker.disabled)
 	assert(gate.get_interaction_prompt(null) == "[E] Close Gate")

@@ -14,7 +14,10 @@ const STRUCTURAL_TOKENS := [
 	"Jamb",
 	"Header",
 ]
-const NON_STRUCTURAL_NAMES := ["WallGrime", "MonitorWall", "ObservationWindow", "ShowerDivider"]
+const NON_STRUCTURAL_NAMES := [
+	"WallGrime", "MonitorWall", "WallMonitor", "ObservationWindow",
+	"ShowerDivider", "CellKeyBoardDivider",
+]
 
 
 func _ready() -> void:

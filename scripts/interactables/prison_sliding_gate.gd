@@ -3,6 +3,9 @@ class_name PrisonSlidingGate
 
 @export var display_name := "Prison Gate"
 @export var required_key_id: StringName = &"cellblock_key"
+## Optional facility-wide override. Cell doors use this for the future police
+## chief's master key while retaining their own individual key IDs.
+@export var master_key_id: StringName = &""
 @export var persistent_access_id: StringName = &""
 @export var starts_locked := true
 @export var starts_open := false
@@ -12,6 +15,10 @@ class_name PrisonSlidingGate
 @export_range(1.1, 2.4, 0.05) var gate_width := 1.5
 @export_range(2.0, 3.0, 0.05) var gate_height := 2.5
 @export_range(4, 10, 1) var slat_count := 7
+@export var bulletproof_glass := false
+@export var gate_color := Color("343a38")
+@export var panel_label := ""
+@export var reader_light_enabled := true
 
 @onready var leaf: AnimatableBody3D = $GateLeaf
 @onready var visuals: Node3D = $GateLeaf/Visuals
@@ -23,14 +30,22 @@ var is_locked := true
 var _moving := false
 var _transition: Tween
 var _closed_position := Vector3.ZERO
+var _reader_led_mesh: MeshInstance3D
+var _reader_led_material: StandardMaterial3D
+var _reader_light: OmniLight3D
 
 
 func _ready() -> void:
+	add_to_group("map_access")
+	if bulletproof_glass:
+		add_to_group("high_security_glass_doors")
 	_build_gate_visuals()
 	_configure_collision()
 	is_locked = starts_locked and not _is_persistently_unlocked()
 	is_open = starts_open and not is_locked
 	_closed_position = leaf.position
+	_build_key_reader()
+	_update_access_indicator()
 	_apply_pose(is_open)
 	blocker.disabled = is_open
 
@@ -54,7 +69,7 @@ func interact(_player: Node) -> void:
 		if not persistent_access_id.is_empty():
 			AccessManager.unlock_access(persistent_access_id)
 		_show_message("ACCESS GRANTED")
-		_animate_to(true)
+		_trigger_authorization_sequence()
 		return
 	if is_open and _doorway_is_blocked():
 		_show_message("GATEWAY BLOCKED")
@@ -62,11 +77,129 @@ func interact(_player: Node) -> void:
 	_animate_to(not is_open)
 
 
+func _build_key_reader() -> void:
+	# Mount reader box on the right frame post at chest height
+	var reader_parent := Node3D.new()
+	reader_parent.name = "KeyReader"
+	reader_parent.position = Vector3(gate_width * 0.5 + 0.1, gate_height * 0.5, 0.12)
+	add_child(reader_parent)
+
+	var dark_metal := StandardMaterial3D.new()
+	dark_metal.albedo_color = Color("22282a")
+	dark_metal.metallic = 0.7
+	dark_metal.roughness = 0.4
+
+	# Keypad/card reader body
+	var body_mesh := MeshInstance3D.new()
+	body_mesh.name = "ReaderBody"
+	var box := BoxMesh.new()
+	box.size = Vector3(0.18, 0.28, 0.12)
+	body_mesh.mesh = box
+	body_mesh.material_override = dark_metal
+	body_mesh.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	reader_parent.add_child(body_mesh)
+
+	# Keypad panel plate
+	var plate_mat := StandardMaterial3D.new()
+	plate_mat.albedo_color = Color("383e40")
+	var plate_mesh := MeshInstance3D.new()
+	plate_mesh.name = "ReaderPlate"
+	var plate := BoxMesh.new()
+	plate.size = Vector3(0.14, 0.22, 0.02)
+	plate_mesh.mesh = plate
+	plate_mesh.position = Vector3(0, 0, 0.065)
+	plate_mesh.material_override = plate_mat
+	plate_mesh.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	reader_parent.add_child(plate_mesh)
+
+	# Status LED indicator
+	_reader_led_material = StandardMaterial3D.new()
+	_reader_led_mesh = MeshInstance3D.new()
+	_reader_led_mesh.name = "StatusLED"
+	var led_box := BoxMesh.new()
+	led_box.size = Vector3(0.05, 0.03, 0.03)
+	_reader_led_mesh.mesh = led_box
+	_reader_led_mesh.position = Vector3(0, 0.08, 0.075)
+	_reader_led_mesh.material_override = _reader_led_material
+	_reader_led_mesh.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	reader_parent.add_child(_reader_led_mesh)
+
+	# Lightweight short-range light for authorized gate feedback
+	if reader_light_enabled:
+		_reader_light = OmniLight3D.new()
+		_reader_light.name = "ReaderLight"
+		_reader_light.position = Vector3(0, 0.08, 0.12)
+		_reader_light.omni_range = 1.2
+		_reader_light.omni_attenuation = 2.0
+		_reader_light.shadow_enabled = false
+		_reader_light.visible = false
+		reader_parent.add_child(_reader_light)
+
+
+func _update_access_indicator() -> void:
+	if not _reader_led_material:
+		return
+	if is_locked:
+		var red_color := Color("ff2222")
+		_reader_led_material.albedo_color = red_color
+		_reader_led_material.emission_enabled = true
+		_reader_led_material.emission = red_color
+		_reader_led_material.emission_energy_multiplier = 1.2
+		if _reader_light:
+			_reader_light.visible = false
+	else:
+		var green_color := Color("00ff55")
+		_reader_led_material.albedo_color = green_color
+		_reader_led_material.emission_enabled = true
+		_reader_led_material.emission = green_color
+		_reader_led_material.emission_energy_multiplier = 2.2
+		if _reader_light:
+			_reader_light.light_color = green_color
+			_reader_light.light_energy = 0.8
+			_reader_light.visible = true
+
+
+func _trigger_authorization_sequence() -> void:
+	_moving = true
+	_update_access_indicator()
+	# Brief authorization flash and short delay before gate leaf slides open
+	var tween := create_tween()
+	tween.tween_property(_reader_led_material, "emission_energy_multiplier", 4.0, 0.12)
+	tween.tween_property(_reader_led_material, "emission_energy_multiplier", 2.2, 0.13)
+	tween.tween_callback(func():
+		_moving = false
+		_animate_to(true)
+	)
+
+
 func _build_gate_visuals() -> void:
 	var material := StandardMaterial3D.new()
-	material.albedo_color = Color("343a38")
+	material.albedo_color = gate_color
 	material.metallic = 0.55
 	material.roughness = 0.48
+	if bulletproof_glass:
+		var glass := StandardMaterial3D.new()
+		glass.albedo_color = Color(0.22, 0.5, 0.55, 0.38)
+		glass.metallic = 0.08
+		glass.roughness = 0.18
+		glass.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+		glass.cull_mode = BaseMaterial3D.CULL_DISABLED
+		var pane_width := (gate_width - 0.22) * 0.5
+		_add_visual_box("BallisticGlassLeft", Vector3(-pane_width * 0.5 - 0.045, gate_height * 0.5, 0), Vector3(pane_width, gate_height - 0.18, 0.11), glass)
+		_add_visual_box("BallisticGlassRight", Vector3(pane_width * 0.5 + 0.045, gate_height * 0.5, 0), Vector3(pane_width, gate_height - 0.18, 0.11), glass)
+		for x in [-gate_width * 0.5 + 0.055, 0.0, gate_width * 0.5 - 0.055]:
+			_add_visual_box("ReinforcedMullion", Vector3(x, gate_height * 0.5, 0), Vector3(0.1, gate_height, 0.16), material)
+		for y in [0.08, gate_height - 0.08]:
+			_add_visual_box("ReinforcedRail", Vector3(0, y, 0), Vector3(gate_width, 0.14, 0.16), material)
+		var marking := Label3D.new()
+		marking.name = "BallisticGlassMarking"
+		marking.text = "BALLISTIC GLASS"
+		marking.position = Vector3(0, 0.35, 0.09)
+		marking.font_size = 22
+		marking.pixel_size = 0.0024
+		marking.modulate = Color(0.65, 0.9, 0.9, 0.8)
+		visuals.add_child(marking)
+		return
 	var usable_width := gate_width - 0.16
 	for index in range(slat_count):
 		var ratio := float(index) / float(maxi(1, slat_count - 1))
@@ -74,6 +207,19 @@ func _build_gate_visuals() -> void:
 		_add_visual_box("Slat%02d" % index, Vector3(x, gate_height * 0.5, 0), Vector3(0.09, gate_height, 0.13), material)
 	for y in [0.18, gate_height * 0.52, gate_height - 0.18]:
 		_add_visual_box("CrossRail", Vector3(0, y, 0), Vector3(gate_width, 0.12, 0.16), material)
+	if not panel_label.is_empty():
+		for side in [-1.0, 1.0]:
+			var label := Label3D.new()
+			label.name = "GateLabel"
+			label.text = panel_label
+			label.position = Vector3(0, gate_height * 0.68, 0.1 * side)
+			label.rotation_degrees.y = 180.0 if side < 0.0 else 0.0
+			label.font_size = 42
+			label.pixel_size = 0.0032
+			label.modulate = Color("ffe183")
+			label.outline_modulate = Color("181a18")
+			label.outline_size = 8
+			visuals.add_child(label)
 
 
 func _add_visual_box(piece_name: String, center: Vector3, size: Vector3, material: Material) -> void:
@@ -152,7 +298,9 @@ func _doorway_is_blocked() -> bool:
 
 
 func _has_required_key() -> bool:
-	return not required_key_id.is_empty() and AccessManager.has_key(required_key_id)
+	var has_individual := not required_key_id.is_empty() and AccessManager.has_key(required_key_id)
+	var has_master := not master_key_id.is_empty() and AccessManager.has_key(master_key_id)
+	return has_individual or has_master
 
 
 func _is_persistently_unlocked() -> bool:

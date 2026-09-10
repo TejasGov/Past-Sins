@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/levels/campus/roads_and_paths.gd" id="1_roads"]
+
+[node name="RoadsAndPaths" type="Node3D"]
+script = ExtResource("1_roads")

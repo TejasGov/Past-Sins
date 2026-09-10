@@ -1,6 +1,8 @@
 # Blacksite: Ghost Exit
 
-A Godot 4 greybox vertical slice set inside a large prison spanning B2, B1, Ground, Floors 1–4, and the roof. You play Captain Parth on Floor 3, recover a fragmented memory of Major Raman, use its practical clue to open a maintenance locker, and evade a suspicion-driven patrol guard.
+A Godot 4 stealth greybox set in a seven-building prison campus. Parth starts on the third cell tier of Cellhouse A; food services, medical/gym/showers, high security, command, maintenance and administration are separate buildings with implemented interiors. The original single-building prison remains available as a legacy reference.
+
+See [the campus implementation and test guide](docs/CAMPUS_IMPLEMENTATION.md) for the current layout, reusable modules, access rules and validation commands.
 
 Everything in the prototype uses Godot primitives, built-in materials, and GDScript. There are no external or paid assets.
 
@@ -8,7 +10,7 @@ Everything in the prototype uses Godot primitives, built-in materials, and GDScr
 
 1. Install Godot 4.3 or newer.
 2. Import `project.godot` from this directory into the Godot Project Manager.
-3. Open the project and press **F6** from `scenes/levels/CellBlockPrototype.tscn`, or press **F5** to run the configured main scene.
+3. Press **F5** to run `scenes/levels/campus/PrisonCampusPrototype.tscn`. To inspect the old reference instead, open `scenes/levels/CellBlockPrototype.tscn` and press **F6**.
 
 The prototype starts immediately in Parth's prison cell. Godot captures the mouse on launch; press Escape to release or recapture it.
 
@@ -23,6 +25,29 @@ The prototype starts immediately in Parth's prison cell. Godot captures the mous
 | Jump | Space |
 | Interact / collect / use | E |
 | Release or recapture mouse | Escape |
+| Toggle minimap | M |
+| Request Dev Mode access | Command+D, enter `tez`, then Enter |
+| Developer menu (Dev Mode only) | F8 |
+| Equip / toggle firearm slots | 1 / 2 |
+| Fire equipped pistol | Left mouse button |
+| Aim down pistol sights | Hold right mouse button |
+| Reload pistol | R |
+| Holster pistol | H |
+| Drop equipped pistol | G |
+| Range health probe value | [ / ] |
+| Apply range health probe | T |
+| Reset range targets | Y, or E at the console |
+| Swim / dive / rise (in pool) | WASD / hold C / hold Space |
+
+The minimap automatically shows the current building and floor indoors, then returns to the campus overview outside. The community pool beside Medical has an open deck and steps at both ends. Underwater tint/fog clears when you surface; no drowning mechanic is enabled.
+
+The campus runs a configurable morning/day/evening/night clock. Supported facility lights and designated watchtower searchlights switch on after dark. Each new day has a 25% rain chance, reduced to 10% when the previous day was rainy; the HUD shows the current day, time, phase and weather.
+
+Play Mode is the default and contains no developer UI or cheats. While playing, press Command+D, type `tez`, and press Enter to authorize Dev Mode and open its menu. F8 opens/closes the menu while Dev Mode is active; **Exit Dev Mode** returns to Play Mode and clears test overrides. You can still start directly in Dev Mode with `blacksite/development/dev_mode=true` in `project.godot` or the `-- --dev-mode` launch argument. The external Dev Test Hub and registration APIs are documented in [scripts/dev/README.md](scripts/dev/README.md).
+
+The reusable inventory foundation provides two category-neutral firearm slots, one melee slot, and expandable equipment/key/access-card/mission-item storage. The Weapons Test Range contains seven colored DEV-only data tokens for exercising full-slot, unique-item and stack-count behavior; they have no combat or item-use behavior. Current slot contents and clear/give/remove controls are under **F8 → Inventory / Access**.
+
+The pistol is the only implemented weapon and remains restricted to Dev Mode. Its reusable low-poly model has a chamfered slide, tapered grip, open trigger guard, barrel/bore, ejection port, serrations, controls, sights and removable magazine rather than a box-only silhouette. Its authored pickup is in the Weapons Test Range; it can also be granted through **F8 → Inventory / Access**. Hip fire displays a responsive centered crosshair; holding right mouse smoothly aligns the iron sights, tightens spread, reduces weapon motion and narrows FOV. Recoil recovers without shifting the base camera aim, movement drives subtle sway/bob, the slide cycles and locks open on empty, and the unchanged 1.5-second reload visibly exchanges the separate magazine. No suitable existing dry-fire audio was available, so empty trigger pulls remain silent. No pistol pickup is authored in the prison campus, and all SMG, AR, sniper, melee, suppressor, noose and tranquilizer displays remain nonfunctional placeholders.
 
 Walk out of the cell, recover the blue memory shard near the bed, and wait for the reconstruction to finish. The recovered `2718` clue changes the maintenance locker's prompt from **[E] Examine keypad** to **[E] Enter remembered code**. The locker then reveals the **MAINTENANCE ACCESS CARD** placeholder.
 
@@ -44,13 +69,14 @@ res://
     ├── interactables/            # Reusable interaction behaviors
     ├── levels/                   # Greybox factory, floor layouts, mission flow
     ├── player/                   # Movement, look, raycast interaction
-    ├── systems/                  # Autoloaded suspicion and memory managers
+    ├── inventory/                # Reusable item definitions and slot/stack component
+    ├── systems/                  # Autoloaded suspicion, memory, access and inventory services
     └── ui/                       # HUD presentation
 ```
 
 The player does not know about specific interactable classes. It walks up the raycast collider's parent chain and accepts any node that implements `get_interaction_prompt(player)` and `interact(player)`.
 
-## Prison layout
+## Legacy single-building layout
 
 The floor scenes under `scenes/levels/floors/` are independently reusable modules. B2 through Floor 1 share a service stairwell. Floors 1–3 form the open central atrium, using balcony walkways, collision-backed bridges, railings, and stair flights across the void. Floor 3 connects upward to surveillance on Floor 4, which connects to the roof service area.
 

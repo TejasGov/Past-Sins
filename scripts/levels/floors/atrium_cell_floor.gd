@@ -34,6 +34,17 @@ func _ready() -> void:
 	_build_cell_row(g, 15.0, 13.0, false, false, is_parth_floor)
 	_build_atrium_rails(g, rail_color)
 	_build_wing_gates(g, rail_color)
+
+	# CCTV Cameras monitoring cell galleries & atrium void
+	g.cctv_camera("CellCamNW", Vector3(-16.85, 3.4, -18.0), 0, 35.0, -25.0, -90.0) # Wall
+	g.cctv_camera("CellCamNE", Vector3(16.85, 3.4, -18.0), 0, -35.0, -25.0, 90.0) # Wall
+	g.cctv_camera("CellCamSW", Vector3(-16.85, 3.4, 18.0), 0, -35.0, -25.0, -90.0) # Wall
+	g.cctv_camera("CellCamSE", Vector3(16.85, 3.4, 18.0), 0, 35.0, -25.0, 90.0) # Wall
+	# Keep surveillance off every bridge/stair approach. A ceiling mount above
+	# the west gallery preserves atrium coverage without putting a pole on the
+	# Floor 3 -> Floor 4 stair line.
+	g.cctv_camera("CellCamAtriumBridge", Vector3(-10.0, 3.4, 0.0), 1, 90.0, -30.0) # Ceiling-mounted over gallery
+
 	g.sign("HIGH SECURITY — NORTH", Vector3(0, 2.65, -14.15), Vector3(0, 180, 0), Color("d6a45b"), 0.005)
 	g.sign("HIGH SECURITY — SOUTH", Vector3(0, 2.65, 14.15), Vector3.ZERO, Color("d6a45b"), 0.005)
 
@@ -71,22 +82,19 @@ func _build_cell_row(g, cell_x: float, front_x: float, mark_parth: bool, west_si
 			var color := Color("666964") if mark_parth and index == 1 else bed_color
 			var side_name := "West" if west_side else "East"
 			g.prison_bunk("%sCellBunk%02d" % [side_name, index], Vector3(bed_x, 0, center_z - 0.8), Vector2(1.15, 2.1), color, Color("343735"))
-			if index == 0 or index == centers.size() - 1:
+			# The Floor 3 east terminal bay remains maintenance, so its
+			# neighboring prisoner cell completes that high-security pair.
+			var replaces_maintenance_pair := skip_last_bed and index == centers.size() - 2
+			if index == 0 or index == centers.size() - 1 or replaces_maintenance_pair:
 				_build_high_security_cell(g, cell_x, front_x, center_z, west_side, side_name, index)
 
 
 func _build_high_security_cell(g, cell_x: float, front_x: float, center_z: float, west_side: bool, side_name: String, index: int) -> void:
 	var prefix := "%sHighSecurityCell%02d" % [side_name, index]
-	var steel := Color("242a29")
 	g.box("%sFloor" % prefix, Vector3(cell_x, 0.025, center_z), Vector3(3.7, 0.05, 4.7), Color("292c2a"), false)
-	# A closed barred insert turns the existing deliberate cell-front opening into
-	# an unmistakable high-security cell door without adding new interaction logic.
-	var bar_offsets := [-0.5, -0.25, 0.0, 0.25, 0.5]
-	for bar_index in range(bar_offsets.size()):
-		g.box("%sDoorBar%02d" % [prefix, bar_index], Vector3(front_x, 1.27, center_z + bar_offsets[bar_index]), Vector3(0.12, 2.54, 0.08), steel)
-	var rail_heights := [0.28, 1.25, 2.35]
-	for rail_index in range(rail_heights.size()):
-		g.box("%sDoorRail%02d" % [prefix, rail_index], Vector3(front_x, rail_heights[rail_index], center_z), Vector3(0.14, 0.1, 1.25), steel)
+	# The actual barrier is an interactive reinforced-glass sliding door spawned
+	# by CellBlockPrototype. Keeping it out of static floor geometry ensures the
+	# visible panel and collision move together when authorized.
 	var rear_x := -16.78 if west_side else 16.78
 	g.box("%sRestraintAnchor" % prefix, Vector3(rear_x, 1.15, center_z + 0.75), Vector3(0.14, 0.35, 0.45), Color("4d514d"), false)
 	var sign_x := front_x + (0.18 if west_side else -0.18)

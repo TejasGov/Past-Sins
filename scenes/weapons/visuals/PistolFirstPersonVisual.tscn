@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/weapons/pistol_visual.gd" id="1_visual"]
+
+[node name="PistolFirstPersonVisual" type="Node3D"]
+position = Vector3(0.31, -0.31, -0.72)
+rotation_degrees = Vector3(-2, -3, 0)
+scale = Vector3(0.82, 0.82, 0.82)
+script = ExtResource("1_visual")
+first_person = true

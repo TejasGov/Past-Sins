@@ -31,6 +31,8 @@ var _closed_leaf_position := Vector3.ZERO
 
 
 func _ready() -> void:
+	add_to_group("normal_doors")
+	add_to_group("map_access")
 	_configure_geometry()
 	is_locked = starts_locked and not _is_persistently_unlocked()
 	is_open = starts_open and not is_locked
@@ -82,6 +84,15 @@ func _configure_geometry() -> void:
 		pivot.position = Vector3.ZERO
 		leaf.position = Vector3.ZERO
 	_closed_leaf_position = leaf.position
+	# Keep the original mesh node for scene compatibility; the reusable detailed
+	# visual replaces only its appearance, not the raycast/collision architecture.
+	visual.visible = false
+	var detail := preload("res://scenes/props/common/InstitutionalDoorVisual.tscn").instantiate()
+	detail.set("width", door_width)
+	detail.set("height", door_height)
+	detail.set("thickness", door_thickness)
+	detail.set("caption", display_name)
+	leaf.add_child(detail)
 
 
 func _apply_pose(opened: bool) -> void:

@@ -57,6 +57,8 @@ const PROP_SCENES := [
 	"res://scenes/props/prison/WashBasin.tscn",
 	"res://scenes/props/prison/Mirror.tscn",
 	"res://scenes/props/prison/Toilet.tscn",
+	"res://scenes/props/prison/Urinal.tscn",
+	"res://scenes/props/prison/UrinalDivider.tscn",
 	"res://scenes/props/laboratory/LabWorkbench.tscn",
 	"res://scenes/props/workshop/WorkshopBench.tscn",
 	"res://scenes/props/yard/YardBench.tscn",
@@ -67,6 +69,47 @@ const PROP_SCENES := [
 	"res://scenes/props/yard/CCTVCamera.tscn",
 	"res://scenes/props/yard/Searchlight.tscn",
 	"res://scenes/props/yard/ObservationPost.tscn",
+	"res://scenes/props/yard/FlowerCluster.tscn",
+	"res://scenes/props/yard/OfficerGazebo.tscn",
+	"res://scenes/props/yard/YardSecurityPost.tscn",
+	"res://scenes/props/medical/HospitalBed.tscn",
+	"res://scenes/props/medical/BedsideTable.tscn",
+	"res://scenes/props/medical/MedicalCart.tscn",
+	"res://scenes/props/medical/IVStand.tscn",
+	"res://scenes/props/medical/PrivacyDivider.tscn",
+	"res://scenes/props/medical/MedicineCabinet.tscn",
+	"res://scenes/props/medical/MedicalSink.tscn",
+	"res://scenes/props/medical/DoctorDesk.tscn",
+	"res://scenes/props/medical/MedicalStool.tscn",
+	"res://scenes/props/medical/EquipmentTable.tscn",
+	"res://scenes/props/medical/MedicalDisplay.tscn",
+	"res://scenes/props/medical/DiagnosticMachine.tscn",
+	"res://scenes/props/medical/Wheelchair.tscn",
+	"res://scenes/props/medical/BiohazardBin.tscn",
+	"res://scenes/props/medical/SecureMedicineStorage.tscn",
+	"res://scenes/props/security/SmallWallSafe.tscn",
+	"res://scenes/props/security/MediumOfficeSafe.tscn",
+	"res://scenes/props/security/LargeEvidenceSafe.tscn",
+	"res://scenes/props/security/RecordingCamera.tscn",
+	"res://scenes/props/laboratory/LabSink.tscn",
+	"res://scenes/props/laboratory/ChemicalCabinet.tscn",
+	"res://scenes/props/laboratory/Microscope.tscn",
+	"res://scenes/props/laboratory/Centrifuge.tscn",
+	"res://scenes/props/laboratory/SampleRack.tscn",
+	"res://scenes/props/laboratory/LabGlassware.tscn",
+	"res://scenes/props/laboratory/ComputerTerminal.tscn",
+	"res://scenes/props/laboratory/LabRefrigerator.tscn",
+	"res://scenes/props/laboratory/HazmatCabinet.tscn",
+	"res://scenes/props/laboratory/EmergencyShower.tscn",
+	"res://scenes/props/laboratory/NidraTerminal.tscn",
+	"res://scenes/props/laboratory/LabSign.tscn",
+	"res://scenes/props/laboratory/SubjectStorage.tscn",
+	"res://scenes/props/laboratory/RestraintChair.tscn",
+	"res://scenes/props/laboratory/MetalExamTable.tscn",
+	"res://scenes/props/laboratory/ExaminationLight.tscn",
+	"res://scenes/props/laboratory/ControlPanel.tscn",
+	"res://scenes/props/laboratory/MonitoringEquipment.tscn",
+	"res://scenes/props/laboratory/EquipmentTrolley.tscn",
 ]
 
 const MATERIALS := [
@@ -80,12 +123,17 @@ const MATERIALS := [
 	"res://materials/props/shower_tile.tres",
 	"res://materials/props/yard_green.tres",
 	"res://materials/props/court_surface.tres",
+	"res://materials/props/medical_blue.tres",
+	"res://materials/props/hazard_yellow.tres",
+	"res://materials/props/nidra_cyan.tres",
+	"res://materials/props/restraint_leather.tres",
 ]
 
 const DECORATIVE_WALL_PROPS := [
 	&"wall_clock", &"notice_board", &"extractor_hood", &"tool_rack",
 	&"exercise_mat", &"shower_floor", &"shower_fixture", &"floor_drain",
 	&"towel_hooks", &"mirror", &"cctv_camera",
+	&"medical_display", &"lab_sign", &"recording_camera",
 ]
 
 
@@ -118,9 +166,12 @@ func _ready() -> void:
 	add_child(world)
 	await get_tree().process_frame
 	await get_tree().physics_frame
-	var placed_props := get_tree().get_nodes_in_group("environmental_props")
-	assert(placed_props.size() == 155, "Expected 155 deliberate placements, found %d" % placed_props.size())
+	var all_environment_props := get_tree().get_nodes_in_group("environmental_props")
+	assert(all_environment_props.size() >= 288, "Expected at least 288 environmental props, found %d" % all_environment_props.size())
+	var dressing_root := world.get_node("EnvironmentalDressing")
+	var placed_props := all_environment_props.filter(func(prop): return prop.get_parent() == dressing_root)
+	assert(placed_props.size() == 226, "Expected 226 curated room placements, found %d" % placed_props.size())
 	for prop in placed_props:
 		assert(prop.has_meta("placement_zone"), "%s was placed without a room assignment" % prop.name)
-	print("PROP_LIBRARY_VALIDATION: PASS — 66 reusable scenes, 10 materials, 155 deliberate placements")
+	print("PROP_LIBRARY_VALIDATION: PASS — 109 reusable scenes, 14 materials, 226 curated placements / 288 total props")
 	get_tree().quit()
