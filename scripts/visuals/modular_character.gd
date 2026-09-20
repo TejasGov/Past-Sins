@@ -152,8 +152,13 @@ func _build_character_rig() -> void:
 	var retarget := RetargetModifier3D.new()
 	retarget.name = "HumanoidRetarget"
 	retarget.profile = SkeletonProfileHumanoid.new()
-	retarget.use_global_pose = false
-	retarget.set_position_enabled(true)
+	retarget.use_global_pose = true
+	# Rotation-only transfer: the Mixamo source skeleton keeps the DAE's native
+	# (large, non-uniform) bone scale, which its clips need to pose correctly.
+	# Transferring position/scale would drag that scale onto the FBX target and
+	# blow out its proportions, so we take orientations only and let the target
+	# retain its own bone lengths (this is also what keeps the feet grounded).
+	retarget.set_position_enabled(false)
 	retarget.set_rotation_enabled(true)
 	retarget.set_scale_enabled(false)
 	_source_skeleton.add_child(retarget)

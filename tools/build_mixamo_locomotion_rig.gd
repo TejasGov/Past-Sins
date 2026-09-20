@@ -42,28 +42,35 @@ func _initialize() -> void:
     var source_skel := Skeleton3D.new()
     source_skel.name = "SourceSkeleton"
     
-    for b in fbx_skel.get_bone_count():
-        var raw_name = String(fbx_skel.get_bone_name(b)).trim_prefix("mixamorig_")
-        var hum_name = HUMANOID_NAMES.get(raw_name, raw_name)
-        source_skel.add_bone(hum_name)
-        
-    for b in fbx_skel.get_bone_count():
-        source_skel.set_bone_parent(b, fbx_skel.get_bone_parent(b))
-        source_skel.set_bone_rest(b, fbx_skel.get_bone_rest(b))
-        source_skel.set_bone_enabled(b, fbx_skel.is_bone_enabled(b))
+    # Source skeleton is a faithful clone of the Mixamo DAE: exact rest poses
+    # (INCLUDING the DAE's non-uniform bone scale, which its clips depend on to
+    # pose correctly) with bones renamed to the shared humanoid profile. Because
+    # the rest is intact, applying the raw rotation tracks reproduces the DAE's
+    # own correct pose. The hierarchy-aware RetargetModifier3D in
+    # modular_character.gd then transfers those orientations to the FBX target;
+    # it is configured rotation-only, so the DAE's large scale never reaches the
+    # target and the target keeps its own bone lengths.
+    for b in dae_skel.get_bone_count():
+        var raw_name = String(dae_skel.get_bone_name(b))
+        source_skel.add_bone(HUMANOID_NAMES.get(raw_name, raw_name))
+
+    for b in dae_skel.get_bone_count():
+        source_skel.set_bone_parent(b, dae_skel.get_bone_parent(b))
+        source_skel.set_bone_rest(b, dae_skel.get_bone_rest(b))
+        source_skel.set_bone_enabled(b, dae_skel.is_bone_enabled(b))
         source_skel.reset_bone_pose(b)
-        
+
     root.add_child(source_skel)
     source_skel.owner = root
-    
+
     var player := AnimationPlayer.new()
     player.name = "AnimationPlayer"
     player.root_node = NodePath("..")
     root.add_child(player)
     player.owner = root
-    
+
     var library := AnimationLibrary.new()
-    
+
     for clip_source_name in CLIPS:
         var target_clip_name: StringName = CLIPS[clip_source_name]
         var source_anim: Animation = dae_player.get_animation(clip_source_name)
@@ -71,58 +78,39 @@ func _initialize() -> void:
             push_error("Missing clip: " + clip_source_name)
             quit(1)
             return
-            
+
+        # Copy both POSITION and ROTATION bone tracks verbatim onto the humanoid
+        # source skeleton (only the bone names change). The position tracks are
+        # required: the DAE's scaled rest means its clips reposition bones every
+        # frame, so without them the source pose collapses. The DAE's own world
+        # translation ("Root Motion") is dropped to keep the clip in place. The
+        # scale stays contained on the source because the runtime retarget in
+        # modular_character.gd is rotation-only.
         var target_anim := Animation.new()
         target_anim.length = source_anim.length
         target_anim.loop_mode = Animation.LOOP_LINEAR
-        
+
         for t in range(source_anim.get_track_count()):
-            var path = source_anim.track_get_path(t)
-            if path.get_subname_count() == 0: continue
-            var old_bname = String(path.get_subname(0))
-            if old_bname == "Root Motion": continue
-            
-            var d_idx = dae_skel.find_bone(old_bname)
-            var f_idx = fbx_skel.find_bone("mixamorig_" + old_bname)
-            if d_idx < 0 or f_idx < 0: continue
-            
             var ttype = source_anim.track_get_type(t)
+            if ttype != Animation.TYPE_ROTATION_3D and ttype != Animation.TYPE_POSITION_3D:
+                continue
+            var path = source_anim.track_get_path(t)
+            if path.get_subname_count() == 0:
+                continue
+            var old_bname = String(path.get_subname(0))
+            if old_bname == "Root Motion" or dae_skel.find_bone(old_bname) < 0:
+                continue
             var new_bname = HUMANOID_NAMES.get(old_bname, old_bname)
             var track_idx = target_anim.add_track(ttype)
             target_anim.track_set_path(track_idx, NodePath("SourceSkeleton:" + new_bname))
-            
-            var d_rest_basis = dae_skel.get_bone_rest(d_idx).basis
-            var f_rest_basis = fbx_skel.get_bone_rest(f_idx).basis
-            
-            var M = f_rest_basis * d_rest_basis.inverse()
-            
             for k in range(source_anim.track_get_key_count(t)):
                 var time = source_anim.track_get_key_time(t, k)
+                var value = source_anim.track_get_key_value(t, k)
                 if ttype == Animation.TYPE_ROTATION_3D:
-                    var q: Quaternion = source_anim.track_get_key_value(t, k)
-                    var d_basis = Basis(q)
-                    
-                    if old_bname == "LeftArm":
-                        d_basis = d_basis * Basis(Vector3(0, 0, 1), deg_to_rad(-45))
-                    elif old_bname == "RightArm":
-                        d_basis = d_basis * Basis(Vector3(0, 0, 1), deg_to_rad(45))
-                    elif old_bname == "Spine":
-                        d_basis = d_basis * Basis(Vector3(1, 0, 0), deg_to_rad(-10))
-                        
-                    var f_basis = M * d_basis * M.inverse()
-                    target_anim.track_insert_key(track_idx, time, f_basis.get_rotation_quaternion().normalized())
-                elif ttype == Animation.TYPE_POSITION_3D:
-                    if old_bname == "Hips":
-                        var p: Vector3 = source_anim.track_get_key_value(t, k)
-                        var d_rest_pos = dae_skel.get_bone_rest(d_idx).origin
-                        var f_rest_pos = fbx_skel.get_bone_rest(f_idx).origin
-                        
-                        var dx = p.x - d_rest_pos.x
-                        var dy = -(p.z - d_rest_pos.z) # DAE -Z is height
-                        var dz = -(p.y - d_rest_pos.y) # DAE Y is forward
-                        
-                        target_anim.track_insert_key(track_idx, time, f_rest_pos + Vector3(dx, dy, dz))
-                        
+                    target_anim.rotation_track_insert_key(track_idx, time, value)
+                else:
+                    target_anim.position_track_insert_key(track_idx, time, value)
+
         library.add_animation(target_clip_name, target_anim)
         
     player.add_animation_library(&"", library)
