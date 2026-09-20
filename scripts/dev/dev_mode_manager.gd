@@ -14,8 +14,28 @@ const NOCLIP_CONTROLLER := preload("res://scripts/dev/dev_noclip_controller.gd")
 const CAMPUS_SCENE := "res://scenes/levels/campus/PrisonCampusPrototype.tscn"
 const DEV_ACCESS_CODE := "tez"
 const PISTOL_DEFINITION: FirearmDefinition = preload("res://resources/weapons/pistol.tres")
+const SMG_DEFINITION: FirearmDefinition = preload("res://resources/weapons/smg.tres")
+const CARBINE_DEFINITION: FirearmDefinition = preload("res://resources/weapons/carbine_ar.tres")
+const SNIPER_DEFINITION: FirearmDefinition = preload("res://resources/weapons/sniper_rifle.tres")
+const KNIFE_DEFINITION: MeleeDefinition = preload("res://resources/weapons/kitchen_knife.tres")
+const SLINGSHOT_DEFINITION: SlingshotDefinition = preload("res://resources/weapons/improvised_slingshot.tres")
+const SLINGSHOT_NAIL: ItemDefinition = preload("res://resources/items/slingshot_nail.tres")
+const SLINGSHOT_TOXIN_NAIL: ItemDefinition = preload("res://resources/items/slingshot_nail_toxin.tres")
+const MONOCULAR_DEFINITION: ItemDefinition = preload("res://resources/items/monocular.tres")
+const PROPER_SUPPRESSOR: SuppressorDefinition = preload("res://resources/items/proper_suppressor.tres")
+const MAKESHIFT_SUPPRESSOR: SuppressorDefinition = preload("res://resources/items/makeshift_suppressor.tres")
 const TEST_INVENTORY_DEFINITIONS: Array[ItemDefinition] = [
 	PISTOL_DEFINITION,
+	SMG_DEFINITION,
+	CARBINE_DEFINITION,
+	SNIPER_DEFINITION,
+	KNIFE_DEFINITION,
+	SLINGSHOT_DEFINITION,
+	SLINGSHOT_NAIL,
+	SLINGSHOT_TOXIN_NAIL,
+	MONOCULAR_DEFINITION,
+	PROPER_SUPPRESSOR,
+	MAKESHIFT_SUPPRESSOR,
 	preload("res://resources/items/dev/test_firearm_a.tres"),
 	preload("res://resources/items/dev/test_firearm_b.tres"),
 	preload("res://resources/items/dev/test_firearm_c.tres"),
@@ -455,9 +475,10 @@ func get_inventory_summary() -> String:
 	keys.sort_custom(func(a: StringName, b: StringName) -> bool: return str(a) < str(b))
 	var access := AccessManager.get_unlocked_access_ids()
 	access.sort_custom(func(a: StringName, b: StringName) -> bool: return str(a) < str(b))
-	return "FIREARM SLOT 1: %s\nFIREARM SLOT 2: %s\nMELEE SLOT: %s\n\nEQUIPMENT\n%s\n\nKEYS / ACCESS CARDS (%d)\n%s\n\nUNLOCKED ACCESS (%d)\n%s" % [
+	return "FIREARM SLOT 1: %s\nFIREARM SLOT 2: %s\nMELEE SLOT: %s\n\nEQUIPMENT\n%s\nMONOCULAR STATE: %s\nSUPPRESSOR: %s\n\nKEYS / ACCESS CARDS (%d)\n%s\n\nUNLOCKED ACCESS (%d)\n%s" % [
 		_slot_label(slot_1), _slot_label(slot_2), _slot_label(melee),
 		"\n".join(equipment_lines) if not equipment_lines.is_empty() else "—",
+		get_monocular_state(), get_suppressor_state(),
 		keys.size(), _join_ids(keys), access.size(), _join_ids(access),
 	]
 
@@ -497,6 +518,155 @@ func refill_pistol_ammo() -> bool:
 	var player := get_player()
 	var controller := player.get_node_or_null("WeaponController") as PlayerWeaponController if player else null
 	return controller != null and controller.refill_firearm_ammo(&"pistol")
+
+
+func give_smg() -> bool:
+	return enabled and InventoryManager.add_item(SMG_DEFINITION)
+
+
+func remove_smg() -> bool:
+	return enabled and InventoryManager.remove_item(SMG_DEFINITION.item_id)
+
+
+func refill_smg_ammo() -> bool:
+	if not enabled:
+		return false
+	var player := get_player()
+	var controller := player.get_node_or_null("WeaponController") as PlayerWeaponController if player else null
+	return controller != null and controller.refill_firearm_ammo(&"smg")
+
+
+func give_carbine_ar() -> bool:
+	return enabled and InventoryManager.add_item(CARBINE_DEFINITION)
+
+
+func remove_carbine_ar() -> bool:
+	return enabled and InventoryManager.remove_item(CARBINE_DEFINITION.item_id)
+
+
+func refill_carbine_ammo() -> bool:
+	if not enabled:
+		return false
+	var player := get_player()
+	var controller := player.get_node_or_null("WeaponController") as PlayerWeaponController if player else null
+	return controller != null and controller.refill_firearm_ammo(&"carbine_ar")
+
+
+func give_sniper_rifle() -> bool:
+	return enabled and InventoryManager.add_item(SNIPER_DEFINITION)
+
+
+func remove_sniper_rifle() -> bool:
+	return enabled and InventoryManager.remove_item(SNIPER_DEFINITION.item_id)
+
+
+func refill_sniper_ammo() -> bool:
+	if not enabled:
+		return false
+	var player := get_player()
+	var controller := player.get_node_or_null("WeaponController") as PlayerWeaponController if player else null
+	return controller != null and controller.refill_firearm_ammo(&"sniper_rifle")
+
+
+func give_kitchen_knife() -> bool:
+	return enabled and InventoryManager.add_item(KNIFE_DEFINITION)
+
+
+func remove_kitchen_knife() -> bool:
+	return enabled and InventoryManager.remove_item(KNIFE_DEFINITION.item_id)
+
+
+func give_slingshot() -> bool:
+	if not enabled: return false
+	if not InventoryManager.has_item(SLINGSHOT_DEFINITION.item_id) and not InventoryManager.add_item(SLINGSHOT_DEFINITION): return false
+	var missing := maxi(0, 12 - InventoryManager.get_item_count(SLINGSHOT_NAIL.item_id))
+	if missing > 0: InventoryManager.add_item(SLINGSHOT_NAIL, missing)
+	return true
+
+
+func remove_slingshot() -> bool:
+	return enabled and InventoryManager.remove_item(SLINGSHOT_DEFINITION.item_id)
+
+
+func give_normal_nails(quantity := 12) -> bool:
+	return enabled and InventoryManager.add_item(SLINGSHOT_NAIL, quantity)
+
+
+func give_toxin_nails(quantity := 12) -> bool:
+	return enabled and InventoryManager.add_item(SLINGSHOT_TOXIN_NAIL, quantity)
+
+
+func refill_slingshot_ammo() -> bool:
+	if not enabled: return false
+	var normal_missing := maxi(0, 12 - InventoryManager.get_item_count(SLINGSHOT_NAIL.item_id))
+	if normal_missing > 0: InventoryManager.add_item(SLINGSHOT_NAIL, normal_missing)
+	return true
+
+
+func reset_slingshot_projectiles() -> void:
+	for projectile in get_tree().get_nodes_in_group("slingshot_projectiles"): projectile.queue_free()
+
+
+func reset_slingshot_breakable_lights() -> void:
+	for light in get_tree().get_nodes_in_group("slingshot_breakable_lights"):
+		if light.has_method("reset_light"): light.call("reset_light")
+
+
+func give_monocular() -> bool:
+	return enabled and InventoryManager.add_item(MONOCULAR_DEFINITION)
+
+
+func remove_monocular() -> bool:
+	return enabled and InventoryManager.remove_item(MONOCULAR_DEFINITION.item_id)
+
+
+func give_proper_suppressor() -> bool:
+	return enabled and InventoryManager.add_item(PROPER_SUPPRESSOR)
+
+
+func remove_proper_suppressor() -> bool:
+	return enabled and InventoryManager.remove_item(PROPER_SUPPRESSOR.item_id)
+
+
+func give_makeshift_suppressor() -> bool:
+	return enabled and InventoryManager.add_item(MAKESHIFT_SUPPRESSOR)
+
+
+func remove_makeshift_suppressor() -> bool:
+	return enabled and InventoryManager.remove_item(MAKESHIFT_SUPPRESSOR.item_id)
+
+
+func attach_compatible_suppressor() -> bool:
+	if not enabled: return false
+	var player := get_player()
+	var controller := player.get_node_or_null("WeaponController") as PlayerWeaponController if player else null
+	return controller != null and controller.attach_compatible_suppressor()
+
+
+func detach_suppressor() -> bool:
+	if not enabled: return false
+	var player := get_player()
+	var controller := player.get_node_or_null("WeaponController") as PlayerWeaponController if player else null
+	return controller != null and controller.detach_suppressor()
+
+
+func reset_makeshift_suppressor_durability() -> bool:
+	if not enabled: return false
+	var player := get_player()
+	var controller := player.get_node_or_null("WeaponController") as PlayerWeaponController if player else null
+	return controller != null and controller.reset_makeshift_suppressor_durability()
+
+
+func get_suppressor_state() -> String:
+	var player := get_player()
+	var controller := player.get_node_or_null("WeaponController") as PlayerWeaponController if player else null
+	return controller.get_suppressor_status() if controller else "UNSUPPRESSED"
+
+
+func get_monocular_state() -> String:
+	var player := get_player()
+	var controller := player.get_node_or_null("EquipmentController") if player else null
+	return str(controller.call("get_state_name")) if controller and controller.has_method("get_state_name") else "INACTIVE"
 
 
 func get_access_entries() -> Array[Dictionary]:

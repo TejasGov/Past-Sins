@@ -101,7 +101,7 @@ func _ready() -> void:
 		g.storage_shelf("CommsCabinet_%02d" % idx, Vector3(-15.8, 0, z_pos), Vector3(0.8, 2.1, 1.2), Color("323a3d"))
 
 	# Ambient Screen Lighting
-	var monitor_light := Color("6ea5a6")
+	var monitor_light := Color("f0d38d")
 	g.ceiling_light("ControlLightWest", Vector3(-9, 3.35, -12), monitor_light, 0.5, 7.0)
 	g.ceiling_light("ControlLightCenter", Vector3(0, 3.35, -12), monitor_light, 0.5, 7.0)
 	g.ceiling_light("ControlLightEast", Vector3(9, 3.35, -12), monitor_light, 0.5, 7.0)

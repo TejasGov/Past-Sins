@@ -5,12 +5,18 @@ extends RefCounted
 
 const CCTV_CAMERA_SCENE := preload("res://scenes/props/security/CCTVCamera.tscn")
 const METAL_DETECTOR_SCENE := preload("res://scenes/props/security/MetalDetector.tscn")
+const CELL_LAMP_SCENE := preload("res://scenes/props/prison/CellLamp.tscn")
+const CELL_BARS: StandardMaterial3D = preload("res://materials/props/cell_bars.tres")
+const LIGHTING := preload("res://scripts/systems/interior_lighting_profiles.gd")
 
 var _root: Node3D
 var _collision_root: StaticBody3D
 var _visual_layer_mask: int
-var _materials: Dictionary = {}
-var _emissive_materials: Dictionary = {}
+const SURFACE_MATERIALS := preload("res://scripts/levels/surface_materials.gd")
+# Share immutable material instances across builders, keeping batched geometry
+# on the same material and generating procedural textures only once.
+static var _materials: Dictionary = {}
+static var _emissive_materials: Dictionary = {}
 var _box_meshes: Dictionary = {}
 
 
@@ -22,14 +28,14 @@ func _init(root: Node3D, visual_layer_mask := 1) -> void:
 	_root.add_child(_collision_root)
 
 
-func box(piece_name: String, center: Vector3, size: Vector3, color: Color, collision := true) -> MeshInstance3D:
+func box(piece_name: String, center: Vector3, size: Vector3, color: Color, collision := true, material: Material = null) -> MeshInstance3D:
 	var visual := MeshInstance3D.new()
 	visual.name = piece_name
 	visual.mesh = _box_mesh(size)
 	visual.position = center
-	visual.material_override = _material(color)
+	visual.material_override = material if material != null else _material(color)
 	visual.layers = _visual_layer_mask
-	visual.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	visual.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON
 	_root.add_child(visual)
 	if collision:
 		_add_box_collision(center, size, Basis.IDENTITY)
@@ -43,14 +49,14 @@ func oriented_box(piece_name: String, transform: Transform3D, size: Vector3, col
 	visual.transform = transform
 	visual.material_override = _material(color)
 	visual.layers = _visual_layer_mask
-	visual.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	visual.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON
 	_root.add_child(visual)
 	if collision:
 		_add_box_collision(transform.origin, size, transform.basis)
 	return visual
 
 
-func cylinder(piece_name: String, center: Vector3, radius: float, height: float, color: Color, collision := true, rotation := Vector3.ZERO) -> MeshInstance3D:
+func cylinder(piece_name: String, center: Vector3, radius: float, height: float, color: Color, collision := true, rotation := Vector3.ZERO, material: Material = null) -> MeshInstance3D:
 	var visual := MeshInstance3D.new()
 	visual.name = piece_name
 	var mesh := CylinderMesh.new()
@@ -62,9 +68,9 @@ func cylinder(piece_name: String, center: Vector3, radius: float, height: float,
 	visual.mesh = mesh
 	visual.position = center
 	visual.rotation = rotation
-	visual.material_override = _material(color)
+	visual.material_override = material if material != null else _material(color)
 	visual.layers = _visual_layer_mask
-	visual.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	visual.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON
 	_root.add_child(visual)
 	if collision:
 		var shape_node := CollisionShape3D.new()
@@ -82,10 +88,12 @@ func cylinder(piece_name: String, center: Vector3, radius: float, height: float,
 func emissive_box(piece_name: String, center: Vector3, size: Vector3, color: Color, energy := 1.0) -> MeshInstance3D:
 	var visual := box(piece_name, center, size, color.darkened(0.45), false)
 	visual.material_override = _emissive_material(color, energy)
+	# The luminous diffuser must not occlude its own light source.
+	visual.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	return visual
 
 
-func ceiling_light(piece_name: String, center: Vector3, color: Color, energy := 1.0, light_range := 7.0, fixture_size := Vector3(2.4, 0.08, 0.3)) -> OmniLight3D:
+func ceiling_light(piece_name: String, center: Vector3, color: Color, energy := 1.0, light_range := 7.0, fixture_size := Vector3(2.4, 0.08, 0.3), room_type := "") -> OmniLight3D:
 	# One unshadowed omni per fixture is cheap enough for the greybox and works in
 	# the Compatibility renderer. The emissive mesh keeps the fixture readable
 	# when it is outside the active per-object light budget.
@@ -106,6 +114,8 @@ func ceiling_light(piece_name: String, center: Vector3, color: Color, energy := 
 	light.omni_attenuation = 2.0
 	light.light_cull_mask = _visual_layer_mask
 	light.shadow_enabled = false
+	if not room_type.is_empty():
+		LIGHTING.apply_to_light(light, room_type)
 	_root.add_child(light)
 	light.add_to_group("campus_indoor_lights")
 	light.set_meta("automatic_night_light", true)
@@ -235,16 +245,19 @@ func security_gate(piece_name: String, base_center: Vector3, length: float, runs
 	var index := 0
 	while bar_position <= half_length - 0.12:
 		if bar_position < opening_min - 0.05 or bar_position > opening_max + 0.05:
-			box("%sBar%02d" % [piece_name, index], base_center + axis * bar_position + Vector3.UP * (height * 0.5), bar_size, color)
+			var bar := box("%sBar%02d" % [piece_name, index], base_center + axis * bar_position + Vector3.UP * (height * 0.5), bar_size, color)
+			bar.material_override = CELL_BARS
 		index += 1
 		bar_position += spacing
 	var top_size := Vector3(length, 0.14, 0.22) if runs_along_x else Vector3(0.22, 0.14, length)
-	box("%sTopRail" % piece_name, base_center + Vector3.UP * height, top_size, color)
+	var top := box("%sTopRail" % piece_name, base_center + Vector3.UP * height, top_size, color)
+	top.material_override = CELL_BARS
 	door_frame("%sOpening" % piece_name, base_center + axis * opening_center, runs_along_x, color, door_width, 2.4, 0.14, 0.26)
 
 
 func sign(text: String, position: Vector3, rotation_degrees: Vector3, color := Color("b8c8ca"), pixel_size := 0.006) -> Label3D:
 	var label := Label3D.new()
+	label.double_sided = false
 	label.name = ("Sign_%s" % text).validate_node_name()
 	label.text = text
 	label.position = position
@@ -296,13 +309,23 @@ func stairs(piece_name: String, start: Vector3, direction: Vector3, run: float, 
 		var basis := Basis(Vector3.UP, yaw)
 		oriented_box("%sStep%02d" % [piece_name, index], Transform3D(basis, center), Vector3(width, 0.12, step_depth + 0.025), color, false)
 
-	# A single smooth collision ramp keeps the stairs reliable for CharacterBody3D.
-	var slope_direction := (travel * run + Vector3.UP * rise).normalized()
+	# A single smooth *wedge* collision ramp keeps the stairs reliable for
+	# CharacterBody3D.  A rotated box here would extend above the walking
+	# surface at the first/last tread, creating an invisible head/torso blocker
+	# in stair audits and at the actual landings.  The convex wedge occupies
+	# only the volume below the sloped top plane (plus a small foundation lip).
 	var right := Vector3.UP.cross(travel).normalized()
-	var slope_up := slope_direction.cross(right).normalized()
-	var ramp_basis := Basis(right, slope_up, slope_direction)
-	var ramp_center := start + travel * (run * 0.5) + Vector3.UP * (rise * 0.5 - 0.06)
-	_add_box_collision(ramp_center, Vector3(width, 0.12, sqrt(run * run + rise * rise)), ramp_basis)
+	var ramp_shape := ConvexPolygonShape3D.new()
+	var ramp_points := PackedVector3Array()
+	for x in [-width * 0.5, width * 0.5]:
+		for end in [0.0, 1.0]:
+			for thickness in [-0.14, 0.0]:
+				ramp_points.append(start + right * x + travel * (run * end) + Vector3.UP * (rise * end + thickness))
+	ramp_shape.points = ramp_points
+	var ramp_node := CollisionShape3D.new()
+	ramp_node.name = "%sRamp" % piece_name
+	ramp_node.shape = ramp_shape
+	_collision_root.add_child(ramp_node)
 
 	var side := right * (width * 0.5 - 0.06)
 	bar_between("%sLeftRail" % piece_name, start + side + Vector3.UP, start + travel * run + side + Vector3.UP * (rise + 1.0), color)
@@ -316,23 +339,28 @@ func bridge_x(piece_name: String, z: float, half_span: float, width: float, colo
 
 
 func railing(start: Vector3, end: Vector3, color: Color, add_posts := true) -> void:
-	bar_between("TopRail", start + Vector3.UP * 1.05, end + Vector3.UP * 1.05, color)
-	bar_between("MidRail", start + Vector3.UP * 0.55, end + Vector3.UP * 0.55, color)
+	var top := bar_between("TopRail", start + Vector3.UP * 1.05, end + Vector3.UP * 1.05, color)
+	if top: top.material_override = CELL_BARS
+	var mid := bar_between("MidRail", start + Vector3.UP * 0.55, end + Vector3.UP * 0.55, color)
+	if mid: mid.material_override = CELL_BARS
 	if not add_posts:
-		box("RailPostA", start + Vector3.UP * 0.525, Vector3(0.09, 1.05, 0.09), color)
-		box("RailPostB", end + Vector3.UP * 0.525, Vector3(0.09, 1.05, 0.09), color)
+		var post_a := box("RailPostA", start + Vector3.UP * 0.525, Vector3(0.09, 1.05, 0.09), color)
+		post_a.material_override = CELL_BARS
+		var post_b := box("RailPostB", end + Vector3.UP * 0.525, Vector3(0.09, 1.05, 0.09), color)
+		post_b.material_override = CELL_BARS
 		return
 	var length := start.distance_to(end)
 	var post_count := maxi(2, ceili(length / 3.0) + 1)
 	for index in range(post_count):
 		var point := start.lerp(end, float(index) / float(post_count - 1))
-		box("RailPost", point + Vector3.UP * 0.525, Vector3(0.09, 1.05, 0.09), color)
+		var post := box("RailPost", point + Vector3.UP * 0.525, Vector3(0.09, 1.05, 0.09), color)
+		post.material_override = CELL_BARS
 
 
-func bar_between(piece_name: String, start: Vector3, end: Vector3, color: Color, thickness := 0.09) -> void:
+func bar_between(piece_name: String, start: Vector3, end: Vector3, color: Color, thickness := 0.09) -> MeshInstance3D:
 	var delta := end - start
 	if delta.length_squared() < 0.001:
-		return
+		return null
 	var forward := delta.normalized()
 	var right := Vector3.UP.cross(forward)
 	if right.length_squared() < 0.001:
@@ -341,7 +369,7 @@ func bar_between(piece_name: String, start: Vector3, end: Vector3, color: Color,
 		right = right.normalized()
 	var up := forward.cross(right).normalized()
 	var basis := Basis(right, up, forward)
-	oriented_box(piece_name, Transform3D(basis, (start + end) * 0.5), Vector3(thickness, thickness, delta.length()), color)
+	return oriented_box(piece_name, Transform3D(basis, (start + end) * 0.5), Vector3(thickness, thickness, delta.length()), color)
 
 
 func _add_box_collision(center: Vector3, size: Vector3, basis: Basis) -> void:
@@ -367,12 +395,17 @@ func _material(color: Color) -> StandardMaterial3D:
 	var material := StandardMaterial3D.new()
 	material.albedo_color = color
 	material.roughness = 0.9
+	SURFACE_MATERIALS.prepare(material)
 	_materials[key] = material
 	return material
 
 
 func _emissive_material(color: Color, energy: float) -> StandardMaterial3D:
-	var key := "%s:%0.2f" % [color.to_html(true), energy]
+	# Boost emissive energy so all existing fixture values (0.8–0.85) cross the
+	# screen-space bloom threshold. Tuned against bloom_threshold ≈ 0.75 in
+	# res://shaders/screen_grade.gdshader.
+	var boosted := energy * 2.2
+	var key := "%s:%0.2f" % [color.to_html(true), boosted]
 	if _emissive_materials.has(key):
 		return _emissive_materials[key] as StandardMaterial3D
 	var material := StandardMaterial3D.new()
@@ -380,7 +413,9 @@ func _emissive_material(color: Color, energy: float) -> StandardMaterial3D:
 	material.roughness = 0.8
 	material.emission_enabled = true
 	material.emission = color
-	material.emission_energy_multiplier = energy
+	material.emission_energy_multiplier = boosted
+	# Grime affects the fixture surface, not its clean emission signal.
+	SURFACE_MATERIALS.prepare(material)
 	_emissive_materials[key] = material
 	return material
 
@@ -442,3 +477,15 @@ func monitor_wall_screen(piece_name: String, center: Vector3, size: Vector3, cam
 	if not camera_label.is_empty():
 		self.sign(camera_label, center + Vector3(0, 0, 0.07), Vector3.ZERO, Color("76f5ff"), 0.0035)
 	return display
+
+
+func cell_lamp(lamp_name: String, lamp_position: Vector3, yaw_degrees: float = 0.0, start_on: bool = true, lamp_color := Color("d8c797")) -> CellLamp:
+	var lamp := CELL_LAMP_SCENE.instantiate() as CellLamp
+	lamp.name = lamp_name
+	lamp.position = lamp_position
+	lamp.rotation_degrees.y = yaw_degrees
+	lamp.is_on = start_on
+	lamp.lamp_color = lamp_color
+	lamp.visual_layer_mask = _visual_layer_mask
+	_root.add_child(lamp)
+	return lamp

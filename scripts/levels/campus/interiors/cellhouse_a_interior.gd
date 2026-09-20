@@ -61,31 +61,33 @@ func _build_structure() -> void:
 	_build_stair("Floor1ToFloor2Stair", Vector3(-18.0, 0, -7.0), 0.0)
 	_build_stair("Floor2ToFloor3Stair", Vector3(18.0, FLOOR_HEIGHT, 7.0), PI)
 
-	# Supported emissive fixtures remain inexpensive in the Web renderer.
+	# Four fixed flush-mounted fixtures share one real source per tier. The source
+	# selects a nearby fixture instead of leaving the entire southern/eastern
+	# galleries outside a permanently northwest-anchored light's range.
 	for tier_index in range(3):
 		var base_y := float(tier_index) * FLOOR_HEIGHT
-		var ceiling_y := base_y + 3.55
-		var mount_top := 12.98 if tier_index == 2 else base_y + 3.9
-		for fixture_index in range(3):
-			var x_position := -12.0 + float(fixture_index) * 12.0
-			var fixture_name := "Floor%dCellLight%02d" % [tier_index + 1, fixture_index]
-			# Hang below the solid gallery slab, never beneath the open atrium.
-			var diffuser: MeshInstance3D = g.emissive_box(fixture_name, Vector3(x_position, ceiling_y, -9.3), Vector3(2.2, 0.08, 0.34), Color("d7ddd5"), 0.8)
-			diffuser.add_to_group("campus_indoor_light_visuals")
-			diffuser.set_meta("automatic_night_light", true)
-			g.box("%sMount" % fixture_name, Vector3(x_position, (ceiling_y + mount_top) * 0.5, -9.3), Vector3(0.1, mount_top - ceiling_y, 0.1), concrete, false)
-		var night_light := OmniLight3D.new()
-		night_light.name = "Floor%dAutomaticInteriorLight" % (tier_index + 1)
-		night_light.position = Vector3(0, ceiling_y - 0.35, -9.3)
-		night_light.light_color = Color("dce3d5")
-		night_light.light_energy = 2.2
-		night_light.omni_range = 22.0
-		night_light.omni_attenuation = 1.6
+		var fixture_y := 12.86 if tier_index == 2 else base_y + 3.80
+		var sources := PackedVector3Array()
+		for gallery_side in [-1.0, 1.0]:
+			for fixture_index in range(2):
+				var x_position := -10.0 + float(fixture_index) * 20.0
+				var fixture_name := "Floor%dGalleryTube%s%02d" % [tier_index + 1, "N" if gallery_side < 0 else "S", fixture_index]
+				# Backplate and diffuser touch the ceiling directly: no hanging stem.
+				g.box("%sBackplate" % fixture_name, Vector3(x_position, fixture_y, gallery_side * 9.25), Vector3(2.25, 0.07, 0.36), concrete, false)
+				var diffuser: MeshInstance3D = g.emissive_box(fixture_name, Vector3(x_position, fixture_y - 0.055, gallery_side * 9.25), Vector3(2.0, 0.045, 0.22), Color(0.82, 0.88, 0.80), 0.72)
+				diffuser.add_to_group("campus_indoor_light_visuals")
+				diffuser.set_meta("automatic_night_light", true)
+				sources.append(Vector3(x_position, fixture_y - 0.25, gallery_side * 9.25))
+		var night_light := preload("res://scripts/systems/gallery_lighting.gd").new()
+		night_light.name = "Floor%dAmberGalleryLight" % (tier_index + 1)
+		night_light.floor_number = tier_index + 1
+		night_light.fixture_positions = sources
+		night_light.position = sources[0]
+		preload("res://scripts/systems/interior_lighting_profiles.gd").apply_to_light(night_light, "cellblock")
+		night_light.omni_range = 14.0
 		night_light.shadow_enabled = false
 		night_light.visible = false
 		add_child(night_light)
-		night_light.add_to_group("campus_indoor_lights")
-		night_light.set_meta("automatic_night_light", true)
 
 	g.sign("CELLHOUSE A — THREE-TIER GENERAL POPULATION", Vector3(0, 3.0, -16.75), Vector3.ZERO, Color("d7d0aa"), 0.0045)
 	g.sign("YARD ACCESS", Vector3(21.55, 2.8, 0), Vector3(0, -90, 0), Color("d7c176"), 0.004)

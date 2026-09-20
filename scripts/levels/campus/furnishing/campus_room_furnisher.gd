@@ -288,21 +288,38 @@ func _medicine() -> void:
 	_wall_prop("security/SmallWallSafe", "S", -0.8)
 
 func _gym() -> void:
-	var names := ["FlatBenchPress", "SquatRack", "CableMachine", "PullUpBar"]
-	for i in range(names.size()):
-		_place("gym/" + names[i], Vector3(-6 + i * 4, 0, -4.6))
-	_place("gym/DumbbellRack", Vector3(-6.5, 0, -0.5), PI * 0.5)
-	_place("gym/WeightBench", Vector3(-3.8, 0, 0.5))
-	_place("gym/WeightPlateStack", Vector3(-6.2, 0, 1.7))
-	_place("gym/Barbell", Vector3(-1.0, 0, 1.3), PI * 0.5)
-	_place("gym/PunchingBag", Vector3(6.0, 0, 0))
-	for x in [2.0, 4.4]:
-		_place("gym/ExerciseBike", Vector3(x, 0, 4.3), PI)
-	for x in [-5.2, -2.5]:
-		_place("gym/ExerciseMat", Vector3(x, 0, 4.0))
+	# North strength line: Flat Bench, Incline Bench, Squat Rack, Cable Machine, Lat Pulldown
+	_place("gym/FlatBenchPress", Vector3(-6.0, 0, -4.6))
+	_place("gym/InclineBenchPress", Vector3(-3.0, 0, -4.6))
+	_place("gym/SquatRack", Vector3(0.0, 0, -4.6))
+	_place("gym/CableMachine", Vector3(3.0, 0, -4.6))
+	_place("gym/LatPulldown", Vector3(5.8, 0, -4.6))
+
+	# West free-weight & calisthenics area
+	_place("gym/DumbbellRack", Vector3(-6.5, 0, -1.2), PI * 0.5)
+	_place("gym/WeightPlateStack", Vector3(-6.5, 0, 1.2))
+	_place("gym/WeightBench", Vector3(-3.8, 0, 0.2))
+	_place("gym/Barbell", Vector3(-3.8, 0, -2.0), PI * 0.5)
+	_place("gym/DipStation", Vector3(-6.5, 0, 3.8))
+	_place("gym/PullUpBar", Vector3(-3.5, 0, 4.4))
+
+	# East cardio & machine area: Treadmills, Rowing Machine, Leg Press, Exercise Bikes
+	_place("gym/Treadmill", Vector3(3.2, 0, -1.5), PI)
+	_place("gym/Treadmill", Vector3(5.8, 0, -1.5), PI)
+	_place("gym/RowingMachine", Vector3(5.8, 0, 1.5), PI)
+	_place("gym/LegPress", Vector3(2.5, 0, 1.5))
+	_place("gym/ExerciseBike", Vector3(5.8, 0, 4.3), PI)
+	_place("gym/ExerciseBike", Vector3(3.4, 0, 4.3), PI)
+
+	# Central conditioning, punch bag and mats
+	# Keep the suspended bag clear of the east-hall door swing and landing.
+	_place("gym/PunchingBag", Vector3(-2.0, 0, 4.4))
+	_place("gym/ExerciseMat", Vector3(-0.5, 0, 1.5))
+	_place("gym/ExerciseMat", Vector3(-0.5, 0, -1.5))
+
 	_wall_prop("cafeteria/DrinkingFountain", "E", 4.8)
 	_wall_prop("common/WallClock", "N", 0)
-	_place("common/MetalShelving", Vector3(-6.5, 0, 4.8), PI * 0.5)
+	_place("common/MetalShelving", Vector3(-6.5, 0, -3.2), PI * 0.5)
 
 func _changing() -> void:
 	# Doors use the middle of all three long-side thresholds. Locker banks

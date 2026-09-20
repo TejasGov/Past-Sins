@@ -82,6 +82,8 @@ func _validate_handling_polish() -> void:
 	_check(visual != null, "Pistol handling polish requires the reusable first-person visual")
 	if visual == null:
 		return
+	_check(visual is FirearmVisualBase, "Pistol visual must use the shared firearm presentation contract")
+	_check(visual.validate_visual_contract().is_empty(), "Pistol visual must provide every standardized first-person anchor")
 	for required_part in [
 		"Slide", "SlideNose", "EjectionPortTop", "Extractor", "RearSightLeft",
 		"FrontSight", "FrameChassis", "DustCover", "Beavertail", "Grip",
@@ -222,9 +224,12 @@ func _validate_handling_polish() -> void:
 	await _advance_ads(45)
 	_check(_controller.ads_active and _controller.get_ads_blend() > 0.98, "Holding RMB must smoothly enter ADS")
 	_check(absf(_player.camera.fov - _controller.ads_fov) < 0.5, "ADS must smoothly narrow the camera FOV")
-	_check(_controller.weapon_mount.position.distance_to(_controller.ads_weapon_position) < 0.01, "ADS must smoothly move the weapon to its configured sight position")
+	_check(_controller.weapon_mount.position.distance_to(_controller.get_active_ads_position()) < 0.01, "ADS must smoothly move the weapon to its configured sight position")
+	_check(_controller.get_active_ads_position().z < _controller.ads_weapon_position.z, "Pistol ADS should sit slightly farther from the camera than the shared default")
 	_check(not _controller.is_crosshair_visible(), "The normal crosshair must hide while iron sights are active")
 	_check(_controller.get_current_spread_degrees() < hip_spread * 0.25, "ADS must use much tighter configurable spread than hip fire")
+	var sight_metrics := _controller.get_sight_alignment_pixels()
+	_check(not sight_metrics.is_empty(), "Pistol must expose reusable ADS and sight alignment metrics")
 	_check(_controller.fire() and int(standard.get_current_health()) == 55, "ADS hitscan must remain aligned to the camera center and preserve torso damage")
 	_check(_controller.reload(), "Reload must still start while ADS is held")
 	for frame in range(20):

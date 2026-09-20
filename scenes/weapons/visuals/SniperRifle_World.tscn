@@ -1,0 +1,30 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/weapons/sniper_rifle_visual.gd" id="1_visual"]
+
+[sub_resource type="BoxShape3D" id="SniperPickupShape"]
+size = Vector3(2.75, 0.86, 0.92)
+
+[node name="WeaponRoot" type="Node3D"]
+
+[node name="Model" type="Node3D" parent="."]
+position = Vector3(0, 0.46, 0)
+rotation_degrees = Vector3(0, -90, -6)
+scale = Vector3(0.56, 0.56, 0.56)
+script = ExtResource("1_visual")
+
+[node name="PickupCollider" type="CollisionShape3D" parent="."]
+position = Vector3(0, 0.44, 0)
+shape = SubResource("SniperPickupShape")
+
+[node name="InteractionAnchor" type="Marker3D" parent="."]
+position = Vector3(0, 0.55, 0)
+
+[node name="MuzzlePoint" type="Marker3D" parent="."]
+position = Vector3(-1.46, 0.50, 0)
+
+[node name="MagazineSocket" type="Marker3D" parent="."]
+position = Vector3(-0.11, 0.28, 0)
+
+[node name="SuppressorAttachmentPoint" type="Marker3D" parent="."]
+position = Vector3(-1.50, 0.50, 0)

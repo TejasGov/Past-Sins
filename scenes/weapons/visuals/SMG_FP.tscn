@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/weapons/smg_visual.gd" id="1_visual"]
+
+[node name="SMG_FP" type="Node3D"]
+position = Vector3(0.28, -0.32, -0.68)
+rotation_degrees = Vector3(-1.5, -2.5, 0)
+scale = Vector3(0.85, 0.85, 0.85)
+script = ExtResource("1_visual")
+first_person = true

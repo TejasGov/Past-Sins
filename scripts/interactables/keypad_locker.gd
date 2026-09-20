@@ -1,9 +1,12 @@
 extends Node3D
 class_name KeypadLocker
 
+const Affordance := preload("res://scripts/props/interaction_affordance.gd")
+
 @export var correct_code := "2718"
 var is_open := false
 var _keypad_tween: Tween
+var _status_material: StandardMaterial3D
 
 @onready var door: MeshInstance3D = $DoorPivot/Door
 @onready var keypad: MeshInstance3D = $DoorPivot/Keypad
@@ -12,7 +15,7 @@ var _keypad_tween: Tween
 
 
 func _ready() -> void:
-	keypad.material_override = keypad.material_override.duplicate() as Material
+	_status_material = Affordance.add_keypad_face(keypad)
 	access_card.visible = false
 
 
@@ -41,7 +44,7 @@ func interact(_player: Node) -> void:
 func _flash_keypad(color: Color) -> void:
 	if _keypad_tween and _keypad_tween.is_valid():
 		_keypad_tween.kill()
-	var material := keypad.material_override as StandardMaterial3D
+	var material := _status_material
 	if material:
 		material.albedo_color = color
 		material.emission_enabled = true
@@ -50,6 +53,6 @@ func _flash_keypad(color: Color) -> void:
 	_keypad_tween.tween_interval(0.65)
 	_keypad_tween.tween_callback(func() -> void:
 		if material:
-			material.albedo_color = Color(0.08, 0.45, 0.55)
-			material.emission = Color(0.04, 0.25, 0.32)
+			material.albedo_color = Color("63b9ac")
+			material.emission = Color("63b9ac")
 	)

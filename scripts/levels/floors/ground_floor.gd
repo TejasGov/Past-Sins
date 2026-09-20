@@ -32,7 +32,7 @@ func _ready() -> void:
 	g.box("CafeteriaZone", Vector3(-5.0, 0.02, 2), Vector3(22, 0.05, 28), Color("555548"), false)
 	g.partition_with_door("ServingKitchenAccess", Vector3(8.0, 0, -5.675), 30.35, false, 3.675, 1.6, wall_color)
 
-	var cafeteria_light := Color("e5e4c7")
+	var cafeteria_light := Color("f0d38d")
 	g.ceiling_light("CafeteriaLightNorthWest", Vector3(-9, 3.5, -9), cafeteria_light, 1.0, 8.0)
 	g.ceiling_light("CafeteriaLightNorthEast", Vector3(1, 3.5, -9), cafeteria_light, 1.0, 8.0)
 	g.ceiling_light("CafeteriaLightSouthWest", Vector3(-9, 3.5, 8), cafeteria_light, 1.0, 8.0)
@@ -67,6 +67,15 @@ func _ready() -> void:
 	g.cctv_camera("GroundCamCafeteriaSE", Vector3(16.85, 3.4, 8.0), 0, -35.0, -25.0, 90.0) # Wall
 	g.cctv_camera("GroundCamIntake", Vector3(10.5, 3.4, 17.5), 1, -90.0, -30.0) # Ceiling
 	g.cctv_camera("GroundCamYardAccess", Vector3(0.0, 3.4, 19.5), 1, 0.0, -25.0) # Ceiling
+
+	# Warm golden mood lights for moody institutional corridors
+	var mood_gold := Color("c4a55c")
+	g.ceiling_light("MoodLightCommonWest", Vector3(-12, 3.45, 10), mood_gold, 0.5, 5.5, Vector3(0.9, 0.07, 0.25))
+	g.ceiling_light("MoodLightCommonEast", Vector3(-2, 3.45, 10), mood_gold, 0.5, 5.5, Vector3(0.9, 0.07, 0.25))
+	g.ceiling_light("MoodLightYardApproach", Vector3(0, 3.45, 17), mood_gold, 0.45, 5.0, Vector3(0.7, 0.07, 0.25))
+	g.ceiling_light("MoodLightCheckpoint", Vector3(7, 3.45, 15), mood_gold, 0.45, 5.0, Vector3(0.7, 0.07, 0.25))
+	g.ceiling_light("MoodLightStairLanding", Vector3(13.5, 3.45, 10), mood_gold, 0.4, 4.5, Vector3(0.7, 0.07, 0.25))
+	g.ceiling_light("MoodLightNorthHall", Vector3(0, 3.45, -18), mood_gold, 0.4, 5.0, Vector3(0.7, 0.07, 0.25))
 
 	# Signage
 	g.sign("CAFETERIA", Vector3(-5, 2.9, -20.7), Vector3(0, 0, 0), Color("d2dedc"), 0.008)

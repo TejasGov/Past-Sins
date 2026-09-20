@@ -140,6 +140,7 @@ func create_migration_anchor(anchor_name: String, position: Vector3) -> Marker3D
 
 func _create_sign(sign_name: String, parent_node: Node3D, pos: Vector3, text: String, rot_deg: Vector3) -> void:
 	var label := Label3D.new()
+	label.double_sided = false
 	label.name = sign_name
 	label.text = text
 	label.position = pos

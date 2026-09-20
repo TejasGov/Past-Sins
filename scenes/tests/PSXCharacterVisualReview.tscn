@@ -1,0 +1,54 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/tests/psx_character_visual_review.gd" id="1_script"]
+
+[sub_resource type="Environment" id="Environment_review"]
+background_mode = 1
+background_color = Color(0.035, 0.045, 0.048, 1)
+ambient_light_source = 3
+ambient_light_color = Color(0.46, 0.5, 0.48, 1)
+ambient_light_energy = 0.75
+
+[sub_resource type="BoxMesh" id="BoxMesh_floor"]
+size = Vector3(4, 0.08, 3)
+
+[sub_resource type="StandardMaterial3D" id="Material_floor"]
+albedo_color = Color(0.13, 0.15, 0.15, 1)
+roughness = 0.92
+
+[sub_resource type="BoxShape3D" id="BoxShape_floor"]
+size = Vector3(4, 0.08, 3)
+
+[node name="PSXCharacterVisualReview" type="Node3D"]
+script = ExtResource("1_script")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_review")
+
+[node name="Floor" type="StaticBody3D" parent="."]
+
+[node name="Mesh" type="MeshInstance3D" parent="Floor"]
+position = Vector3(0, -0.04, 0)
+mesh = SubResource("BoxMesh_floor")
+material_override = SubResource("Material_floor")
+
+[node name="Collision" type="CollisionShape3D" parent="Floor"]
+position = Vector3(0, -0.04, 0)
+shape = SubResource("BoxShape_floor")
+
+[node name="KeyLight" type="DirectionalLight3D" parent="."]
+rotation_degrees = Vector3(-48, -28, 0)
+light_color = Color(0.82, 0.88, 0.8, 1)
+light_energy = 1.35
+shadow_enabled = true
+
+[node name="Fill" type="OmniLight3D" parent="."]
+position = Vector3(-1.6, 1.5, 2.0)
+light_color = Color(0.55, 0.68, 0.72, 1)
+light_energy = 4.0
+omni_range = 5.0
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.988936, 0.14834, 0, -0.14834, 0.988936, 0, 1.12, 4.45)
+current = true
+fov = 42.0

@@ -1,6 +1,7 @@
 extends Node3D
 
 const Factory := preload("res://scripts/levels/greybox_factory.gd")
+const COURT_CONCRETE := preload("res://materials/props/court_concrete.tres")
 const YARD_BENCH := preload("res://scenes/props/yard/YardBench.tscn")
 const PULL_UP_BAR := preload("res://scenes/props/gym/PullUpBar.tscn")
 const PARALLEL_BARS := preload("res://scenes/props/yard/ParallelBars.tscn")
@@ -96,7 +97,7 @@ func _build_court() -> void:
 	var g = Factory.new(self, VISUAL_LAYER)
 	var court := Color("514238")
 	var marking := Color("c9c3a2")
-	g.box("BasketballCourt", Vector3(-8.5, 0.025, 17), Vector3(15.5, 0.05, 23.0), court, false)
+	g.box("BasketballCourt", Vector3(-8.5, 0.025, 17), Vector3(15.5, 0.05, 23.0), court, false, COURT_CONCRETE)
 	# Low-cost line markings use shallow unlit-looking strips instead of decals.
 	g.box("CourtNorthLine", Vector3(-8.5, 0.055, 5.6), Vector3(15.2, 0.012, 0.08), marking, false)
 	g.box("CourtSouthLine", Vector3(-8.5, 0.055, 28.4), Vector3(15.2, 0.012, 0.08), marking, false)
@@ -170,9 +171,18 @@ func _build_security_details() -> void:
 	_place(OBSERVATION_POST, "SouthEastObservationPost", Vector3(24.5, 0, 47.0), 180, "Yard Security")
 	_place(OFFICER_GAZEBO, "OfficerGazebo", Vector3(-14.5, 0, 40.5), 0, "Yard Officer Area")
 	_place(YARD_SECURITY_POST, "YardSecurityPost", Vector3(21.0, 0, 8.5), 180, "Yard Security")
-	_place(CCTV, "WestYardCamera", Vector3(-26.75, 3.8, 17.0), -90, "Yard Security")
-	_place(CCTV, "EastYardCamera", Vector3(26.75, 3.8, 17.0), 90, "Yard Security")
-	_place(CCTV, "SouthYardCamera", Vector3(0, 3.8, 49.75), 0, "Yard Security")
+	# Pole-mounted yard cameras — placed at ground level with visible support
+	# poles reaching up to surveillance height. Previously these floated at y=3.8
+	# because default WALL mount has no surface against the perimeter wire fence.
+	var west_cam := _place(CCTV, "WestYardCamera", Vector3(-26.75, 0, 17.0), -90, "Yard Security") as CCTVCamera
+	west_cam.mount_type = CCTVCamera.MountType.POLE
+	west_cam.pole_height = 3.8
+	var east_cam := _place(CCTV, "EastYardCamera", Vector3(26.75, 0, 17.0), 90, "Yard Security") as CCTVCamera
+	east_cam.mount_type = CCTVCamera.MountType.POLE
+	east_cam.pole_height = 3.8
+	var south_cam := _place(CCTV, "SouthYardCamera", Vector3(0, 0, 49.75), 0, "Yard Security") as CCTVCamera
+	south_cam.mount_type = CCTVCamera.MountType.POLE
+	south_cam.pole_height = 3.8
 	_place(SEARCHLIGHT, "YardSearchlightWest", Vector3(-24.0, 0, 47.0), 20, "Yard Security")
 	_place(SEARCHLIGHT, "YardSearchlightEast", Vector3(24.0, 0, 47.0), -20, "Yard Security")
 	var g = Factory.new(self, VISUAL_LAYER)
@@ -180,12 +190,17 @@ func _build_security_details() -> void:
 		g.box("YardLightPole_%s_%s" % [item[0], item[2]], Vector3(item[0], item[1] * 0.5, item[2]), Vector3(0.14, item[1], 0.14), Color("343b39"))
 		g.box("YardLightArm_%s_%s" % [item[0], item[2]], Vector3(item[0], item[1], item[2] + 0.3), Vector3(0.12, 0.12, 0.7), Color("343b39"), false)
 		g.emissive_box("YardLightFixture_%s_%s" % [item[0], item[2]], Vector3(item[0], item[1], item[2] + 0.65), Vector3(0.55, 0.12, 0.28), Color("d9d2b3"), 0.7)
-		var light := OmniLight3D.new()
+		# Four existing supported fixtures form sodium pools on the path; no
+		# omnidirectional yard wash and no extra shadow-map budget in this legacy yard.
+		var light := SpotLight3D.new()
 		light.name = "YardLight_%s_%s" % [item[0], item[2]]
 		light.position = Vector3(item[0], item[1] - 0.15, item[2] + 0.65)
-		light.light_color = Color("d9d2b3")
-		light.light_energy = 0.5
-		light.omni_range = 10.0
+		light.rotation_degrees.x = -90.0
+		light.light_color = Color("ffcf8d")
+		light.light_energy = 2.0
+		light.spot_range = 9.0
+		light.spot_angle = 46.0
+		light.spot_angle_attenuation = 1.2
 		light.light_cull_mask = VISUAL_LAYER
 		light.shadow_enabled = false
 		add_child(light)

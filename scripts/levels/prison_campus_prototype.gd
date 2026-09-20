@@ -83,7 +83,7 @@ func _create_ground_base() -> void:
 	var box_mesh := BoxMesh.new()
 	box_mesh.size = Vector3(156, 0.4, 188)
 	mesh_inst.mesh = box_mesh
-	mesh_inst.material_override = preload("res://materials/props/concrete.tres")
+	mesh_inst.material_override = preload("res://materials/props/yard_green.tres")
 	ground_body.add_child(mesh_inst)
 
 	var shape_inst := CollisionShape3D.new()
@@ -118,11 +118,11 @@ func _spawn_watchtowers() -> void:
 
 	# 8 Strategic Watchtower Placements (all ladders facing safely into compound)
 	var tower_configs := [
-		{"name": "NorthWestPerimeterTower", "pos": Vector3(-66, 0, -80), "ladder_rot": 39.0, "light": true, "beam_rot": 39.0},
+		{"name": "NorthWestPerimeterTower", "pos": Vector3(-66, 0, -80), "ladder_rot": 39.0, "light": true, "beam_rot": 39.0, "beam_pitch": 45.0},
 		{"name": "NorthEastPerimeterTower", "pos": Vector3(66, 0, -80), "ladder_rot": -39.0, "light": false, "beam_rot": -39.0},
 		{"name": "SouthWestPerimeterTower", "pos": Vector3(-66, 0, 80), "ladder_rot": 141.0, "light": false, "beam_rot": 141.0},
-		{"name": "SouthEastPerimeterTower", "pos": Vector3(66, 0, 80), "ladder_rot": -141.0, "light": true, "beam_rot": -141.0},
-		{"name": "CentralYardNorthTower", "pos": Vector3(25, 0, -36.5), "ladder_rot": -35.0, "light": true, "beam_rot": -35.0},
+		{"name": "SouthEastPerimeterTower", "pos": Vector3(66, 0, 80), "ladder_rot": -141.0, "light": true, "beam_rot": -141.0, "beam_pitch": 45.0},
+		{"name": "CentralYardNorthTower", "pos": Vector3(25, 0, -36.5), "ladder_rot": -35.0, "light": true, "beam_rot": -35.0, "beam_pitch": 32.0},
 		{"name": "CentralYardSouthTower", "pos": Vector3(-25, 0, 36.5), "ladder_rot": 145.0, "light": false, "beam_rot": 145.0},
 		{"name": "ServiceLoadingTower", "pos": Vector3(-66, 0, -72), "ladder_rot": 49.0, "light": false, "beam_rot": 49.0},
 		{"name": "CellhouseBSecurityTower", "pos": Vector3(66, 0, -38), "ladder_rot": -66.0, "light": false, "beam_rot": -66.0}
@@ -135,6 +135,9 @@ func _spawn_watchtowers() -> void:
 		tower.set("ladder_rotation_y", cfg["ladder_rot"])
 		tower.set("light_enabled", cfg["light"])
 		tower.set("searchlight_yaw_degrees", cfg["beam_rot"])
+		# Steeper service-road pools stop before the neighboring shells. The
+		# yard fixture reaches beyond its fence to illuminate the exercise pad.
+		tower.set("searchlight_depression_degrees", cfg.get("beam_pitch", 32.0))
 		watchtowers_group.add_child(tower)
 
 
@@ -187,9 +190,11 @@ func _create_excavated_ground() -> void:
 	var visual_regions: Array[Rect2] = regions.duplicate()
 	for finished_floor in [Rect2(-71.6, -16.6, 43.2, 33.2), Rect2(32.9, -22.0, 34.2, 44.0), Rect2(-66.5, -67.6, 37, 32.2), Rect2(-66.1, 35.4, 36.2, 32.2), Rect2(30.9, -67.6, 34.2, 32.2), Rect2(30.9, 35.4, 34.2, 32.2), Rect2(-19.1, 59.5, 38.2, 23), Rect2(-71, -55.5, 4, 8)]:
 		visual_regions = _subtract_visual_rect(visual_regions, finished_floor)
+	var grass_mat := preload("res://materials/props/yard_green.tres")
 	for region in visual_regions:
 		var center := region.get_center()
-		factory.box("ExposedGround", Vector3(center.x, -0.2, center.y), Vector3(region.size.x, 0.4, region.size.y), Color("757b70"), false)
+		var visual: MeshInstance3D = factory.box("ExposedGround", Vector3(center.x, -0.2, center.y), Vector3(region.size.x, 0.4, region.size.y), Color("757b70"), false)
+		visual.material_override = grass_mat
 
 
 func _subtract_visual_rect(regions: Array[Rect2], hole: Rect2) -> Array[Rect2]:

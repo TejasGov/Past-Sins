@@ -1,5 +1,6 @@
 extends Node3D
 class_name CampusGuardElevatorCore
+const WOOD_FURNITURE := preload("res://materials/props/wood_furniture.tres")
 
 const Factory := preload("res://scripts/levels/greybox_factory.gd")
 const NORMAL_DOOR_SCENE := preload("res://scenes/interactables/NormalDoor.tscn")
@@ -15,6 +16,12 @@ const HEIGHT := 3.55
 func _ready() -> void:
 	add_to_group("campus_guard_elevator_cores")
 	set_meta("campus_floor_number", floor_number)
+	# Local western room bounds, excluding the adjacent elevator bay. Consumed
+	# by environment zoning and the tier's reused lighting source.
+	add_to_group("environment_rooms")
+	set_meta("lighting_type", "office")
+	set_meta("environment_bounds", AABB(Vector3(-WIDTH * 0.5, 0, -DEPTH * 0.5), Vector3(WIDTH * 0.5 + 0.1, HEIGHT, DEPTH)))
+	set_meta("lighting_anchor", Vector3(-1.2, HEIGHT - 0.32, -0.4))
 	_build_core()
 
 
@@ -29,6 +36,14 @@ func _build_core() -> void:
 	# tier, so the elevator shaft and guard quarters remain vertically aligned.
 	g.box("CoreFloor", Vector3(0, -0.06, 0), Vector3(WIDTH, 0.12, DEPTH), floor_color)
 	g.box("CoreCeiling", Vector3(0, HEIGHT, 0), Vector3(WIDTH, 0.14, DEPTH), wall_color)
+	# Underside of the ceiling is HEIGHT - 0.07. This backplate touches it;
+	# the horizontal diffuser is supported directly below, never floating.
+	g.box("GuardCeilingLightBackplate", Vector3(-1.2, HEIGHT - 0.10, -0.4), Vector3(1.45, 0.06, 0.24), Color("7b8179"), false)
+	var profile := preload("res://scripts/systems/interior_lighting_profiles.gd").get_profile("office")
+	var diffuser: MeshInstance3D = g.emissive_box("GuardCeilingLightDiffuser", Vector3(-1.2, HEIGHT - 0.145, -0.4), Vector3(1.32, 0.03, 0.17), profile.color, 0.72)
+	diffuser.add_to_group("campus_indoor_light_visuals")
+	diffuser.set_meta("automatic_night_light", true)
+	diffuser.set_meta("always_on", profile.always_on)
 	g.box("RearWall", Vector3(0, HEIGHT * 0.5, -DEPTH * 0.5), Vector3(WIDTH, HEIGHT, 0.2), wall_color)
 	g.box("WestWall", Vector3(-WIDTH * 0.5, HEIGHT * 0.5, 0), Vector3(0.2, HEIGHT, DEPTH), wall_color)
 	g.box("EastWall", Vector3(WIDTH * 0.5, HEIGHT * 0.5, 0), Vector3(0.2, HEIGHT, DEPTH), wall_color)
@@ -93,7 +108,7 @@ func _build_guard_furniture(g, security_color: Color) -> void:
 	var paper_color := Color("c0bca7")
 
 	# Four-legged desk with a drawer pedestal, rather than a single block.
-	g.box("GuardDeskTop", Vector3(-1.3, 0.76, -1.45), Vector3(1.62, 0.12, 0.68), Color("69716c"))
+	g.box("GuardDeskTop", Vector3(-1.3, 0.76, -1.45), Vector3(1.62, 0.12, 0.68), Color("69716c"), true, WOOD_FURNITURE)
 	var desk_leg_index := 0
 	for x_offset in [-0.7, 0.7]:
 		for z_offset in [-0.25, 0.25]:

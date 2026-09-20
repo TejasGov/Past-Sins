@@ -1,0 +1,67 @@
+[gd_scene load_steps=9 format=3]
+
+[ext_resource type="Script" path="res://scripts/weapons/slingshot_projectile.gd" id="1_projectile"]
+[sub_resource type="CylinderMesh" id="NailMesh"]
+top_radius = 0.025
+bottom_radius = 0.05
+height = 0.42
+radial_segments = 6
+[sub_resource type="StandardMaterial3D" id="NailMaterial"]
+albedo_color = Color(0.36, 0.39, 0.4, 1)
+metallic = 0.75
+roughness = 0.35
+
+[sub_resource type="StandardMaterial3D" id="TrailMaterial"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(1, 0.78, 0.30, 0.82)
+emission_enabled = true
+emission = Color(0.52, 0.31, 0.08, 1)
+emission_energy_multiplier = 1.15
+
+[sub_resource type="BoxMesh" id="TrailMesh"]
+size = Vector3(0.026, 0.026, 0.72)
+
+[sub_resource type="SphereMesh" id="TracerTipMesh"]
+radius = 0.052
+height = 0.104
+radial_segments = 8
+rings = 4
+
+[sub_resource type="BoxMesh" id="TracerFinHorizontal"]
+size = Vector3(0.12, 0.018, 0.025)
+
+[sub_resource type="BoxMesh" id="TracerFinVertical"]
+size = Vector3(0.018, 0.12, 0.025)
+
+[node name="SlingshotProjectile" type="Node3D"]
+script = ExtResource("1_projectile")
+[node name="Nail" type="MeshInstance3D" parent="."]
+rotation_degrees = Vector3(90, 0, 0)
+mesh = SubResource("NailMesh")
+material_override = SubResource("NailMaterial")
+cast_shadow = 0
+
+[node name="FlightTrail" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0, 0.43)
+mesh = SubResource("TrailMesh")
+material_override = SubResource("TrailMaterial")
+cast_shadow = 0
+
+[node name="TracerTip" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0, -0.23)
+mesh = SubResource("TracerTipMesh")
+material_override = SubResource("TrailMaterial")
+cast_shadow = 0
+
+[node name="TracerFinHorizontal" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0, -0.23)
+mesh = SubResource("TracerFinHorizontal")
+material_override = SubResource("TrailMaterial")
+cast_shadow = 0
+
+[node name="TracerFinVertical" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0, -0.23)
+mesh = SubResource("TracerFinVertical")
+material_override = SubResource("TrailMaterial")
+cast_shadow = 0

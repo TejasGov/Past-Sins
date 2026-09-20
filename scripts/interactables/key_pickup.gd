@@ -11,6 +11,8 @@ func _ready() -> void:
 	collision_layer = 1 << 2
 	collision_mask = 0
 	$PickupVisual/KeyLabel.text = display_name.to_upper()
+	# A real painted access tag, not a whole glowing/floating light source.
+	$PickupVisual/AccessCard.material_override = preload("res://materials/props/hazard_yellow.tres")
 	collected = AccessManager.has_key(key_id)
 	visible = not collected
 	monitorable = not collected

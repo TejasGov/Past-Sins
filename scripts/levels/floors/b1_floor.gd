@@ -22,9 +22,9 @@ func _ready() -> void:
 	g.partition_with_door("MedicalSouthDivider", Vector3(-9.675, 0, 1.5), 14.35, true, 5.675, 1.5, wall_color)
 	g.supported_surface("TreatmentDesk", Vector3(-12, 0, -17.5), Vector2(3.0, 0.9), 0.92, 0.16, medical_color, Color("69716e"))
 
-	var clinical_light := Color("f1f3ed")
-	g.ceiling_light("MedicalLightNorth", Vector3(-10.5, 3.5, -13.5), clinical_light, 1.2, 7.0)
-	g.ceiling_light("MedicalLightSouth", Vector3(-10.5, 3.5, -5.0), clinical_light, 1.2, 7.0)
+	var clinical_light := Color("f0d38d")
+	g.ceiling_light("MedicalLightNorth", Vector3(-10.5, 3.5, -13.5), clinical_light, 1.1, 7.0)
+	g.ceiling_light("MedicalLightSouth", Vector3(-10.5, 3.5, -5.0), clinical_light, 1.1, 7.0)
 
 	# Metal Detector Checkpoint at Medical Service Gateway
 	g.metal_detector("B1MedicalMetalDetector", Vector3(-2.5, 0, 1.5), 90.0)
@@ -45,7 +45,7 @@ func _ready() -> void:
 	g.partition_with_door("UtilityRoomDivider", Vector3(-9.0, 0, 17.175), 7.35, false, -0.675, 1.4, wall_color)
 	g.box("ServiceEquipment", Vector3(-11.5, 1.1, 16.5), Vector3(4.5, 2.2, 1.1), Color("606663"))
 
-	var kitchen_light := Color("ddd9bc")
+	var kitchen_light := Color("f0d38d")
 	g.ceiling_light("KitchenLightNorth", Vector3(10.0, 3.5, -13.0), kitchen_light, 1.0, 7.0)
 	g.ceiling_light("KitchenLightSouth", Vector3(10.0, 3.5, -5.0), kitchen_light, 1.0, 7.0)
 
@@ -59,6 +59,14 @@ func _ready() -> void:
 	g.cctv_camera("B1CamMedicalWing", Vector3(-16.85, 3.4, -18.5), 0, 35.0, -25.0, -90.0) # Wall
 	g.cctv_camera("B1CamKitchenPrep", Vector3(16.85, 3.4, -14.0), 0, -35.0, -25.0, 90.0) # Wall
 	g.cctv_camera("B1CamStairwell", Vector3(15.5, 3.4, 18.0), 1, 180.0, -30.0) # Ceiling
+
+	# Warm golden mood lights for moody institutional corridors
+	var mood_gold := Color("c4a55c")
+	g.ceiling_light("B1MoodLightCorridorN", Vector3(0, 3.45, -16), mood_gold, 0.5, 5.5, Vector3(0.7, 0.07, 0.25))
+	g.ceiling_light("B1MoodLightCorridorS", Vector3(0, 3.45, -3), mood_gold, 0.45, 5.0, Vector3(0.7, 0.07, 0.25))
+	g.ceiling_light("B1MoodLightServiceW", Vector3(-8, 3.45, 14), mood_gold, 0.4, 5.0, Vector3(0.7, 0.07, 0.25))
+	g.ceiling_light("B1MoodLightServiceE", Vector3(5, 3.45, 14), mood_gold, 0.4, 5.0, Vector3(0.7, 0.07, 0.25))
+	g.ceiling_light("B1MoodLightStairwell", Vector3(13.5, 3.45, 16), mood_gold, 0.35, 4.5, Vector3(0.7, 0.07, 0.25))
 
 	# Signage
 	g.sign("MEDICAL", Vector3(-2.65, 2.35, -10), Vector3(0, -90, 0), Color("8ad3cf"))

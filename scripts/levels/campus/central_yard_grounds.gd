@@ -5,6 +5,7 @@ class_name CentralYardGrounds
 
 const YARD_SURFACE := preload("res://materials/props/concrete.tres")
 const COURT_MAT := preload("res://materials/props/court_surface.tres")
+const COURT_CONCRETE := preload("res://materials/props/court_concrete.tres")
 const FENCE_MAT := preload("res://materials/props/painted_metal.tres")
 const SECURITY_DARK := preload("res://materials/props/security_dark.tres")
 const YARD_GREEN := preload("res://materials/props/yard_green.tres")
@@ -19,10 +20,12 @@ func _build_yard() -> void:
 	_create_mesh("YardFloorSlab", Vector3(0, 0.005, 0), Vector3(52, 0.01, 54), YARD_SURFACE)
 
 	# 2. Basketball Court Markings Surface
-	_create_mesh("BasketballCourtPad", Vector3(-14, 0.01, 0), Vector3(16, 0.01, 24), COURT_MAT)
+	_create_mesh("BasketballCourtPad", Vector3(-14, 0.01, 0), Vector3(16, 0.01, 24), COURT_CONCRETE)
 
 	# 3. Outdoor Exercise Area Pad
-	_create_mesh("ExerciseEquipmentPad", Vector3(14, 0.01, -12), Vector3(16, 0.01, 16), SECURITY_DARK)
+	# Exercise supports must silhouette against their pad at night; a black
+	# pad and black equipment erased the usable station under the old lighting.
+	_create_mesh("ExerciseEquipmentPad", Vector3(14, 0.01, -12), Vector3(16, 0.01, 16), YARD_SURFACE)
 
 	# 4. Garden Plot
 	_create_mesh("GardenPlotSurface", Vector3(14, 0.01, 12), Vector3(16, 0.01, 16), YARD_GREEN)

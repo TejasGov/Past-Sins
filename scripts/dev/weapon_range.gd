@@ -1,8 +1,8 @@
 extends Node3D
 class_name WeaponRange
 
-## Permanent dev-only environment. The pistol is the sole functional weapon;
-## every other equipment/melee/firearm display remains a data-only placeholder.
+## Permanent dev-only environment. Implemented firearms, knife and slingshot
+## occupy real rack slots; unimplemented equipment remains a labeled placeholder.
 const PLAYER_SCENE := preload("res://scenes/player/Player.tscn")
 const RETURN_TERMINAL_SCENE := preload("res://scenes/dev/DevReturnTerminal.tscn")
 const RESET_CONTROL_SCENE := preload("res://scenes/dev/DevRangeResetControl.tscn")
@@ -10,7 +10,22 @@ const DAMAGE_DUMMY_SCENE := preload("res://scenes/dev/DamageableHumanDummy.tscn"
 const INVENTORY_PICKUP_SCENE := preload("res://scenes/dev/DevInventoryPickup.tscn")
 const FIREARM_PICKUP_SCENE := preload("res://scenes/weapons/FirearmPickup.tscn")
 const FIREARM_CONTROL_SCENE := preload("res://scenes/dev/DevRangeFirearmControl.tscn")
+const MELEE_PICKUP_SCENE := preload("res://scenes/weapons/MeleePickup.tscn")
+const SLINGSHOT_PICKUP_SCENE := preload("res://scenes/weapons/SlingshotPickup.tscn")
+const AMMO_PICKUP_SCENE := preload("res://scenes/weapons/SlingshotAmmoPickup.tscn")
+const BREAKABLE_LIGHT_SCENE := preload("res://scenes/dev/SlingshotBreakableLight.tscn")
+const EQUIPMENT_PICKUP_SCENE := preload("res://scenes/equipment/EquipmentPickup.tscn")
 const PISTOL_DEFINITION: FirearmDefinition = preload("res://resources/weapons/pistol.tres")
+const SMG_DEFINITION: FirearmDefinition = preload("res://resources/weapons/smg.tres")
+const CARBINE_DEFINITION: FirearmDefinition = preload("res://resources/weapons/carbine_ar.tres")
+const SNIPER_DEFINITION: FirearmDefinition = preload("res://resources/weapons/sniper_rifle.tres")
+const KNIFE_DEFINITION: MeleeDefinition = preload("res://resources/weapons/kitchen_knife.tres")
+const SLINGSHOT_DEFINITION: SlingshotDefinition = preload("res://resources/weapons/improvised_slingshot.tres")
+const NORMAL_NAIL: ItemDefinition = preload("res://resources/items/slingshot_nail.tres")
+const TOXIN_NAIL: ItemDefinition = preload("res://resources/items/slingshot_nail_toxin.tres")
+const MONOCULAR_DEFINITION: ItemDefinition = preload("res://resources/items/monocular.tres")
+const PROPER_SUPPRESSOR: SuppressorDefinition = preload("res://resources/items/proper_suppressor.tres")
+const MAKESHIFT_SUPPRESSOR: SuppressorDefinition = preload("res://resources/items/makeshift_suppressor.tres")
 const Factory := preload("res://scripts/levels/greybox_factory.gd")
 
 const FLOOR_COLOR := Color("646b6e")
@@ -46,7 +61,10 @@ func _ready() -> void:
 	_register_point(&"weapon_range_equipment", "Equipment Displays", $EquipmentSpawn)
 	_register_point(&"weapon_range_firing", "Firing Line", $FiringSpawn)
 	_register_point(&"weapon_range_damage", "Damage Dummy Stations", $DamageSpawn)
+	_register_point(&"weapon_range_melee", "Melee Reset Target", $MeleeSpawn)
 	_register_point(&"weapon_range_stealth", "Stealth Test Room", $StealthSpawn)
+	var observation_spawn := get_node_or_null("ObservationSpawn") as Marker3D
+	if observation_spawn: _register_point(&"weapon_range_observation", "Monocular Observation Lane", observation_spawn)
 
 
 func _build_range() -> void:
@@ -56,11 +74,18 @@ func _build_range() -> void:
 	g.outer_walls(50, 94, 5.0, WALL_COLOR)
 	_build_zone_boundaries(g)
 	_build_equipment_display(g)
+	_build_monocular_pickup()
+	_build_suppressor_pickups()
 	_build_inventory_test_pickups()
 	_build_pistol_pickup()
+	_build_smg_pickup()
+	_build_carbine_pickup()
+	_build_sniper_pickup()
+	_build_melee_pickups()
 	_build_firing_range(g)
 	_build_damage_area(g)
 	_build_stealth_area(g)
+	_build_observation_area(g)
 	_build_control_wall(g)
 	_build_lighting(g)
 	_build_return_terminal()
@@ -87,8 +112,72 @@ func _build_equipment_display(g) -> void:
 	g.sign("EQUIPMENT DISPLAY AREA // EMPTY PLACEHOLDERS", Vector3(-12.8, 3.35, 45.7), Vector3(0, 180, 0), LABEL_COLOR, 0.004)
 
 	_add_display_table(g, "FirearmsDisplay", Vector3(-12.8, 0, 39.5), "FIREARMS", ["PISTOL", "SMG", "CARBINE AR", "SNIPER"])
-	_add_display_table(g, "MeleeDisplay", Vector3(-12.8, 0, 34.2), "MELEE", ["KNIFE", "HAMMER"])
-	_add_display_table(g, "EquipmentDisplay", Vector3(-12.8, 0, 28.9), "EQUIPMENT", ["MONOCULAR", "WIRE NOOSE", "TRANQUILIZER\nINJECTOR", "MAKESHIFT\nSUPPRESSOR", "PROPER\nSUPPRESSOR"])
+	_add_display_table(g, "MeleeDisplay", Vector3(-12.8, 0, 34.2), "IMPROVISED / MELEE", ["KNIFE", "SLINGSHOT"])
+	_add_display_table(g, "EquipmentDisplay", Vector3(-12.8, 0, 28.9), "EQUIPMENT", ["MONOCULAR", "TRANQUILIZER\nINJECTOR", "MAKESHIFT\nSUPPRESSOR", "PROPER\nSUPPRESSOR"])
+	# The three abstract firearm slot-test tokens stay available without sharing
+	# space or labels with the real weapon pickups. This single-piece shelf is
+	# visibly fixed to the west wall and adds almost no rendering overhead.
+	g.box("DevLoadoutTokenShelf", Vector3(-24.0, 0.84, 33.0), Vector3(1.7, 0.12, 13.0), STRUCTURE_COLOR)
+
+
+func _build_monocular_pickup() -> void:
+	var pickup := EQUIPMENT_PICKUP_SCENE.instantiate() as Node3D
+	pickup.name = "MonocularPickup"
+	pickup.definition = MONOCULAR_DEFINITION
+	pickup.position = Vector3(-21.6, 0.92, 28.9)
+	$Interactables.add_child(pickup)
+
+
+func _build_suppressor_pickups() -> void:
+	var entries := [
+		[MAKESHIFT_SUPPRESSOR, Vector3(-9.8, 0.92, 28.9)],
+		[PROPER_SUPPRESSOR, Vector3(-3.8, 0.92, 28.9)],
+	]
+	for entry in entries:
+		var pickup := EQUIPMENT_PICKUP_SCENE.instantiate() as EquipmentPickup
+		pickup.name = "%sPickup" % (entry[0] as SuppressorDefinition).display_name.to_pascal_case()
+		pickup.definition = entry[0] as SuppressorDefinition
+		pickup.position = entry[1] as Vector3
+		pickup.add_to_group("weapon_range_suppressor_pickups")
+		$Interactables.add_child(pickup)
+
+
+func _build_observation_area(g) -> void:
+	var station := Node3D.new()
+	station.name = "MonocularObservationArea"
+	station.add_to_group("weapon_range_station")
+	station.set_meta("station_id", "observation")
+	$Stations.add_child(station)
+	# A separate dev-only annex provides honest measured sightlines without
+	# stretching or interfering with the firearm lanes.
+	g.box("ObservationFloor", Vector3(32, -0.12, -3), Vector3(13.5, 0.24, 120), FLOOR_COLOR)
+	g.box("ObservationCeiling", Vector3(32, 4.9, -3), Vector3(13.5, 0.24, 120), WALL_COLOR)
+	g.box("ObservationWestWall", Vector3(25.25, 2.5, -3), Vector3(0.3, 5.0, 120), WALL_COLOR)
+	g.box("ObservationEastWall", Vector3(38.75, 2.5, -3), Vector3(0.3, 5.0, 120), WALL_COLOR)
+	g.box("ObservationNorthWall", Vector3(32, 2.5, -63), Vector3(13.5, 5.0, 0.3), WALL_COLOR)
+	g.box("ObservationSouthWall", Vector3(32, 2.5, 57), Vector3(13.5, 5.0, 0.3), WALL_COLOR)
+	var spawn := Marker3D.new(); spawn.name = "ObservationSpawn"; spawn.position = Vector3(32, 0.95, 49); add_child(spawn)
+	g.sign("MONOCULAR OBSERVATION LANE // 4 SELECT // HOLD RMB VIEW // WHEEL ZOOM", Vector3(32, 3.5, 54), Vector3(0, 180, 0), LABEL_COLOR, 0.0032)
+	var labels := ["15 M - ALPHA", "30 M - BRAVO", "60 M - CHARLIE", "100 M - DELTA"]
+	var distances := [15.0, 30.0, 60.0, 100.0]
+	var target_x := [29.0, 35.0, 29.7, 34.3]
+	for index in range(distances.size()):
+		var center := Vector3(target_x[index], 0, 49.0 - distances[index])
+		g.box("ObservationTarget%02d" % index, center + Vector3(0, 1.65, 0), Vector3(3.4, 2.6, 0.12), Color("d6d4c7"))
+		g.box("ObservationMark%02d" % index, center + Vector3(0, 1.65, 0.08), Vector3(0.55, 0.55, 0.04), Color("3e6d62"), false)
+		var sign: Label3D = g.sign(labels[index], center + Vector3(0, 3.25, 0.08), Vector3.ZERO, LABEL_COLOR, 0.0045)
+		sign.add_to_group("monocular_observation_targets")
+		sign.set_meta("distance_m", distances[index])
+	# Listener markers share the measured annex and expose exact radii without
+	# adding sound simulation or AI. The firearm HUD reports the active radius.
+	for distance in [10, 25, 50, 100]:
+		var marker := Marker3D.new()
+		marker.name = "SoundListener%03dM" % distance
+		marker.position = Vector3(37.7, 1.2, 49.0 - float(distance))
+		marker.add_to_group("weapon_range_sound_listeners")
+		marker.set_meta("distance_m", distance)
+		$Stations.add_child(marker)
+		g.sign("%d M SOUND LISTENER" % distance, marker.position + Vector3(0, 1.0, 0), Vector3(0, 90, 0), Color("7fc9ad"), 0.0022)
 
 
 func _add_display_table(g, piece_name: String, center: Vector3, heading: String, labels: Array[String]) -> void:
@@ -97,8 +186,8 @@ func _add_display_table(g, piece_name: String, center: Vector3, heading: String,
 	var usable_width := 18.0
 	for index in range(labels.size()):
 		var x := center.x if labels.size() == 1 else center.x - usable_width * 0.5 + usable_width * float(index) / float(labels.size() - 1)
-		if piece_name == "FirearmsDisplay" and index == 0:
-			# The real data-driven pistol pickup replaces this former empty rack card.
+		if (piece_name == "FirearmsDisplay" and index <= 3) or piece_name == "MeleeDisplay":
+			# Implemented data-driven firearms replace their empty rack cards.
 			continue
 		g.box("%sEmptySlot%02d" % [piece_name, index], Vector3(x, 0.99, center.z), Vector3(1.35, 0.05, 0.72), Color("30383c"), false)
 		g.box("%sSlotPlaque%02d" % [piece_name, index], Vector3(x, 1.27, center.z + 0.075), Vector3(1.75, 0.46, 0.045), Color("20282c"), false)
@@ -109,8 +198,8 @@ func _build_inventory_test_pickups() -> void:
 	# These colored data tokens validate carry rules only; they are intentionally
 	# not weapon models and expose no use/attack behavior.
 	var positions := [
-		Vector3(-15.8, 0.9, 39.5), Vector3(-9.8, 0.9, 39.5), Vector3(-3.8, 0.9, 39.5),
-		Vector3(-16.4, 0.9, 34.2), Vector3(-9.2, 0.9, 34.2),
+		Vector3(-24.0, 0.9, 38.0), Vector3(-24.0, 0.9, 35.5), Vector3(-24.0, 0.9, 33.0),
+		Vector3(-24.0, 0.9, 30.5), Vector3(-24.0, 0.9, 28.0),
 		Vector3(-16.4, 0.9, 28.9), Vector3(-9.2, 0.9, 28.9),
 	]
 	for index in range(INVENTORY_TEST_ITEMS.size()):
@@ -130,6 +219,53 @@ func _build_pistol_pickup() -> void:
 	pickup.position = Vector3(-21.8, 0.9, 39.95)
 	pickup.add_to_group("weapon_range_pistol_pickups")
 	$Interactables.add_child(pickup)
+
+
+func _build_smg_pickup() -> void:
+	var pickup := FIREARM_PICKUP_SCENE.instantiate() as FirearmPickup
+	pickup.name = "SMGPickup"
+	pickup.definition = SMG_DEFINITION
+	pickup.position = Vector3(-15.8, 0.9, 39.95)
+	pickup.add_to_group("weapon_range_smg_pickups")
+	$Interactables.add_child(pickup)
+
+
+func _build_carbine_pickup() -> void:
+	var pickup := FIREARM_PICKUP_SCENE.instantiate() as FirearmPickup
+	pickup.name = "CarbineARPickup"
+	pickup.definition = CARBINE_DEFINITION
+	pickup.position = Vector3(-9.8, 0.9, 39.95)
+	pickup.add_to_group("weapon_range_carbine_pickups")
+	$Interactables.add_child(pickup)
+
+
+func _build_sniper_pickup() -> void:
+	var pickup := FIREARM_PICKUP_SCENE.instantiate() as FirearmPickup
+	pickup.name = "SniperRiflePickup"
+	pickup.definition = SNIPER_DEFINITION
+	pickup.position = Vector3(-3.8, 0.9, 39.95)
+	pickup.add_to_group("weapon_range_sniper_pickups")
+	$Interactables.add_child(pickup)
+
+
+func _build_melee_pickups() -> void:
+	var data := [
+		["KitchenKnifePickup", KNIFE_DEFINITION, Vector3(-16.4, 0.9, 34.65)],
+		["ImprovisedSlingshotPickup", SLINGSHOT_DEFINITION, Vector3(-9.2, 0.9, 34.65)],
+	]
+	for entry in data:
+		var pickup := (SLINGSHOT_PICKUP_SCENE.instantiate() if entry[1] is SlingshotDefinition else MELEE_PICKUP_SCENE.instantiate()) as MeleePickup
+		pickup.name = String(entry[0])
+		pickup.definition = entry[1] as MeleeDefinition
+		pickup.position = entry[2] as Vector3
+		pickup.add_to_group("weapon_range_melee_pickups")
+		$Interactables.add_child(pickup)
+	for ammo_data in [[NORMAL_NAIL, Vector3(-11.0, 0.9, 32.8)], [TOXIN_NAIL, Vector3(-7.5, 0.9, 32.8)]]:
+		var ammo_pickup := AMMO_PICKUP_SCENE.instantiate() as SlingshotAmmoPickup
+		ammo_pickup.item_definition = ammo_data[0] as ItemDefinition
+		ammo_pickup.quantity = 12
+		ammo_pickup.position = ammo_data[1] as Vector3
+		$Interactables.add_child(ammo_pickup)
 
 
 func _build_firing_range(g) -> void:
@@ -194,15 +330,46 @@ func _build_damage_area(g) -> void:
 	]
 	for entry in dummy_data:
 		_add_damage_dummy(String(entry[0]), int(entry[1]), Vector3(float(entry[2]), 0, 11.5))
+	_add_damage_dummy("MELEE RESET TARGET", ArmorTypes.Type.NONE, Vector3(-3.0, 0, 16.0))
+	var inmate := _add_damage_dummy("INMATE TOXIN TARGET", ArmorTypes.Type.NONE, Vector3(-20.0, 0, 6.5))
+	inmate.toxin_role = ToxinStatusComponent.TargetRole.INMATE
+	inmate.toxin_status.configure(inmate.health, inmate.toxin_role)
+	var guard := _add_damage_dummy("GUARD TOXIN TARGET", ArmorTypes.Type.STANDARD_VEST, Vector3(-13.0, 0, 6.5))
+	guard.toxin_role = ToxinStatusComponent.TargetRole.GUARD
+	guard.toxin_status.configure(guard.health, guard.toxin_role)
+	_add_impact_surface("ConcreteImpactSurface", &"CONCRETE", Vector3(-7.0, 1.35, 6.5), Color("777b78"), "CONCRETE IMPACT")
+	_add_impact_surface("MetalImpactSurface", &"METAL", Vector3(-4.8, 1.35, 6.5), Color("59646a"), "METAL IMPACT")
+	var light := BREAKABLE_LIGHT_SCENE.instantiate() as SlingshotBreakableLight
+	light.position = Vector3(-2.4, 1.5, 6.5)
+	$Stations.add_child(light)
 
 
-func _add_damage_dummy(label_text: String, vest_type: ArmorTypes.Type, center: Vector3) -> void:
+func _add_damage_dummy(label_text: String, vest_type: ArmorTypes.Type, center: Vector3) -> DamageableHumanDummy:
 	var dummy := DAMAGE_DUMMY_SCENE.instantiate() as DamageableHumanDummy
 	dummy.name = label_text.to_pascal_case().validate_node_name()
 	dummy.target_label = label_text
 	dummy.armor_type = vest_type
 	dummy.position = center
 	$Stations.add_child(dummy)
+	return dummy
+
+
+func _add_impact_surface(piece_name: String, surface_type: StringName, center: Vector3, color: Color, label_text: String) -> StaticBody3D:
+	var body := StaticBody3D.new()
+	body.name = piece_name
+	body.position = center
+	body.collision_layer = 1
+	body.set_meta("surface_type", surface_type)
+	var mesh_instance := MeshInstance3D.new()
+	var mesh := BoxMesh.new(); mesh.size = Vector3(1.6, 2.7, 0.22)
+	mesh_instance.mesh = mesh
+	var material := StandardMaterial3D.new(); material.albedo_color = color; material.roughness = 0.8
+	mesh_instance.material_override = material
+	body.add_child(mesh_instance)
+	var collider := CollisionShape3D.new(); var shape := BoxShape3D.new(); shape.size = mesh.size; collider.shape = shape; body.add_child(collider)
+	var label := Label3D.new(); label.text = label_text; label.position = Vector3(0, 1.7, 0); label.font_size = 28; label.pixel_size = 0.002; label.billboard = BaseMaterial3D.BILLBOARD_ENABLED; body.add_child(label)
+	$Stations.add_child(body)
+	return body
 
 
 func _build_stealth_area(g) -> void:

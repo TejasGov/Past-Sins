@@ -7,6 +7,12 @@ class_name CampusBlueprintFloor
 const Factory := preload("res://scripts/levels/greybox_factory.gd")
 const NORMAL_DOOR := preload("res://scenes/interactables/NormalDoor.tscn")
 const SECURITY_GATE := preload("res://scenes/levels/campus/modules/CampusTelescopicGate.tscn")
+const CELL_LAMP_SCENE := preload("res://scenes/props/prison/CellLamp.tscn")
+const LIGHTING := preload("res://scripts/systems/interior_lighting_profiles.gd")
+const FLOOR_FINISHES := {
+	"gym_rubber": preload("res://materials/props/gym_rubber.tres"),
+	"tile_shower": preload("res://materials/props/tile_shower.tres"),
+}
 
 @export var plan_id := "food-ground"
 @export var furnishings_enabled := true
@@ -150,6 +156,8 @@ func _build_boundaries() -> void:
 			var pos := point(middle, line.fixed, low + height * 0.5) if line.axis == "x" else point(line.fixed, middle, low + height * 0.5)
 			var size := Vector3(finish - start, height, WALL_THICKNESS) if line.axis == "x" else Vector3(WALL_THICKNESS, height, finish - start)
 			var piece: MeshInstance3D = _g.box("Header" if opening else "RoomWall", pos, size, _wall_color())
+			if plan_id.begins_with("cellhouse-b"):
+				piece.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON
 			piece.add_to_group("campus_structural_walls")
 
 func _wall_color() -> Color:
@@ -162,25 +170,49 @@ func _wall_color() -> Color:
 func _build_rooms() -> void:
 	var largest_room_area := 0.0
 	var night_light_anchor := Vector3.ZERO
+	var primary_room_type := "office"
 	for data in plan.rooms:
 		var room: Node3D = rooms[String(data.id)]
 		var rtype := String(data.type)
+		var lighting_type := String(data.get("lighting_type", rtype))
 		var center := room.position
 		var size := Vector3(float(data.w), 0.2, float(data.d))
 		if rtype not in ["stair", "lift", "void"]:
-			_g.box("Floor_" + String(data.id), center + Vector3(0, -0.1, 0), size, Color("626861"))
-			_g.box("Ceiling_" + String(data.id), center + Vector3(0, story_height - 0.1, 0), size, _wall_color().darkened(0.1))
-			# Fixture back plate touches the slab underside, never suspended
-			# at an arbitrary world height or across a stair void.
+			var floor_mesh: MeshInstance3D = _g.box("Floor_" + String(data.id), center + Vector3(0, -0.1, 0), size, Color("626861"))
+			# Finish-only assignment; existing slabs, thresholds and collision stay intact.
+			var finish_id := String(data.get("floor_finish", ""))
+			if FLOOR_FINISHES.has(finish_id):
+				floor_mesh.material_override = FLOOR_FINISHES[finish_id]
+			var ceiling_mesh: MeshInstance3D = _g.box("Ceiling_" + String(data.id), center + Vector3(0, story_height - 0.1, 0), size, _wall_color().darkened(0.1))
+			if plan_id.begins_with("cellhouse-b"):
+				floor_mesh.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON
+				ceiling_mesh.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON
 			var mount_y := story_height - 0.24
-			_g.box("LightBackplate", center + Vector3(0, mount_y, 0), Vector3(minf(float(data.w) - 0.4, 1.5), 0.08, 0.24), Color("535c55"), false)
-			var diffuser: MeshInstance3D = _g.emissive_box("FluorescentDiffuser", center + Vector3(0, mount_y - 0.05, 0), Vector3(minf(float(data.w) - 0.45, 1.4), 0.025, 0.19), Color("e1e7d9"), 0.8)
-			diffuser.add_to_group("campus_indoor_light_visuals")
-			diffuser.set_meta("automatic_night_light", true)
+			room.set_meta("lighting_anchor", Vector3(0, mount_y - 0.35, 0))
+			var profile := LIGHTING.get_profile(lighting_type)
+			if rtype == "cell":
+				# Entrance-side wall position avoids the central tall locker and
+				# remains reachable with the normal interaction ray.
+				var lamp := CELL_LAMP_SCENE.instantiate() as CellLamp
+				lamp.name = "CellTubeLight_" + String(data.id)
+				var entrance_side := 1.0 if String(data.id).begins_with("n") else -1.0
+				lamp.position = center + Vector3(entrance_side * 1.3, 2.05, -float(data.d) * 0.5 + WALL_THICKNESS * 0.5)
+				lamp.local_light_enabled = true
+				lamp.breakable = false
+				_geometry.add_child(lamp)
+			else:
+				# Fixture back plate touches the slab underside, never suspended
+				# at an arbitrary world height or across a stair void.
+				_g.box("LightBackplate", center + Vector3(0, mount_y, 0), Vector3(minf(float(data.w) - 0.4, 1.5), 0.08, 0.24), Color("535c55"), false)
+				var diffuser: MeshInstance3D = _g.emissive_box("FluorescentDiffuser", center + Vector3(0, mount_y - 0.05, 0), Vector3(minf(float(data.w) - 0.45, 1.4), 0.025, 0.19), profile.color, 0.8)
+				diffuser.add_to_group("campus_indoor_light_visuals")
+				diffuser.set_meta("automatic_night_light", true)
+				diffuser.set_meta("always_on", profile.always_on)
 			var area := float(data.w) * float(data.d)
 			if area > largest_room_area:
 				largest_room_area = area
 				night_light_anchor = center + Vector3(0, mount_y - 0.35, 0)
+				primary_room_type = lighting_type
 		if furnishings_enabled and rtype not in ["stair", "lift", "void"]:
 			var openings: Array = []
 			for d in door_records:
@@ -193,12 +225,8 @@ func _build_rooms() -> void:
 	var night_light := OmniLight3D.new()
 	night_light.name = "AutomaticInteriorLight"
 	night_light.position = night_light_anchor
-	night_light.light_color = Color("dce3d5")
-	# A single unshadowed light covers the storey, so give it enough energy to
-	# keep work surfaces readable against the deliberately dark night ambient.
-	night_light.light_energy = 2.4
+	LIGHTING.apply_to_light(night_light, primary_room_type)
 	night_light.omni_range = maxf(float(plan.width), float(plan.depth)) * 0.62
-	night_light.omni_attenuation = 1.65
 	night_light.shadow_enabled = false
 	night_light.visible = false
 	add_child(night_light)

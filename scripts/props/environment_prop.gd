@@ -38,6 +38,7 @@ const INSTITUTIONAL_PLASTIC := preload("res://materials/props/institutional_plas
 const DARK_RUBBER := preload("res://materials/props/dark_rubber.tres")
 const DIRTY_OFF_WHITE := preload("res://materials/props/dirty_off_white.tres")
 const SECURITY_DARK := preload("res://materials/props/security_dark.tres")
+const WOOD_FURNITURE := preload("res://materials/props/wood_furniture.tres")
 
 @export var prop_kind: PropKind = PropKind.TRASH_BIN
 @export_flags_3d_render var visual_layer_mask := 1
@@ -165,7 +166,7 @@ func _build_bench(outdoor: bool) -> void:
 
 
 func _build_table() -> void:
-	_box("Tabletop", Vector3(0, 0.78, 0), Vector3(1.65, 0.14, 0.9), DIRTY_OFF_WHITE)
+	_box("Tabletop", Vector3(0, 0.78, 0), Vector3(1.65, 0.14, 0.9), WOOD_FURNITURE)
 	_four_legs("Table", 0.66, 0.3, 0.71, PAINTED_METAL, 0.11)
 	_box("LongBrace", Vector3(0, 0.58, 0), Vector3(1.35, 0.08, 0.08), PAINTED_METAL, false)
 
@@ -330,10 +331,9 @@ func _build_lab_workbench() -> void:
 
 
 func _build_workshop_bench() -> void:
-	_box("Worktop", Vector3(0, 0.91, 0), Vector3(2.4, 0.18, 0.82), PAINTED_METAL)
+	_box("Worktop", Vector3(0, 0.91, 0), Vector3(2.4, 0.18, 0.82), WOOD_FURNITURE)
 	_four_legs("Workshop", 1.0, 0.31, 0.82, SECURITY_DARK, 0.12)
 	_box("LowerShelf", Vector3(0, 0.3, 0), Vector3(2.0, 0.1, 0.62), PAINTED_METAL)
 	_box("Pegboard", Vector3(0, 1.52, -0.36), Vector3(2.3, 1.0, 0.08), CONCRETE, false)
 	for x in [-0.65, 0.0, 0.65]:
 		_box("Tool%s" % x, Vector3(x, 1.55, -0.305), Vector3(0.08, 0.48, 0.04), STAINLESS_STEEL, false, Vector3(0, 0, deg_to_rad(18 * x)))
-

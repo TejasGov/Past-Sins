@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="SuppressorDefinition" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/weapons/suppressor_definition.gd" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/weapons/visuals/MakeshiftSuppressor.tscn" id="2"]
+
+[resource]
+script = ExtResource("1")
+item_id = &"makeshift_suppressor"
+display_name = "Makeshift Suppressor"
+category = 2
+stackable = false
+dev_only = true
+suppressor_type = 1
+compatible_weapon_ids = Array[StringName]([&"pistol", &"smg"])
+noise_radius_multiplier = 0.46
+muzzle_flash_multiplier = 0.42
+max_magazine_uses = 4
+visual_length = 0.68
+attachment_visual_scene = ExtResource("2")
+world_visual_scene = ExtResource("2")

@@ -5,6 +5,9 @@ class_name Watchtower
 @export var light_enabled: bool = false
 @export var ladder_rotation_y: float = 0.0
 @export var searchlight_yaw_degrees: float = 0.0
+@export_range(20.0, 65.0, 1.0) var searchlight_depression_degrees := 32.0
+@export_range(12.0, 35.0, 1.0) var searchlight_cone_degrees := 24.0
+@export_range(15.0, 50.0, 1.0) var searchlight_range := 38.0
 @export_flags_3d_render var visual_layer_mask: int = 1
 
 const SECURITY_DARK := preload("res://materials/props/security_dark.tres")
@@ -73,6 +76,8 @@ func _build_watchtower() -> void:
 	glass_mat.albedo_color = Color("102028")
 	glass_mat.metallic = 0.9
 	glass_mat.roughness = 0.1
+	glass_mat.uv1_triplanar = true
+	glass_mat.uv1_scale = Vector3.ONE * 0.5
 	for angle in [0, 90, 180, 270]:
 		var radians := deg_to_rad(float(angle))
 		var slit_position := Vector3(sin(radians) * 1.61, cabin_y + 0.3, cos(radians) * 1.61)
@@ -117,12 +122,12 @@ func _build_deck_railings(deck_top_y: float) -> void:
 	var half_w := 2.2
 	for angle in [0, 90, 180, 270]:
 		var rot := Vector3(0, deg_to_rad(float(angle)), 0)
-		var top_rail := _create_box("RailingTop_%d" % angle, Vector3(0, deck_top_y + rail_height, half_w), Vector3(4.4, 0.06, 0.06), PAINTED_METAL, rot)
-		var mid_rail := _create_box("RailingMid_%d" % angle, Vector3(0, deck_top_y + rail_height * 0.5, half_w), Vector3(4.4, 0.04, 0.04), PAINTED_METAL, rot)
+		var top_rail := _create_box("RailingTop_%d" % angle, Vector3(0, deck_top_y + rail_height, half_w).rotated(Vector3.UP, rot.y), Vector3(4.4, 0.06, 0.06), PAINTED_METAL, rot)
+		var mid_rail := _create_box("RailingMid_%d" % angle, Vector3(0, deck_top_y + rail_height * 0.5, half_w).rotated(Vector3.UP, rot.y), Vector3(4.4, 0.04, 0.04), PAINTED_METAL, rot)
 		add_child(top_rail)
 		add_child(mid_rail)
 		for px in [-2.1, 0, 2.1]:
-			var post := _create_box("RailPost_%d_%s" % [angle, px], Vector3(px, deck_top_y + rail_height * 0.5, half_w), Vector3(0.06, rail_height, 0.06), PAINTED_METAL, rot)
+			var post := _create_box("RailPost_%d_%s" % [angle, px], Vector3(px, deck_top_y + rail_height * 0.5, half_w).rotated(Vector3.UP, rot.y), Vector3(0.06, rail_height, 0.06), PAINTED_METAL, rot)
 			add_child(post)
 
 
@@ -154,36 +159,57 @@ func _build_ladder(rot_deg: float, height: float) -> void:
 func _build_searchlight(base_y: float) -> void:
 	_searchlight_fixture = Node3D.new()
 	_searchlight_fixture.name = "SearchlightFixture"
-	_searchlight_fixture.position = Vector3(0, base_y, 0)
+	var yaw := deg_to_rad(searchlight_yaw_degrees)
+	var forward := Vector3(sin(yaw), 0, cos(yaw))
+	# Seat the pedestal on the roof edge, with its lens just past the overhang.
+	# A centrally mounted downward beam otherwise hits its own opaque roof.
+	var edge_distance := 1.9 / maxf(absf(forward.x), absf(forward.z)) - 0.12
+	_searchlight_fixture.position = forward * edge_distance + Vector3(0, base_y, 0)
 	_searchlight_fixture.rotation_degrees.y = searchlight_yaw_degrees
 	add_child(_searchlight_fixture)
 
 	var pedestal := _create_cylinder("Pedestal", Vector3(0, 0.15, 0), 0.12, 0.3, SECURITY_DARK)
 	_searchlight_fixture.add_child(pedestal)
 
-	var housing := _create_box("LampHousing", Vector3(0, 0.45, 0), Vector3(0.45, 0.45, 0.55), PAINTED_METAL)
-	_searchlight_fixture.add_child(housing)
+	# Lens, housing and actual beam share one downward-facing gimbal. Godot
+	# spotlights emit along -Z; this prop's lens faces +Z. Keeping that explicit
+	# prevents the old horizontal/backward beam from lighting the sky/roof.
+	var gimbal := Node3D.new()
+	gimbal.name = "LampGimbal"
+	gimbal.position.y = 0.45
+	gimbal.rotation_degrees.x = searchlight_depression_degrees
+	_searchlight_fixture.add_child(gimbal)
+	var housing := _create_box("LampHousing", Vector3.ZERO, Vector3(0.45, 0.45, 0.55), PAINTED_METAL)
+	gimbal.add_child(housing)
 
 	_lens_material = StandardMaterial3D.new()
-	_lens_material.albedo_color = Color("ffffd0")
+	_lens_material.albedo_color = Color("c8c0a3")
 	_lens_material.emission_enabled = true
-	_lens_material.emission = Color("ffffcc")
+	_lens_material.emission = Color("ffe2aa")
 	_lens_material.emission_energy_multiplier = 0.15
-	var lens := _create_cylinder("LampLens", Vector3(0, 0.45, 0.28), 0.18, 0.04, _lens_material, Vector3(deg_to_rad(90), 0, 0))
-	_searchlight_fixture.add_child(lens)
+	_lens_material.uv1_triplanar = true
+	_lens_material.uv1_scale = Vector3.ONE * 0.5
+	var lens := _create_cylinder("LampLens", Vector3(0, 0, 0.28), 0.18, 0.04, _lens_material, Vector3(deg_to_rad(90), 0, 0))
+	lens.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	gimbal.add_child(lens)
 
 	if light_enabled:
 		_spotlight_node = SpotLight3D.new()
 		_spotlight_node.name = "SearchlightBeam"
-		_spotlight_node.position = Vector3(0, 0.45, 0.32)
-		_spotlight_node.light_color = Color("fff5d0")
-		_spotlight_node.light_energy = 2.5
-		_spotlight_node.spot_range = 35.0
-		_spotlight_node.spot_angle = 28.0
-		_spotlight_node.shadow_enabled = false
+		_spotlight_node.position = Vector3(0, 0, 0.32)
+		_spotlight_node.rotation.y = PI
+		_spotlight_node.light_color = Color("ffe1ac")
+		_spotlight_node.light_energy = 5.0
+		_spotlight_node.spot_range = searchlight_range
+		_spotlight_node.spot_angle = searchlight_cone_degrees
+		_spotlight_node.spot_attenuation = 0.6
+		_spotlight_node.spot_angle_attenuation = 1.5
+		_spotlight_node.shadow_enabled = true
+		_spotlight_node.shadow_bias = 0.035
+		_spotlight_node.add_to_group("campus_security_floodlights")
 		_spotlight_node.light_cull_mask = visual_layer_mask
 		_spotlight_node.visible = false
-		_searchlight_fixture.add_child(_spotlight_node)
+		gimbal.add_child(_spotlight_node)
 
 
 func set_searchlight_active(active: bool) -> void:
@@ -193,7 +219,14 @@ func set_searchlight_active(active: bool) -> void:
 	if _lens_material:
 		# Every tower reads as staffed after dark; only designated fixtures own a
 		# real SpotLight3D, preserving the campus Web lighting budget.
-		_lens_material.emission_energy_multiplier = 2.0 if active and light_enabled else (0.85 if active else 0.15)
+		_lens_material.emission_energy_multiplier = 2.4 if active and light_enabled else (0.4 if active else 0.0)
+
+func set_searchlight_shadow_enabled(enabled: bool) -> void:
+	## The beam remains visible on every staffed tower, but only the nearest
+	## exterior tower needs a real shadow map. Interior views keep these remote
+	## floodlights lit without paying for shadow passes through the whole campus.
+	if _spotlight_node:
+		_spotlight_node.shadow_enabled = enabled
 
 
 func _create_box(part_name: String, center: Vector3, size: Vector3, material: Material, rotation := Vector3.ZERO) -> MeshInstance3D:

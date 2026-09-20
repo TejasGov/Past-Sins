@@ -3,7 +3,8 @@ class_name RoadsAndPaths
 
 @export_flags_3d_render var visual_layer_mask: int = 1
 
-const ASPHALT_ROAD := preload("res://materials/props/security_dark.tres")
+const ASPHALT_ROAD := preload("res://materials/props/asphalt.tres")
+const GRAVEL_PATH := preload("res://materials/props/gravel.tres")
 const CONCRETE_PATH := preload("res://materials/props/concrete.tres")
 const CURB_MAT := preload("res://materials/props/painted_metal.tres")
 
@@ -83,7 +84,7 @@ func _create_path_segment(path_name: String, center: Vector3, size: Vector3) -> 
 	var box_mesh := BoxMesh.new()
 	box_mesh.size = size
 	instance.mesh = box_mesh
-	instance.material_override = CONCRETE_PATH
+	instance.material_override = GRAVEL_PATH
 	instance.position = center
 	instance.layers = visual_layer_mask
 	add_child(instance)

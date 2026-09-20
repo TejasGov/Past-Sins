@@ -1,0 +1,22 @@
+[gd_resource type="StandardMaterial3D" load_steps=5 format=3]
+
+[ext_resource type="Texture2D" path="res://textures/iron/iron_albedo.jpg" id="1_albedo"]
+[ext_resource type="Texture2D" path="res://textures/iron/iron_normal.jpg" id="2_normal"]
+[ext_resource type="Texture2D" path="res://textures/iron/iron_roughness.jpg" id="3_roughness"]
+[ext_resource type="Texture2D" path="res://textures/iron/iron_metalness.jpg" id="4_metallic"]
+
+[resource]
+resource_name = "Rusted Iron"
+uv1_triplanar = true
+uv1_world_triplanar = true
+uv1_scale = Vector3(0.6, 0.6, 0.6)
+albedo_color = Color(0.7, 0.66, 0.62, 1)
+albedo_texture = ExtResource("1_albedo")
+metallic = 0.75
+metallic_texture = ExtResource("4_metallic")
+roughness = 0.7
+roughness_texture = ExtResource("3_roughness")
+roughness_texture_channel = 0
+normal_enabled = true
+normal_scale = 1.2
+normal_texture = ExtResource("2_normal")

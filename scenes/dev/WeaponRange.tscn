@@ -9,7 +9,9 @@ background_mode = 1
 background_color = Color(0.015, 0.021, 0.024, 1)
 ambient_light_source = 3
 ambient_light_color = Color(0.62, 0.68, 0.67, 1)
-ambient_light_energy = 0.92
+ambient_light_energy = 0.28
+ambient_light_sky_contribution = 0.0
+fog_enabled = false
 reflected_light_source = 2
 tonemap_mode = 2
 
@@ -55,6 +57,10 @@ rotation_degrees = Vector3(0, 180, 0)
 
 [node name="DamageSpawn" type="Marker3D" parent="."]
 position = Vector3(-12.8, 0.95, 21.5)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="MeleeSpawn" type="Marker3D" parent="."]
+position = Vector3(-3, 0.95, 17.7)
 rotation_degrees = Vector3(0, 180, 0)
 
 [node name="StealthSpawn" type="Marker3D" parent="."]

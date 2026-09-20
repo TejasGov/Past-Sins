@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/weapons/carbine_ar_visual.gd" id="1_visual"]
+
+[node name="CarbineAR_FP" type="Node3D"]
+position = Vector3(0.32, -0.38, -0.92)
+rotation_degrees = Vector3(-1.5, -2.5, 0)
+scale = Vector3(0.72, 0.72, 0.72)
+script = ExtResource("1_visual")
+first_person = true

@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="SuppressorDefinition" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/weapons/suppressor_definition.gd" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/weapons/visuals/ProperSuppressor.tscn" id="2"]
+
+[resource]
+script = ExtResource("1")
+item_id = &"proper_suppressor"
+display_name = "Proper Suppressor"
+category = 2
+stackable = false
+dev_only = true
+suppressor_type = 0
+compatible_weapon_ids = Array[StringName]([&"carbine_ar", &"sniper_rifle"])
+noise_radius_multiplier = 0.3
+muzzle_flash_multiplier = 0.16
+max_magazine_uses = 0
+visual_length = 0.72
+attachment_visual_scene = ExtResource("2")
+world_visual_scene = ExtResource("2")
+

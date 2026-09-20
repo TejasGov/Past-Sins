@@ -50,6 +50,12 @@ const EXERCISE_MAT := preload("res://scenes/props/gym/ExerciseMat.tscn")
 const EXERCISE_BIKE := preload("res://scenes/props/gym/ExerciseBike.tscn")
 const CABLE_MACHINE := preload("res://scenes/props/gym/CableMachine.tscn")
 const PUNCHING_BAG := preload("res://scenes/props/gym/PunchingBag.tscn")
+const TREADMILL := preload("res://scenes/props/gym/Treadmill.tscn")
+const ROWING_MACHINE := preload("res://scenes/props/gym/RowingMachine.tscn")
+const LEG_PRESS := preload("res://scenes/props/gym/LegPress.tscn")
+const LAT_PULLDOWN := preload("res://scenes/props/gym/LatPulldown.tscn")
+const INCLINE_BENCH_PRESS := preload("res://scenes/props/gym/InclineBenchPress.tscn")
+const DIP_STATION := preload("res://scenes/props/gym/DipStation.tscn")
 const SHOWER_FLOOR := preload("res://scenes/props/prison/ShowerFloor.tscn")
 const SHOWER_FIXTURE := preload("res://scenes/props/prison/ShowerFixture.tscn")
 const SHOWER_HALF_WALL := preload("res://scenes/props/prison/ShowerHalfWall.tscn")
@@ -242,22 +248,63 @@ func _build_ground_dressing() -> void:
 
 
 func _build_floor_1_dressing() -> void:
-	_place(WEIGHT_BENCH, "GymWeightBenchWest", Vector3(-4.2, 0, 0.0), 0, 16, "Floor 1 Gym")
-	_place(WEIGHT_BENCH, "GymWeightBenchEast", Vector3(4.2, 0, 0.0), 0, 16, "Floor 1 Gym")
-	_place(FLAT_BENCH_PRESS, "GymFlatBenchPress", Vector3(-11.5, 0, -7.0), 0, 16, "Floor 1 Gym")
-	_place(SQUAT_RACK, "GymSquatRack", Vector3(-11.5, 0, -2.0), 0, 16, "Floor 1 Gym")
-	_place(DUMBBELL_RACK, "GymDumbbellRack", Vector3(-11.5, 0, 3.5), 0, 16, "Floor 1 Gym")
-	_place(WEIGHT_PLATES, "GymWeightPlateStack", Vector3(-14.3, 0, 4.0), 0, 16, "Floor 1 Gym")
-	_place(BARBELL, "GymSpareBarbell", Vector3(-14.0, 0, 7.0), 0, 16, "Floor 1 Gym")
+	# --- Free Weights & Strength Training (West Wing) ---
+	_place(FLAT_BENCH_PRESS, "GymFlatBenchPress", Vector3(-11.5, 0, -8.0), 0, 16, "Floor 1 Gym")
+	_place(INCLINE_BENCH_PRESS, "GymInclineBenchPress", Vector3(-11.5, 0, -5.0), 0, 16, "Floor 1 Gym")
+	_place(SQUAT_RACK, "GymSquatRack", Vector3(-11.5, 0, -1.5), 0, 16, "Floor 1 Gym")
+	_place(SQUAT_RACK, "GymSquatRack02", Vector3(-11.5, 0, 2.0), 0, 16, "Floor 1 Gym")
+	_place(DIP_STATION, "GymDipStation", Vector3(-11.5, 0, 5.5), 0, 16, "Floor 1 Gym")
 	_place(PULL_UP_BAR, "GymPullUpBar", Vector3(-11.5, 0, 8.5), 0, 16, "Floor 1 Gym")
-	_place(EXERCISE_BIKE, "GymExerciseBike", Vector3(11.5, 0, 7.0), 0, 16, "Floor 1 Gym")
-	_place(CABLE_MACHINE, "GymCableMachine", Vector3(11.5, 0, 2.5), 0, 16, "Floor 1 Gym")
-	_place(PUNCHING_BAG, "GymPunchingBag", Vector3(11.5, 0, -5.5), 0, 16, "Floor 1 Gym")
+
+	_place(DUMBBELL_RACK, "GymDumbbellRack", Vector3(-14.8, 0, -6.0), 90, 16, "Floor 1 Gym")
+	_place(DUMBBELL_RACK, "GymDumbbellRack02", Vector3(-14.8, 0, -2.5), 90, 16, "Floor 1 Gym")
+	_place(WEIGHT_PLATES, "GymWeightPlateStack", Vector3(-14.8, 0, 0.5), 0, 16, "Floor 1 Gym")
+	_place(WEIGHT_PLATES, "GymWeightPlateStack02", Vector3(-14.8, 0, 3.0), 0, 16, "Floor 1 Gym")
+	_place(BARBELL, "GymSpareBarbell", Vector3(-14.5, 0, 5.5), 0, 16, "Floor 1 Gym")
+	_place(BARBELL, "GymSpareBarbell02", Vector3(-14.5, 0, 7.5), 0, 16, "Floor 1 Gym")
+
+	# Keep the west bench outside the open Floor 1 -> Floor 2 stair lane.
+	_place(WEIGHT_BENCH, "GymWeightBenchWest", Vector3(-11.5, 0, -6.0), 0, 16, "Floor 1 Gym")
+	_place(WEIGHT_BENCH, "GymWeightBenchCenter", Vector3(-7.5, 0, -2.5), 0, 16, "Floor 1 Gym")
+	_place(WEIGHT_BENCH, "GymWeightBenchEast", Vector3(-7.5, 0, 1.5), 0, 16, "Floor 1 Gym")
+
+	# --- Cardio & Endurance Zone (East Wing) ---
+	_place(TREADMILL, "GymTreadmill01", Vector3(12.5, 0, -8.0), 0, 16, "Floor 1 Gym")
+	_place(TREADMILL, "GymTreadmill02", Vector3(12.5, 0, -5.5), 0, 16, "Floor 1 Gym")
+	_place(TREADMILL, "GymTreadmill03", Vector3(12.5, 0, -3.0), 0, 16, "Floor 1 Gym")
+	_place(TREADMILL, "GymTreadmill04", Vector3(12.5, 0, -0.5), 0, 16, "Floor 1 Gym")
+
+	_place(ROWING_MACHINE, "GymRowingMachine01", Vector3(10.2, 0, -6.5), 0, 16, "Floor 1 Gym")
+	_place(ROWING_MACHINE, "GymRowingMachine02", Vector3(10.2, 0, -3.0), 0, 16, "Floor 1 Gym")
+
+	_place(EXERCISE_BIKE, "GymExerciseBike", Vector3(12.5, 0, 2.5), 0, 16, "Floor 1 Gym")
+	_place(EXERCISE_BIKE, "GymExerciseBike02", Vector3(12.5, 0, 5.5), 0, 16, "Floor 1 Gym")
+
+	# --- Resistance & Cable Machines (South-East Zone) ---
+	_place(CABLE_MACHINE, "GymCableMachine", Vector3(11.5, 0, 8.5), 0, 16, "Floor 1 Gym")
+	_place(LAT_PULLDOWN, "GymLatPulldown", Vector3(5.5, 0, 8.5), 0, 16, "Floor 1 Gym")
+	_place(LEG_PRESS, "GymLegPress", Vector3(2.5, 0, 8.5), 0, 16, "Floor 1 Gym")
+	_place(PUNCHING_BAG, "GymPunchingBag", Vector3(14.5, 0, 8.5), 0, 16, "Floor 1 Gym")
+	_place(PUNCHING_BAG, "GymPunchingBag02", Vector3(14.5, 0, 5.0), 0, 16, "Floor 1 Gym")
+
+	# --- Core & Conditioning Mats ---
 	_place(EXERCISE_MAT, "GymExerciseMatWest", Vector3(-3.5, 0, 4.0), 0, 16, "Floor 1 Gym")
 	_place(EXERCISE_MAT, "GymExerciseMatEast", Vector3(3.5, 0, 4.0), 0, 16, "Floor 1 Gym")
+	_place(EXERCISE_MAT, "GymExerciseMatNorthWest", Vector3(-3.5, 0, 1.0), 0, 16, "Floor 1 Gym")
+	_place(EXERCISE_MAT, "GymExerciseMatNorthEast", Vector3(3.5, 0, 1.0), 0, 16, "Floor 1 Gym")
+
+	# --- Gym Amenities & Support Props ---
 	_place(DRINKING_FOUNTAIN, "GymWaterFountain", Vector3(-16.8, 0, 0.0), 90, 16, "Floor 1 Gym")
+	_place(DRINKING_FOUNTAIN, "GymWaterFountainEast", Vector3(16.8, 0, 0.0), -90, 16, "Floor 1 Gym")
 	_place(BENCH, "GymRestBench", Vector3(-14.0, 0, 10.0), 0, 16, "Floor 1 Gym")
-	_place(METAL_SHELVING, "GymTowelShelf", Vector3(15.7, 0, 8.0), -90, 16, "Floor 1 Gym")
+	_place(BENCH, "GymRestBenchNorth", Vector3(14.0, 0, -10.0), 0, 16, "Floor 1 Gym")
+	_place(METAL_SHELVING, "GymTowelShelf", Vector3(15.7, 0, -0.5), -90, 16, "Floor 1 Gym")
+	_place(METAL_SHELVING, "GymTowelShelfWest", Vector3(-15.7, 0, 9.5), 90, 16, "Floor 1 Gym")
+	_place(TRASH_BIN, "GymTrashBinNorth", Vector3(-15.5, 0, -10.5), 0, 16, "Floor 1 Gym")
+	_place(TRASH_BIN, "GymTrashBinSouth", Vector3(15.5, 0, 9.5), 0, 16, "Floor 1 Gym")
+	_place(WALL_CLOCK, "GymClockNorth", Vector3(0, 0, -11.85), 0, 16, "Floor 1 Gym")
+	_place(WALL_CLOCK, "GymClockSouth", Vector3(0, 0, 11.85), 180, 16, "Floor 1 Gym")
+
 	_place(SHOWER_FLOOR, "ShowerTileFloor", Vector3(6.5, 0, -16.5), 0, 16, "Floor 1 Showers")
 	for index in range(8):
 		var fixture_x := -2.5 + float(index) * 2.1

@@ -1,8 +1,20 @@
-[gd_resource type="StandardMaterial3D" format=3]
+[gd_resource type="StandardMaterial3D" load_steps=4 format=3]
+
+[ext_resource type="Texture2D" path="res://textures/metal/painted_metal_albedo.jpg" id="1_albedo"]
+[ext_resource type="Texture2D" path="res://textures/metal/painted_metal_normal.jpg" id="2_normal"]
+[ext_resource type="Texture2D" path="res://textures/metal/painted_metal_roughness.jpg" id="3_roughness"]
 
 [resource]
 resource_name = "Security Dark Gray"
-albedo_color = Color(0.105, 0.12, 0.115, 1)
-metallic = 0.2
+uv1_triplanar = true
+uv1_world_triplanar = true
+uv1_scale = Vector3(0.9, 0.9, 0.9)
+albedo_color = Color(0.28, 0.30, 0.29, 1)
+albedo_texture = ExtResource("1_albedo")
+metallic = 0.25
 roughness = 0.82
-
+roughness_texture = ExtResource("3_roughness")
+roughness_texture_channel = 0
+normal_enabled = true
+normal_scale = 0.85
+normal_texture = ExtResource("2_normal")

@@ -18,7 +18,8 @@
           "w": 5,
           "d": 5.7,
           "type": "cell",
-          "detail": "Wall-bracket bed; toilet and basin behind a low privacy wall; cupboard; empty wooden chair. Door opens into gallery."
+          "detail": "Wall-bracket bed; toilet and basin behind a low privacy wall; cupboard; empty wooden chair. Door opens into gallery.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "s0",
@@ -28,7 +29,8 @@
           "w": 5,
           "d": 5.7,
           "type": "cell",
-          "detail": "Same reusable furnished cell and keyed sliding bars."
+          "detail": "Same reusable furnished cell and keyed sliding bars.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "n1",
@@ -38,7 +40,8 @@
           "w": 5,
           "d": 5.7,
           "type": "cell",
-          "detail": "Wall-bracket bed; toilet and basin behind a low privacy wall; cupboard; empty wooden chair. Door opens into gallery."
+          "detail": "Wall-bracket bed; toilet and basin behind a low privacy wall; cupboard; empty wooden chair. Door opens into gallery.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "s1",
@@ -48,7 +51,8 @@
           "w": 5,
           "d": 5.7,
           "type": "cell",
-          "detail": "Same reusable furnished cell and keyed sliding bars."
+          "detail": "Same reusable furnished cell and keyed sliding bars.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "n2",
@@ -58,7 +62,8 @@
           "w": 5,
           "d": 5.7,
           "type": "cell",
-          "detail": "Wall-bracket bed; toilet and basin behind a low privacy wall; cupboard; empty wooden chair. Door opens into gallery."
+          "detail": "Wall-bracket bed; toilet and basin behind a low privacy wall; cupboard; empty wooden chair. Door opens into gallery.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "s2",
@@ -68,7 +73,8 @@
           "w": 5,
           "d": 5.7,
           "type": "cell",
-          "detail": "Same reusable furnished cell and keyed sliding bars."
+          "detail": "Same reusable furnished cell and keyed sliding bars.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "n3",
@@ -78,7 +84,8 @@
           "w": 5,
           "d": 5.7,
           "type": "cell",
-          "detail": "Wall-bracket bed; toilet and basin behind a low privacy wall; cupboard; empty wooden chair. Door opens into gallery."
+          "detail": "Wall-bracket bed; toilet and basin behind a low privacy wall; cupboard; empty wooden chair. Door opens into gallery.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "s3",
@@ -88,7 +95,8 @@
           "w": 5,
           "d": 5.7,
           "type": "cell",
-          "detail": "Same reusable furnished cell and keyed sliding bars."
+          "detail": "Same reusable furnished cell and keyed sliding bars.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "n4",
@@ -98,7 +106,8 @@
           "w": 5,
           "d": 5.7,
           "type": "cell",
-          "detail": "Wall-bracket bed; toilet and basin behind a low privacy wall; cupboard; empty wooden chair. Door opens into gallery."
+          "detail": "Wall-bracket bed; toilet and basin behind a low privacy wall; cupboard; empty wooden chair. Door opens into gallery.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "s4",
@@ -108,7 +117,8 @@
           "w": 5,
           "d": 5.7,
           "type": "cell",
-          "detail": "Same reusable furnished cell and keyed sliding bars."
+          "detail": "Same reusable furnished cell and keyed sliding bars.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "n5",
@@ -118,7 +128,8 @@
           "w": 5,
           "d": 5.7,
           "type": "cell",
-          "detail": "Wall-bracket bed; toilet and basin behind a low privacy wall; cupboard; empty wooden chair. Door opens into gallery."
+          "detail": "Wall-bracket bed; toilet and basin behind a low privacy wall; cupboard; empty wooden chair. Door opens into gallery.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "s5",
@@ -128,7 +139,8 @@
           "w": 5,
           "d": 5.7,
           "type": "cell",
-          "detail": "Same reusable furnished cell and keyed sliding bars."
+          "detail": "Same reusable furnished cell and keyed sliding bars.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "n6",
@@ -138,7 +150,8 @@
           "w": 5,
           "d": 5.7,
           "type": "cell",
-          "detail": "Wall-bracket bed; toilet and basin behind a low privacy wall; cupboard; empty wooden chair. Door opens into gallery."
+          "detail": "Wall-bracket bed; toilet and basin behind a low privacy wall; cupboard; empty wooden chair. Door opens into gallery.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "s6",
@@ -148,7 +161,8 @@
           "w": 5,
           "d": 5.7,
           "type": "cell",
-          "detail": "Same reusable furnished cell and keyed sliding bars."
+          "detail": "Same reusable furnished cell and keyed sliding bars.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "s7",
@@ -158,7 +172,8 @@
           "w": 5,
           "d": 5.7,
           "type": "cell",
-          "detail": "Same reusable furnished cell and keyed sliding bars."
+          "detail": "Same reusable furnished cell and keyed sliding bars.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "guard",
@@ -168,7 +183,8 @@
           "w": 2.6,
           "d": 5.7,
           "type": "staff",
-          "detail": "Detailed desk/radio, supported chair, locker, notice board. Door swings inward into a clear pocket."
+          "detail": "Detailed desk/radio, supported chair, locker, notice board. Door swings inward into a clear pocket.",
+          "lighting_type": "office"
         },
         {
           "id": "lift",
@@ -178,7 +194,8 @@
           "w": 2.4,
           "d": 3.2,
           "type": "lift",
-          "detail": "Same shaft footprint on all tiers. Sealed landing doors until lift implementation."
+          "detail": "Same shaft footprint on all tiers. Sealed landing doors until lift implementation.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "lobby",
@@ -188,7 +205,8 @@
           "w": 2.4,
           "d": 2.5,
           "type": "corridor",
-          "detail": "Clear waiting space; call panel; floor number."
+          "detail": "Clear waiting space; call panel; floor number.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "north",
@@ -198,7 +216,8 @@
           "w": 43,
           "d": 4,
           "type": "corridor",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "cellblock"
         },
         {
           "id": "south",
@@ -208,7 +227,8 @@
           "w": 43,
           "d": 4,
           "type": "corridor",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "cellblock"
         },
         {
           "id": "west",
@@ -218,7 +238,8 @@
           "w": 2.2,
           "d": 14,
           "type": "corridor",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "cellblock"
         },
         {
           "id": "east",
@@ -228,7 +249,8 @@
           "w": 2.2,
           "d": 14,
           "type": "corridor",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "cellblock"
         },
         {
           "id": "weststair",
@@ -238,7 +260,8 @@
           "w": 2.6,
           "d": 14,
           "type": "stair",
-          "detail": "Reserve the entire vertical clearance volume. Floor 2 has an open stairwell, not a covering slab."
+          "detail": "Reserve the entire vertical clearance volume. Floor 2 has an open stairwell, not a covering slab.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "eaststair",
@@ -248,7 +271,8 @@
           "w": 2.6,
           "d": 14,
           "type": "corridor",
-          "detail": "Floor 3 has a matching slab cutout; guard the outside bypass edge separately from the sloped stair rails."
+          "detail": "Floor 3 has a matching slab cutout; guard the outside bypass edge separately from the sloped stair rails.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "bridge",
@@ -258,7 +282,8 @@
           "w": 4.2,
           "d": 14,
           "type": "corridor",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "cellblock"
         },
         {
           "id": "voidw",
@@ -268,7 +293,8 @@
           "w": 14.6,
           "d": 14,
           "type": "open",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "cellblock"
         },
         {
           "id": "voide",
@@ -278,7 +304,8 @@
           "w": 14.6,
           "d": 14,
           "type": "open",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "cellblock"
         }
       ],
       "doors": [
@@ -618,7 +645,8 @@
           "w": 5,
           "d": 5.7,
           "type": "cell",
-          "detail": "Wall-bracket bed; toilet and basin behind a low privacy wall; cupboard; empty wooden chair. Door opens into gallery."
+          "detail": "Wall-bracket bed; toilet and basin behind a low privacy wall; cupboard; empty wooden chair. Door opens into gallery.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "s0",
@@ -628,7 +656,8 @@
           "w": 5,
           "d": 5.7,
           "type": "cell",
-          "detail": "Same reusable furnished cell and keyed sliding bars."
+          "detail": "Same reusable furnished cell and keyed sliding bars.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "n1",
@@ -638,7 +667,8 @@
           "w": 5,
           "d": 5.7,
           "type": "cell",
-          "detail": "Wall-bracket bed; toilet and basin behind a low privacy wall; cupboard; empty wooden chair. Door opens into gallery."
+          "detail": "Wall-bracket bed; toilet and basin behind a low privacy wall; cupboard; empty wooden chair. Door opens into gallery.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "s1",
@@ -648,7 +678,8 @@
           "w": 5,
           "d": 5.7,
           "type": "cell",
-          "detail": "Same reusable furnished cell and keyed sliding bars."
+          "detail": "Same reusable furnished cell and keyed sliding bars.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "n2",
@@ -658,7 +689,8 @@
           "w": 5,
           "d": 5.7,
           "type": "cell",
-          "detail": "Wall-bracket bed; toilet and basin behind a low privacy wall; cupboard; empty wooden chair. Door opens into gallery."
+          "detail": "Wall-bracket bed; toilet and basin behind a low privacy wall; cupboard; empty wooden chair. Door opens into gallery.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "s2",
@@ -668,7 +700,8 @@
           "w": 5,
           "d": 5.7,
           "type": "cell",
-          "detail": "Same reusable furnished cell and keyed sliding bars."
+          "detail": "Same reusable furnished cell and keyed sliding bars.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "n3",
@@ -678,7 +711,8 @@
           "w": 5,
           "d": 5.7,
           "type": "cell",
-          "detail": "Wall-bracket bed; toilet and basin behind a low privacy wall; cupboard; empty wooden chair. Door opens into gallery."
+          "detail": "Wall-bracket bed; toilet and basin behind a low privacy wall; cupboard; empty wooden chair. Door opens into gallery.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "s3",
@@ -688,7 +722,8 @@
           "w": 5,
           "d": 5.7,
           "type": "cell",
-          "detail": "Same reusable furnished cell and keyed sliding bars."
+          "detail": "Same reusable furnished cell and keyed sliding bars.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "n4",
@@ -698,7 +733,8 @@
           "w": 5,
           "d": 5.7,
           "type": "cell",
-          "detail": "Wall-bracket bed; toilet and basin behind a low privacy wall; cupboard; empty wooden chair. Door opens into gallery."
+          "detail": "Wall-bracket bed; toilet and basin behind a low privacy wall; cupboard; empty wooden chair. Door opens into gallery.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "s4",
@@ -708,7 +744,8 @@
           "w": 5,
           "d": 5.7,
           "type": "cell",
-          "detail": "Same reusable furnished cell and keyed sliding bars."
+          "detail": "Same reusable furnished cell and keyed sliding bars.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "n5",
@@ -718,7 +755,8 @@
           "w": 5,
           "d": 5.7,
           "type": "cell",
-          "detail": "Wall-bracket bed; toilet and basin behind a low privacy wall; cupboard; empty wooden chair. Door opens into gallery."
+          "detail": "Wall-bracket bed; toilet and basin behind a low privacy wall; cupboard; empty wooden chair. Door opens into gallery.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "s5",
@@ -728,7 +766,8 @@
           "w": 5,
           "d": 5.7,
           "type": "cell",
-          "detail": "Same reusable furnished cell and keyed sliding bars."
+          "detail": "Same reusable furnished cell and keyed sliding bars.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "n6",
@@ -738,7 +777,8 @@
           "w": 5,
           "d": 5.7,
           "type": "cell",
-          "detail": "Wall-bracket bed; toilet and basin behind a low privacy wall; cupboard; empty wooden chair. Door opens into gallery."
+          "detail": "Wall-bracket bed; toilet and basin behind a low privacy wall; cupboard; empty wooden chair. Door opens into gallery.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "s6",
@@ -748,7 +788,8 @@
           "w": 5,
           "d": 5.7,
           "type": "cell",
-          "detail": "Same reusable furnished cell and keyed sliding bars."
+          "detail": "Same reusable furnished cell and keyed sliding bars.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "s7",
@@ -758,7 +799,8 @@
           "w": 5,
           "d": 5.7,
           "type": "cell",
-          "detail": "Same reusable furnished cell and keyed sliding bars."
+          "detail": "Same reusable furnished cell and keyed sliding bars.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "guard",
@@ -768,7 +810,8 @@
           "w": 2.6,
           "d": 5.7,
           "type": "staff",
-          "detail": "Detailed desk/radio, supported chair, locker, notice board. Door swings inward into a clear pocket."
+          "detail": "Detailed desk/radio, supported chair, locker, notice board. Door swings inward into a clear pocket.",
+          "lighting_type": "office"
         },
         {
           "id": "lift",
@@ -778,7 +821,8 @@
           "w": 2.4,
           "d": 3.2,
           "type": "lift",
-          "detail": "Same shaft footprint on all tiers. Sealed landing doors until lift implementation."
+          "detail": "Same shaft footprint on all tiers. Sealed landing doors until lift implementation.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "lobby",
@@ -788,7 +832,8 @@
           "w": 2.4,
           "d": 2.5,
           "type": "corridor",
-          "detail": "Clear waiting space; call panel; floor number."
+          "detail": "Clear waiting space; call panel; floor number.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "north",
@@ -798,7 +843,8 @@
           "w": 43,
           "d": 4,
           "type": "corridor",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "cellblock"
         },
         {
           "id": "south",
@@ -808,7 +854,8 @@
           "w": 43,
           "d": 4,
           "type": "corridor",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "cellblock"
         },
         {
           "id": "west",
@@ -818,7 +865,8 @@
           "w": 2.2,
           "d": 14,
           "type": "corridor",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "cellblock"
         },
         {
           "id": "east",
@@ -828,7 +876,8 @@
           "w": 2.2,
           "d": 14,
           "type": "corridor",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "cellblock"
         },
         {
           "id": "weststair",
@@ -838,7 +887,8 @@
           "w": 2.6,
           "d": 14,
           "type": "stair",
-          "detail": "Reserve the entire vertical clearance volume. Floor 2 has an open stairwell, not a covering slab."
+          "detail": "Reserve the entire vertical clearance volume. Floor 2 has an open stairwell, not a covering slab.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "eaststair",
@@ -848,7 +898,8 @@
           "w": 2.6,
           "d": 14,
           "type": "stair",
-          "detail": "Floor 3 has a matching slab cutout; guard the outside bypass edge separately from the sloped stair rails."
+          "detail": "Floor 3 has a matching slab cutout; guard the outside bypass edge separately from the sloped stair rails.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "bridge",
@@ -858,7 +909,8 @@
           "w": 4.2,
           "d": 14,
           "type": "corridor",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "cellblock"
         },
         {
           "id": "voidw",
@@ -868,7 +920,8 @@
           "w": 14.6,
           "d": 14,
           "type": "void",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "office"
         },
         {
           "id": "voide",
@@ -878,7 +931,8 @@
           "w": 14.6,
           "d": 14,
           "type": "void",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "office"
         }
       ],
       "doors": [
@@ -1166,7 +1220,8 @@
           "w": 5,
           "d": 5.7,
           "type": "cell",
-          "detail": "Wall-bracket bed; toilet and basin behind a low privacy wall; cupboard; empty wooden chair. Door opens into gallery."
+          "detail": "Wall-bracket bed; toilet and basin behind a low privacy wall; cupboard; empty wooden chair. Door opens into gallery.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "s0",
@@ -1176,7 +1231,8 @@
           "w": 5,
           "d": 5.7,
           "type": "cell",
-          "detail": "Same reusable furnished cell and keyed sliding bars."
+          "detail": "Same reusable furnished cell and keyed sliding bars.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "n1",
@@ -1186,7 +1242,8 @@
           "w": 5,
           "d": 5.7,
           "type": "cell",
-          "detail": "Wall-bracket bed; toilet and basin behind a low privacy wall; cupboard; empty wooden chair. Door opens into gallery."
+          "detail": "Wall-bracket bed; toilet and basin behind a low privacy wall; cupboard; empty wooden chair. Door opens into gallery.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "s1",
@@ -1196,7 +1253,8 @@
           "w": 5,
           "d": 5.7,
           "type": "cell",
-          "detail": "Same reusable furnished cell and keyed sliding bars."
+          "detail": "Same reusable furnished cell and keyed sliding bars.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "n2",
@@ -1206,7 +1264,8 @@
           "w": 5,
           "d": 5.7,
           "type": "cell",
-          "detail": "Wall-bracket bed; toilet and basin behind a low privacy wall; cupboard; empty wooden chair. Door opens into gallery."
+          "detail": "Wall-bracket bed; toilet and basin behind a low privacy wall; cupboard; empty wooden chair. Door opens into gallery.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "s2",
@@ -1216,7 +1275,8 @@
           "w": 5,
           "d": 5.7,
           "type": "cell",
-          "detail": "Same reusable furnished cell and keyed sliding bars."
+          "detail": "Same reusable furnished cell and keyed sliding bars.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "n3",
@@ -1226,7 +1286,8 @@
           "w": 5,
           "d": 5.7,
           "type": "cell",
-          "detail": "Wall-bracket bed; toilet and basin behind a low privacy wall; cupboard; empty wooden chair. Door opens into gallery."
+          "detail": "Wall-bracket bed; toilet and basin behind a low privacy wall; cupboard; empty wooden chair. Door opens into gallery.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "s3",
@@ -1236,7 +1297,8 @@
           "w": 5,
           "d": 5.7,
           "type": "cell",
-          "detail": "Same reusable furnished cell and keyed sliding bars."
+          "detail": "Same reusable furnished cell and keyed sliding bars.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "n4",
@@ -1246,7 +1308,8 @@
           "w": 5,
           "d": 5.7,
           "type": "cell",
-          "detail": "Wall-bracket bed; toilet and basin behind a low privacy wall; cupboard; empty wooden chair. Door opens into gallery."
+          "detail": "Wall-bracket bed; toilet and basin behind a low privacy wall; cupboard; empty wooden chair. Door opens into gallery.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "s4",
@@ -1256,7 +1319,8 @@
           "w": 5,
           "d": 5.7,
           "type": "cell",
-          "detail": "Same reusable furnished cell and keyed sliding bars."
+          "detail": "Same reusable furnished cell and keyed sliding bars.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "n5",
@@ -1266,7 +1330,8 @@
           "w": 5,
           "d": 5.7,
           "type": "cell",
-          "detail": "Wall-bracket bed; toilet and basin behind a low privacy wall; cupboard; empty wooden chair. Door opens into gallery."
+          "detail": "Wall-bracket bed; toilet and basin behind a low privacy wall; cupboard; empty wooden chair. Door opens into gallery.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "s5",
@@ -1276,7 +1341,8 @@
           "w": 5,
           "d": 5.7,
           "type": "cell",
-          "detail": "Same reusable furnished cell and keyed sliding bars."
+          "detail": "Same reusable furnished cell and keyed sliding bars.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "n6",
@@ -1286,7 +1352,8 @@
           "w": 5,
           "d": 5.7,
           "type": "cell",
-          "detail": "Wall-bracket bed; toilet and basin behind a low privacy wall; cupboard; empty wooden chair. Door opens into gallery."
+          "detail": "Wall-bracket bed; toilet and basin behind a low privacy wall; cupboard; empty wooden chair. Door opens into gallery.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "s6",
@@ -1296,7 +1363,8 @@
           "w": 5,
           "d": 5.7,
           "type": "cell",
-          "detail": "Same reusable furnished cell and keyed sliding bars."
+          "detail": "Same reusable furnished cell and keyed sliding bars.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "s7",
@@ -1306,7 +1374,8 @@
           "w": 5,
           "d": 5.7,
           "type": "cell",
-          "detail": "Same reusable furnished cell and keyed sliding bars."
+          "detail": "Same reusable furnished cell and keyed sliding bars.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "guard",
@@ -1316,7 +1385,8 @@
           "w": 2.6,
           "d": 5.7,
           "type": "staff",
-          "detail": "Detailed desk/radio, supported chair, locker, notice board. Door swings inward into a clear pocket."
+          "detail": "Detailed desk/radio, supported chair, locker, notice board. Door swings inward into a clear pocket.",
+          "lighting_type": "office"
         },
         {
           "id": "lift",
@@ -1326,7 +1396,8 @@
           "w": 2.4,
           "d": 3.2,
           "type": "lift",
-          "detail": "Same shaft footprint on all tiers. Sealed landing doors until lift implementation."
+          "detail": "Same shaft footprint on all tiers. Sealed landing doors until lift implementation.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "lobby",
@@ -1336,7 +1407,8 @@
           "w": 2.4,
           "d": 2.5,
           "type": "corridor",
-          "detail": "Clear waiting space; call panel; floor number."
+          "detail": "Clear waiting space; call panel; floor number.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "north",
@@ -1346,7 +1418,8 @@
           "w": 43,
           "d": 4,
           "type": "corridor",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "cellblock"
         },
         {
           "id": "south",
@@ -1356,7 +1429,8 @@
           "w": 43,
           "d": 4,
           "type": "corridor",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "cellblock"
         },
         {
           "id": "west",
@@ -1366,7 +1440,8 @@
           "w": 2.2,
           "d": 14,
           "type": "corridor",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "cellblock"
         },
         {
           "id": "east",
@@ -1376,7 +1451,8 @@
           "w": 2.2,
           "d": 14,
           "type": "corridor",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "cellblock"
         },
         {
           "id": "weststair",
@@ -1386,7 +1462,8 @@
           "w": 2.6,
           "d": 14,
           "type": "corridor",
-          "detail": "Reserve the entire vertical clearance volume. Floor 2 has an open stairwell, not a covering slab."
+          "detail": "Reserve the entire vertical clearance volume. Floor 2 has an open stairwell, not a covering slab.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "eaststair",
@@ -1396,7 +1473,8 @@
           "w": 2.6,
           "d": 14,
           "type": "stair",
-          "detail": "Floor 3 has a matching slab cutout; guard the outside bypass edge separately from the sloped stair rails."
+          "detail": "Floor 3 has a matching slab cutout; guard the outside bypass edge separately from the sloped stair rails.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "bridge",
@@ -1406,7 +1484,8 @@
           "w": 4.2,
           "d": 14,
           "type": "corridor",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "cellblock"
         },
         {
           "id": "voidw",
@@ -1416,7 +1495,8 @@
           "w": 14.6,
           "d": 14,
           "type": "void",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "office"
         },
         {
           "id": "voide",
@@ -1426,7 +1506,8 @@
           "w": 14.6,
           "d": 14,
           "type": "void",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "office"
         }
       ],
       "doors": [
@@ -1724,7 +1805,8 @@
           "w": 37,
           "d": 4,
           "type": "corridor",
-          "detail": "4 m clear transfer aisle; prisoner access ends at the serving counter."
+          "detail": "4 m clear transfer aisle; prisoner access ends at the serving counter.",
+          "lighting_type": "service"
         },
         {
           "id": "receiving",
@@ -1734,7 +1816,8 @@
           "w": 10,
           "d": 7,
           "type": "service",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "service"
         },
         {
           "id": "dry",
@@ -1744,7 +1827,8 @@
           "w": 10,
           "d": 6.5,
           "type": "service",
-          "detail": "Shelves around walls, two trolley aisles."
+          "detail": "Shelves around walls, two trolley aisles.",
+          "lighting_type": "service"
         },
         {
           "id": "cold",
@@ -1754,7 +1838,8 @@
           "w": 8,
           "d": 6.5,
           "type": "service",
-          "detail": "Two insulated compartments entered from preparation receiving area."
+          "detail": "Two insulated compartments entered from preparation receiving area.",
+          "lighting_type": "service"
         },
         {
           "id": "prep",
@@ -1764,7 +1849,8 @@
           "w": 8,
           "d": 7,
           "type": "service",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "food"
         },
         {
           "id": "kitchen",
@@ -1774,7 +1860,8 @@
           "w": 19,
           "d": 13.5,
           "type": "service",
-          "detail": "Wall ranges, hood, ovens; center islands with at least 1.5 m working aisles. Separate handwash sink."
+          "detail": "Wall ranges, hood, ovens; center islands with at least 1.5 m working aisles. Separate handwash sink.",
+          "lighting_type": "food"
         },
         {
           "id": "dining",
@@ -1784,7 +1871,8 @@
           "w": 27,
           "d": 15.5,
           "type": "open",
-          "detail": "12 six-seat table/bench modules in three rows; 2.4 m primary aisle, 1.2 m secondary aisles. Clock, boards, water, condiments and bins against walls."
+          "detail": "12 six-seat table/bench modules in three rows; 2.4 m primary aisle, 1.2 m secondary aisles. Clock, boards, water, condiments and bins against walls.",
+          "lighting_type": "food"
         },
         {
           "id": "serving",
@@ -1794,7 +1882,8 @@
           "w": 10,
           "d": 8,
           "type": "service",
-          "detail": "Two standard counters and one dietary/medical stall face west into dining. Keep queue on dining side."
+          "detail": "Two standard counters and one dietary/medical stall face west into dining. Keep queue on dining side.",
+          "lighting_type": "food"
         },
         {
           "id": "wash",
@@ -1804,7 +1893,8 @@
           "w": 10,
           "d": 7.5,
           "type": "service",
-          "detail": "Dirty landing, scrape sink, washer, drying racks and clean passback; refuse holds inside service zone."
+          "detail": "Dirty landing, scrape sink, washer, drying racks and clean passback; refuse holds inside service zone.",
+          "lighting_type": "food"
         }
       ],
       "doors": [
@@ -1974,7 +2064,8 @@
           "w": 4,
           "d": 33,
           "type": "corridor",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "medical"
         },
         {
           "id": "westhall",
@@ -1984,7 +2075,8 @@
           "w": 16.5,
           "d": 4,
           "type": "corridor",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "medical"
         },
         {
           "id": "easthall",
@@ -1994,7 +2086,8 @@
           "w": 16.5,
           "d": 4,
           "type": "corridor",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "medical"
         },
         {
           "id": "ward",
@@ -2004,7 +2097,8 @@
           "w": 10.5,
           "d": 13.5,
           "type": "medical",
-          "detail": "Bed spacing and privacy screens; bedside cabinets, IV stands, wall diagnostics and cart parking."
+          "detail": "Bed spacing and privacy screens; bedside cabinets, IV stands, wall diagnostics and cart parking.",
+          "lighting_type": "medical"
         },
         {
           "id": "exam",
@@ -2014,7 +2108,8 @@
           "w": 6,
           "d": 7,
           "type": "medical",
-          "detail": "Two screened exam positions, sink, clinical desk."
+          "detail": "Two screened exam positions, sink, clinical desk.",
+          "lighting_type": "medical"
         },
         {
           "id": "consult",
@@ -2024,7 +2119,8 @@
           "w": 6,
           "d": 6.5,
           "type": "medical",
-          "detail": "Direct door to spine; private consultation."
+          "detail": "Direct door to spine; private consultation.",
+          "lighting_type": "medical"
         },
         {
           "id": "medicine",
@@ -2034,7 +2130,8 @@
           "w": 6,
           "d": 7.5,
           "type": "secure",
-          "detail": "Locked cabinets and safe. No medicine gameplay yet."
+          "detail": "Locked cabinets and safe. No medicine gameplay yet.",
+          "lighting_type": "medical"
         },
         {
           "id": "treatment",
@@ -2044,7 +2141,8 @@
           "w": 10.5,
           "d": 7.5,
           "type": "medical",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "medical"
         },
         {
           "id": "staff",
@@ -2054,7 +2152,8 @@
           "w": 16.5,
           "d": 8,
           "type": "staff",
-          "detail": "Staff rest point, clinical records, clean supplies and a separated dirty utility alcove."
+          "detail": "Staff rest point, clinical records, clean supplies and a separated dirty utility alcove.",
+          "lighting_type": "office"
         },
         {
           "id": "gym",
@@ -2064,7 +2163,9 @@
           "w": 16.5,
           "d": 13.5,
           "type": "open",
-          "detail": "Rack and bench stations around perimeter, bike/cable corner, open mat lane. Heavy bag clear of circulation."
+          "detail": "Rack and bench stations around perimeter, bike/cable corner, open mat lane. Heavy bag clear of circulation.",
+          "floor_finish": "gym_rubber",
+          "lighting_type": "wellness"
         },
         {
           "id": "changing",
@@ -2074,7 +2175,8 @@
           "w": 16.5,
           "d": 3.5,
           "type": "room",
-          "detail": "Benches and lockers flank a 2 m route. Controlled connection to pool/yard path via east lobby."
+          "detail": "Benches and lockers flank a 2 m route. Controlled connection to pool/yard path via east lobby.",
+          "lighting_type": "wellness"
         },
         {
           "id": "showers",
@@ -2084,7 +2186,9 @@
           "w": 8,
           "d": 12,
           "type": "room",
-          "detail": "Two banks of five, short privacy dividers, 1.8 m center lane, drain fall and maintenance access."
+          "detail": "Two banks of five, short privacy dividers, 1.8 m center lane, drain fall and maintenance access.",
+          "floor_finish": "tile_shower",
+          "lighting_type": "wellness"
         },
         {
           "id": "toilets",
@@ -2094,7 +2198,9 @@
           "w": 8.5,
           "d": 12,
           "type": "room",
-          "detail": "8 enclosed toilet cubicles, 8 urinals with panels, washbasins; allocate one enlarged accessible cubicle within the count."
+          "detail": "8 enclosed toilet cubicles, 8 urinals with panels, washbasins; allocate one enlarged accessible cubicle within the count.",
+          "floor_finish": "tile_shower",
+          "lighting_type": "wellness"
         }
       ],
       "doors": [
@@ -2295,7 +2401,8 @@
           "w": 4,
           "d": 45,
           "type": "corridor",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "cellblock"
         },
         {
           "id": "cross",
@@ -2305,7 +2412,8 @@
           "w": 15.5,
           "d": 6,
           "type": "corridor",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "cellblock"
         },
         {
           "id": "eastcross",
@@ -2315,7 +2423,8 @@
           "w": 15.5,
           "d": 6,
           "type": "corridor",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "cellblock"
         },
         {
           "id": "westwing",
@@ -2325,7 +2434,8 @@
           "w": 3.5,
           "d": 19.5,
           "type": "corridor",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "cellblock"
         },
         {
           "id": "eastwing",
@@ -2335,7 +2445,8 @@
           "w": 3.5,
           "d": 19.5,
           "type": "corridor",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "cellblock"
         },
         {
           "id": "n0",
@@ -2345,7 +2456,8 @@
           "w": 6.5,
           "d": 3.25,
           "type": "cell",
-          "detail": "6.5 × 3.25 m bay: bed, sanitary corner and clear entry; sliding bars or approved secure door."
+          "detail": "6.5 × 3.25 m bay: bed, sanitary corner and clear entry; sliding bars or approved secure door.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "s0",
@@ -2355,7 +2467,8 @@
           "w": 6.5,
           "d": 3.25,
           "type": "cell",
-          "detail": "Matching 6.5 × 3.25 m secure cell bay."
+          "detail": "Matching 6.5 × 3.25 m secure cell bay.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "n1",
@@ -2365,7 +2478,8 @@
           "w": 6.5,
           "d": 3.25,
           "type": "cell",
-          "detail": "6.5 × 3.25 m bay: bed, sanitary corner and clear entry; sliding bars or approved secure door."
+          "detail": "6.5 × 3.25 m bay: bed, sanitary corner and clear entry; sliding bars or approved secure door.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "s1",
@@ -2375,7 +2489,8 @@
           "w": 6.5,
           "d": 3.25,
           "type": "cell",
-          "detail": "Matching 6.5 × 3.25 m secure cell bay."
+          "detail": "Matching 6.5 × 3.25 m secure cell bay.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "n2",
@@ -2385,7 +2500,8 @@
           "w": 6.5,
           "d": 3.25,
           "type": "cell",
-          "detail": "6.5 × 3.25 m bay: bed, sanitary corner and clear entry; sliding bars or approved secure door."
+          "detail": "6.5 × 3.25 m bay: bed, sanitary corner and clear entry; sliding bars or approved secure door.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "s2",
@@ -2395,7 +2511,8 @@
           "w": 6.5,
           "d": 3.25,
           "type": "cell",
-          "detail": "Matching 6.5 × 3.25 m secure cell bay."
+          "detail": "Matching 6.5 × 3.25 m secure cell bay.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "n3",
@@ -2405,7 +2522,8 @@
           "w": 6.5,
           "d": 3.25,
           "type": "cell",
-          "detail": "6.5 × 3.25 m bay: bed, sanitary corner and clear entry; sliding bars or approved secure door."
+          "detail": "6.5 × 3.25 m bay: bed, sanitary corner and clear entry; sliding bars or approved secure door.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "s3",
@@ -2415,7 +2533,8 @@
           "w": 6.5,
           "d": 3.25,
           "type": "cell",
-          "detail": "Matching 6.5 × 3.25 m secure cell bay."
+          "detail": "Matching 6.5 × 3.25 m secure cell bay.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "n4",
@@ -2425,7 +2544,8 @@
           "w": 6.5,
           "d": 3.25,
           "type": "cell",
-          "detail": "6.5 × 3.25 m bay: bed, sanitary corner and clear entry; sliding bars or approved secure door."
+          "detail": "6.5 × 3.25 m bay: bed, sanitary corner and clear entry; sliding bars or approved secure door.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "s4",
@@ -2435,7 +2555,8 @@
           "w": 6.5,
           "d": 3.25,
           "type": "cell",
-          "detail": "Matching 6.5 × 3.25 m secure cell bay."
+          "detail": "Matching 6.5 × 3.25 m secure cell bay.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "n5",
@@ -2445,7 +2566,8 @@
           "w": 6.5,
           "d": 3.25,
           "type": "cell",
-          "detail": "6.5 × 3.25 m bay: bed, sanitary corner and clear entry; sliding bars or approved secure door."
+          "detail": "6.5 × 3.25 m bay: bed, sanitary corner and clear entry; sliding bars or approved secure door.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "s5",
@@ -2455,7 +2577,8 @@
           "w": 6.5,
           "d": 3.25,
           "type": "cell",
-          "detail": "Matching 6.5 × 3.25 m secure cell bay."
+          "detail": "Matching 6.5 × 3.25 m secure cell bay.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "stairn",
@@ -2465,7 +2588,8 @@
           "w": 6,
           "d": 9,
           "type": "stair",
-          "detail": "Stacked enclosed switchback stair; floor void shared by both levels."
+          "detail": "Stacked enclosed switchback stair; floor void shared by both levels.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "staff",
@@ -2475,7 +2599,8 @@
           "w": 9.5,
           "d": 9,
           "type": "staff",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "office"
         },
         {
           "id": "glassa",
@@ -2485,7 +2610,8 @@
           "w": 7.75,
           "d": 10.5,
           "type": "secure",
-          "detail": "Full-height viewing panel and framed see-through security door. No weapon simulation."
+          "detail": "Full-height viewing panel and framed see-through security door. No weapon simulation.",
+          "lighting_type": "office"
         },
         {
           "id": "glassb",
@@ -2495,7 +2621,8 @@
           "w": 7.75,
           "d": 10.5,
           "type": "secure",
-          "detail": "Second separated special room with its own clear security door."
+          "detail": "Second separated special room with its own clear security door.",
+          "lighting_type": "office"
         },
         {
           "id": "stairs",
@@ -2505,7 +2632,8 @@
           "w": 6,
           "d": 9,
           "type": "stair",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "cellblock"
         },
         {
           "id": "lift",
@@ -2515,7 +2643,8 @@
           "w": 3.5,
           "d": 4,
           "type": "lift",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "cellblock"
         },
         {
           "id": "liftlobby",
@@ -2525,7 +2654,8 @@
           "w": 3.5,
           "d": 5,
           "type": "corridor",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "cellblock"
         },
         {
           "id": "staffcorr",
@@ -2535,7 +2665,8 @@
           "w": 6,
           "d": 19.5,
           "type": "corridor",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "cellblock"
         },
         {
           "id": "interview",
@@ -2545,7 +2676,8 @@
           "w": 9.5,
           "d": 10.5,
           "type": "staff",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "office"
         },
         {
           "id": "nsupport0",
@@ -2555,7 +2687,8 @@
           "w": 5.5,
           "d": 6.5,
           "type": "staff",
-          "detail": "Small support room opening only to its gated wing corridor."
+          "detail": "Small support room opening only to its gated wing corridor.",
+          "lighting_type": "office"
         },
         {
           "id": "ssupport0",
@@ -2565,7 +2698,8 @@
           "w": 5.5,
           "d": 6.5,
           "type": "staff",
-          "detail": "Small support room opening only to its gated wing corridor."
+          "detail": "Small support room opening only to its gated wing corridor.",
+          "lighting_type": "office"
         },
         {
           "id": "nsupport1",
@@ -2575,7 +2709,8 @@
           "w": 5.5,
           "d": 6.5,
           "type": "staff",
-          "detail": "Small support room opening only to its gated wing corridor."
+          "detail": "Small support room opening only to its gated wing corridor.",
+          "lighting_type": "office"
         },
         {
           "id": "ssupport1",
@@ -2585,7 +2720,8 @@
           "w": 5.5,
           "d": 6.5,
           "type": "staff",
-          "detail": "Small support room opening only to its gated wing corridor."
+          "detail": "Small support room opening only to its gated wing corridor.",
+          "lighting_type": "office"
         },
         {
           "id": "nsupport2",
@@ -2595,7 +2731,8 @@
           "w": 5.5,
           "d": 6.5,
           "type": "staff",
-          "detail": "Small support room opening only to its gated wing corridor."
+          "detail": "Small support room opening only to its gated wing corridor.",
+          "lighting_type": "office"
         },
         {
           "id": "ssupport2",
@@ -2605,7 +2742,8 @@
           "w": 5.5,
           "d": 6.5,
           "type": "staff",
-          "detail": "Small support room opening only to its gated wing corridor."
+          "detail": "Small support room opening only to its gated wing corridor.",
+          "lighting_type": "office"
         }
       ],
       "doors": [
@@ -2965,7 +3103,8 @@
           "w": 4,
           "d": 45,
           "type": "corridor",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "cellblock"
         },
         {
           "id": "cross",
@@ -2975,7 +3114,8 @@
           "w": 15.5,
           "d": 6,
           "type": "corridor",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "cellblock"
         },
         {
           "id": "eastcross",
@@ -2985,7 +3125,8 @@
           "w": 15.5,
           "d": 6,
           "type": "corridor",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "cellblock"
         },
         {
           "id": "westwing",
@@ -2995,7 +3136,8 @@
           "w": 3.5,
           "d": 19.5,
           "type": "corridor",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "cellblock"
         },
         {
           "id": "eastwing",
@@ -3005,7 +3147,8 @@
           "w": 3.5,
           "d": 19.5,
           "type": "corridor",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "cellblock"
         },
         {
           "id": "n0",
@@ -3015,7 +3158,8 @@
           "w": 6.5,
           "d": 3.25,
           "type": "cell",
-          "detail": "6.5 × 3.25 m bay: bed, sanitary corner and clear entry; sliding bars or approved secure door."
+          "detail": "6.5 × 3.25 m bay: bed, sanitary corner and clear entry; sliding bars or approved secure door.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "s0",
@@ -3025,7 +3169,8 @@
           "w": 6.5,
           "d": 3.25,
           "type": "cell",
-          "detail": "Matching 6.5 × 3.25 m secure cell bay."
+          "detail": "Matching 6.5 × 3.25 m secure cell bay.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "n1",
@@ -3035,7 +3180,8 @@
           "w": 6.5,
           "d": 3.25,
           "type": "cell",
-          "detail": "6.5 × 3.25 m bay: bed, sanitary corner and clear entry; sliding bars or approved secure door."
+          "detail": "6.5 × 3.25 m bay: bed, sanitary corner and clear entry; sliding bars or approved secure door.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "s1",
@@ -3045,7 +3191,8 @@
           "w": 6.5,
           "d": 3.25,
           "type": "cell",
-          "detail": "Matching 6.5 × 3.25 m secure cell bay."
+          "detail": "Matching 6.5 × 3.25 m secure cell bay.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "n2",
@@ -3055,7 +3202,8 @@
           "w": 6.5,
           "d": 3.25,
           "type": "cell",
-          "detail": "6.5 × 3.25 m bay: bed, sanitary corner and clear entry; sliding bars or approved secure door."
+          "detail": "6.5 × 3.25 m bay: bed, sanitary corner and clear entry; sliding bars or approved secure door.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "s2",
@@ -3065,7 +3213,8 @@
           "w": 6.5,
           "d": 3.25,
           "type": "cell",
-          "detail": "Matching 6.5 × 3.25 m secure cell bay."
+          "detail": "Matching 6.5 × 3.25 m secure cell bay.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "n3",
@@ -3075,7 +3224,8 @@
           "w": 6.5,
           "d": 3.25,
           "type": "cell",
-          "detail": "6.5 × 3.25 m bay: bed, sanitary corner and clear entry; sliding bars or approved secure door."
+          "detail": "6.5 × 3.25 m bay: bed, sanitary corner and clear entry; sliding bars or approved secure door.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "s3",
@@ -3085,7 +3235,8 @@
           "w": 6.5,
           "d": 3.25,
           "type": "cell",
-          "detail": "Matching 6.5 × 3.25 m secure cell bay."
+          "detail": "Matching 6.5 × 3.25 m secure cell bay.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "n4",
@@ -3095,7 +3246,8 @@
           "w": 6.5,
           "d": 3.25,
           "type": "cell",
-          "detail": "6.5 × 3.25 m bay: bed, sanitary corner and clear entry; sliding bars or approved secure door."
+          "detail": "6.5 × 3.25 m bay: bed, sanitary corner and clear entry; sliding bars or approved secure door.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "s4",
@@ -3105,7 +3257,8 @@
           "w": 6.5,
           "d": 3.25,
           "type": "cell",
-          "detail": "Matching 6.5 × 3.25 m secure cell bay."
+          "detail": "Matching 6.5 × 3.25 m secure cell bay.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "n5",
@@ -3115,7 +3268,8 @@
           "w": 6.5,
           "d": 3.25,
           "type": "cell",
-          "detail": "6.5 × 3.25 m bay: bed, sanitary corner and clear entry; sliding bars or approved secure door."
+          "detail": "6.5 × 3.25 m bay: bed, sanitary corner and clear entry; sliding bars or approved secure door.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "s5",
@@ -3125,7 +3279,8 @@
           "w": 6.5,
           "d": 3.25,
           "type": "cell",
-          "detail": "Matching 6.5 × 3.25 m secure cell bay."
+          "detail": "Matching 6.5 × 3.25 m secure cell bay.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "stairn",
@@ -3135,7 +3290,8 @@
           "w": 6,
           "d": 9,
           "type": "stair",
-          "detail": "Stacked enclosed switchback stair; floor void shared by both levels."
+          "detail": "Stacked enclosed switchback stair; floor void shared by both levels.",
+          "lighting_type": "cellblock"
         },
         {
           "id": "staff",
@@ -3145,7 +3301,8 @@
           "w": 9.5,
           "d": 9,
           "type": "staff",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "office"
         },
         {
           "id": "glassa",
@@ -3155,7 +3312,8 @@
           "w": 7.75,
           "d": 10.5,
           "type": "secure",
-          "detail": "Full-height viewing panel and framed see-through security door. No weapon simulation."
+          "detail": "Full-height viewing panel and framed see-through security door. No weapon simulation.",
+          "lighting_type": "office"
         },
         {
           "id": "glassb",
@@ -3165,7 +3323,8 @@
           "w": 7.75,
           "d": 10.5,
           "type": "secure",
-          "detail": "Second separated special room with its own clear security door."
+          "detail": "Second separated special room with its own clear security door.",
+          "lighting_type": "office"
         },
         {
           "id": "stairs",
@@ -3175,7 +3334,8 @@
           "w": 6,
           "d": 9,
           "type": "stair",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "cellblock"
         },
         {
           "id": "lift",
@@ -3185,7 +3345,8 @@
           "w": 3.5,
           "d": 4,
           "type": "lift",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "cellblock"
         },
         {
           "id": "liftlobby",
@@ -3195,7 +3356,8 @@
           "w": 3.5,
           "d": 5,
           "type": "corridor",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "cellblock"
         },
         {
           "id": "staffcorr",
@@ -3205,7 +3367,8 @@
           "w": 6,
           "d": 19.5,
           "type": "corridor",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "cellblock"
         },
         {
           "id": "interview",
@@ -3215,7 +3378,8 @@
           "w": 9.5,
           "d": 10.5,
           "type": "staff",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "office"
         },
         {
           "id": "nsupport0",
@@ -3225,7 +3389,8 @@
           "w": 5.5,
           "d": 6.5,
           "type": "staff",
-          "detail": "Small support room opening only to its gated wing corridor."
+          "detail": "Small support room opening only to its gated wing corridor.",
+          "lighting_type": "office"
         },
         {
           "id": "ssupport0",
@@ -3235,7 +3400,8 @@
           "w": 5.5,
           "d": 6.5,
           "type": "staff",
-          "detail": "Small support room opening only to its gated wing corridor."
+          "detail": "Small support room opening only to its gated wing corridor.",
+          "lighting_type": "office"
         },
         {
           "id": "nsupport1",
@@ -3245,7 +3411,8 @@
           "w": 5.5,
           "d": 6.5,
           "type": "staff",
-          "detail": "Small support room opening only to its gated wing corridor."
+          "detail": "Small support room opening only to its gated wing corridor.",
+          "lighting_type": "office"
         },
         {
           "id": "ssupport1",
@@ -3255,7 +3422,8 @@
           "w": 5.5,
           "d": 6.5,
           "type": "staff",
-          "detail": "Small support room opening only to its gated wing corridor."
+          "detail": "Small support room opening only to its gated wing corridor.",
+          "lighting_type": "office"
         },
         {
           "id": "nsupport2",
@@ -3265,7 +3433,8 @@
           "w": 5.5,
           "d": 6.5,
           "type": "staff",
-          "detail": "Small support room opening only to its gated wing corridor."
+          "detail": "Small support room opening only to its gated wing corridor.",
+          "lighting_type": "office"
         },
         {
           "id": "ssupport2",
@@ -3275,7 +3444,8 @@
           "w": 5.5,
           "d": 6.5,
           "type": "staff",
-          "detail": "Small support room opening only to its gated wing corridor."
+          "detail": "Small support room opening only to its gated wing corridor.",
+          "lighting_type": "office"
         }
       ],
       "doors": [
@@ -3613,7 +3783,8 @@
           "w": 4,
           "d": 33,
           "type": "corridor",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "office"
         },
         {
           "id": "westhall",
@@ -3623,7 +3794,8 @@
           "w": 15.5,
           "d": 4,
           "type": "corridor",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "office"
         },
         {
           "id": "easthall",
@@ -3633,7 +3805,8 @@
           "w": 15.5,
           "d": 4,
           "type": "corridor",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "office"
         },
         {
           "id": "stairn",
@@ -3643,7 +3816,8 @@
           "w": 6,
           "d": 9,
           "type": "stair",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "office"
         },
         {
           "id": "northlobby",
@@ -3653,7 +3827,8 @@
           "w": 6,
           "d": 4.5,
           "type": "corridor",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "office"
         },
         {
           "id": "stairs",
@@ -3663,7 +3838,8 @@
           "w": 6,
           "d": 9,
           "type": "stair",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "office"
         },
         {
           "id": "southlobby",
@@ -3673,7 +3849,8 @@
           "w": 6,
           "d": 6.5,
           "type": "corridor",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "office"
         },
         {
           "id": "lift",
@@ -3683,7 +3860,8 @@
           "w": 4,
           "d": 8,
           "type": "lift",
-          "detail": "4 × 4 m shaft plus reserved machinery zone; upper/ground/B2 align. No general lift access to NIDRA."
+          "detail": "4 × 4 m shaft plus reserved machinery zone; upper/ground/B2 align. No general lift access to NIDRA.",
+          "lighting_type": "office"
         },
         {
           "id": "liftlobby",
@@ -3693,7 +3871,8 @@
           "w": 4,
           "d": 8,
           "type": "corridor",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "office"
         },
         {
           "id": "eastlink",
@@ -3703,7 +3882,8 @@
           "w": 15.5,
           "d": 7.5,
           "type": "corridor",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "office"
         },
         {
           "id": "staff",
@@ -3713,7 +3893,8 @@
           "w": 9.5,
           "d": 13.5,
           "type": "staff",
-          "detail": "Briefing table, duty lockers, radio charging and staff WC compartment."
+          "detail": "Briefing table, duty lockers, radio charging and staff WC compartment.",
+          "lighting_type": "office"
         },
         {
           "id": "equipment",
@@ -3723,7 +3904,8 @@
           "w": 8,
           "d": 13.5,
           "type": "secure",
-          "detail": "Reserved armory/equipment architecture only; no usable weapons or combat."
+          "detail": "Reserved armory/equipment architecture only; no usable weapons or combat.",
+          "lighting_type": "office"
         },
         {
           "id": "evidence",
@@ -3733,7 +3915,8 @@
           "w": 7.5,
           "d": 13.5,
           "type": "secure",
-          "detail": "Transfer bench, logged shelves and large evidence safe."
+          "detail": "Transfer bench, logged shelves and large evidence safe.",
+          "lighting_type": "office"
         },
         {
           "id": "processing",
@@ -3743,7 +3926,8 @@
           "w": 9.5,
           "d": 15.5,
           "type": "staff",
-          "detail": "Small screening desk and separated interview room; connected to south landing and spine."
+          "detail": "Small screening desk and separated interview room; connected to south landing and spine.",
+          "lighting_type": "office"
         },
         {
           "id": "keys",
@@ -3753,7 +3937,8 @@
           "w": 7.5,
           "d": 8,
           "type": "secure",
-          "detail": "Key cabinet slots labeled by building/floor/cell; individual cell keys relocate here from legacy Floor 4."
+          "detail": "Key cabinet slots labeled by building/floor/cell; individual cell keys relocate here from legacy Floor 4.",
+          "lighting_type": "office"
         }
       ],
       "doors": [
@@ -3963,7 +4148,8 @@
           "w": 4,
           "d": 33,
           "type": "corridor",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "office"
         },
         {
           "id": "westhall",
@@ -3973,7 +4159,8 @@
           "w": 15.5,
           "d": 4,
           "type": "corridor",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "office"
         },
         {
           "id": "easthall",
@@ -3983,7 +4170,8 @@
           "w": 15.5,
           "d": 4,
           "type": "corridor",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "office"
         },
         {
           "id": "stairn",
@@ -3993,7 +4181,8 @@
           "w": 6,
           "d": 9,
           "type": "stair",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "office"
         },
         {
           "id": "northlobby",
@@ -4003,7 +4192,8 @@
           "w": 6,
           "d": 4.5,
           "type": "corridor",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "office"
         },
         {
           "id": "stairs",
@@ -4013,7 +4203,8 @@
           "w": 6,
           "d": 9,
           "type": "stair",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "office"
         },
         {
           "id": "southlobby",
@@ -4023,7 +4214,8 @@
           "w": 6,
           "d": 6.5,
           "type": "corridor",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "office"
         },
         {
           "id": "lift",
@@ -4033,7 +4225,8 @@
           "w": 4,
           "d": 8,
           "type": "lift",
-          "detail": "4 × 4 m shaft plus reserved machinery zone; upper/ground/B2 align. No general lift access to NIDRA."
+          "detail": "4 × 4 m shaft plus reserved machinery zone; upper/ground/B2 align. No general lift access to NIDRA.",
+          "lighting_type": "office"
         },
         {
           "id": "liftlobby",
@@ -4043,7 +4236,8 @@
           "w": 4,
           "d": 8,
           "type": "corridor",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "office"
         },
         {
           "id": "eastlink",
@@ -4053,7 +4247,8 @@
           "w": 15.5,
           "d": 7.5,
           "type": "corridor",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "office"
         },
         {
           "id": "chief",
@@ -4063,7 +4258,8 @@
           "w": 9.5,
           "d": 13.5,
           "type": "staff",
-          "detail": "Office, small planning table and private records alcove. Future chief retains cell_master_key."
+          "detail": "Office, small planning table and private records alcove. Future chief retains cell_master_key.",
+          "lighting_type": "office"
         },
         {
           "id": "surveillance",
@@ -4073,7 +4269,8 @@
           "w": 8,
           "d": 13.5,
           "type": "secure",
-          "detail": "Monitor wall, two console rows, maintenance clearance behind equipment."
+          "detail": "Monitor wall, two console rows, maintenance clearance behind equipment.",
+          "lighting_type": "office"
         },
         {
           "id": "control",
@@ -4083,7 +4280,8 @@
           "w": 7.5,
           "d": 13.5,
           "type": "secure",
-          "detail": "Doors/tower coordination consoles; dark materials with inexpensive monitor emission."
+          "detail": "Doors/tower coordination consoles; dark materials with inexpensive monitor emission.",
+          "lighting_type": "office"
         },
         {
           "id": "briefing",
@@ -4093,7 +4291,8 @@
           "w": 9.5,
           "d": 15.5,
           "type": "staff",
-          "detail": "Operations table and separate supervisor workstations."
+          "detail": "Operations table and separate supervisor workstations.",
+          "lighting_type": "office"
         },
         {
           "id": "server",
@@ -4103,7 +4302,8 @@
           "w": 7.5,
           "d": 8,
           "type": "secure",
-          "detail": "Racks and secured records, dedicated cooling zone."
+          "detail": "Racks and secured records, dedicated cooling zone.",
+          "lighting_type": "office"
         }
       ],
       "doors": [
@@ -4291,7 +4491,8 @@
           "w": 4,
           "d": 33,
           "type": "corridor",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "service"
         },
         {
           "id": "crossw",
@@ -4301,7 +4502,8 @@
           "w": 15.5,
           "d": 4,
           "type": "corridor",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "service"
         },
         {
           "id": "crosse",
@@ -4311,7 +4513,8 @@
           "w": 15.5,
           "d": 4,
           "type": "corridor",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "service"
         },
         {
           "id": "workshop",
@@ -4321,7 +4524,8 @@
           "w": 15.5,
           "d": 13.5,
           "type": "service",
-          "detail": "Workbenches, fixed tool racks, repair tables; central movement lane."
+          "detail": "Workbenches, fixed tool racks, repair tables; central movement lane.",
+          "lighting_type": "service"
         },
         {
           "id": "dirty",
@@ -4331,7 +4535,8 @@
           "w": 7.5,
           "d": 13.5,
           "type": "service",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "service"
         },
         {
           "id": "clean",
@@ -4341,7 +4546,8 @@
           "w": 8,
           "d": 13.5,
           "type": "service",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "service"
         },
         {
           "id": "tool",
@@ -4351,7 +4557,8 @@
           "w": 9.5,
           "d": 7.5,
           "type": "secure",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "service"
         },
         {
           "id": "stair",
@@ -4361,7 +4568,8 @@
           "w": 6,
           "d": 9,
           "type": "stair",
-          "detail": "Separate 3 m landing, then a gate; exact same footprint on B1."
+          "detail": "Separate 3 m landing, then a gate; exact same footprint on B1.",
+          "lighting_type": "service"
         },
         {
           "id": "utilities",
@@ -4371,7 +4579,8 @@
           "w": 9.5,
           "d": 8,
           "type": "service",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "service"
         },
         {
           "id": "landing",
@@ -4381,7 +4590,8 @@
           "w": 6,
           "d": 6.5,
           "type": "corridor",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "service"
         },
         {
           "id": "store",
@@ -4391,7 +4601,8 @@
           "w": 8,
           "d": 15.5,
           "type": "service",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "service"
         },
         {
           "id": "waste",
@@ -4401,7 +4612,8 @@
           "w": 7.5,
           "d": 15.5,
           "type": "service",
-          "detail": "Separated refuse holding and cleaning supplies; service yard access, not recreation yard."
+          "detail": "Separated refuse holding and cleaning supplies; service yard access, not recreation yard.",
+          "lighting_type": "service"
         }
       ],
       "doors": [
@@ -4571,7 +4783,8 @@
           "w": 4,
           "d": 33,
           "type": "corridor",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "service"
         },
         {
           "id": "crossw",
@@ -4581,7 +4794,8 @@
           "w": 15.5,
           "d": 4,
           "type": "corridor",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "service"
         },
         {
           "id": "crosse",
@@ -4591,7 +4805,8 @@
           "w": 15.5,
           "d": 4,
           "type": "corridor",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "service"
         },
         {
           "id": "plant",
@@ -4601,7 +4816,8 @@
           "w": 15.5,
           "d": 13.5,
           "type": "service",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "service"
         },
         {
           "id": "distribution",
@@ -4611,7 +4827,8 @@
           "w": 15.5,
           "d": 13.5,
           "type": "service",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "service"
         },
         {
           "id": "spares",
@@ -4621,7 +4838,8 @@
           "w": 9.5,
           "d": 7.5,
           "type": "service",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "service"
         },
         {
           "id": "stair",
@@ -4631,7 +4849,8 @@
           "w": 6,
           "d": 9,
           "type": "stair",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "service"
         },
         {
           "id": "pump",
@@ -4641,7 +4860,8 @@
           "w": 9.5,
           "d": 8,
           "type": "service",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "service"
         },
         {
           "id": "landing",
@@ -4651,7 +4871,8 @@
           "w": 6,
           "d": 6.5,
           "type": "corridor",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "service"
         },
         {
           "id": "utility",
@@ -4661,7 +4882,8 @@
           "w": 15.5,
           "d": 15.5,
           "type": "service",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "service"
         }
       ],
       "doors": [
@@ -4800,7 +5022,8 @@
           "w": 4,
           "d": 33,
           "type": "corridor",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "service"
         },
         {
           "id": "crossw",
@@ -4810,7 +5033,8 @@
           "w": 15.5,
           "d": 4,
           "type": "corridor",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "service"
         },
         {
           "id": "crosse",
@@ -4820,7 +5044,8 @@
           "w": 15.5,
           "d": 4,
           "type": "corridor",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "service"
         },
         {
           "id": "stairn",
@@ -4830,7 +5055,8 @@
           "w": 6,
           "d": 9,
           "type": "stair",
-          "detail": "Continues through an enclosed, inaccessible B1 shaft segment to HQ ground. Reserve geometry through intervening slabs."
+          "detail": "Continues through an enclosed, inaccessible B1 shaft segment to HQ ground. Reserve geometry through intervening slabs.",
+          "lighting_type": "service"
         },
         {
           "id": "northlobby",
@@ -4840,7 +5066,8 @@
           "w": 6,
           "d": 4.5,
           "type": "corridor",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "service"
         },
         {
           "id": "subjects",
@@ -4850,7 +5077,8 @@
           "w": 9.5,
           "d": 13.5,
           "type": "secure",
-          "detail": "Two bounded holding rooms and a preparation room; signs, no new collectibles."
+          "detail": "Two bounded holding rooms and a preparation room; signs, no new collectibles.",
+          "lighting_type": "service"
         },
         {
           "id": "lab",
@@ -4860,7 +5088,8 @@
           "w": 8,
           "d": 13.5,
           "type": "medical",
-          "detail": "Benches, microscopy, sample racks, terminals and diagnostics."
+          "detail": "Benches, microscopy, sample racks, terminals and diagnostics.",
+          "lighting_type": "medical"
         },
         {
           "id": "chem",
@@ -4870,7 +5099,8 @@
           "w": 7.5,
           "d": 9,
           "type": "medical",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "medical"
         },
         {
           "id": "hazmat",
@@ -4880,7 +5110,8 @@
           "w": 7.5,
           "d": 4.5,
           "type": "secure",
-          "detail": "Cabinets, spill tray and emergency shower outside in the controlled lab corridor."
+          "detail": "Cabinets, spill tray and emergency shower outside in the controlled lab corridor.",
+          "lighting_type": "medical"
         },
         {
           "id": "interrogationa",
@@ -4890,7 +5121,8 @@
           "w": 7.75,
           "d": 8,
           "type": "secure",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "service"
         },
         {
           "id": "interrogationb",
@@ -4900,7 +5132,8 @@
           "w": 7.75,
           "d": 8,
           "type": "secure",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "service"
         },
         {
           "id": "observation",
@@ -4910,7 +5143,8 @@
           "w": 15.5,
           "d": 3,
           "type": "staff",
-          "detail": "Fixed viewing windows north into both rooms; staff-only entrance from spine."
+          "detail": "Fixed viewing windows north into both rooms; staff-only entrance from spine.",
+          "lighting_type": "service"
         },
         {
           "id": "records",
@@ -4920,7 +5154,8 @@
           "w": 15.5,
           "d": 4.5,
           "type": "secure",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "service"
         },
         {
           "id": "clean",
@@ -4930,7 +5165,8 @@
           "w": 15.5,
           "d": 7.5,
           "type": "medical",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "medical"
         },
         {
           "id": "samples",
@@ -4940,7 +5176,8 @@
           "w": 7.5,
           "d": 8,
           "type": "secure",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "medical"
         },
         {
           "id": "liftlobby",
@@ -4950,7 +5187,8 @@
           "w": 4,
           "d": 8,
           "type": "corridor",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "service"
         },
         {
           "id": "lift",
@@ -4960,7 +5198,8 @@
           "w": 4,
           "d": 8,
           "type": "lift",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "service"
         }
       ],
       "doors": [
@@ -5148,7 +5387,8 @@
           "w": 4,
           "d": 10.5,
           "type": "corridor",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "office"
         },
         {
           "id": "secure",
@@ -5158,7 +5398,8 @@
           "w": 4,
           "d": 12.5,
           "type": "corridor",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "office"
         },
         {
           "id": "visitorhall",
@@ -5168,7 +5409,8 @@
           "w": 17.5,
           "d": 5,
           "type": "room",
-          "detail": "Reception desk, visitor lockers and queuing; screening at visitation door."
+          "detail": "Reception desk, visitor lockers and queuing; screening at visitation door.",
+          "lighting_type": "office"
         },
         {
           "id": "visitation",
@@ -5178,7 +5420,8 @@
           "w": 17.5,
           "d": 6,
           "type": "room",
-          "detail": "Fixed screened booths; public access from south, escorted prisoner strip on north. Partition each side; no opening between occupants."
+          "detail": "Fixed screened booths; public access from south, escorted prisoner strip on north. Partition each side; no opening between occupants.",
+          "lighting_type": "office"
         },
         {
           "id": "holding",
@@ -5188,7 +5431,8 @@
           "w": 8,
           "d": 6.5,
           "type": "secure",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "office"
         },
         {
           "id": "processing",
@@ -5198,7 +5442,8 @@
           "w": 9.5,
           "d": 6.5,
           "type": "secure",
-          "detail": "Identity check, property bags and separated changing bay."
+          "detail": "Identity check, property bags and separated changing bay.",
+          "lighting_type": "office"
         },
         {
           "id": "publicwc",
@@ -5208,7 +5453,8 @@
           "w": 6,
           "d": 5.5,
           "type": "room",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "office"
         },
         {
           "id": "reception",
@@ -5218,7 +5464,8 @@
           "w": 11.5,
           "d": 5.5,
           "type": "staff",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "office"
         },
         {
           "id": "records",
@@ -5228,7 +5475,8 @@
           "w": 8.5,
           "d": 6.5,
           "type": "staff",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "office"
         },
         {
           "id": "interview",
@@ -5238,7 +5486,8 @@
           "w": 9,
           "d": 6.5,
           "type": "staff",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "office"
         },
         {
           "id": "staffhall",
@@ -5248,7 +5497,8 @@
           "w": 17.5,
           "d": 3,
           "type": "corridor",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "office"
         },
         {
           "id": "office",
@@ -5258,7 +5508,8 @@
           "w": 17.5,
           "d": 8,
           "type": "staff",
-          "detail": "Office and small meeting nook; warden administration is separate from police chief security command."
+          "detail": "Office and small meeting nook; warden administration is separate from police chief security command.",
+          "lighting_type": "office"
         },
         {
           "id": "meeting",
@@ -5268,7 +5519,8 @@
           "w": 10,
           "d": 5.5,
           "type": "room",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "office"
         },
         {
           "id": "staffwc",
@@ -5278,7 +5530,8 @@
           "w": 7.5,
           "d": 5.5,
           "type": "staff",
-          "detail": ""
+          "detail": "",
+          "lighting_type": "office"
         }
       ],
       "doors": [

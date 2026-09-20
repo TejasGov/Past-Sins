@@ -24,11 +24,28 @@ func _ready() -> void:
 	g.box("WestWallGrime", Vector3(-16.82, 0.48, -4), Vector3(0.04, 0.58, 25), Color("383934"), false)
 	g.box("EastWallGrime", Vector3(16.82, 0.42, 6), Vector3(0.04, 0.46, 21), Color("3a3b36"), false)
 
-	var institutional_light := Color("d8ded9")
+	var institutional_light := Color("f0d38d")
 	g.ceiling_light("CellLightWestNorth", Vector3(-10.5, 3.5, -10), institutional_light, 1.05, 6.5)
 	g.ceiling_light("CellLightEastNorth", Vector3(10.5, 3.5, -10), institutional_light, 1.05, 6.5)
 	g.ceiling_light("CellLightWestSouth", Vector3(-10.5, 3.5, 10), institutional_light, 1.05, 6.5)
 	g.ceiling_light("CellLightEastSouth", Vector3(10.5, 3.5, 10), institutional_light, 1.05, 6.5)
+
+	# Warm golden mood lights — low-energy amber/golden bulbs along the
+	# cell galleries and corridor approaches for moody institutional atmosphere.
+	var mood_gold := Color("c4a55c")
+	# Gallery walkways (between cell fronts and atrium rails)
+	g.ceiling_light("MoodLightWestGalleryN", Vector3(-10, 3.45, -16), mood_gold, 0.55, 5.5, Vector3(0.9, 0.07, 0.25))
+	g.ceiling_light("MoodLightWestGalleryS", Vector3(-10, 3.45, 16), mood_gold, 0.55, 5.5, Vector3(0.9, 0.07, 0.25))
+	g.ceiling_light("MoodLightEastGalleryN", Vector3(10, 3.45, -16), mood_gold, 0.55, 5.5, Vector3(0.9, 0.07, 0.25))
+	g.ceiling_light("MoodLightEastGalleryS", Vector3(10, 3.45, 16), mood_gold, 0.55, 5.5, Vector3(0.9, 0.07, 0.25))
+	# North and south corridor ends
+	g.ceiling_light("MoodLightNorthCorridorW", Vector3(-5, 3.45, -18), mood_gold, 0.45, 5.0, Vector3(0.7, 0.07, 0.25))
+	g.ceiling_light("MoodLightNorthCorridorE", Vector3(5, 3.45, -18), mood_gold, 0.45, 5.0, Vector3(0.7, 0.07, 0.25))
+	g.ceiling_light("MoodLightSouthCorridorW", Vector3(-5, 3.45, 18), mood_gold, 0.45, 5.0, Vector3(0.7, 0.07, 0.25))
+	g.ceiling_light("MoodLightSouthCorridorE", Vector3(5, 3.45, 18), mood_gold, 0.45, 5.0, Vector3(0.7, 0.07, 0.25))
+	# Central bridge and stairwell approaches
+	g.ceiling_light("MoodLightCenterBridge", Vector3(0, 3.45, 0), mood_gold, 0.4, 4.5, Vector3(0.7, 0.07, 0.25))
+	g.ceiling_light("MoodLightStairApproach", Vector3(0, 3.45, 8), mood_gold, 0.4, 4.5, Vector3(0.7, 0.07, 0.25))
 
 	_build_cell_row(g, -15.0, -13.0, is_parth_floor, true, false)
 	_build_cell_row(g, 15.0, 13.0, false, false, is_parth_floor)
@@ -65,6 +82,8 @@ func _ready() -> void:
 	g.sign("EAST CELL WING", Vector3(12, 2.55, -12.25), Vector3(0, 180, 0), Color("b9bbb3"), 0.0045)
 
 
+const CELL_BARS := preload("res://materials/props/cell_bars.tres")
+
 func _build_cell_row(g, cell_x: float, front_x: float, mark_parth: bool, west_side: bool, skip_last_bed: bool) -> void:
 	var wall_color := Color("42433f")
 	var door_color := Color("282a28")
@@ -74,14 +93,18 @@ func _build_cell_row(g, cell_x: float, front_x: float, mark_parth: bool, west_si
 	var centers := [-17.5, -12.5, -7.5, -2.5, 2.5, 7.5, 12.5, 17.5]
 	for index in range(centers.size()):
 		var center_z: float = centers[index]
-		g.box("CellFrontA", Vector3(front_x, 1.4, center_z - 1.575), Vector3(0.16, 2.8, 1.85), door_color)
-		g.box("CellFrontB", Vector3(front_x, 1.4, center_z + 1.575), Vector3(0.16, 2.8, 1.85), door_color)
-		g.box("CellHeader", Vector3(front_x, 2.7, center_z), Vector3(0.18, 0.3, 5.0), door_color)
+		var front_a: MeshInstance3D = g.box("CellFrontA", Vector3(front_x, 1.4, center_z - 1.575), Vector3(0.16, 2.8, 1.85), door_color)
+		front_a.material_override = CELL_BARS
+		var front_b: MeshInstance3D = g.box("CellFrontB", Vector3(front_x, 1.4, center_z + 1.575), Vector3(0.16, 2.8, 1.85), door_color)
+		front_b.material_override = CELL_BARS
+		var header: MeshInstance3D = g.box("CellHeader", Vector3(front_x, 2.7, center_z), Vector3(0.18, 0.3, 5.0), door_color)
+		header.material_override = CELL_BARS
 		if not skip_last_bed or index != centers.size() - 1:
 			var bed_x := cell_x - 0.6 if west_side else cell_x + 0.6
 			var color := Color("666964") if mark_parth and index == 1 else bed_color
 			var side_name := "West" if west_side else "East"
 			g.prison_bunk("%sCellBunk%02d" % [side_name, index], Vector3(bed_x, 0, center_z - 0.8), Vector2(1.15, 2.1), color, Color("343735"))
+			g.cell_lamp("%sCellLamp%02d" % [side_name, index], Vector3(cell_x, 2.05, center_z - 2.42))
 			# The Floor 3 east terminal bay remains maintenance, so its
 			# neighboring prisoner cell completes that high-security pair.
 			var replaces_maintenance_pair := skip_last_bed and index == centers.size() - 2

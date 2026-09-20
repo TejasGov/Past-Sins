@@ -34,6 +34,11 @@ func _spawn_player() -> void:
 	player.name = "Parth"
 	_campus.get_node("Actors").add_child(player)
 	player.global_transform = spawn.global_transform
+	# Campus actors spawn deferred, after the HUD's initial player lookup.
+	# Bind its existing generic interaction listener now that Parth exists.
+	var hud := _campus.get_node_or_null("HUD/HUDControl")
+	if hud != null:
+		hud.call("_connect_player")
 	var preview := _campus.get_node_or_null("PreviewCamera") as Camera3D
 	if preview != null:
 		preview.current = false

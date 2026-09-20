@@ -54,6 +54,7 @@ func _validate() -> void:
 		_validate_thresholds(floor_node)
 		_validate_furnishings(floor_node)
 	_validate_render_budget(campus)
+	await _validate_active_shadow_budget(campus)
 	_restore_leaves()
 	print("Campus building audit: %d floors, %d rooms, %d physical doors, %d open thresholds, %d furniture assemblies" % [floors.size(), _room_count, _door_count, _open_count, _furniture_count])
 	if _failures.is_empty():
@@ -215,17 +216,74 @@ func _validate_render_budget(campus: Node3D) -> void:
 		triangles += int(triangle_cache[id]) * instances
 	print("Full campus budget: %d nodes, %d visible mesh nodes, %d triangles, %d lights" % [nodes.size() + 1, meshes, triangles, lights])
 	print("Visible mesh distribution: ", mesh_distribution)
+	var zone_count := campus.find_children("InteriorEnvironmentZone", "Area3D", true, false).size()
+	var reader_count := campus.find_children("ReaderInteractionShape", "CollisionShape3D", true, false).size()
+	var gimbal_count := campus.find_children("LampGimbal", "Node3D", true, false).size()
+	_check(zone_count == 7 and reader_count == 125 and gimbal_count == 8, "Visual framework must stay bounded to 7 footprint zones, 125 existing-gate reader shapes, and 8 searchlight gimbals")
+	print("OVERHAUL FRAMEWORK DELTA: 14 zone nodes + 125 reader shapes + 8 gimbals + 1 camera-motion component; fixture surfaces retain shared material batches")
 	# Whole-campus ceilings (seven furnished buildings), independent of the
 	# earlier single-cellhouse 6,500-node limit. These guard against accidental
 	# unbatching, procedural duplication or per-fixture light proliferation.
+	# The documented framework additions fit inside this unchanged total cap.
 	_check(nodes.size() + 1 <= 25000, "Campus exceeds 25,000 nodes")
 	_check(meshes <= 6000, "Campus exceeds 6,000 visible mesh nodes")
 	_check(triangles <= 1000000, "Campus exceeds 1,000,000 triangles")
-	# Thirteen unshadowed storey lights and three tower beams are switched as
-	# groups by the day/night controller; the remaining nodes are the sun and
-	# existing gameplay indicators. Keep the total bounded and shadows disabled.
-	_check(lights <= 19, "Campus exceeds the 19-node automatic-light budget")
-	_check(shadow_lights == 0, "Campus automatic-light budget must remain shadow-free")
+	# No additional real lights: the original 19 sources plus 4 pooled cell
+	# lamps remain allocated. Sun+3 towers+4 cell sources may have shadows;
+	# the ONE occupied room reuses a floor/gallery source for its shadow pass.
+	_check(lights <= 23, "Campus exceeds 19 base lights plus four pooled cell lights")
+	_check(shadow_lights <= 9, "Shadow allocation exceeds sun + three towers + four cell sources + one occupied room")
+
+
+func _validate_active_shadow_budget(campus: Node3D) -> void:
+	# Traverse the same existing locations under noon/night conditions to catch
+	# shadow sources left active on abandoned floors. Counts alone in the spawn
+	# cell would miss a shadow leak while moving between medical and guard rooms.
+	var previous_camera := get_viewport().get_camera_3d()
+	var camera := campus.get_node("PreviewCamera") as Camera3D
+	camera.make_current()
+	var zones := campus.get_node("WorldEnvironment") as EnvironmentZoneManager
+	var cycle := campus.get_node("EnvironmentCycle") as CampusEnvironmentCycle
+	cycle.cycle_enabled = false
+	var points: Array[Vector3] = [Vector3(0, 1.7, 0)]
+	var profiles: Dictionary = {}
+	for room in get_tree().get_nodes_in_group("campus_planned_rooms"):
+		if not campus.is_ancestor_of(room): continue
+		var data: Dictionary = room.get_meta("room_data")
+		var profile := InteriorLightingProfiles.profile_id(String(data.get("lighting_type", data.type)))
+		if profiles.has(profile): continue
+		profiles[profile] = true
+		points.append(room.to_global(Vector3(0, 1.7, 0)))
+	for room in get_tree().get_nodes_in_group("environment_rooms"):
+		if campus.is_ancestor_of(room):
+			points.append(room.to_global((room.get_meta("environment_bounds") as AABB).get_center()))
+	var peak_active := 0
+	var peak_shadowed := 0
+	for hour in [12.0, 22.0]:
+		cycle.set_time_hours(hour)
+		for point in points:
+			camera.global_position = point
+			zones.refresh_from_viewer()
+			for gallery in get_tree().get_nodes_in_group("campus_gallery_lights"):
+				if campus.is_ancestor_of(gallery): gallery.call("refresh", true)
+			for pool in get_tree().get_nodes_in_group("cell_lamp_light_pools"):
+				if campus.is_ancestor_of(pool): pool.call("refresh")
+			var active := 0
+			var shadowed := 0
+			var occupied_sources := 0
+			for light: Light3D in campus.find_children("*", "Light3D", true, false):
+				if not light.is_visible_in_tree() or light.light_energy <= 0: continue
+				active += 1
+				if not light.shadow_enabled: continue
+				shadowed += 1
+				if light.is_in_group("campus_indoor_lights"): occupied_sources += 1
+				_check(light is DirectionalLight3D or light.is_in_group("campus_security_floodlights") or light.is_in_group("cell_lamp_pooled_lights") or light.is_in_group("campus_indoor_lights"), "Unbudgeted shadow-casting source: " + str(light.get_path()))
+			peak_active = maxi(peak_active, active)
+			peak_shadowed = maxi(peak_shadowed, shadowed)
+			_check(shadowed <= 9 and occupied_sources <= 1, "Active shadow budget violated at %s/%sh: %d total, %d occupied floor/guard sources" % [point, hour, shadowed, occupied_sources])
+			await get_tree().process_frame
+	print("LIGHT POOL AUDIT: %d locations × noon/night; peak %d active lights / %d shadowed, max one occupied room source" % [points.size(), peak_active, peak_shadowed])
+	if previous_camera: previous_camera.make_current()
 
 
 func _hits(point: Vector3) -> Array[Dictionary]:

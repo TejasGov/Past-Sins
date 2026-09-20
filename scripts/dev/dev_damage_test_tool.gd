@@ -149,6 +149,29 @@ func report_firearm_hit(weapon_name: String, zone: BodyHitZone, amount: float) -
 		_result_label.modulate = Color("a9dfc3")
 
 
+func report_melee_hit(weapon_name: String, zone: BodyHitZone, lethal: bool) -> void:
+	if zone == null or _result_label == null:
+		return
+	var target := zone.damageable_owner as DamageableHumanDummy
+	if target == null:
+		return
+	_result_label.text = "%s\n%s\nTARGET: %s" % [
+		weapon_name.to_upper(), "LETHAL MELEE" if lethal else "MELEE IMPACT", "DEAD" if target.is_dead() else "%d / %d" % [int(target.get_current_health()), int(target.get_total_health())],
+	]
+	_result_label.modulate = Color("ff7770") if target.is_dead() else Color("a9dfc3")
+
+
+func report_slingshot_hit(zone: BodyHitZone, damage: float, toxin: bool) -> void:
+	if zone == null or _result_label == null: return
+	var target := zone.damageable_owner as DamageableHumanDummy
+	if target == null: return
+	_result_label.text = "IMPROVISED SLINGSHOT\n%s // %s\n%d DAMAGE\nTARGET: %s" % [
+		"TOXIN NAIL" if toxin else "NORMAL NAIL", zone.get_hit_zone_id(), int(damage),
+		"DEAD" if target.is_dead() else "%d / %d" % [int(target.get_current_health()), int(target.get_total_health())],
+	]
+	_result_label.modulate = Color("ff7770") if target.is_dead() else Color("a9dfc3")
+
+
 func _refresh_selection() -> void:
 	if _selection_label:
 		_selection_label.text = "TEST DAMAGE: %d    [ / ] CHANGE    T APPLY    Y RESET TARGETS" % get_selected_damage()

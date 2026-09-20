@@ -5,10 +5,12 @@ const HIT_ZONE_SCENE := preload("res://scenes/components/BodyHitZone.tscn")
 
 @export var target_label := "UNARMORED"
 @export var armor_type: ArmorTypes.Type = ArmorTypes.Type.NONE
+@export var toxin_role: ToxinStatusComponent.TargetRole = ToxinStatusComponent.TargetRole.GENERIC
 
 @onready var health: HealthComponent = $HealthComponent
 @onready var body: Node3D = $Body
 @onready var status_label: Label3D = $StatusLabel
+@onready var toxin_status: ToxinStatusComponent = $ToxinStatusComponent
 
 var _zones: Array[BodyHitZone] = []
 
@@ -19,6 +21,7 @@ func _ready() -> void:
 	health.died.connect(_on_died)
 	_build_segmented_body()
 	health.base_health = 100.0
+	toxin_status.configure(health, toxin_role)
 	health.set_armor_type(armor_type)
 	reset_target()
 
@@ -28,6 +31,7 @@ func apply_test_damage(amount: float, hit_zone: StringName) -> float:
 
 
 func reset_target() -> void:
+	toxin_status.reset_status()
 	health.set_armor_type(armor_type)
 	body.visible = true
 	for zone in _zones:

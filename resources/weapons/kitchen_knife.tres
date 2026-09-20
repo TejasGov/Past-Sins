@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="MeleeDefinition" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/weapons/melee_definition.gd" id="1_definition"]
+[ext_resource type="PackedScene" path="res://scenes/weapons/visuals/Knife_FP.tscn" id="2_fp"]
+[ext_resource type="PackedScene" path="res://scenes/weapons/visuals/Knife_World.tscn" id="3_world"]
+
+[resource]
+script = ExtResource("1_definition")
+item_id = &"kitchen_knife"
+display_name = "Kitchen Knife"
+category = 1
+dev_only = true
+melee_id = &"kitchen_knife"
+reach = 1.6
+attack_duration = 0.6
+impact_time = 0.18
+attack_cooldown = 0.6
+lethal_melee = true
+fallback_damage = 35.0
+camera_impact_degrees = 0.22
+weapon_visibility_class = &"MELEE"
+first_person_visual_scene = ExtResource("2_fp")
+world_visual_scene = ExtResource("3_world")

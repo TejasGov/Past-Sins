@@ -3,6 +3,8 @@ class_name CampusPrisonCell
 
 const Factory := preload("res://scripts/levels/greybox_factory.gd")
 const GATE_SCENE := preload("res://scenes/interactables/PrisonSlidingGate.tscn")
+const CELL_LAMP_SCENE := preload("res://scenes/props/prison/CellLamp.tscn")
+const WOOD_FURNITURE := preload("res://materials/props/wood_furniture.tres")
 const CELL_MASTER_KEY_ID: StringName = &"cell_master_key"
 
 @export var cell_access_id: StringName = &"cellhouse_a_cell"
@@ -71,12 +73,17 @@ func _build_cell() -> void:
 	marker.set_meta("is_parth_cell", is_parth_cell)
 	add_child(marker)
 	_build_sliding_bar_door(marker)
+	# Cell walls must occlude the lamp, including after static mesh batching.
+	for piece in get_children():
+		if piece is MeshInstance3D:
+			piece.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON
 
 	_build_wall_bed(g, rear_x)
 	_build_sanitary_corner(g, rear_x)
 	_build_cupboard(g)
 	_build_wooden_chair(g)
 	_build_personal_items(g)
+	_build_cell_light()
 	g.sign(cell_number_label, Vector3(front_x + front_direction * 0.12, 2.5, -1.28), Vector3(0, -90.0 * front_direction, 0), Color("d4cfad"), 0.0024)
 
 	if is_parth_cell:
@@ -85,6 +92,17 @@ func _build_cell() -> void:
 		spawn.position = Vector3(-front_direction * 0.25, 0.95, 0.55)
 		spawn.rotation_degrees.y = -90.0 if front_direction > 0.0 else 90.0
 		add_child(spawn)
+
+
+func _build_cell_light() -> void:
+	# A reachable wall fixture beside the entrance, visible from the cell floor.
+	var lamp := CELL_LAMP_SCENE.instantiate() as CellLamp
+	lamp.name = "CellTubeLight"
+	lamp.position = Vector3(front_direction * 1.20, 2.05, -CELL_DEPTH * 0.5 + 0.09)
+	lamp.local_light_enabled = true
+	lamp.breakable = false
+	lamp.visual_layer_mask = visual_layer_mask
+	add_child(lamp)
 
 
 func _build_wall_bed(g, rear_x: float) -> void:
@@ -121,9 +139,9 @@ func _build_sanitary_corner(g, rear_x: float) -> void:
 
 func _build_cupboard(g) -> void:
 	var wood := Color("6b5845")
-	g.box("CellCupboardBody", Vector3(0.1, 0.68, -2.16), Vector3(0.82, 1.36, 0.52), wood)
-	g.box("CellCupboardDoorLeft", Vector3(-0.105, 0.7, -1.89), Vector3(0.38, 1.22, 0.04), wood.lightened(0.08), false)
-	g.box("CellCupboardDoorRight", Vector3(0.305, 0.7, -1.89), Vector3(0.38, 1.22, 0.04), wood.lightened(0.05), false)
+	g.box("CellCupboardBody", Vector3(0.1, 0.68, -2.16), Vector3(0.82, 1.36, 0.52), wood, true, WOOD_FURNITURE)
+	g.box("CellCupboardDoorLeft", Vector3(-0.105, 0.7, -1.89), Vector3(0.38, 1.22, 0.04), wood.lightened(0.08), false, WOOD_FURNITURE)
+	g.box("CellCupboardDoorRight", Vector3(0.305, 0.7, -1.89), Vector3(0.38, 1.22, 0.04), wood.lightened(0.05), false, WOOD_FURNITURE)
 	g.cylinder("CellCupboardHandleLeft", Vector3(0.02, 0.7, -1.85), 0.025, 0.16, Color("2f302d"), false)
 	g.cylinder("CellCupboardHandleRight", Vector3(0.18, 0.7, -1.85), 0.025, 0.16, Color("2f302d"), false)
 
@@ -131,18 +149,18 @@ func _build_cupboard(g) -> void:
 func _build_wooden_chair(g) -> void:
 	var wood := Color("765d43")
 	var center := Vector3(0.25, 0, 1.45)
-	g.box("WoodenChairSeat", center + Vector3.UP * 0.48, Vector3(0.58, 0.12, 0.56), wood)
+	g.box("WoodenChairSeat", center + Vector3.UP * 0.48, Vector3(0.58, 0.12, 0.56), wood, true, WOOD_FURNITURE)
 	var leg_index := 0
 	for x_offset in [-0.22, 0.22]:
 		for z_offset in [-0.2, 0.2]:
 			leg_index += 1
-			g.cylinder("WoodenChairLeg%d" % leg_index, center + Vector3(x_offset, 0.22, z_offset), 0.035, 0.44, wood.darkened(0.16), false)
+			g.cylinder("WoodenChairLeg%d" % leg_index, center + Vector3(x_offset, 0.22, z_offset), 0.035, 0.44, wood.darkened(0.16), false, Vector3.ZERO, WOOD_FURNITURE)
 	for index in range(2):
 		var x_offset := -0.23 if index == 0 else 0.23
-		g.cylinder("WoodenChairBackPost%d" % (index + 1), center + Vector3(x_offset, 0.82, -0.23), 0.035, 0.72, wood.darkened(0.12), false)
+		g.cylinder("WoodenChairBackPost%d" % (index + 1), center + Vector3(x_offset, 0.82, -0.23), 0.035, 0.72, wood.darkened(0.12), false, Vector3.ZERO, WOOD_FURNITURE)
 	for index in range(2):
 		var back_y := 0.72 if index == 0 else 0.94
-		g.box("WoodenChairBackSlat%d" % (index + 1), center + Vector3(0, back_y, -0.23), Vector3(0.5, 0.09, 0.07), wood, false)
+		g.box("WoodenChairBackSlat%d" % (index + 1), center + Vector3(0, back_y, -0.23), Vector3(0.5, 0.09, 0.07), wood, false, WOOD_FURNITURE)
 
 
 func _build_personal_items(g) -> void:

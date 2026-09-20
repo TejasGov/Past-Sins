@@ -1,6 +1,9 @@
 extends Node3D
 class_name PrisonSlidingGate
 
+const CELL_BARS := preload("res://materials/props/cell_bars.tres")
+const Affordance := preload("res://scripts/props/interaction_affordance.gd")
+
 @export var display_name := "Prison Gate"
 @export var required_key_id: StringName = &"cellblock_key"
 ## Optional facility-wide override. Cell doors use this for the future police
@@ -79,15 +82,20 @@ func interact(_player: Node) -> void:
 
 func _build_key_reader() -> void:
 	# Mount reader box on the right frame post at chest height
-	var reader_parent := Node3D.new()
+	var reader_parent := StaticBody3D.new()
 	reader_parent.name = "KeyReader"
 	reader_parent.position = Vector3(gate_width * 0.5 + 0.1, gate_height * 0.5, 0.12)
+	# Existing generic interaction resolves the parent gate. Layer 4 is the
+	# interaction ray only, so the painted control does not block walking.
+	reader_parent.collision_layer = 4
+	reader_parent.collision_mask = 0
 	add_child(reader_parent)
-
-	var dark_metal := StandardMaterial3D.new()
-	dark_metal.albedo_color = Color("22282a")
-	dark_metal.metallic = 0.7
-	dark_metal.roughness = 0.4
+	var reader_collider := CollisionShape3D.new()
+	reader_collider.name = "ReaderInteractionShape"
+	var reader_shape := BoxShape3D.new()
+	reader_shape.size = Vector3(0.18, 0.28, 0.16)
+	reader_collider.shape = reader_shape
+	reader_parent.add_child(reader_collider)
 
 	# Keypad/card reader body
 	var body_mesh := MeshInstance3D.new()
@@ -95,25 +103,24 @@ func _build_key_reader() -> void:
 	var box := BoxMesh.new()
 	box.size = Vector3(0.18, 0.28, 0.12)
 	body_mesh.mesh = box
-	body_mesh.material_override = dark_metal
+	# Existing inset plate leaves a narrow, non-emissive yellow painted bezel.
+	body_mesh.material_override = Affordance.HAZARD
 	body_mesh.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	reader_parent.add_child(body_mesh)
 
 	# Keypad panel plate
-	var plate_mat := StandardMaterial3D.new()
-	plate_mat.albedo_color = Color("383e40")
 	var plate_mesh := MeshInstance3D.new()
 	plate_mesh.name = "ReaderPlate"
 	var plate := BoxMesh.new()
 	plate.size = Vector3(0.14, 0.22, 0.02)
 	plate_mesh.mesh = plate
 	plate_mesh.position = Vector3(0, 0, 0.065)
-	plate_mesh.material_override = plate_mat
+	plate_mesh.material_override = Affordance.PANEL
 	plate_mesh.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	reader_parent.add_child(plate_mesh)
 
 	# Status LED indicator
-	_reader_led_material = StandardMaterial3D.new()
+	_reader_led_material = Affordance.led_material(Color("d65038"))
 	_reader_led_mesh = MeshInstance3D.new()
 	_reader_led_mesh.name = "StatusLED"
 	var led_box := BoxMesh.new()
@@ -140,19 +147,19 @@ func _update_access_indicator() -> void:
 	if not _reader_led_material:
 		return
 	if is_locked:
-		var red_color := Color("ff2222")
+		var red_color := Color("ec573b")
 		_reader_led_material.albedo_color = red_color
 		_reader_led_material.emission_enabled = true
 		_reader_led_material.emission = red_color
-		_reader_led_material.emission_energy_multiplier = 1.2
+		_reader_led_material.emission_energy_multiplier = 1.1
 		if _reader_light:
 			_reader_light.visible = false
 	else:
-		var green_color := Color("00ff55")
+		var green_color := Color("70dc95")
 		_reader_led_material.albedo_color = green_color
 		_reader_led_material.emission_enabled = true
 		_reader_led_material.emission = green_color
-		_reader_led_material.emission_energy_multiplier = 2.2
+		_reader_led_material.emission_energy_multiplier = 1.25
 		if _reader_light:
 			_reader_light.light_color = green_color
 			_reader_light.light_energy = 0.8
@@ -164,8 +171,8 @@ func _trigger_authorization_sequence() -> void:
 	_update_access_indicator()
 	# Brief authorization flash and short delay before gate leaf slides open
 	var tween := create_tween()
-	tween.tween_property(_reader_led_material, "emission_energy_multiplier", 4.0, 0.12)
-	tween.tween_property(_reader_led_material, "emission_energy_multiplier", 2.2, 0.13)
+	tween.tween_property(_reader_led_material, "emission_energy_multiplier", 1.8, 0.12)
+	tween.tween_property(_reader_led_material, "emission_energy_multiplier", 1.25, 0.13)
 	tween.tween_callback(func():
 		_moving = false
 		_animate_to(true)
@@ -173,10 +180,7 @@ func _trigger_authorization_sequence() -> void:
 
 
 func _build_gate_visuals() -> void:
-	var material := StandardMaterial3D.new()
-	material.albedo_color = gate_color
-	material.metallic = 0.55
-	material.roughness = 0.48
+	var material: StandardMaterial3D = CELL_BARS
 	if bulletproof_glass:
 		var glass := StandardMaterial3D.new()
 		glass.albedo_color = Color(0.22, 0.5, 0.55, 0.38)
@@ -201,12 +205,42 @@ func _build_gate_visuals() -> void:
 		visuals.add_child(marking)
 		return
 	var usable_width := gate_width - 0.16
+	# Cell doors are instanced hundreds of times across the campus. Keep all
+	# identical vertical bars in one MultiMesh per gate so the visual remains
+	# readable while avoiding one MeshInstance3D/draw submission per slat.
+	var slats := MultiMeshInstance3D.new()
+	slats.name = "Slats"
+	var slat_mesh := BoxMesh.new()
+	slat_mesh.size = Vector3(0.09, gate_height, 0.13)
+	var slat_instances := MultiMesh.new()
+	slat_instances.transform_format = MultiMesh.TRANSFORM_3D
+	slat_instances.mesh = slat_mesh
+	slat_instances.instance_count = slat_count
 	for index in range(slat_count):
 		var ratio := float(index) / float(maxi(1, slat_count - 1))
 		var x := lerpf(-usable_width * 0.5, usable_width * 0.5, ratio)
-		_add_visual_box("Slat%02d" % index, Vector3(x, gate_height * 0.5, 0), Vector3(0.09, gate_height, 0.13), material)
-	for y in [0.18, gate_height * 0.52, gate_height - 0.18]:
-		_add_visual_box("CrossRail", Vector3(0, y, 0), Vector3(gate_width, 0.12, 0.16), material)
+		slat_instances.set_instance_transform(index, Transform3D(Basis.IDENTITY, Vector3(x, gate_height * 0.5, 0)))
+	slats.multimesh = slat_instances
+	slats.material_override = material
+	slats.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON
+	visuals.add_child(slats)
+	# The three identical rails move as one leaf. Instance them in one draw call;
+	# retain the individual slats and the existing leaf collider/animation.
+	var rails := MultiMeshInstance3D.new()
+	rails.name = "CrossRails"
+	var rail_mesh := BoxMesh.new()
+	rail_mesh.size = Vector3(gate_width, 0.12, 0.16)
+	var instances := MultiMesh.new()
+	instances.transform_format = MultiMesh.TRANSFORM_3D
+	instances.mesh = rail_mesh
+	instances.instance_count = 3
+	var heights := [0.18, gate_height * 0.52, gate_height - 0.18]
+	for index in heights.size():
+		instances.set_instance_transform(index, Transform3D(Basis.IDENTITY, Vector3(0, heights[index], 0)))
+	rails.multimesh = instances
+	rails.material_override = material
+	rails.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON
+	visuals.add_child(rails)
 	if not panel_label.is_empty():
 		for side in [-1.0, 1.0]:
 			var label := Label3D.new()
@@ -230,7 +264,11 @@ func _add_visual_box(piece_name: String, center: Vector3, size: Vector3, materia
 	piece.mesh = mesh
 	piece.position = center
 	piece.material_override = material
-	piece.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	# Bars and structural rails must cast the familiar prison shadows. Keep
+	# optional transparent panes out of the cheap opaque shadow pass.
+	piece.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON
+	if material is StandardMaterial3D and (material as StandardMaterial3D).transparency != BaseMaterial3D.TRANSPARENCY_DISABLED:
+		piece.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	visuals.add_child(piece)
 
 

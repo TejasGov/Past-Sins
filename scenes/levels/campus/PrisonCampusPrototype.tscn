@@ -4,37 +4,24 @@
 [ext_resource type="PackedScene" path="res://scenes/ui/HUD.tscn" id="2_hud"]
 [ext_resource type="Script" path="res://scripts/levels/campus/campus_environment_cycle.gd" id="3_cycle"]
 [ext_resource type="Script" path="res://scripts/dev/campus_dev_registry.gd" id="4_dev_registry"]
-
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_campus"]
-sky_top_color = Color(0.12, 0.18, 0.24, 1)
-sky_horizon_color = Color(0.24, 0.28, 0.32, 1)
-ground_bottom_color = Color(0.08, 0.1, 0.12, 1)
-ground_horizon_color = Color(0.2, 0.24, 0.26, 1)
-
-[sub_resource type="Sky" id="Sky_campus"]
-sky_material = SubResource("ProceduralSkyMaterial_campus")
-
-[sub_resource type="Environment" id="Environment_campus"]
-background_mode = 2
-sky = SubResource("Sky_campus")
-ambient_light_source = 3
-ambient_light_color = Color(0.35, 0.38, 0.42, 1)
-ambient_light_sky_contribution = 0.4
-ambient_light_energy = 0.6
-tonemap_mode = 2
-glow_enabled = false
+[ext_resource type="PackedScene" path="res://scenes/ui/ScreenGrade.tscn" id="5_screen_grade"]
+[ext_resource type="Script" path="res://scripts/systems/environment_zone_manager.gd" id="6_zones"]
+[ext_resource type="Environment" path="res://resources/environments/env_exterior.tres" id="7_exterior"]
 
 [node name="PrisonCampusPrototype" type="Node3D"]
 script = ExtResource("1_campus")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_campus")
+environment = ExtResource("7_exterior")
+script = ExtResource("6_zones")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.866025, -0.353553, 0.353553, 0, 0.707107, 0.707107, -0.5, -0.612372, 0.612372, 0, 30, 0)
 light_color = Color(0.92, 0.94, 0.96, 1)
-light_energy = 0.85
-shadow_enabled = false
+light_energy = 1.0
+shadow_enabled = true
+directional_shadow_mode = 1
+directional_shadow_max_distance = 110.0
 
 [node name="EnvironmentCycle" type="Node" parent="."]
 script = ExtResource("3_cycle")
@@ -69,3 +56,5 @@ fov = 62.0
 
 [node name="CampusDevRegistry" type="Node" parent="."]
 script = ExtResource("4_dev_registry")
+
+[node name="ScreenGrade" parent="." instance=ExtResource("5_screen_grade")]

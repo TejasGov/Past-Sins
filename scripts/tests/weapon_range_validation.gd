@@ -29,7 +29,7 @@ func _validate() -> void:
 	_check(_position_is_clear(range_scene.get_node("Spawn") as Marker3D), "Player spawn must not intersect range collision")
 
 	var required_labels := [
-		"PISTOL\n[E] PICK UP", "SMG", "CARBINE AR", "SNIPER", "KNIFE", "HAMMER", "MONOCULAR", "WIRE NOOSE",
+		"PISTOL\n[E] PICK UP", "SMG\n[E] PICK UP", "CARBINE AR\n[E] PICK UP", "SNIPER RIFLE\n[E] PICK UP", "KITCHEN KNIFE\n[E] PICK UP", "IMPROVISED SLINGSHOT\n[E] PICK UP", "MONOCULAR",
 		"TRANQUILIZER\nINJECTOR", "MAKESHIFT\nSUPPRESSOR", "PROPER\nSUPPRESSOR",
 		"UNARMORED\n100 HP", "STANDARD VEST\n125 HP", "ADVANCED VEST\n150 HP",
 		"UNAWARE INMATE", "UNAWARE GUARD", "GUARD FACING PLAYER", "GUARD FACING AWAY", "WITNESS NPC",
@@ -53,14 +53,15 @@ func _validate() -> void:
 	_check(found_distances == [5, 15, 30, 60], "Target distances must be 5m, 15m, 30m and 60m")
 
 	var damage_dummies := _owned_group(range_scene, "weapon_range_damage_dummies")
-	_check(damage_dummies.size() == 3, "Damage area must provide three reusable health targets")
+	_check(damage_dummies.size() == 6, "Damage area must provide armor, melee, inmate-toxin and guard-toxin targets")
+	_check(_dummy_by_label(damage_dummies, "MELEE RESET TARGET") != null, "Damage area must provide a designated close, resettable melee target")
 	for dummy in damage_dummies:
 		for zone_name in ["Head", "Torso", "LowerBody"]:
 			var zone := dummy.get_node_or_null("Body/%s" % zone_name) as BodyHitZone
 			_check(zone != null, "%s dummy is missing reusable %s hit zone" % [dummy.name, zone_name])
 			_check(zone != null and zone.collision_layer == 32 and zone.get_meta("hit_zone", &"") == zone.get_hit_zone_id(), "%s hit zone must be identifiable by future raycasts" % zone_name)
 	_check(_owned_group(range_scene, "weapon_range_stealth_placeholders").size() == 5, "Stealth room must provide five labeled placeholder positions")
-	_check(_owned_group(range_scene, "weapon_range_station").size() == 5, "Range must provide equipment, firing, damage, stealth and controls stations")
+	_check(_owned_group(range_scene, "weapon_range_station").size() == 6, "Range must provide equipment, firing, damage, stealth, observation and controls stations")
 	_check(_owned_group(range_scene, "dev_inventory_pickups").size() == 7, "Range must provide seven data-only DEV inventory pickups")
 	await _validate_health_foundation(range_scene, damage_dummies)
 
@@ -86,8 +87,8 @@ func _validate() -> void:
 
 	var mesh_count := range_scene.find_children("*", "MeshInstance3D", true, false).size()
 	var light_count := range_scene.find_children("*", "Light3D", true, false).size()
-	_check(mesh_count < 260, "Range mesh count must remain Web-friendly, found %d" % mesh_count)
-	_check(light_count <= 4, "Range must use no more than four inexpensive lights, found %d" % light_count)
+	_check(mesh_count < 460, "Range mesh count must remain Web-friendly with weapon models and the long observation annex, found %d" % mesh_count)
+	_check(light_count <= 5, "Range must use no more than five inexpensive lights including the breakable test light, found %d" % light_count)
 
 	range_scene.free()
 	DevModeManager.set_enabled(false)

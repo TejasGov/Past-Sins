@@ -1,0 +1,30 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/weapons/carbine_ar_visual.gd" id="1_visual"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_carbine_pickup"]
+size = Vector3(1.65, 0.78, 0.95)
+
+[node name="WeaponRoot" type="Node3D"]
+
+[node name="Model" type="Node3D" parent="."]
+position = Vector3(0, 0.42, 0)
+rotation_degrees = Vector3(0, -90, -7)
+scale = Vector3(0.68, 0.68, 0.68)
+script = ExtResource("1_visual")
+
+[node name="PickupCollider" type="CollisionShape3D" parent="."]
+position = Vector3(0, 0.42, 0)
+shape = SubResource("BoxShape3D_carbine_pickup")
+
+[node name="InteractionAnchor" type="Marker3D" parent="."]
+position = Vector3(0, 0.52, 0)
+
+[node name="MuzzlePoint" type="Marker3D" parent="."]
+position = Vector3(-0.73, 0.42, 0)
+
+[node name="MagazineSocket" type="Marker3D" parent="."]
+position = Vector3(-0.05, 0.22, 0)
+
+[node name="SuppressorAttachmentPoint" type="Marker3D" parent="."]
+position = Vector3(-0.78, 0.42, 0)

@@ -49,10 +49,11 @@ func _ready() -> void:
 		g.box("ChemicalTank", Vector3(x, 1.05, 13), Vector3(0.8, 2.1, 0.8), Color("566d66"))
 	g.partition_with_door("ChemicalStorageDivider", Vector3(-9.5, 0, 10.5), 14.4, true, 4.0, 1.4, wall_color, 3.3, 2.35, 0.34)
 
-	var sterile_light := Color("e8f3ef")
-	g.ceiling_light("LaboratoryLightNorth", Vector3(-10.5, 3.5, -13), sterile_light, 1.35, 7.0)
-	g.ceiling_light("LaboratoryLightSouth", Vector3(-10.5, 3.5, -5), sterile_light, 1.35, 7.0)
-	g.ceiling_light("ChemicalLight", Vector3(-10.5, 3.5, 10), Color("dce6d6"), 1.0, 7.0)
+	var sterile_white := Color("f5f8fc")
+	var warm_yellow := Color("f0d38d")
+	g.ceiling_light("LaboratoryLightNorth", Vector3(-10.5, 3.5, -13), sterile_white, 1.4, 7.0)
+	g.ceiling_light("LaboratoryLightSouth", Vector3(-10.5, 3.5, -5), sterile_white, 1.4, 7.0)
+	g.ceiling_light("ChemicalLight", Vector3(-10.5, 3.5, 10), sterile_white, 1.2, 7.0)
 
 	# Observation & Interrogation Facility
 	g.partition_with_door("ObservationInterrogationDivider", Vector3(9.5, 0, -1.5), 14.5, true, -4.5, 1.4, wall_color, 3.3, 2.35, 0.34)
@@ -64,8 +65,8 @@ func _ready() -> void:
 	g.box("ObservationWindowBottomFrame", Vector3(4.4, 0.92, -8), Vector3(0.18, 0.16, 5.5), Color("343b39"))
 	g.emissive_box("ObservationDisplay", Vector3(9.0, 1.38, -10), Vector3(1.8, 0.34, 0.92), Color("628f8b"), 0.6)
 
-	g.ceiling_light("ObservationLight", Vector3(9.5, 3.5, -10), Color("a9c6c1"), 0.7, 6.0)
-	g.ceiling_light("InterrogationLight", Vector3(10.0, 3.25, 8), Color("d8cdb5"), 0.95, 4.5, Vector3(0.7, 0.08, 0.7))
+	g.ceiling_light("ObservationLight", Vector3(9.5, 3.5, -10), warm_yellow, 0.85, 6.0)
+	g.ceiling_light("InterrogationLight", Vector3(10.0, 3.25, 8), warm_yellow, 1.0, 5.0, Vector3(0.7, 0.08, 0.7))
 
 	# Stairs & Lift
 	g.stairs("B2ToB1", Vector3(12.75, 0, 12.5), Vector3.BACK, 7.0, 4.0, 1.3, 20, wall_color)
@@ -80,6 +81,13 @@ func _ready() -> void:
 	g.cctv_camera("B2CamObservation", Vector3(16.85, 3.4, -18.5), 0, -35.0, -25.0, 90.0) # Wall
 	g.cctv_camera("B2CamChemical", Vector3(-16.85, 3.4, 18.0), 0, -35.0, -25.0, -90.0) # Wall
 	g.cctv_camera("B2CamLiftAccess", Vector3(15.5, 3.4, 18.0), 1, -90.0, -25.0) # Ceiling
+
+	# Warm golden mood lights — dimmer than upper floors for oppressive feel
+	var mood_gold := Color("c4a55c")
+	g.ceiling_light("B2MoodLightCorridorN", Vector3(0, 3.45, -14), mood_gold, 0.35, 5.0, Vector3(0.7, 0.07, 0.25))
+	g.ceiling_light("B2MoodLightCorridorS", Vector3(0, 3.45, 5), mood_gold, 0.3, 4.5, Vector3(0.7, 0.07, 0.25))
+	g.ceiling_light("B2MoodLightStairApproach", Vector3(10, 3.45, 14), mood_gold, 0.3, 4.5, Vector3(0.7, 0.07, 0.25))
+	g.ceiling_light("B2MoodLightLift", Vector3(15, 3.45, 16), mood_gold, 0.3, 4.0, Vector3(0.7, 0.07, 0.25))
 
 	# Signage
 	g.sign("B2 — SECURE RESEARCH", Vector3(0, 2.7, -20.75), Vector3(0, 0, 0), Color("d2a84a"), 0.005)

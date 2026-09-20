@@ -1,0 +1,33 @@
+[gd_resource type="Resource" script_class="FirearmDefinition" format=3 uid="uid://ck3yoylfj7wnh"]
+
+[ext_resource type="Script" uid="uid://dvmrxmox5k0k6" path="res://scripts/weapons/firearm_definition.gd" id="1_definition"]
+[ext_resource type="PackedScene" path="res://scenes/weapons/visuals/SMG_FP.tscn" id="2_first_person"]
+[ext_resource type="PackedScene" path="res://scenes/weapons/visuals/SMG_World.tscn" id="3_world"]
+
+[resource]
+script = ExtResource("1_definition")
+weapon_id = &"smg"
+magazine_size = 25
+fire_mode = 2
+shot_interval = 0.08
+initial_reserve_ammo = 75
+reserve_ammo_capacity = 100
+hip_fire_spread_degrees = 1.8
+ads_spread_degrees = 0.35
+has_custom_ads_transform = true
+custom_ads_position = Vector3(-0.25, 0.083, 0.16)
+custom_ads_rotation_degrees = Vector3(2.14, 2.5, 0)
+future_suppressor_compatible = true
+recoil_camera_degrees_override = 0.35
+ads_camera_recoil_override = 0.16
+recoil_weapon_kick_override = 0.4
+horizontal_recoil_degrees = 0.25
+lower_body_damage = 30.0
+torso_damage = 65.0
+head_damage = 140.0
+first_person_visual_scene = ExtResource("2_first_person")
+world_visual_scene = ExtResource("3_world")
+item_id = &"smg"
+display_name = "SMG"
+category = 0
+dev_only = true

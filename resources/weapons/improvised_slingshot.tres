@@ -1,0 +1,40 @@
+[gd_resource type="Resource" script_class="SlingshotDefinition" load_steps=7 format=3]
+[ext_resource type="Script" path="res://scripts/weapons/slingshot_definition.gd" id="1_definition"]
+[ext_resource type="PackedScene" path="res://scenes/weapons/visuals/Slingshot_FP.tscn" id="2_fp"]
+[ext_resource type="PackedScene" path="res://scenes/weapons/visuals/Slingshot_World.tscn" id="3_world"]
+[ext_resource type="Resource" path="res://resources/items/slingshot_nail.tres" id="4_normal"]
+[ext_resource type="Resource" path="res://resources/items/slingshot_nail_toxin.tres" id="5_toxin"]
+[ext_resource type="PackedScene" path="res://scenes/weapons/SlingshotProjectile.tscn" id="6_projectile"]
+[resource]
+script = ExtResource("1_definition")
+item_id = &"improvised_slingshot"
+display_name = "Improvised Slingshot"
+category = 1
+dev_only = true
+melee_id = &"improvised_slingshot"
+reach = 1.55
+attack_duration = 0.6
+impact_time = 0.2
+attack_cooldown = 0.6
+lethal_melee = false
+fallback_damage = 0.0
+weapon_visibility_class = &"IMPROVISED_WEAPON"
+first_person_visual_scene = ExtResource("2_fp")
+world_visual_scene = ExtResource("3_world")
+maximum_draw_time = 0.8
+minimum_velocity = 9.0
+maximum_velocity = 25.0
+minimum_spread_degrees = 0.1
+maximum_spread_degrees = 2.0
+aimed_spread_multiplier = 0.25
+projectile_gravity = 3.5
+maximum_zero_distance = 10.0
+reload_setup_time = 1.6
+normal_nail_recovery_chance = 0.5
+normal_ammo = ExtResource("4_normal")
+toxin_ammo = ExtResource("5_toxin")
+projectile_scene = ExtResource("6_projectile")
+weapon_visibility_class_override = &"IMPROVISED_WEAPON"
+damage_lower_body = 25.0
+damage_torso = 45.0
+damage_head = 120.0

@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=8 format=3]
 
 [ext_resource type="Script" path="res://scripts/dev/damageable_human_dummy.gd" id="1_dummy"]
 [ext_resource type="PackedScene" path="res://scenes/components/HealthComponent.tscn" id="2_health"]
+[ext_resource type="PackedScene" path="res://scenes/components/ToxinStatusComponent.tscn" id="3_toxin"]
 
 [sub_resource type="BoxMesh" id="BaseMesh"]
 size = Vector3(1.55, 0.16, 1.2)
@@ -20,6 +21,7 @@ size = Vector3(0.12, 1.25, 0.12)
 script = ExtResource("1_dummy")
 
 [node name="HealthComponent" parent="." instance=ExtResource("2_health")]
+[node name="ToxinStatusComponent" parent="." instance=ExtResource("3_toxin")]
 
 [node name="GroundedStand" type="StaticBody3D" parent="."]
 

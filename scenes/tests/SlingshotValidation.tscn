@@ -1,0 +1,4 @@
+[gd_scene load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/tests/slingshot_validation.gd" id="1_validation"]
+[node name="SlingshotValidation" type="Node3D"]
+script = ExtResource("1_validation")

@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/weapons/improvised_slingshot_visual.gd" id="1_visual"]
+[node name="WeaponRoot" type="Node3D"]
+[node name="Model" type="Node3D" parent="."]
+position = Vector3(0, 0.54, 0)
+rotation_degrees = Vector3(0, 0, -90)
+scale = Vector3(0.72, 0.72, 0.72)
+script = ExtResource("1_visual")
+[node name="InteractionAnchor" type="Marker3D" parent="."]
+position = Vector3(0, 0.45, 0)
+[node name="GripAnchor" type="Marker3D" parent="."]
+position = Vector3(0, 0.25, 0)

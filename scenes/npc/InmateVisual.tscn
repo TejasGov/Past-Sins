@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/visuals/modular_character.gd" id="1_mod"]
+
+[node name="InmateVisual" type="Node3D"]
+script = ExtResource("1_mod")
+character_type = 1
+uniform_primary = Color(0.85, 0.33, 0.12, 1)
+uniform_secondary = Color(0.55, 0.48, 0.39, 1)
+show_cap = false
+show_vest = false
+show_belt = false

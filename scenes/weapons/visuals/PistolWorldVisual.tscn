@@ -5,5 +5,5 @@
 [node name="PistolWorldVisual" type="Node3D"]
 position = Vector3(0, 0.38, 0)
 rotation_degrees = Vector3(0, -90, -8)
-scale = Vector3(0.8, 0.8, 0.8)
+scale = Vector3(0.7, 0.7, 0.7)
 script = ExtResource("1_visual")

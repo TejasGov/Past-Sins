@@ -16,6 +16,7 @@ script = ExtResource("1_guard")
 shape = SubResource("GuardShape")
 
 [node name="GuardVisual" parent="." instance=ExtResource("2_visual")]
+position = Vector3(0, -0.95, 0)
 
 [node name="StatusLight" type="OmniLight3D" parent="."]
 position = Vector3(0, 0.95, -0.38)

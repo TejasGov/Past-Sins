@@ -35,6 +35,12 @@ enum PropKind {
 	FLOWER_CLUSTER,
 	OFFICER_GAZEBO,
 	YARD_SECURITY_POST,
+	TREADMILL,
+	ROWING_MACHINE,
+	LEG_PRESS,
+	LAT_PULLDOWN,
+	INCLINE_BENCH_PRESS,
+	DIP_STATION,
 }
 
 const PAINTED_METAL := preload("res://materials/props/painted_metal.tres")
@@ -44,7 +50,7 @@ const INSTITUTIONAL_PLASTIC := preload("res://materials/props/institutional_plas
 const DARK_RUBBER := preload("res://materials/props/dark_rubber.tres")
 const DIRTY_OFF_WHITE := preload("res://materials/props/dirty_off_white.tres")
 const SECURITY_DARK := preload("res://materials/props/security_dark.tres")
-const SHOWER_TILE := preload("res://materials/props/shower_tile.tres")
+const SHOWER_TILE := preload("res://materials/props/tile_shower.tres")
 const YARD_GREEN := preload("res://materials/props/yard_green.tres")
 
 @export var prop_kind: PropKind = PropKind.FLAT_BENCH_PRESS
@@ -97,6 +103,12 @@ func _build_prop() -> void:
 		PropKind.FLOWER_CLUSTER: _build_flower_cluster()
 		PropKind.OFFICER_GAZEBO: _build_officer_gazebo()
 		PropKind.YARD_SECURITY_POST: _build_yard_security_post()
+		PropKind.TREADMILL: _build_treadmill()
+		PropKind.ROWING_MACHINE: _build_rowing_machine()
+		PropKind.LEG_PRESS: _build_leg_press()
+		PropKind.LAT_PULLDOWN: _build_lat_pulldown()
+		PropKind.INCLINE_BENCH_PRESS: _build_incline_bench_press()
+		PropKind.DIP_STATION: _build_dip_station()
 
 
 func _box(part_name: String, center: Vector3, size: Vector3, material: Material, collision := true, rotation := Vector3.ZERO) -> MeshInstance3D:
@@ -400,3 +412,101 @@ func _build_yard_security_post() -> void:
 	_box("PostWindow", Vector3(0, 1.75, 1.35), Vector3(2.65, 0.95, 0.08), STAINLESS_STEEL, false)
 	_box("PostRoof", Vector3(0, 3.0, 0), Vector3(3.7, 0.2, 3.3), SECURITY_DARK)
 	_box("PostDesk", Vector3(0, 0.9, 0.75), Vector3(2.3, 0.14, 0.55), PAINTED_METAL)
+
+
+func _build_treadmill() -> void:
+	# Heavy commercial gym treadmill: base deck, running belt, motor hood, upright stanchions, side rails, console display
+	_box("BaseFrame", Vector3(0, 0.08, 0.05), Vector3(0.88, 0.14, 1.95), PAINTED_METAL)
+	_box("RunningBelt", Vector3(0, 0.16, 0.1), Vector3(0.58, 0.02, 1.55), DARK_RUBBER, false)
+	for x in [-0.36, 0.36]:
+		_box("FootRail%s" % x, Vector3(x, 0.165, 0.1), Vector3(0.12, 0.03, 1.6), SECURITY_DARK, false)
+	_box("MotorCover", Vector3(0, 0.24, -0.78), Vector3(0.84, 0.24, 0.36), SECURITY_DARK)
+	for x in [-0.38, 0.38]:
+		_box("UprightPost%s" % x, Vector3(x, 0.72, -0.52), Vector3(0.08, 0.95, 0.08), PAINTED_METAL, false, Vector3(deg_to_rad(14), 0, 0))
+		_box("SideRail%s" % x, Vector3(x, 1.10, -0.16), Vector3(0.06, 0.06, 0.76), DARK_RUBBER, false, Vector3(deg_to_rad(-4), 0, 0))
+	_box("ConsoleBridge", Vector3(0, 1.18, -0.62), Vector3(0.84, 0.08, 0.12), PAINTED_METAL, false)
+	_box("DashboardScreen", Vector3(0, 1.30, -0.66), Vector3(0.54, 0.24, 0.08), SECURITY_DARK, false, Vector3(deg_to_rad(-25), 0, 0))
+	_box("DisplayGlass", Vector3(0, 1.31, -0.64), Vector3(0.44, 0.16, 0.02), INSTITUTIONAL_PLASTIC, false, Vector3(deg_to_rad(-25), 0, 0))
+	_box("EmergencyStop", Vector3(0, 1.18, -0.58), Vector3(0.06, 0.04, 0.04), DIRTY_OFF_WHITE, false)
+	_box("FrontGripBar", Vector3(0, 1.06, -0.55), Vector3(0.50, 0.05, 0.05), STAINLESS_STEEL, false)
+
+
+func _build_rowing_machine() -> void:
+	# Commercial indoor rowing machine: central extruded rail, front fan flywheel, seat, footplates, handle, monitor
+	_box("SlideRail", Vector3(0, 0.24, 0.22), Vector3(0.12, 0.12, 1.8), STAINLESS_STEEL)
+	_box("RearStabilizer", Vector3(0, 0.08, 1.12), Vector3(0.56, 0.14, 0.12), PAINTED_METAL)
+	_box("FrontStabilizer", Vector3(0, 0.08, -0.75), Vector3(0.56, 0.14, 0.12), PAINTED_METAL)
+	_cylinder("FlywheelHousing", Vector3(0, 0.46, -0.82), 0.28, 0.24, SECURITY_DARK, true, Vector3(0, 0, deg_to_rad(90)))
+	_box("SeatPad", Vector3(0, 0.35, 0.32), Vector3(0.38, 0.08, 0.32), DARK_RUBBER)
+	for x in [-0.18, 0.18]:
+		_box("FootPlate%s" % x, Vector3(x, 0.32, -0.42), Vector3(0.14, 0.28, 0.08), DARK_RUBBER, false, Vector3(deg_to_rad(35), 0, 0))
+	_box("MonitorArm", Vector3(0, 0.65, -0.65), Vector3(0.04, 0.32, 0.04), PAINTED_METAL, false, Vector3(deg_to_rad(-20), 0, 0))
+	_box("MonitorScreen", Vector3(0, 0.82, -0.6), Vector3(0.16, 0.14, 0.05), SECURITY_DARK, false, Vector3(deg_to_rad(-25), 0, 0))
+	_box("PullHandle", Vector3(0, 0.52, -0.48), Vector3(0.44, 0.04, 0.04), DARK_RUBBER, false)
+
+
+func _build_leg_press() -> void:
+	# 45-degree heavy plate-loaded linear leg press
+	for x in [-0.48, 0.48]:
+		_box("BaseBeam%s" % x, Vector3(x, 0.08, 0.0), Vector3(0.12, 0.14, 2.2), PAINTED_METAL)
+		_box("GuideRail%s" % x, Vector3(x, 0.82, -0.1), Vector3(0.08, 0.08, 2.1), STAINLESS_STEEL, false, Vector3(deg_to_rad(-45), 0, 0))
+		_box("SupportPost%s" % x, Vector3(x, 0.76, -0.82), Vector3(0.1, 1.48, 0.1), PAINTED_METAL)
+	_box("BaseCrossFront", Vector3(0, 0.08, -1.02), Vector3(1.08, 0.14, 0.12), PAINTED_METAL)
+	_box("BaseCrossRear", Vector3(0, 0.08, 1.02), Vector3(1.08, 0.14, 0.12), PAINTED_METAL)
+	_box("FootPlate", Vector3(0, 1.35, -0.74), Vector3(0.82, 0.68, 0.06), PAINTED_METAL, false, Vector3(deg_to_rad(45), 0, 0))
+	_box("SledCarriage", Vector3(0, 0.72, 0.0), Vector3(0.9, 0.15, 0.7), PAINTED_METAL, false, Vector3(deg_to_rad(-45), 0, 0))
+	for side in [-0.62, 0.62]:
+		_box("WeightHorn%s" % side, Vector3(side, 0.72, 0.0), Vector3(0.35, 0.06, 0.06), STAINLESS_STEEL, false)
+		_cylinder("Plates%s" % side, Vector3(side * 1.08, 0.72, 0.0), 0.25, 0.16, SECURITY_DARK, false, Vector3(0, 0, deg_to_rad(90)))
+	_box("SeatPad", Vector3(0, 0.38, 0.58), Vector3(0.56, 0.12, 0.44), DARK_RUBBER, false, Vector3(deg_to_rad(15), 0, 0))
+	_box("BackrestPad", Vector3(0, 0.72, 0.86), Vector3(0.54, 0.76, 0.12), DARK_RUBBER, false, Vector3(deg_to_rad(-35), 0, 0))
+	_box("HeadrestPad", Vector3(0, 1.12, 1.08), Vector3(0.34, 0.24, 0.10), DARK_RUBBER, false, Vector3(deg_to_rad(-35), 0, 0))
+	for side in [-0.38, 0.38]:
+		_box("LockoutLever%s" % side, Vector3(side, 0.42, 0.55), Vector3(0.05, 0.26, 0.05), STAINLESS_STEEL, false)
+		_box("HandleGrip%s" % side, Vector3(side, 0.56, 0.55), Vector3(0.06, 0.12, 0.06), DARK_RUBBER, false)
+
+
+func _build_lat_pulldown() -> void:
+	# Selectorized pin-select lat pulldown machine
+	_box("TowerFrame", Vector3(0, 1.18, -0.48), Vector3(0.55, 2.36, 0.48), PAINTED_METAL)
+	for index in range(7):
+		_box("StackPlate%02d" % index, Vector3(0, 0.34 + index * 0.14, -0.48), Vector3(0.40, 0.10, 0.24), SECURITY_DARK, false)
+	_box("OverheadArm", Vector3(0, 2.30, -0.05), Vector3(0.12, 0.12, 0.98), PAINTED_METAL, false)
+	_cylinder("PulleyWheel", Vector3(0, 2.25, 0.40), 0.08, 0.04, SECURITY_DARK, false, Vector3(0, 0, deg_to_rad(90)))
+	_box("DropCable", Vector3(0, 1.96, 0.40), Vector3(0.02, 0.52, 0.02), SECURITY_DARK, false)
+	_box("LatBar", Vector3(0, 1.70, 0.40), Vector3(1.24, 0.05, 0.05), STAINLESS_STEEL, false)
+	_box("LatGripL", Vector3(-0.56, 1.66, 0.40), Vector3(0.14, 0.06, 0.06), DARK_RUBBER, false, Vector3(0, 0, deg_to_rad(-20)))
+	_box("LatGripR", Vector3(0.56, 1.66, 0.40), Vector3(0.14, 0.06, 0.06), DARK_RUBBER, false, Vector3(0, 0, deg_to_rad(20)))
+	_box("SeatBase", Vector3(0, 0.25, 0.26), Vector3(0.10, 0.45, 0.10), PAINTED_METAL, false)
+	_box("SeatPad", Vector3(0, 0.48, 0.32), Vector3(0.40, 0.10, 0.44), DARK_RUBBER)
+	_box("ThighPost", Vector3(0, 0.52, 0.02), Vector3(0.08, 0.65, 0.08), PAINTED_METAL, false)
+	for x in [-0.18, 0.18]:
+		_cylinder("ThighRoller%s" % x, Vector3(x, 0.74, 0.02), 0.09, 0.24, DARK_RUBBER, false, Vector3(0, 0, deg_to_rad(90)))
+
+
+func _build_incline_bench_press() -> void:
+	# 30-degree Olympic incline bench press
+	for x in [-0.58, 0.58]:
+		_box("InclineUpright%s" % x, Vector3(x, 0.98, -0.45), Vector3(0.11, 1.95, 0.11), PAINTED_METAL)
+		_box("InclineBase%s" % x, Vector3(x, 0.08, 0.12), Vector3(0.12, 0.14, 1.55), PAINTED_METAL)
+		_box("BarCatch%s" % x, Vector3(x, 1.38, -0.40), Vector3(0.12, 0.08, 0.15), STAINLESS_STEEL, false)
+	_box("InclineSpine", Vector3(0, 0.45, 0.06), Vector3(0.12, 0.12, 1.32), PAINTED_METAL, false, Vector3(deg_to_rad(-30), 0, 0))
+	_box("InclineBackPad", Vector3(0, 0.74, -0.04), Vector3(0.44, 0.12, 1.08), DARK_RUBBER, false, Vector3(deg_to_rad(-30), 0, 0))
+	_box("SeatPad", Vector3(0, 0.46, 0.54), Vector3(0.40, 0.10, 0.34), DARK_RUBBER, false, Vector3(deg_to_rad(15), 0, 0))
+	_box("InclineBar", Vector3(0, 1.45, -0.40), Vector3(1.70, 0.07, 0.07), STAINLESS_STEEL, false)
+	for x in [-0.74, 0.74]:
+		_cylinder("InclinePlate%s" % x, Vector3(x, 1.45, -0.40), 0.23, 0.12, SECURITY_DARK, false, Vector3(0, 0, deg_to_rad(90)))
+	_box("SpotterPlatform", Vector3(0, 0.28, -0.66), Vector3(0.70, 0.08, 0.36), PAINTED_METAL)
+
+
+func _build_dip_station() -> void:
+	# Power tower / VKR vertical knee raise & dip station
+	for x in [-0.44, 0.44]:
+		_box("TowerBase%s" % x, Vector3(x, 0.08, 0.0), Vector3(0.14, 0.12, 1.30), PAINTED_METAL)
+		_box("TowerPost%s" % x, Vector3(x, 1.18, -0.15), Vector3(0.10, 2.35, 0.10), PAINTED_METAL)
+	_box("TowerBackPad", Vector3(0, 1.45, -0.10), Vector3(0.38, 0.55, 0.08), DARK_RUBBER, false)
+	for x in [-0.34, 0.34]:
+		_box("ArmPad%s" % x, Vector3(x, 1.28, 0.14), Vector3(0.16, 0.08, 0.40), DARK_RUBBER, false)
+		_box("VerticalGrip%s" % x, Vector3(x, 1.42, 0.30), Vector3(0.05, 0.22, 0.05), DARK_RUBBER, false)
+		_box("DipHandle%s" % x, Vector3(x, 1.14, 0.24), Vector3(0.06, 0.06, 0.48), STAINLESS_STEEL, false)
+		_box("TopBar", Vector3(0, 2.26, -0.15), Vector3(1.20, 0.07, 0.07), STAINLESS_STEEL, false)

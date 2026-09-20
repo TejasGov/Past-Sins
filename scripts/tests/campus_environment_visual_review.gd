@@ -27,10 +27,10 @@ func _review() -> void:
 		await RenderingServer.frame_post_draw
 		var result := get_viewport().get_texture().get_image().save_png("/tmp/campus-environment-%s.png" % state[0])
 		print("Environment render ", state[0], ": ", error_string(result))
-	# Confirm the automatic fixtures illuminate a real building interior, not
-	# only their state flags in the functional validation.
-	camera.position = Vector3(-48.0, 1.7, -45.0)
-	camera.look_at(Vector3(-57.0, 1.2, -52.0))
+	# Confirm the automatic fixtures illuminate Cellhouse A itself, including
+	# the ceiling-flush cell tubes and shared amber floor light.
+	camera.position = Vector3(-50.0, 1.7, 0.0)
+	camera.look_at(Vector3(-50.0, 1.8, -13.8))
 	for frame in range(8): await get_tree().process_frame
 	await RenderingServer.frame_post_draw
 	var interior_result := get_viewport().get_texture().get_image().save_png("/tmp/campus-environment-night-interior.png")

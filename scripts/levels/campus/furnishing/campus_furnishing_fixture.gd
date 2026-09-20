@@ -12,7 +12,7 @@ const STEEL := preload("res://materials/props/stainless_steel.tres")
 const METAL := preload("res://materials/props/painted_metal.tres")
 const DARK := preload("res://materials/props/security_dark.tres")
 const WHITE := preload("res://materials/props/dirty_off_white.tres")
-const TILE := preload("res://materials/props/shower_tile.tres")
+const TILE := preload("res://materials/props/tile_shower.tres")
 const RUBBER := preload("res://materials/props/dark_rubber.tres")
 var _body: StaticBody3D
 

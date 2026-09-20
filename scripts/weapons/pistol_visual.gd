@@ -1,10 +1,8 @@
-extends Node3D
+extends FirearmVisualBase
 class_name PistolVisual
 
 ## Lightweight primitive visual shared by the held and world pickup variants.
 ## It has no collision and no firearm logic.
-@export var first_person := false
-
 const SLIDE_LOCK_OFFSET := Vector3(0, 0, 0.13)
 
 var _reload_pivot: Node3D
@@ -18,6 +16,9 @@ var _flash_tween: Tween
 var _reload_tween: Tween
 var _magazine_home_position := Vector3.ZERO
 var _magazine_home_rotation := Vector3.ZERO
+var _left_hand: Node3D
+var _left_hand_home_position := Vector3(-0.055, -0.34, 0.07)
+var _left_hand_home_rotation := Vector3(8, 20, -18)
 var _reload_playing := false
 
 
@@ -37,7 +38,7 @@ func play_fire_feedback(rounds_remaining: int) -> void:
 	_kick_pivot.position = Vector3.ZERO
 	_kick_pivot.rotation_degrees = Vector3.ZERO
 	_muzzle_flash.visible = true
-	_muzzle_flash.scale = Vector3.ONE * randf_range(0.85, 1.15)
+	_muzzle_flash.scale = Vector3.ONE * randf_range(0.85, 1.15) * get_muzzle_flash_multiplier()
 	_slide_pivot.position = SLIDE_LOCK_OFFSET
 	_kick_tween = create_tween().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	_kick_tween.tween_property(_kick_pivot, "position", Vector3(0, 0.018, 0.045), 0.035)
@@ -71,21 +72,39 @@ func play_reload(duration: float, was_empty: bool) -> void:
 	_reload_tween = create_tween().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
 	_reload_tween.tween_property(_reload_pivot, "position", Vector3(0.08, -0.18, 0.08), 0.2 * scale_time)
 	_reload_tween.parallel().tween_property(_reload_pivot, "rotation_degrees", Vector3(10, 0, -14), 0.2 * scale_time)
+	if _left_hand:
+		_reload_tween.parallel().tween_property(_left_hand, "position", Vector3(-0.02, -0.42, 0.05), 0.2 * scale_time)
+		_reload_tween.parallel().tween_property(_left_hand, "rotation_degrees", Vector3(20, 5, -10), 0.2 * scale_time)
 	_reload_tween.tween_property(_magazine, "position", magazine_out, 0.25 * scale_time)
 	_reload_tween.parallel().tween_property(_magazine, "rotation_degrees", _magazine_home_rotation + Vector3(8, 0, 5), 0.25 * scale_time)
+	if _left_hand:
+		_reload_tween.parallel().tween_property(_left_hand, "position", Vector3(-0.03, -0.58, 0.08), 0.25 * scale_time)
+		_reload_tween.parallel().tween_property(_left_hand, "rotation_degrees", Vector3(28, 0, -5), 0.25 * scale_time)
 	_reload_tween.tween_callback(func() -> void: _magazine.visible = false)
-	_reload_tween.tween_interval(0.1 * scale_time)
+	if _left_hand:
+		_reload_tween.parallel().tween_property(_left_hand, "position", Vector3(-0.05, -0.68, 0.12), 0.1 * scale_time)
+	else:
+		_reload_tween.tween_interval(0.1 * scale_time)
 	_reload_tween.tween_callback(func() -> void:
 		_magazine.position = magazine_out
 		_magazine.rotation_degrees = _magazine_home_rotation
 		_magazine.visible = true
 	)
 	_reload_tween.tween_property(_magazine, "position", _magazine_home_position, 0.3 * scale_time)
+	if _left_hand:
+		_reload_tween.parallel().tween_property(_left_hand, "position", Vector3(-0.02, -0.32, 0.06), 0.3 * scale_time)
+		_reload_tween.parallel().tween_property(_left_hand, "rotation_degrees", Vector3(16, 10, -15), 0.3 * scale_time)
 	_reload_tween.tween_interval(0.15 * scale_time)
 	if was_empty:
+		if _left_hand:
+			_reload_tween.tween_property(_left_hand, "position", Vector3(-0.09, 0.02, -0.07), 0.08 * scale_time)
+			_reload_tween.parallel().tween_property(_left_hand, "rotation_degrees", Vector3(5, 25, -25), 0.08 * scale_time)
 		_reload_tween.tween_callback(func() -> void: set_slide_locked(false))
-	_reload_tween.tween_property(_reload_pivot, "position", Vector3.ZERO, 0.5 * scale_time)
-	_reload_tween.parallel().tween_property(_reload_pivot, "rotation_degrees", Vector3.ZERO, 0.5 * scale_time)
+	_reload_tween.tween_property(_reload_pivot, "position", Vector3.ZERO, 0.45 * scale_time)
+	_reload_tween.parallel().tween_property(_reload_pivot, "rotation_degrees", Vector3.ZERO, 0.45 * scale_time)
+	if _left_hand:
+		_reload_tween.parallel().tween_property(_left_hand, "position", _left_hand_home_position, 0.45 * scale_time)
+		_reload_tween.parallel().tween_property(_left_hand, "rotation_degrees", _left_hand_home_rotation, 0.45 * scale_time)
 	_reload_tween.tween_callback(func() -> void: _reload_playing = false)
 
 
@@ -145,6 +164,9 @@ func _reset_reload_pose() -> void:
 		_magazine.visible = true
 		_magazine.position = _magazine_home_position
 		_magazine.rotation_degrees = _magazine_home_rotation
+	if _left_hand:
+		_left_hand.position = _left_hand_home_position
+		_left_hand.rotation_degrees = _left_hand_home_rotation
 
 
 func _build_visual() -> void:
@@ -157,12 +179,12 @@ func _build_visual() -> void:
 	_slide_pivot = Node3D.new()
 	_slide_pivot.name = "SlidePivot"
 	_kick_pivot.add_child(_slide_pivot)
-	var near_black := _material(Color("15191b"), 0.5)
-	var slide := _material(Color("343b3f"), 0.3)
-	var slide_edge := _material(Color("4c5559"), 0.26)
+	var near_black := _gunmetal_material(Color("15191b"), 0.5)
+	var slide := _gunmetal_material(Color("343b3f"), 0.3)
+	var slide_edge := _gunmetal_material(Color("4c5559"), 0.26)
 	var polymer := _material(Color("242a2c"), 0.88)
 	var grip_panel := _material(Color("1b2021"), 0.96)
-	var steel := _material(Color("727a7d"), 0.24)
+	var steel := _gunmetal_material(Color("727a7d"), 0.24)
 	var sight_insert := _material(Color("d9e6df"), 0.45)
 
 	# The slide is a single low-poly chamfered extrusion rather than a plain box.
@@ -225,14 +247,46 @@ func _build_visual() -> void:
 	var flash_material := _material(Color("fff1a0"), 0.1, true)
 	_muzzle_flash = _add_cylinder("MuzzleFlash", Vector3(0, 0.125, -0.785), 0.075, 0.12, flash_material, Vector3(90, 0, 0))
 	_muzzle_flash.visible = false
+
+	# Standardized presentation anchors. Future controllers and validation tools
+	# use these names instead of knowing anything about this model's dimensions.
+	_add_anchor("MuzzlePoint", Vector3(0, 0.125, -0.725))
+	_add_anchor("MuzzleFlashPoint", Vector3(0, 0.125, -0.785))
+	_add_anchor("MagazineSocket", _magazine_home_position)
+	_add_anchor("SuppressorAttachmentPoint", Vector3(0, 0.125, -0.74))
+	_add_anchor("ADSAnchor", Vector3(0, 0.262, -0.10))
+	_add_anchor("RearSightAimPoint", Vector3(0, 0.262, -0.015))
+	_add_anchor("FrontSightAimPoint", Vector3(0, 0.262, -0.545))
+	_add_anchor("HipAnchor", Vector3.ZERO)
+	_add_anchor("InteractionAnchor", Vector3(0, 0.05, -0.18))
 	if first_person:
-		var skin := _material(Color("8a6b58"), 0.92)
-		var sleeve := _material(Color("263238"), 0.94)
+		var skin := _material(FirstPersonBodyStyle.SKIN_COLOR, FirstPersonBodyStyle.SKIN_ROUGHNESS)
+		var sleeve := _material(FirstPersonBodyStyle.SLEEVE_COLOR, FirstPersonBodyStyle.SLEEVE_ROUGHNESS)
 		_add_capsule("Hand", Vector3(0.015, -0.31, 0.09), 0.105, 0.32, skin, Vector3(12, 0, 0))
 		_add_tapered_cylinder("Sleeve", Vector3(0.035, -0.49, 0.39), 0.12, 0.17, 0.68, sleeve, Vector3(-68, 0, 0))
 		_add_cylinder("Cuff", Vector3(0.025, -0.335, 0.075), 0.13, 0.09, sleeve, Vector3(-68, 0, 0))
 		for index in range(3):
 			_add_box("Finger%d" % index, Vector3(0.115, -0.20 - index * 0.072, -0.015 + index * 0.015), Vector3(0.055, 0.055, 0.16), skin, Vector3(10, 0, 0))
+
+		# Left supporting hand wrapping lower grip
+		_left_hand = Node3D.new()
+		_left_hand.name = "LeftHand"
+		_left_hand.position = _left_hand_home_position
+		_left_hand.rotation_degrees = _left_hand_home_rotation
+		_kick_pivot.add_child(_left_hand)
+		_add_capsule("LeftHandPalm", Vector3(0, 0, 0), 0.085, 0.25, skin, Vector3.ZERO, _left_hand)
+		_add_tapered_cylinder("LeftSleeve", Vector3(-0.12, -0.28, 0.32), 0.11, 0.16, 0.65, sleeve, Vector3(-62, -18, 0), _left_hand)
+		_add_cylinder("LeftCuff", Vector3(-0.06, -0.14, 0.08), 0.12, 0.08, sleeve, Vector3(-62, -18, 0), _left_hand)
+		for index in range(3):
+			_add_box("LeftFinger%d" % index, Vector3(0.065, -0.06 - index * 0.065, -0.06 + index * 0.015), Vector3(0.05, 0.05, 0.14), skin, Vector3(8, 0, 0), _left_hand)
+
+
+func _add_anchor(anchor_name: String, anchor_position: Vector3) -> Marker3D:
+	var anchor := Marker3D.new()
+	anchor.name = anchor_name
+	anchor.position = anchor_position
+	_kick_pivot.add_child(anchor)
+	return anchor
 
 
 func _add_chamfered_box(piece_name: String, position: Vector3, width: float, height: float, length: float, chamfer: float, material: Material, parent: Node3D) -> MeshInstance3D:
@@ -322,79 +376,3 @@ func _add_generated_mesh(piece_name: String, position: Vector3, mesh: Mesh, mate
 	mesh_instance.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	parent.add_child(mesh_instance)
 	return mesh_instance
-
-
-func _add_box(piece_name: String, position: Vector3, size: Vector3, material: Material, rotation := Vector3.ZERO, parent: Node3D = null) -> MeshInstance3D:
-	var mesh_instance := MeshInstance3D.new()
-	mesh_instance.name = piece_name
-	var mesh := BoxMesh.new()
-	mesh.size = size
-	mesh_instance.mesh = mesh
-	mesh_instance.position = position
-	mesh_instance.rotation_degrees = rotation
-	mesh_instance.material_override = material
-	mesh_instance.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	(parent if parent else _kick_pivot).add_child(mesh_instance)
-	return mesh_instance
-
-
-func _add_cylinder(piece_name: String, position: Vector3, radius: float, height: float, material: Material, rotation := Vector3.ZERO) -> MeshInstance3D:
-	var mesh_instance := MeshInstance3D.new()
-	mesh_instance.name = piece_name
-	var mesh := CylinderMesh.new()
-	mesh.top_radius = radius
-	mesh.bottom_radius = radius
-	mesh.height = height
-	mesh.radial_segments = 12
-	mesh_instance.mesh = mesh
-	mesh_instance.position = position
-	mesh_instance.rotation_degrees = rotation
-	mesh_instance.material_override = material
-	mesh_instance.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	_kick_pivot.add_child(mesh_instance)
-	return mesh_instance
-
-
-func _add_tapered_cylinder(piece_name: String, position: Vector3, top_radius: float, bottom_radius: float, height: float, material: Material, rotation := Vector3.ZERO) -> MeshInstance3D:
-	var mesh_instance := MeshInstance3D.new()
-	mesh_instance.name = piece_name
-	var mesh := CylinderMesh.new()
-	mesh.top_radius = top_radius
-	mesh.bottom_radius = bottom_radius
-	mesh.height = height
-	mesh.radial_segments = 10
-	mesh_instance.mesh = mesh
-	mesh_instance.position = position
-	mesh_instance.rotation_degrees = rotation
-	mesh_instance.material_override = material
-	mesh_instance.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	_kick_pivot.add_child(mesh_instance)
-	return mesh_instance
-
-
-func _add_capsule(piece_name: String, position: Vector3, radius: float, height: float, material: Material, rotation := Vector3.ZERO) -> MeshInstance3D:
-	var mesh_instance := MeshInstance3D.new()
-	mesh_instance.name = piece_name
-	var mesh := CapsuleMesh.new()
-	mesh.radius = radius
-	mesh.height = height
-	mesh.radial_segments = 8
-	mesh.rings = 3
-	mesh_instance.mesh = mesh
-	mesh_instance.position = position
-	mesh_instance.rotation_degrees = rotation
-	mesh_instance.material_override = material
-	mesh_instance.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	_kick_pivot.add_child(mesh_instance)
-	return mesh_instance
-
-
-func _material(color: Color, roughness: float, emissive := false) -> StandardMaterial3D:
-	var material := StandardMaterial3D.new()
-	material.albedo_color = color
-	material.roughness = roughness
-	if emissive:
-		material.emission_enabled = true
-		material.emission = color
-		material.emission_energy_multiplier = 3.0
-	return material

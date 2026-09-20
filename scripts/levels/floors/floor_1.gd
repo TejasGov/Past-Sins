@@ -14,15 +14,30 @@ func _ready() -> void:
 	g.outer_walls(34, 42, 3.6, wall_color)
 	# Collision-backed arrival landing for the Ground Floor service stair.
 	g.box("Floor1ServiceLanding", Vector3(13.5, -0.08, 20.0), Vector3(3.0, 0.16, 1.6), wall_color)
-	g.box("AtriumExerciseFloor", Vector3(0, 0.02, 0), Vector3(14, 0.05, 24), Color("454641"), false)
+	# Expanded athletic rubber flooring spanning the full gym area with distinct workout zones.
+	g.box("AtriumExerciseFloor", Vector3(0, 0.02, 0), Vector3(29.0, 0.04, 23.6), Color("2c2e2c"), false)
+	g.box("CardioZoneDeck", Vector3(11.2, 0.035, 0), Vector3(6.2, 0.02, 22.0), Color("343834"), false)
+	g.box("FreeWeightZoneDeck", Vector3(-11.2, 0.035, 0), Vector3(6.2, 0.02, 22.0), Color("252625"), false)
+	g.box("CenterTurfLane", Vector3(0, 0.035, 2.5), Vector3(3.6, 0.02, 13.0), Color("374035"), false)
+	var cardio_divider := g.box("CardioZoneDivider", Vector3(7.8, 0.045, 0), Vector3(0.1, 0.01, 22.0), Color("50544c"), false)
+	cardio_divider.set_meta("containment_audit_ignore", true)
+	var free_weight_divider := g.box("FreeWeightDivider", Vector3(-7.8, 0.045, 0), Vector3(0.1, 0.01, 22.0), Color("50544c"), false)
+	free_weight_divider.set_meta("containment_audit_ignore", true)
 
-	# Detailed reusable equipment now dresses this same gym footprint through
-	# EnvironmentalDressing; the central circulation lanes remain unchanged.
-
+	# High-bay gym lighting and warm ambient mood lamps across the expanded facility.
 	var gym_light := Color("e3cfa8")
 	g.ceiling_light("GymLightNorth", Vector3(0, 3.5, -7), gym_light, 1.0, 8.5)
-	g.ceiling_light("GymLightWest", Vector3(-7, 3.5, 4), gym_light, 0.95, 8.0)
-	g.ceiling_light("GymLightEast", Vector3(7, 3.5, 4), gym_light, 0.95, 8.0)
+	g.ceiling_light("GymLightNorthWest", Vector3(-9.5, 3.5, -6), gym_light, 0.95, 8.5)
+	g.ceiling_light("GymLightNorthEast", Vector3(9.5, 3.5, -6), gym_light, 0.95, 8.5)
+	g.ceiling_light("GymLightWest", Vector3(-9.5, 3.5, 4), gym_light, 0.95, 8.5)
+	g.ceiling_light("GymLightCenter", Vector3(0, 3.5, 4), gym_light, 0.95, 8.5)
+	g.ceiling_light("GymLightEast", Vector3(9.5, 3.5, 4), gym_light, 0.95, 8.5)
+
+	var mood_yellow := Color("c4a55c")
+	g.ceiling_light("GymMoodWest", Vector3(-15.5, 3.2, 0.0), mood_yellow, 0.45, 6.0, Vector3(0.8, 0.07, 0.25))
+	g.ceiling_light("GymMoodEast", Vector3(15.5, 3.2, 0.0), mood_yellow, 0.45, 6.0, Vector3(0.8, 0.07, 0.25))
+	g.ceiling_light("GymMoodNorth", Vector3(0.0, 3.2, -11.0), mood_yellow, 0.4, 5.5, Vector3(0.8, 0.07, 0.25))
+	g.ceiling_light("GymMoodSouth", Vector3(0.0, 3.2, 11.0), mood_yellow, 0.4, 5.5, Vector3(0.8, 0.07, 0.25))
 
 	# Showers and changing area on the north side.
 	for wall_piece in [[-12.25, 9.5], [-1.5, 9.0], [10.75, 12.5]]:
@@ -50,7 +65,9 @@ func _ready() -> void:
 	# Open stair crossing the atrium to Floor 2.
 	g.stairs("Floor1ToFloor2", Vector3(-7, 0, -6), Vector3.RIGHT, 14.0, 4.0, 2.4, 20, wall_color)
 	g.security_gate("Floor1ServiceStairEnclosure", Vector3(11.7, 0, 16.425), 8.85, false, 3.575, 1.5, Color("3f423f"))
-	g.sign("GYM", Vector3(0, 2.8, -11.85), Vector3(0, 0, 0), Color("9bd0d6"), 0.009)
+	g.sign("MAIN GYM & FITNESS CENTER", Vector3(0, 2.8, -11.85), Vector3(0, 0, 0), Color("9bd0d6"), 0.0075)
+	g.sign("CARDIO & ENDURANCE ZONE", Vector3(10.5, 2.7, -11.85), Vector3(0, 0, 0), Color("8bc4cc"), 0.0045)
+	g.sign("FREE WEIGHTS & STRENGTH", Vector3(-10.5, 2.7, -11.85), Vector3(0, 0, 0), Color("8bc4cc"), 0.0045)
 	g.sign("EXERCISE AREA", Vector3(-6.8, 2.5, 0), Vector3(0, -90, 0), Color("9fb8bb"), 0.006)
 	g.sign("SHOWERS / CHANGING", Vector3(0, 2.55, -12.15), Vector3(0, 180, 0), Color("8bc4cc"), 0.005)
 	g.sign("8 SHOWERS — TOILETS — URINALS", Vector3(10.5, 2.7, -20.7), Vector3(0, 0, 0), Color("9ed4d8"), 0.0038)

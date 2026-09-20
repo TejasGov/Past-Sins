@@ -1,0 +1,12 @@
+Characters PSX by Elbolilloduro
+License: Creative Commons Zero v1.0 Universal (CC0 1.0)
+Source: https://elbolilloduro.itch.io/characters-psx
+
+The creator publishes this asset pack under CC0. To the extent possible under
+law, the creator has waived copyright and related rights in the work. See the
+source page and the full CC0 legal code:
+https://creativecommons.org/publicdomain/zero/1.0/legalcode
+
+The original Blacksite UV repaint in Character_21_Police.png is project work.
+Adobe Mixamo animation clips are used as incorporated game content and remain
+subject to Adobe's applicable terms.

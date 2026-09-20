@@ -51,16 +51,24 @@ func _physics_process(delta: float) -> void:
 
 	_can_see_player = _check_player_visible()
 	_update_debug_color()
-	if _can_see_player:
-		SuspicionSystem.add_suspicion(_detection_rate() * delta)
+	var suspicion := get_node_or_null("/root/SuspicionSystem")
+	if _can_see_player and suspicion != null:
+		# Suppression affects sound/flash only. A clearly visible firearm remains
+		# an immediate high-threat identification regardless of its attachment.
+		var weapon_controller := _player.get_node_or_null("WeaponController")
+		if weapon_controller and weapon_controller.has_method("is_firearm_visibly_held") and weapon_controller.call("is_firearm_visibly_held"):
+			suspicion.call("add_suspicion", 100.0)
+		else:
+			suspicion.call("add_suspicion", _detection_rate() * delta)
 
-	if SuspicionSystem.state == SuspicionSystem.STATE_ALERT and not patrol_only:
+	var is_alert: bool = suspicion != null and int(suspicion.get("state")) == 2
+	if is_alert and not patrol_only:
 		_pursue_player(delta)
 	else:
 		_patrol(delta)
 	move_and_slide()
 
-	if not _caught_once and SuspicionSystem.state == SuspicionSystem.STATE_ALERT and global_position.distance_to(_player.global_position) <= catch_distance and _has_clear_line_of_sight():
+	if not _caught_once and is_alert and global_position.distance_to(_player.global_position) <= catch_distance and _has_clear_line_of_sight():
 		_caught_once = true
 		caught_player.emit(self)
 
@@ -161,4 +169,6 @@ func _update_debug_color() -> void:
 		debug_mesh.material_override = material
 	var color := Color(0.95, 0.12, 0.08, 0.16) if _can_see_player else Color(0.15, 0.75, 0.45, 0.10)
 	material.albedo_color = color
-	status_light.light_color = Color(1.0, 0.08, 0.04) if SuspicionSystem.state == SuspicionSystem.STATE_ALERT else Color(0.2, 0.8, 0.55)
+	var suspicion := get_node_or_null("/root/SuspicionSystem")
+	var is_alert: bool = suspicion != null and int(suspicion.get("state")) == 2
+	status_light.light_color = Color(1.0, 0.08, 0.04) if is_alert else Color(0.2, 0.8, 0.55)

@@ -46,7 +46,7 @@ func _validate_scope(cellhouse: Node3D, interior: Node3D) -> void:
 	stair_treads += interior.find_children("Floor2ToFloor3StairStep*", "MeshInstance3D", true, false).size()
 	_check(stair_treads == 40, "Cellhouse A requires two 20-tread stair flights")
 	_check(interior.get_node("Collision").find_children("*", "CollisionShape3D", true, false).size() > 30, "Interior structure requires collision, including two smooth stair ramps")
-	_check(interior.find_children("*CellLight*Mount", "MeshInstance3D", true, false).size() == 9, "All nine fixtures must visibly connect to a slab or roof")
+	_check(interior.find_children("Floor*GalleryTube*Backplate", "MeshInstance3D", true, false).size() == 12, "All gallery tube lights must use ceiling-flush backplates without hanging stems")
 
 
 func _validate_cells(campus: Node3D, interior: Node3D) -> void:
@@ -89,6 +89,15 @@ func _validate_cells(campus: Node3D, interior: Node3D) -> void:
 			floor_counts[floor_number] += 1
 	for floor_number in [1, 2, 3]:
 		_check(int(floor_counts[floor_number]) == 15, "Cellhouse A Floor %d must contain 15 cells plus its guard/elevator core" % floor_number)
+	var cell_lamps: Array[Node] = []
+	for lamp in get_tree().get_nodes_in_group("cell_lamps"):
+		if interior.is_ancestor_of(lamp): cell_lamps.append(lamp)
+	_check(cell_lamps.size() == 45, "Every Cellhouse A cell must own one reusable tube light")
+	for lamp_node in cell_lamps:
+		var diffuser := lamp_node.get_node_or_null("TubeDiffuser") as MeshInstance3D
+		var diffuser_mesh := diffuser.mesh as CylinderMesh if diffuser else null
+		_check(diffuser_mesh != null and absf(diffuser.global_basis.y.normalized().y) < 0.001, "%s must be a horizontal tube, not a vertical rod" % lamp_node.name)
+		_check(lamp_node.find_children("*", "OmniLight3D", true, false).is_empty(), "%s must use pooled lighting instead of a permanent per-cell OmniLight" % lamp_node.name)
 	_check(parth_count == 1, "Exactly one cell must be assigned to Parth")
 	var service_cores: Array[Node] = []
 	for core in get_tree().get_nodes_in_group("campus_guard_elevator_cores"):
@@ -123,7 +132,12 @@ func _validate_access(campus: Node3D) -> void:
 		_check(door.master_key_id == &"cell_master_key", "%s must accept the future chief's master key" % door.name)
 		_check(not door.reader_light_enabled, "%s should not allocate a per-cell OmniLight" % door.name)
 		_check(door.gate_height >= 2.79, "%s leaves a gap below the cell-front header" % door.name)
-		_check(door.get_node("GateLeaf/Visuals").find_children("Slat*", "MeshInstance3D", true, false).size() >= 7, "%s has no visible sliding bars" % door.name)
+		var slat_mesh_count := door.get_node("GateLeaf/Visuals").find_children("Slat*", "MeshInstance3D", true, false).size()
+		var slat_multimesh := door.get_node_or_null("GateLeaf/Visuals/Slats") as MultiMeshInstance3D
+		var slat_instances := slat_multimesh.multimesh.instance_count if slat_multimesh and slat_multimesh.multimesh else 0
+		_check(slat_mesh_count >= 7 or slat_instances >= 7, "%s has no visible sliding bars" % door.name)
+		var rails := door.get_node_or_null("GateLeaf/Visuals/CrossRails") as MultiMeshInstance3D
+		_check(rails != null and rails.multimesh != null and rails.multimesh.instance_count == 3, "%s must preserve all three supported cross rails in its reusable draw batch" % door.name)
 		_check((door.get_node("GateLeaf/Visuals") as Node3D).visible, "%s sliding bars are hidden" % door.name)
 		var owning_cell := door.get_parent()
 		if owning_cell != null and bool(owning_cell.get_meta("is_parth_cell", false)):
@@ -217,12 +231,21 @@ func _validate_floor_and_railing_seams(interior: Node3D) -> void:
 func _validate_budget(campus: Node3D) -> void:
 	var node_count := _count_descendants(campus)
 	var light_count := campus.find_children("*", "Light3D", true, false).size()
-	# The environmental-density pass deliberately adds grounded cell variation,
-	# utility fixtures and signage. Static furniture is still batched, and this
-	# revised ceiling keeps the complete three-tier scene comfortably Web-sized.
-	_check(node_count <= 7000, "Phase 2 exceeds its 7,000-node furnished Web budget (%d)" % node_count)
-	_check(light_count <= 8, "Phase 2 exceeds its eight-light Web budget (%d)" % light_count)
-	print("PHASE 2 METRICS: %d nodes, %d lights" % [node_count, light_count])
+	# Preserve the previous 7,000-node content cap after accounting for only
+	# audited visual-overhaul additions: 7 Areas+7 shapes, 47 reader shapes,
+	# 8 supported searchlight gimbals, 6 guard-fixture meshes, 1 bob component.
+	# These nodes are bounded by exact instance counts, not arbitrary slack.
+	var zones := campus.find_children("InteriorEnvironmentZone", "Area3D", true, false)
+	var readers := campus.find_children("ReaderInteractionShape", "CollisionShape3D", true, false)
+	var gimbals := campus.find_children("LampGimbal", "Node3D", true, false)
+	var guard_fixtures := campus.find_children("GuardCeilingLight*", "MeshInstance3D", true, false)
+	var camera_motion := campus.find_children("CameraMotion", "Node", true, false)
+	_check(zones.size() == 7 and readers.size() == 47 and gimbals.size() == 8 and guard_fixtures.size() == 6 and camera_motion.size() == 1, "Phase 2 visual-overhaul additions must remain exactly bounded (zones=%d, readers=%d, gimbals=%d, guard-fixtures=%d, bob=%d)" % [zones.size(), readers.size(), gimbals.size(), guard_fixtures.size(), camera_motion.size()])
+	for zone in zones: _check(zone.get_child_count() == 1 and zone.get_child(0) is CollisionShape3D, "Each footprint zone must contain exactly one collision shape")
+	var audited_additions := zones.size() * 2 + readers.size() + gimbals.size() + guard_fixtures.size() + camera_motion.size()
+	_check(node_count - audited_additions <= 7000, "Phase 2 exceeds its original 7,000-node content cap plus %d audited framework nodes (%d total)" % [audited_additions, node_count])
+	_check(light_count <= 12, "Phase 2 exceeds eight base lights plus four pooled cell lights (%d)" % light_count)
+	print("PHASE 2 METRICS: %d nodes (%d original-content budget + %d audited additions), %d lights" % [node_count, node_count - audited_additions, audited_additions, light_count])
 
 
 func _blocked(point: Vector3) -> bool:

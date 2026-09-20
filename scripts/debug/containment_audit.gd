@@ -47,6 +47,11 @@ func run_audit() -> PackedStringArray:
 			if child is not MeshInstance3D:
 				continue
 			var visual := child as MeshInstance3D
+			# Thin floor seams/paint strips can opt out explicitly.  They are
+			# decorative and intentionally have no collision; structural walls
+			# and partitions remain fully covered by the audit.
+			if bool(visual.get_meta("containment_audit_ignore", false)):
+				continue
 			if visual.mesh is not BoxMesh or not _is_structural_visual(visual.name):
 				continue
 			if not _has_matching_collision(visual, collision_shapes):

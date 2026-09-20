@@ -43,6 +43,7 @@ var previous_day_was_rainy := false
 var _initialized := false
 var _phase: StringName = PHASE_MORNING
 var _lights_active := false
+var _is_indoor_sheltered := false
 var _update_accumulator := 0.0
 var _shelter_accumulator := 0.0
 var _rng := RandomNumberGenerator.new()
@@ -68,7 +69,10 @@ func _initialize() -> void:
 	var campus := get_parent()
 	_world_environment = campus.get_node_or_null("WorldEnvironment") as WorldEnvironment
 	_sun = campus.get_node_or_null("DirectionalLight3D") as DirectionalLight3D
-	if _world_environment and _world_environment.environment:
+	if _world_environment is EnvironmentZoneManager:
+		_environment = (_world_environment as EnvironmentZoneManager).exterior
+		_sky_material = _environment.sky.sky_material as ProceduralSkyMaterial
+	elif _world_environment and _world_environment.environment:
 		_environment = _world_environment.environment.duplicate(true) as Environment
 		_world_environment.environment = _environment
 		if _environment.sky:
@@ -201,15 +205,19 @@ func _apply_environment(force: bool) -> void:
 		_sky_material.sky_energy_multiplier = lerpf(0.28, 1.0, daylight) * rain_factor
 	if _environment:
 		_environment.ambient_light_color = (sample.horizon as Color).lerp(Color("cad1d2"), 0.22)
-		_environment.ambient_light_energy = lerpf(0.08, 0.62, daylight) * (0.72 if weather_mode == WeatherMode.RAINY else 1.0)
-		_environment.ambient_light_sky_contribution = lerpf(0.18, 0.55, daylight)
-		_environment.fog_enabled = weather_mode == WeatherMode.RAINY
-		_environment.fog_light_color = Color("66727a")
-		_environment.fog_light_energy = 0.45
-		_environment.fog_density = 0.004
+		_environment.ambient_light_energy = lerpf(0.075, 0.20, daylight) * (0.72 if weather_mode == WeatherMode.RAINY else 1.0)
+		_environment.ambient_light_sky_contribution = lerpf(0.12, 0.30, daylight)
+		_environment.fog_enabled = true
+		_environment.fog_light_color = Color(0.5, 0.52, 0.48, 1) if weather_mode == WeatherMode.NORMAL else Color("66727a")
+		_environment.fog_light_energy = lerpf(0.075, 0.45, daylight)
+		_environment.fog_sky_affect = 0.4
+		_environment.fog_density = 0.015 if weather_mode == WeatherMode.NORMAL else 0.028
+	if _world_environment is EnvironmentZoneManager:
+		(_world_environment as EnvironmentZoneManager).set_time_state(_lights_active)
 	if _sun:
-		_sun.light_energy = lerpf(0.0, 0.95, daylight) * (0.48 if weather_mode == WeatherMode.RAINY else 1.0)
+		_sun.light_energy = lerpf(0.0, 1.0, daylight) * (0.48 if weather_mode == WeatherMode.RAINY else 1.0)
 		_sun.light_color = _sun_color()
+		_sun.shadow_enabled = true
 		var daylight_progress := clampf((time_hours - 6.0) / 12.0, 0.0, 1.0)
 		_sun.rotation_degrees = Vector3(lerpf(-8.0, -172.0, daylight_progress), -35.0 + time_hours * 4.0, 0.0)
 	_update_rain_emission()
@@ -249,15 +257,24 @@ func _sun_color() -> Color:
 
 func _apply_automatic_lights() -> void:
 	var campus := get_parent()
+	for node in get_tree().get_nodes_in_group("cell_lamps"):
+		if campus.is_ancestor_of(node) and node.has_method("set_night_active"):
+			node.call("set_night_active", _lights_active)
 	for node in get_tree().get_nodes_in_group("campus_indoor_lights"):
 		if campus.is_ancestor_of(node) and node is Light3D:
-			(node as Light3D).visible = _lights_active
+			(node as Light3D).visible = _lights_active or bool(node.get_meta("always_on", false))
 	for node in get_tree().get_nodes_in_group("campus_indoor_light_visuals"):
 		if campus.is_ancestor_of(node) and node is GeometryInstance3D:
-			(node as GeometryInstance3D).visible = _lights_active
+			(node as GeometryInstance3D).visible = _lights_active or bool(node.get_meta("always_on", false))
+	# Keep every tower's lens/beam readable at night. Their shadow maps are
+	# disabled whenever the viewer is inside a building, where the exterior
+	# beams cannot contribute visible shadows but would still submit passes.
+	var indoors := _world_environment is EnvironmentZoneManager and (_world_environment as EnvironmentZoneManager).is_interior
 	for node in get_tree().get_nodes_in_group("watchtowers"):
-		if campus.is_ancestor_of(node) and node.has_method("set_searchlight_active"):
-			node.call("set_searchlight_active", _lights_active)
+		if not campus.is_ancestor_of(node) or not node.has_method("set_searchlight_active"): continue
+		node.call("set_searchlight_active", _lights_active)
+		if node.has_method("set_searchlight_shadow_enabled"):
+			node.call("set_searchlight_shadow_enabled", _lights_active and not indoors)
 
 
 func _build_rain_volume() -> void:
@@ -291,19 +308,28 @@ func _build_rain_volume() -> void:
 
 
 func _update_rain_shelter() -> void:
-	if not _rain or weather_mode != WeatherMode.RAINY:
-		return
 	var target := get_tree().get_first_node_in_group("player") as Node3D
 	if target == null:
 		target = get_viewport().get_camera_3d()
-	if target == null:
+	if target == null or get_viewport() == null or get_viewport().world_3d == null:
 		return
-	_rain.global_position = Vector3(target.global_position.x, target.global_position.y + 10.0, target.global_position.z)
+	var dss := get_viewport().world_3d.direct_space_state
+	if dss == null:
+		return
 	var query := PhysicsRayQueryParameters3D.create(target.global_position + Vector3.UP * 0.2, target.global_position + Vector3.UP * 24.0, 1)
 	if target is CollisionObject3D:
 		query.exclude = [(target as CollisionObject3D).get_rid()]
-	var sheltered := not get_viewport().world_3d.direct_space_state.intersect_ray(query).is_empty()
-	_rain.emitting = not sheltered
+	var sheltered := not dss.intersect_ray(query).is_empty()
+	var shelter_changed := sheltered != _is_indoor_sheltered
+	_is_indoor_sheltered = sheltered
+	if _world_environment is EnvironmentZoneManager:
+		(_world_environment as EnvironmentZoneManager).refresh_from_viewer()
+	if _rain:
+		_rain.global_position = Vector3(target.global_position.x, target.global_position.y + 10.0, target.global_position.z)
+		if weather_mode == WeatherMode.RAINY:
+			_rain.emitting = not sheltered
+	if shelter_changed:
+		_apply_environment(false)
 
 
 func _update_rain_emission() -> void:

@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ItemDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/inventory/item_definition.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+item_id = &"slingshot_nail_toxin"
+display_name = "Toxin-Coated Nail"
+category = 6
+stackable = true
+max_stack_size = 24
+dev_only = true

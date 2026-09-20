@@ -88,6 +88,15 @@ func apply_damage(amount: float) -> float:
 	return health_component.apply_damage(amount, get_hit_zone_id())
 
 
+func apply_melee_hit(lethal: bool, fallback_damage: float) -> bool:
+	if health_component == null or health_component.is_dead():
+		return false
+	if lethal and health_component.apply_lethal_melee(get_hit_zone_id()):
+		return true
+	health_component.apply_damage(fallback_damage, get_hit_zone_id())
+	return health_component.is_dead()
+
+
 func get_hit_zone_id() -> StringName:
 	return StringName(ID_BY_TYPE.get(zone_type, &"TORSO"))
 

@@ -45,10 +45,32 @@ func _ready() -> void:
 		annex.name = "RecreationAnnex"
 		_campus.get_node("EnvironmentalProps").add_child(annex)
 	_add_wayfinding()
+	var furniture_batcher := preload("res://scripts/levels/campus/furnishing/campus_furniture_batcher.gd")
+	for building in _campus.get_node("Buildings").get_children():
+		if building is Node3D:
+			furniture_batcher.consolidate_building_furnishings(building as Node3D)
+	_apply_interior_visibility_ranges()
 	preload("res://scripts/levels/campus/modules/campus_static_batching.gd").cellhouse(_campus.get_node("Buildings/CellhouseA/Interior"))
 	for stair in get_tree().get_nodes_in_group("campus_switchback_stairs"):
 		if _campus.is_ancestor_of(stair):
 			preload("res://scripts/levels/campus/furnishing/campus_furniture_batcher.gd").consolidate(stair)
+
+func _apply_interior_visibility_ranges() -> void:
+	# Compatibility/Web has no default occlusion pass. Interior meshes are
+	# therefore distance culled as a group: a player can still see every tier
+	# and bridge in the current building, while distant sealed buildings do not
+	# consume draw calls through their walls. Colliders and gameplay nodes remain
+	# untouched, and 46m exceeds every building's local room/atrium sightline.
+	const INTERIOR_DRAW_DISTANCE := 46.0
+	for building in _campus.get_node("Buildings").get_children():
+		if not building is Node3D:
+			continue
+		for node in building.find_children("*", "", true, false):
+			if node is GeometryInstance3D:
+				var visual := node as GeometryInstance3D
+				if visual.visibility_range_end <= 0.0:
+					visual.visibility_range_end = INTERIOR_DRAW_DISTANCE
+					visual.set_meta("interior_distance_culled", true)
 
 func _remove_placeholder_doors(root: Node) -> void:
 	for child in root.get_children():

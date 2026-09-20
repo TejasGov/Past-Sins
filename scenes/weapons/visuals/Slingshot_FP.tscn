@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/weapons/improvised_slingshot_visual.gd" id="1_visual"]
+[node name="Slingshot_FP" type="Node3D"]
+position = Vector3(0, -0.08, -0.72)
+scale = Vector3(0.78, 0.78, 0.78)
+script = ExtResource("1_visual")
+first_person = true

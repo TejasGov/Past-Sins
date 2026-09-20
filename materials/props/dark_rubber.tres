@@ -1,7 +1,15 @@
-[gd_resource type="StandardMaterial3D" format=3]
+[gd_resource type="StandardMaterial3D" load_steps=3 format=3]
+
+[ext_resource type="Texture2D" path="res://materials/procedural/surface_grime.tres" id="1_grime"]
+[ext_resource type="Texture2D" path="res://materials/procedural/surface_roughness.tres" id="2_roughness"]
 
 [resource]
+uv1_triplanar = true
+uv1_world_triplanar = true
+uv1_scale = Vector3(1.5, 1.5, 1.5)
+albedo_texture = ExtResource("1_grime")
+roughness_texture = ExtResource("2_roughness")
+roughness_texture_channel = 0
 resource_name = "Dark Rubber"
 albedo_color = Color(0.055, 0.062, 0.06, 1)
 roughness = 0.94
-
