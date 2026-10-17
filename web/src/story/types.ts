@@ -155,7 +155,10 @@ export interface StoryFeature {
   buildStatic?(b: StaticBuilder, floors: Map<string, BuiltFloor>, data: unknown): void;
   init?(ctx: StoryContext): void | Promise<void>;
   update?(dt: number): void;
-  /** Called after the default per-cycle reset, before Parth wakes. */
+  /**
+   * Called after the default per-cycle reset (cycle already incremented), before Parth
+   * wakes; the ending cycle's `cycle:` flags are still set here and cleared right after.
+   */
   onWipe?(cycle: number): void;
 }
 

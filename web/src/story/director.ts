@@ -438,8 +438,6 @@ export class StoryDirector {
     const g = this.game;
     this.state.cycle++;
     this.ui.clearSubtitles();
-    // "cycle:"-prefixed flags only last until the next wipe (today's dose, Bhosle's card, …).
-    for (const f of [...this.state.flags]) if (f.startsWith("cycle:")) this.setFlag(f, false);
     g.inventory.clearAll();
     g.access.clearUnlocks();
     g.session.resetCycle(g);
@@ -453,6 +451,9 @@ export class StoryDirector {
         console.error(`[story] ${f.id}.onWipe`, err);
       }
     }
+    // "cycle:"-prefixed flags last one cycle (today's dose, Jagran, Bhosle's card…); onWipe
+    // hooks above still see the ending cycle's values.
+    for (const f of [...this.state.flags]) if (f.startsWith("cycle:")) this.setFlag(f, false);
     this.save();
     this.events.emit("wipe", { cycle: this.state.cycle });
     this.refreshObjectives();
