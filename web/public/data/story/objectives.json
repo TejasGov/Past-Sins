@@ -1,0 +1,45 @@
+[
+  {
+    "id": "wake",
+    "act": 1,
+    "title": "TIER 3 \u00b7 CELL A-3-N03",
+    "text": "Something glints on the shelf beside the bed.",
+    "done": {
+      "shard": "memory_001"
+    }
+  },
+  {
+    "id": "keys",
+    "act": 1,
+    "title": "THE NUMBERS",
+    "text": "2 - 7 - 1 - 8. The pattern Raman made you repeat. Find a way into Maintenance \u2014 the dayroom rack on the ground tier holds service keys.",
+    "done": {
+      "any": [
+        {
+          "item": "service_key"
+        },
+        {
+          "item": "maintenance_access_card"
+        }
+      ]
+    }
+  },
+  {
+    "id": "locker",
+    "act": 1,
+    "title": "MAINTENANCE \u00b7 TOOL ISSUE",
+    "text": "Cross the yard to Maintenance (south-east). The tool-issue keypad is waiting for a remembered code.",
+    "done": {
+      "item": "maintenance_access_card"
+    }
+  },
+  {
+    "id": "beyond",
+    "act": 1,
+    "title": "ACCESS CARD",
+    "text": "The card opens more than a locker. Stay out of sight.",
+    "done": {
+      "flag": "__never__"
+    }
+  }
+]

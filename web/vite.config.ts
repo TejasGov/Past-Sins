@@ -6,7 +6,7 @@ export default defineConfig({
   preview: { port: 4173, strictPort: true },
   build: {
     target: "es2022",
-    chunkSizeWarningLimit: 4000,
+    chunkSizeWarningLimit: 7000,
     // asset-pipeline is a sibling tool owned by the character pipeline session.
     rollupOptions: { input: "index.html" },
   },

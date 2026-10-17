@@ -117,7 +117,7 @@ export function prisonCell(b: StaticBuilder, o: CellOptions): void {
     b.box(V(0, 0, 0.1), V(0.64, 0.06, 0.06), { mat: o.isParth ? "emissive_always" : "emissive_night", collide: false, shadow: false });
     for (const x of [-0.3, -0.1, 0.1, 0.3]) b.box(V(x, 0, 0.13), V(0.015, 0.16, 0.015), { mat: "iron", collide: false, shadow: false });
   });
-  b.lightPoint(V(1.2, 2.0, -D / 2 + 0.5), o.isParth ? 0xffd9a0 : 0xffcf8a, o.isParth ? 3.2 : 2.2, 6.5, !o.isParth, o.isParth ? 0.35 : 0);
+  b.lightPoint(V(1.0, 2.1, -D / 2 + 1.1), o.isParth ? 0xffd2a0 : 0xffcf8a, o.isParth ? 1.5 : 1.2, 7, !o.isParth, o.isParth ? 0.35 : 0);
 
   b.sign(o.numberLabel, V(fx + 0.12, 2.5, -1.28), deg(90), 0xd4cfad, 0.0024);
 }

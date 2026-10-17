@@ -24,7 +24,7 @@ export type MaterialKey =
   | "concrete" | "concrete_ext" | "plaster" | "metal" | "metal_ext" | "dark" | "dark_ext" | "steel" | "iron"
   | "wood" | "tiles" | "tile_shower" | "rubber" | "asphalt" | "gravel" | "grass" | "court"
   | "fabric" | "plastic" | "screen" | "glass" | "emissive_night" | "emissive_always" | "emissive_red"
-  | "emissive_green" | "emissive_cyan" | "paper" | "hazard" | "fence";
+  | "emissive_green" | "emissive_cyan" | "paper" | "hazard" | "fence" | "gunmetal";
 
 interface TextureSet {
   map?: string;
@@ -56,9 +56,9 @@ const T = (name: string, tile: number, extra: Partial<TextureSet> = {}): Texture
 });
 
 const SPECS: Record<MaterialKey, MaterialSpec> = {
-  concrete: { set: T("concrete", 3), roughness: 1, grime: 1, normalScale: 0.9 },
+  concrete: { set: T("concrete", 3), roughness: 1, grime: 1.35, normalScale: 0.9 },
   concrete_ext: { set: T("concrete", 3.2), roughness: 1, grime: 1, exterior: true, normalScale: 1 },
-  plaster: { set: T("plaster", 2.5), roughness: 1, grime: 0.6, normalScale: 0.5 },
+  plaster: { set: T("plaster", 2.5), roughness: 1, grime: 0.95, normalScale: 0.5 },
   metal: { set: T("metal", 1.6), roughness: 0.9, metalness: 0.35, grime: 0.5, normalScale: 0.6 },
   metal_ext: { set: T("metal", 1.6), roughness: 0.9, metalness: 0.35, grime: 0.6, exterior: true, normalScale: 0.6 },
   dark: { set: T("metal", 1.6), color: 0x5a605c, roughness: 0.85, metalness: 0.4, grime: 0.4, normalScale: 0.5 },
@@ -75,6 +75,7 @@ const SPECS: Record<MaterialKey, MaterialSpec> = {
   court: { set: T("court_concrete", 4), roughness: 0.9, grime: 0.5, exterior: true },
   fence: { set: { ...T("fence", 2.5), alpha: "fence_opacity" }, roughness: 0.6, metalness: 0.7, exterior: true },
   fabric: { color: 0xffffff, roughness: 0.95, grime: 0.3 },
+  gunmetal: { set: { ...T("gunmetal", 0.35), metal: "gunmetal_metalness" }, roughness: 0.6, metalness: 1, normalScale: 0.5 },
   plastic: { color: 0xffffff, roughness: 0.55, grime: 0.2 },
   paper: { color: 0xffffff, roughness: 0.9 },
   hazard: { set: T("metal", 1.2), color: 0xf3c33c, roughness: 0.7, metalness: 0.2, grime: 0.6 },
@@ -110,10 +111,13 @@ const GRIME_MAP = /* glsl */ `
 float gWall = 1.0 - abs(vGWorldNormal.y);
 float gBlotch = gFbm(vGWorldPos * 0.33);
 float gStreak = gFbm(vec3((vGWorldPos.x + vGWorldPos.z) * 2.4, vGWorldPos.y * 0.16, 1.7));
+float gFine = gFbm(vGWorldPos * 2.7 + 7.0);
 float gHeight = mod(vGWorldPos.y + 0.02, 4.0);
-float gBase = gWall * (1.0 - smoothstep(0.0, 0.55, gHeight)) * 0.45;
-float gStain = smoothstep(0.48, 0.86, gBlotch) * 0.55 + gWall * smoothstep(0.55, 0.92, gStreak) * 0.5 + gBase;
-diffuseColor.rgb *= 1.0 - uGrime * uGrimeStrength * clamp(gStain, 0.0, 0.7);
+float gBase = gWall * (1.0 - smoothstep(0.0, 0.7, gHeight)) * 0.55;
+float gStain = smoothstep(0.44, 0.84, gBlotch) * 0.6 + gWall * smoothstep(0.5, 0.9, gStreak) * 0.55 + gBase + (gFine - 0.5) * 0.25;
+diffuseColor.rgb *= 1.0 - uGrime * uGrimeStrength * clamp(gStain, 0.0, 0.82);
+// Cold, slightly green institutional cast on stained areas (damp concrete).
+diffuseColor.rgb = mix(diffuseColor.rgb, diffuseColor.rgb * vec3(0.86, 0.95, 0.92), uGrime * uGrimeStrength * smoothstep(0.3, 0.8, gStain));
 float gUp = smoothstep(0.6, 0.95, vGWorldNormal.y);
 float gPuddle = smoothstep(0.44, 0.64, gFbm(vGWorldPos * 0.21 + 3.0));
 float gWet = uWetness * uExterior * mix(0.5 * gWall, mix(0.55, 1.0, gPuddle), gUp);
@@ -274,6 +278,6 @@ export function tint(hex: number, gain = 1): Color {
   const c = new Color(hex);
   // Color() stores linear values; work in sRGB space for the relative tint.
   const srgb = c.clone().convertLinearToSRGB();
-  const f = (v: number) => Math.min(1.6, Math.max(0.12, (v / 0.42) * gain));
+  const f = (v: number) => Math.min(1.5, Math.max(0.1, (v / 0.52) * gain));
   return new Color(f(srgb.r), f(srgb.g), f(srgb.b));
 }

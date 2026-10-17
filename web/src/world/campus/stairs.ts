@@ -10,6 +10,8 @@ export function stairFlight(b: StaticBuilder, run: number, rise: number, width: 
   const corners: Vector3[] = [];
   for (const x of [-width / 2, width / 2]) for (const end of [0, 1]) for (const th of [-0.14, 0]) corners.push(V(x, rise * end + th, run * end));
   b.ramp(corners);
+  // Nav export: the centre line, from just before the first tread to just past the top.
+  b.navPath([V(0, 0, -NAV_APRON), V(0, rise, run + NAV_APRON)], "stair");
   const sd = run / steps;
   const sr = rise / steps;
   for (let i = 0; i < steps; i++) {
@@ -22,7 +24,7 @@ export function stairFlight(b: StaticBuilder, run: number, rise: number, width: 
   for (const side of [-1, 1]) {
     const x = side * (width / 2 - 0.065);
     b.bar(V(x, -0.09, 0), V(x, rise - 0.09, run), 0.18, { mat: "concrete", color: 0x3a3f3c });
-    b.railing(V(x, 0, 0), V(x, rise, run), 0x626963);
+    b.railing(V(x, 0, 0), V(x, rise, run), 0x3d4541);
   }
 }
 
@@ -46,6 +48,8 @@ export interface SwitchbackOptions {
 const AISLE = 1.2;
 const LANDING = 1.3;
 const SLAB = 0.16;
+/** How far nav stair lines run onto the floor beyond each end of a flight (half a landing). */
+const NAV_APRON = LANDING / 2;
 
 /**
  * Port of CampusSwitchbackStair: two flights around an intermediate landing,
@@ -83,7 +87,7 @@ export function switchbackStair(b: StaticBuilder, o: SwitchbackOptions): void {
     b.within(V(-flightX, 0, runEnd), Math.PI, () => stairFlight(b, runEnd * 2, mid, flightWidth, Math.max(8, Math.ceil(mid / 0.175))));
     b.within(V(flightX, mid, -runEnd), 0, () => stairFlight(b, runEnd * 2, rise - mid, flightWidth, Math.max(8, Math.ceil((rise - mid) / 0.175))));
 
-    const rail = 0x636b65;
+    const rail = 0x3d4541;
     const edgeX = iw / 2 - AISLE;
     for (const side of [-1, 1]) {
       b.railing(V(side * edgeX, rise, -runEnd), V(side * edgeX, rise, runEnd), rail);
@@ -137,6 +141,28 @@ export function switchbackStair(b: StaticBuilder, o: SwitchbackOptions): void {
         b.railing(a, c, rail);
       }
     }
+    // Nav export: lower landing → flight 1 (recorded by stairFlight) → mid
+    // landing → flight 2 → the upper ring, which every upper entrance joins.
+    const za = runEnd + LANDING / 2;
+    const xa = iw / 2 - AISLE / 2;
+    const lowerEntry = toLayout(entrancePoint(o.width, o.depth, o.lower, 0));
+    b.navPath([V(lowerEntry.x, 0, za), V(-flightX, 0, za)], "stair_landing");
+    if (o.buildLowerLanding ?? true) b.navPath([V(-xa, 0, za), V(xa, 0, za), V(xa, 0, -za), V(-xa, 0, -za), V(-xa, 0, za)], "stair_ring");
+    b.navPath([V(-flightX, mid, -za), V(flightX, mid, -za)], "stair_landing");
+    b.navPath([V(-xa, rise, za), V(flightX, rise, za), V(xa, rise, za), V(xa, rise, -za), V(-xa, rise, -za), V(-xa, rise, za)], "stair_ring");
+    for (const e of entrances) {
+      const p = e.point;
+      if (Math.abs(Math.abs(p.z) - id / 2) < 0.05) {
+        const z = Math.sign(p.z) * za;
+        b.navPath([V(-xa, rise, z), V(p.x, rise, z), V(xa, rise, z)], "stair_ring");
+        b.navPath([V(p.x, rise, p.z), V(p.x, rise, z)], "stair_entry");
+      } else {
+        const x = Math.sign(p.x) * xa;
+        b.navPath([V(x, rise, -za), V(x, rise, p.z), V(x, rise, za)], "stair_ring");
+        b.navPath([V(p.x, rise, p.z), V(x, rise, p.z)], "stair_entry");
+      }
+    }
+
     const steel = 0x333b35;
     for (const xs of [-1, 1]) {
       for (const zs of [-1, 1]) b.box(V(xs * (iw / 2 - 0.12), rise / 2, zs * (id / 2 - 0.12)), V(0.18, rise, 0.18), { mat: "dark", color: steel });

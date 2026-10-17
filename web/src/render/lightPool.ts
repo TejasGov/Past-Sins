@@ -22,7 +22,7 @@ export class LightPool {
   /** Day-time level of night-only interior fixtures (they never go fully dark inside). */
   interiorDayLevel = 0.32;
   /** Fixture intensities are authored in Godot-like energy units; this maps them to candela. */
-  intensityScale = 7;
+  intensityScale = 6;
   private readonly tmp = new Vector3();
 
   constructor(scene: Scene, private fixtures: Fixture[], count = 12) {

@@ -109,6 +109,11 @@ export class Player {
     if (!this.controlEnabled) this.isSprinting = false;
   }
 
+  unlockFailure(): void {
+    this.failureLocked = false;
+    this.setControlEnabled(true);
+  }
+
   setFailureLocked(): void {
     this.failureLocked = true;
     this.setControlEnabled(false);

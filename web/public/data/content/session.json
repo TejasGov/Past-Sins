@@ -1,0 +1,280 @@
+{
+  "$comment": "Session content (port of CampusSessionContent + CampusPhaseTwoGameplay). Story text lives in data/memories/*.json; edit freely \u2014 nothing here is hard-coded in TypeScript. Guard patrol points are walked over the nav graph (stairs, doors, other buildings), so a route may span storeys; optional per-guard trackSeconds = how long a pursuer keeps following Parth after losing sight (default 3).",
+  "startHour": 6.15,
+  "dayLengthSeconds": 720,
+  "player": {
+    "spawnAnchor": "parth_spawn"
+  },
+  "memories": [
+    {
+      "id": "memory_001",
+      "source": "data/memories/memory_001.json",
+      "anchor": "parth_memory_shelf"
+    }
+  ],
+  "keyRacks": [
+    {
+      "anchor": "cellhouse_a_key_rack",
+      "title": "TEMPORARY EXPLORATION KEYS",
+      "keys": [
+        {
+          "id": "cellblock_key",
+          "label": "Cell Block Key",
+          "short": "CELL BLOCK"
+        },
+        {
+          "id": "service_key",
+          "label": "Service Key",
+          "short": "SERVICE"
+        },
+        {
+          "id": "medical_key",
+          "label": "Medical Key",
+          "short": "MEDICAL"
+        }
+      ]
+    }
+  ],
+  "cellKeyRegister": {
+    "plan": "hq-0",
+    "room": "keys"
+  },
+  "lockers": [
+    {
+      "id": "maintenance_keypad_locker",
+      "plan": "maintenance-ground",
+      "room": "tool",
+      "offset": [
+        2.6,
+        1.1
+      ],
+      "fromSouthWall": 0.62,
+      "code": "2718",
+      "reward": {
+        "id": "maintenance_access_card",
+        "label": "Maintenance Access Card",
+        "category": "ACCESS_CARD"
+      }
+    }
+  ],
+  "objectives": [
+    {
+      "id": "wake",
+      "title": "TIER 3 \u00b7 CELL A-3-N03",
+      "text": "Something glints on the shelf beside the bed.",
+      "doneWhen": {
+        "memory": "memory_001"
+      }
+    },
+    {
+      "id": "keys",
+      "title": "THE NUMBERS",
+      "text": "2 - 7 - 1 - 8. The pattern Raman made you repeat. Find a way into Maintenance \u2014 the dayroom rack on the ground tier holds service keys.",
+      "doneWhen": {
+        "item": "service_key"
+      }
+    },
+    {
+      "id": "locker",
+      "title": "MAINTENANCE \u00b7 TOOL ISSUE",
+      "text": "Cross the yard to Maintenance (south-east). The tool-issue keypad is waiting for a remembered code.",
+      "doneWhen": {
+        "item": "maintenance_access_card"
+      }
+    },
+    {
+      "id": "beyond",
+      "title": "ACCESS CARD",
+      "text": "The card opens more than a locker. Stay out of sight.",
+      "doneWhen": {
+        "never": true
+      }
+    }
+  ],
+  "guards": [
+    {
+      "id": "cellhouse_a_dayroom",
+      "name": "Dayroom Officer",
+      "patrol": [
+        [
+          -58,
+          0,
+          -5.6
+        ],
+        [
+          -42,
+          0,
+          -5.6
+        ],
+        [
+          -42,
+          0,
+          5.6
+        ],
+        [
+          -58,
+          0,
+          5.6
+        ]
+      ],
+      "patrolSpeed": 1.8,
+      "viewDistance": 14,
+      "trackSeconds": 3
+    },
+    {
+      "id": "cellhouse_a_tier3",
+      "name": "Tier 3 Walker",
+      "patrol": [
+        [
+          -66,
+          8,
+          -9.2
+        ],
+        [
+          -47,
+          8,
+          -9.2
+        ],
+        [
+          -30,
+          8,
+          -9.2
+        ],
+        [
+          -30.2,
+          8,
+          0
+        ],
+        [
+          -30,
+          8,
+          9.2
+        ],
+        [
+          -47,
+          8,
+          9.2
+        ],
+        [
+          -66,
+          8,
+          9.2
+        ],
+        [
+          -46.5,
+          8,
+          9.2
+        ],
+        [
+          -30.5,
+          8,
+          9.2
+        ],
+        [
+          -30.2,
+          8,
+          0
+        ],
+        [
+          -30,
+          8,
+          -9.2
+        ],
+        [
+          -47,
+          8,
+          -9.2
+        ]
+      ],
+      "patrolSpeed": 1.6,
+      "viewDistance": 15,
+      "waitAtPoint": 2.0,
+      "suspicionPerSecond": 7
+    },
+    {
+      "id": "yard_north",
+      "name": "Yard Patrol",
+      "patrol": [
+        [
+          -21,
+          0,
+          -21
+        ],
+        [
+          21,
+          0,
+          -21
+        ],
+        [
+          21,
+          0,
+          21
+        ],
+        [
+          -21,
+          0,
+          21
+        ]
+      ],
+      "patrolSpeed": 2.0,
+      "viewDistance": 18
+    },
+    {
+      "id": "maintenance_spine",
+      "name": "Maintenance Tech",
+      "patrol": [
+        [
+          48,
+          0,
+          38
+        ],
+        [
+          48,
+          0,
+          64
+        ]
+      ],
+      "patrolSpeed": 1.6,
+      "viewDistance": 12
+    }
+  ],
+  "restrictedZones": [
+    {
+      "id": "hq_compound",
+      "center": [
+        48,
+        2,
+        -51.5
+      ],
+      "size": [
+        36,
+        10,
+        34
+      ],
+      "multiplier": 2.2,
+      "type": "SECURITY"
+    },
+    {
+      "id": "cellhouse_b_sector",
+      "center": [
+        50,
+        2,
+        0
+      ],
+      "size": [
+        44,
+        10,
+        53
+      ],
+      "multiplier": 1.8,
+      "type": "HIGH_SECURITY"
+    },
+    {
+      "id": "maintenance_tool",
+      "plan": "maintenance-ground",
+      "room": "tool",
+      "multiplier": 1.5,
+      "type": "SERVICE"
+    }
+  ]
+}

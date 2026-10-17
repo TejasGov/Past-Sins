@@ -6,7 +6,7 @@ import {
   HemisphereLight,
   Material,
   NoToneMapping,
-  PCFSoftShadowMap,
+  PCFShadowMap,
   PerspectiveCamera,
   PMREMGenerator,
   Scene,
@@ -85,7 +85,7 @@ export class RenderStack {
     this.renderer.outputColorSpace = SRGBColorSpace;
     this.renderer.toneMapping = NoToneMapping;
     this.renderer.shadowMap.enabled = true;
-    this.renderer.shadowMap.type = PCFSoftShadowMap;
+    this.renderer.shadowMap.type = PCFShadowMap;
     this.renderer.info.autoReset = false;
 
     this.camera = new PerspectiveCamera(72, window.innerWidth / window.innerHeight, 0.05, 900);

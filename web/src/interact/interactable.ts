@@ -70,14 +70,25 @@ export class InteractionSystem {
       const wall = this.raycaster.intersectObject(this.occluder, false)[0];
       (this.raycaster as Raycaster & { firstHitOnly?: boolean }).firstHitOnly = false;
       const hits = roots.length ? this.raycaster.intersectObjects(roots, true) : [];
+      let prompt = "";
       for (const hit of hits) {
         if (!hit.object.visible) continue;
         if (wall && wall.distance + 0.02 < hit.distance) break;
-        next = findInteractable(hit.object);
-        if (next) break;
+        const candidate = findInteractable(hit.object);
+        if (!candidate) continue;
+        // An interactable with nothing to offer (open locker, collected item)
+        // must not hide one behind it (the card inside the locker).
+        prompt = candidate.getInteractionPrompt(player);
+        if (prompt) {
+          next = candidate;
+          break;
+        }
       }
+      this.current = next;
+      this.prompt = next ? prompt : "";
+      return;
     }
-    this.current = next;
-    this.prompt = next ? next.getInteractionPrompt(player) : "";
+    this.current = null;
+    this.prompt = "";
   }
 }

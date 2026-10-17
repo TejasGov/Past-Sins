@@ -1,4 +1,4 @@
-import { Group, Material, Mesh, Vector3, type Object3D } from "three";
+import { BoxGeometry, Color, Group, InstancedMesh, Matrix4, Mesh, MeshBasicMaterial, Vector3, type Object3D } from "three";
 import { gsap } from "gsap";
 import RAPIER from "@dimforge/rapier3d-compat";
 import { DOOR_GROUPS, Layer, type Physics } from "../physics/physics";
@@ -17,6 +17,36 @@ export interface DoorContext {
   /** Leaves of solid doors are added here while closed (guard LOS / interaction blocking). */
   occluders: Set<Object3D>;
   onNoise?: (position: Vector3, intensity: number) => void;
+  leds?: ReaderLeds;
+}
+
+/** Every gate's reader LED in one InstancedMesh (red locked / green open). */
+export class ReaderLeds {
+  readonly mesh: InstancedMesh;
+  private count = 0;
+  private static RED = new Color(0xff3b24).multiplyScalar(6);
+  private static GREEN = new Color(0x52ff96).multiplyScalar(5);
+
+  constructor(capacity: number) {
+    this.mesh = new InstancedMesh(new BoxGeometry(0.05, 0.03, 0.03), new MeshBasicMaterial({ color: 0xffffff }), capacity);
+    this.mesh.count = 0;
+    this.mesh.frustumCulled = false;
+    this.mesh.castShadow = false;
+  }
+
+  add(position: Vector3): number {
+    const i = this.count++;
+    this.mesh.count = this.count;
+    this.mesh.setMatrixAt(i, new Matrix4().makeTranslation(position.x, position.y, position.z));
+    this.mesh.setColorAt(i, ReaderLeds.RED);
+    this.mesh.instanceMatrix.needsUpdate = true;
+    return i;
+  }
+
+  set(index: number, locked: boolean): void {
+    this.mesh.setColorAt(index, locked ? ReaderLeds.RED : ReaderLeds.GREEN);
+    if (this.mesh.instanceColor) this.mesh.instanceColor.needsUpdate = true;
+  }
 }
 
 const V = (x: number, y: number, z: number) => new Vector3(x, y, z);
@@ -30,8 +60,8 @@ export class Door implements Interactable {
   readonly root = new Group();
   private pivot = new Group();
   private leaf: Mesh;
-  private frame: Mesh | null = null;
-  private ledGroup = -1;
+  private ledIndex = -1;
+  private static proxyMaterial = new MeshBasicMaterial({ visible: false });
   readonly collider: RAPIER.Collider;
   isOpen = false;
   isLocked = false;
@@ -50,8 +80,17 @@ export class Door implements Interactable {
     this.root.add(this.pivot);
     if (!this.slide) this.pivot.position.x = -spec.width / 2;
     this.leaf = this.slide ? this.buildGateLeaf() : this.buildDoorLeaf();
+    // Interior doors sit under roofs: the sun never reaches them, so skip the
+    // three CSM shadow passes for them.
+    this.leaf.castShadow = spec.chunk === "exterior";
     this.pivot.add(this.leaf);
-    if (this.slide) this.frame = this.buildReader();
+    // Invisible solid proxy so the interaction ray can't slip between bars.
+    const proxy = new Mesh(new BoxGeometry(spec.width, spec.height, 0.16), Door.proxyMaterial);
+    proxy.position.set(this.slide ? 0 : spec.width / 2, spec.height / 2, 0);
+    this.leaf.add(proxy);
+    if (this.slide && ctx.leds) {
+      this.ledIndex = ctx.leds.add(new Vector3(spec.width / 2 + 0.12, 1.33, 0.2).applyAxisAngle(new Vector3(0, 1, 0), spec.yaw).add(spec.position));
+    }
     markInteractable(this.root, this);
 
     const half = V(spec.width / 2, spec.height / 2, this.thickness / 2 + 0.02);
@@ -126,10 +165,26 @@ export class Door implements Interactable {
     return this.moving;
   }
 
-  /** AI helper: guards open unlocked doors in their way. */
+  /** AI helper: staff carry keys, so guards open any door in their way (without unlocking it for Parth). */
   openForAI(): void {
-    if (!this.isOpen && !this.moving && !this.isLocked) this.animateTo(true);
+    if (this.isOpen || this.moving) return;
+    this.openedByAI = true;
+    this.animateTo(true);
   }
+
+  closeForAI(): void {
+    if (!this.openedByAI || !this.isOpen || this.moving) return;
+    if (this.doorwayBlocked()) return;
+    this.openedByAI = false;
+    this.animateTo(false);
+  }
+
+  /** Detention reset: authored pose, persistent unlocks kept. */
+  reset(): void {
+    this.openedByAI = false;
+    this.setState(false, this.spec.startsLocked && !this.ctx.access.isAccessUnlocked(this.spec.persistentId));
+  }
+  private openedByAI = false;
 
   private animateTo(open: boolean): void {
     this.moving = true;
@@ -174,9 +229,7 @@ export class Door implements Interactable {
   }
 
   private updateIndicators(): void {
-    if (!this.frame || this.ledGroup < 0) return;
-    const mats = this.frame.material as Material[];
-    mats[this.ledGroup] = this.ctx.materials.get(this.isLocked ? "emissive_red" : "emissive_green");
+    if (this.ledIndex >= 0) this.ctx.leds?.set(this.ledIndex, this.isLocked);
   }
 
   // ── Visuals ────────────────────────────────────────────────────────────────
@@ -190,13 +243,13 @@ export class Door implements Interactable {
     kit.box(V(w / 2, h / 2, 0), V(w - 0.02, h - 0.02, t), "metal", paint);
     for (const z of [-1, 1]) {
       const zz = z * (t / 2 + 0.006);
-      kit.box(V(w / 2, 0.15, zz), V(w - 0.1, 0.26, 0.01), "steel", 0x9aa19c);
-      kit.box(V(w / 2, h * 0.72, zz), V(Math.min(0.42, w * 0.35), 0.5, 0.012), "glass", 0x31444a);
-      kit.box(V(w - 0.12, 1.05, z * (t / 2 + 0.05)), V(0.14, 0.03, 0.03), "steel", 0xb0b6b2);
-      kit.box(V(w - 0.12, 1.05, z * (t / 2 + 0.025)), V(0.05, 0.05, 0.05), "steel", 0xb0b6b2);
-      kit.box(V(w / 2, h * 0.5, zz), V(0.5, 0.09, 0.01), "paper", 0xd6d2bf);
+      kit.box(V(w / 2, 0.15, zz), V(w - 0.1, 0.26, 0.01), "metal", 0xa9b0ab);
+      kit.box(V(w / 2, h * 0.72, zz), V(Math.min(0.42, w * 0.35), 0.5, 0.012), "metal", 0x1d2a2e);
+      kit.box(V(w - 0.12, 1.05, z * (t / 2 + 0.05)), V(0.14, 0.03, 0.03), "metal", 0xc4cac6);
+      kit.box(V(w - 0.12, 1.05, z * (t / 2 + 0.025)), V(0.05, 0.05, 0.05), "metal", 0xc4cac6);
+      kit.box(V(w / 2, h * 0.5, zz), V(0.5, 0.09, 0.01), "metal", 0xe2dfcf);
     }
-    for (const y of [0.35, h - 0.35]) kit.box(V(0.01, y, 0), V(0.04, 0.14, t + 0.02), "steel", 0x777d79);
+    for (const y of [0.35, h - 0.35]) kit.box(V(0.01, y, 0), V(0.04, 0.14, t + 0.02), "metal", 0x777d79);
     const mesh = kit.build("DoorLeaf");
     return mesh;
   }
@@ -218,26 +271,11 @@ export class Door implements Interactable {
       kit.box(V(0, h * 0.45, 0), V(w, 0.08, 0.07), "metal", color);
       for (const x of [-w / 2 + 0.04, w / 2 - 0.04]) kit.box(V(x, h / 2, 0), V(0.08, h, 0.09), "metal", color);
       const bars = Math.max(4, Math.round(w / 0.13));
-      for (let i = 1; i < bars; i++) kit.cylinder(V(-w / 2 + (i * w) / bars, h / 2, 0), 0.018, h - 0.2, "iron", 0x8d9690);
-      kit.box(V(w / 2 - 0.16, 1.05, 0.06), V(0.2, 0.26, 0.08), "dark", 0x2c312e);
-      if (s.label) kit.box(V(0, h * 0.72, 0.05), V(Math.min(1.2, w * 0.5), 0.22, 0.02), "hazard", 0xd8b448);
+      for (let i = 1; i < bars; i++) kit.box(V(-w / 2 + (i * w) / bars, h / 2, 0), V(0.03, h - 0.2, 0.03), "metal", 0x8d9690);
+      kit.box(V(w / 2 - 0.16, 1.05, 0.06), V(0.2, 0.26, 0.08), "metal", 0x2c312e);
+      if (s.label) kit.box(V(0, h * 0.72, 0.05), V(Math.min(1.2, w * 0.5), 0.22, 0.02), "metal", 0xd8b448);
     }
     return kit.build("GateLeaf");
-  }
-
-  /** Key reader beside the opening (static); its LED group swaps red/green. */
-  private buildReader(): Mesh {
-    const s = this.spec;
-    const kit = new MeshKit(this.ctx.materials);
-    kit.box(V(s.width / 2 + 0.12, 1.25, 0.12), V(0.18, 0.28, 0.12), "hazard", 0xd8b448);
-    kit.box(V(s.width / 2 + 0.12, 1.25, 0.185), V(0.14, 0.22, 0.02), "dark", 0x1f2422);
-    kit.box(V(s.width / 2 + 0.12, 1.33, 0.2), V(0.05, 0.03, 0.03), "emissive_red");
-    const mesh = kit.build("KeyReader");
-    const mats = mesh.material as Material[];
-    this.ledGroup = mats.findIndex((m) => m === this.ctx.materials.get("emissive_red"));
-    mesh.castShadow = false;
-    this.root.add(mesh);
-    return mesh;
   }
 
   get position(): Vector3 {

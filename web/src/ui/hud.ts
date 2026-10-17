@@ -167,6 +167,7 @@ export class Hud {
     this.memoryPlaying = true;
     this.skipRequested = false;
     this.setPrompt("");
+    this.objective.style.visibility = "hidden";
     const m = this.memory;
     m.innerHTML = "";
     const frame = el("div", "frame", m);
@@ -196,6 +197,7 @@ export class Hud {
         onComplete: () => {
           this.memoryPlaying = false;
           m.classList.remove("visible");
+          this.objective.style.visibility = "visible";
           resolve();
         },
       });
