@@ -1,0 +1,28 @@
+{
+  "name": "blacksite-ghost-exit-web",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview --port 4173",
+    "typecheck": "tsc --noEmit",
+    "textures": "node scripts/convert-textures.mjs"
+  },
+  "dependencies": {
+    "@dimforge/rapier3d-compat": "^0.21.0",
+    "animejs": "^4.5.0",
+    "gsap": "^3.15.0",
+    "lil-gui": "^0.21.0",
+    "n8ao": "^2.0.1",
+    "postprocessing": "^6.39.5",
+    "three": "^0.186.1",
+    "three-mesh-bvh": "^0.9.16"
+  },
+  "devDependencies": {
+    "@types/three": "^0.186.0",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.4"
+  }
+}

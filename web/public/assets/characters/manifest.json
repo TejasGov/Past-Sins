@@ -1,0 +1,183 @@
+{
+  "model": "guard.glb",
+  "heightMeters": 1.794,
+  "forward": "+Z",
+  "up": "+Y",
+  "compression": "meshopt",
+  "clips": {
+    "idle": "idle",
+    "walk": "walk",
+    "run_forward": "run_forward",
+    "run_backward": "run_backward",
+    "run_left": "run_left",
+    "run_right": "run_right",
+    "crouch_idle": "crouch_idle",
+    "crouch_walk": "crouch_walk",
+    "gunplay": "gunplay",
+    "reload_standing": "reload_standing",
+    "reload_crouch": "reload_crouch",
+    "reload_idle": "reload_idle",
+    "death_crouch": "death_crouch",
+    "death_from_right": "death_from_right",
+    "death_fall_back": "death_fall_back",
+    "death_fall_forward": "death_fall_forward",
+    "death_react_left": "death_react_left"
+  },
+  "clipInfo": {
+    "idle": {
+      "loop": true,
+      "duration": 16.6333,
+      "rootSpeed": 0,
+      "rootTravel": [
+        0,
+        0
+      ]
+    },
+    "walk": {
+      "loop": true,
+      "duration": 1.0333,
+      "rootSpeed": 1.758,
+      "rootTravel": [
+        0,
+        1.817
+      ]
+    },
+    "run_forward": {
+      "loop": true,
+      "duration": 0.5,
+      "rootSpeed": 4.765,
+      "rootTravel": [
+        0,
+        2.382
+      ]
+    },
+    "run_backward": {
+      "loop": false,
+      "duration": 1.5,
+      "rootSpeed": 0,
+      "rootTravel": [
+        0.115,
+        -1.317
+      ],
+      "note": "Not a run cycle: steps back out of an aiming stance into a deep crouch and holds it. Download a real backward run (README) to replace it."
+    },
+    "run_left": {
+      "loop": true,
+      "duration": 0.5,
+      "rootSpeed": 4.765,
+      "rootTravel": [
+        2.382,
+        0
+      ]
+    },
+    "run_right": {
+      "loop": true,
+      "duration": 0.5,
+      "rootSpeed": 4.765,
+      "rootTravel": [
+        -2.382,
+        0
+      ]
+    },
+    "crouch_idle": {
+      "loop": true,
+      "duration": 2.1,
+      "rootSpeed": 0,
+      "rootTravel": [
+        0,
+        0
+      ]
+    },
+    "crouch_walk": {
+      "loop": true,
+      "duration": 1.1667,
+      "rootSpeed": 1.214,
+      "rootTravel": [
+        0,
+        1.417
+      ]
+    },
+    "gunplay": {
+      "loop": true,
+      "duration": 0.2667,
+      "rootSpeed": 0,
+      "rootTravel": [
+        0,
+        0
+      ]
+    },
+    "reload_standing": {
+      "loop": false,
+      "duration": 4.1,
+      "rootSpeed": 0.981,
+      "rootTravel": [
+        0,
+        4.021
+      ],
+      "note": "Reload while walking forward (legs keep stepping), authored at 0.981 m/s. For a stationary reload use reload_idle."
+    },
+    "reload_crouch": {
+      "loop": false,
+      "duration": 6.8667,
+      "rootSpeed": 0,
+      "rootTravel": [
+        0,
+        0
+      ]
+    },
+    "reload_idle": {
+      "loop": false,
+      "duration": 3.3,
+      "rootSpeed": 0,
+      "rootTravel": [
+        0,
+        0
+      ]
+    },
+    "death_crouch": {
+      "loop": false,
+      "duration": 2.3667,
+      "rootSpeed": 0,
+      "rootTravel": [
+        -0.082,
+        -1.005
+      ]
+    },
+    "death_from_right": {
+      "loop": false,
+      "duration": 3.3,
+      "rootSpeed": 0,
+      "rootTravel": [
+        0.864,
+        -0.101
+      ]
+    },
+    "death_fall_back": {
+      "loop": false,
+      "duration": 2.2,
+      "rootSpeed": 0,
+      "rootTravel": [
+        -0.165,
+        -0.599
+      ]
+    },
+    "death_fall_forward": {
+      "loop": false,
+      "duration": 2.5667,
+      "rootSpeed": 0,
+      "rootTravel": [
+        -0.151,
+        0.854
+      ]
+    },
+    "death_react_left": {
+      "loop": false,
+      "duration": 3.6,
+      "rootSpeed": 0,
+      "rootTravel": [
+        0.929,
+        -0.134
+      ]
+    }
+  }
+}

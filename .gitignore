@@ -1,3 +1,22 @@
 .godot/
 .DS_Store
 **/.DS_Store
+
+# Web port: dependencies, caches and build output
+node_modules/
+.vite/
+web/dist/
+web/asset-pipeline/.cache/
+*.log
+
+# Godot Web export output (export_presets.cfg → build/web/index.html)
+/build/
+
+# Local-only settings and secrets
+.env
+.env.*
+.claude/settings.local.json
+
+# Over GitHub's 100 MB file limit. Stock Mixamo "Ch35" — re-download from mixamo.com;
+# its built output web/public/assets/characters/guard.glb is tracked.
+assets/characters/models_mixamo/Ch35_nonPBR.fbx

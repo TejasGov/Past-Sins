@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Guard Clip Viewer</title>
+    <style>
+      :root { color-scheme: dark; font: 13px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; }
+      html, body { margin: 0; height: 100%; background: #20242a; color: #d8dde3; overflow: hidden; }
+      #app { position: fixed; inset: 0; }
+      #panel { position: fixed; top: 10px; left: 10px; width: 300px; padding: 10px; background: rgba(16, 18, 22, 0.88); border: 1px solid #3a414b; border-radius: 6px; display: grid; gap: 8px; }
+      #panel h1 { margin: 0; font-size: 13px; color: #fff; }
+      label { display: flex; align-items: center; gap: 6px; }
+      select, button, input[type='range'] { font: inherit; }
+      select { flex: 1; background: #2b3038; color: inherit; border: 1px solid #4a525e; padding: 2px; }
+      button { background: #2b3038; color: inherit; border: 1px solid #4a525e; padding: 2px 6px; cursor: pointer; }
+      button:hover { background: #3a414b; }
+      .row { display: flex; flex-wrap: wrap; gap: 4px; }
+      input[type='range'] { flex: 1; }
+      #stats { white-space: pre; font-size: 12px; color: #aab3bd; }
+      #status { font-size: 12px; color: #f0c674; min-height: 1em; }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <div id="panel">
+      <h1>guard.glb clip viewer</h1>
+      <label>clip <select id="clip"></select></label>
+      <div class="row">
+        <button id="play">pause</button>
+        <label>speed <select id="speed"><option>0.25</option><option>0.5</option><option selected>1</option><option>2</option></select></label>
+      </div>
+      <label>t <input id="time" type="range" min="0" max="1" step="0.001" value="0" /></label>
+      <div class="row">
+        <label><input id="skeleton" type="checkbox" checked /> skeleton</label>
+        <label><input id="mesh" type="checkbox" checked /> mesh</label>
+        <label><input id="trail" type="checkbox" checked /> hips trail</label>
+      </div>
+      <div class="row" id="views"></div>
+      <div class="row">
+        <button id="sheet">save contact sheet</button>
+        <button id="sheetAll">save all</button>
+      </div>
+      <div id="stats"></div>
+      <div id="status"></div>
+    </div>
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>

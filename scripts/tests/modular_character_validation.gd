@@ -15,24 +15,27 @@ func _ready() -> void:
 
 
 func _validate() -> void:
+	# NOTE: as of the Mixamo Auto-Rigger migration, GuardVisual no longer
+	# extends ModularCharacter / shares the PSX mesh with inmates -- it uses
+	# OperatorCharacter (see scripts/visuals/operator_character.gd). Inmates
+	# are still on the PSX pipeline, so those checks remain below; the old
+	# guard<->inmate PSX-sharing assertions were retired along with them.
 	_validate_source_and_license()
 	_validate_material_cache()
 	var guard := GUARD_VISUAL_SCENE.instantiate() as GuardVisual
-	guard.auto_skin_tone = false
-	guard.skin_tone = PALETTE.SKIN_TAN
 	var inmate := INMATE_VISUAL_SCENE.instantiate() as ModularCharacter
 	inmate.auto_skin_tone = false
 	inmate.skin_tone = PALETTE.SKIN_TAN
 	add_child(guard)
 	add_child(inmate)
-	_validate_shared_rig(guard, inmate)
-	_validate_role_appearance(guard, inmate)
+	_validate_operator_rig(guard)
+	_validate_inmate_rig(inmate)
 	_validate_animation_states()
 	_validate_guard_scene()
 	guard.queue_free()
 	inmate.queue_free()
 	for failure in _failures: push_error(failure)
-	print("MODULAR CHARACTER VALIDATION: ", "PASS" if _failures.is_empty() else "FAIL", " — one Characters PSX mesh/UV texture, shared Mixamo clips, rest-pose retargeting, corrected axis/origin, and palette-only factions")
+	print("MODULAR CHARACTER VALIDATION: ", "PASS" if _failures.is_empty() else "FAIL", " — Mixamo operator rig for guards, Characters PSX mesh/UV texture + rest-pose retargeting for inmates")
 	get_tree().quit(0 if _failures.is_empty() else 1)
 
 
@@ -56,35 +59,37 @@ func _validate_material_cache() -> void:
 	_check(PALETTE.SKIN_TONES.size() == 5, "Five cheap skin-tone variants must remain available")
 
 
-func _validate_shared_rig(guard: ModularCharacter, inmate: ModularCharacter) -> void:
-	var guard_rig := guard.get_node("PSXSharedRig") as Node3D
-	var inmate_rig := inmate.get_node("PSXSharedRig") as Node3D
-	_check(guard_rig.get_meta("source_pack") == "Elbolilloduro Characters PSX 1.1", "Character instance must identify the Characters PSX source")
-	_check(guard_rig.get_meta("forward_axis") == "+Y source corrected to Godot -Z", "Axis correction must be documented on each rig instance")
+func _validate_operator_rig(guard: GuardVisual) -> void:
+	var guard_rig := guard.get_node("OperatorRig") as Node3D
+	_check(guard_rig.get_meta("source_pack") == "Mixamo Auto-Rigger (Ch35 operator)", "Guard rig instance must identify the Mixamo operator source")
 	var guard_skeleton := guard.get_rig_root() as Skeleton3D
-	var inmate_skeleton := inmate.get_rig_root() as Skeleton3D
-	_check(guard_skeleton != inmate_skeleton, "NPC instances need independent skeleton poses")
-	_check(guard_skeleton.get_bone_name(0) == &"Hips", "Target skeleton and copied skin binds must use the humanoid profile")
-	_check(guard_skeleton.basis.is_equal_approx(ModularCharacter.SOURCE_TO_GODOT_BASIS), "PSX +X/+Z axes must be corrected to Godot forward/up")
-	_check(is_equal_approx(guard_skeleton.position.y, 0.0076), "Model feet must sit on a zeroed origin")
+	_check(guard_skeleton != null, "Guard skeleton must build")
+	_check(guard_skeleton.get_bone_name(0) == &"mixamorig_Hips", "Guard skeleton must use the Mixamo Auto-Rigger bone names")
 	var guard_animation := guard.get_animation_player()
-	var inmate_animation := inmate.get_animation_player()
 	_check(guard_animation.get_animation_list().size() == EXPECTED_ANIMATIONS.size(), "Only the five requested locomotion clips should ship")
 	for clip in EXPECTED_ANIMATIONS:
 		_check(guard_animation.has_animation(clip), "Missing Mixamo clip: " + clip)
-		_check(guard_animation.get_animation(clip) == inmate_animation.get_animation(clip), "Animation data must be shared for " + clip)
-	_check(guard.get_model_mesh().mesh == inmate.get_model_mesh().mesh, "Guard and inmate must share the exact PSX mesh resource")
-	_check(guard_skeleton.get_parent() is RetargetModifier3D, "PSX skeleton must be driven by Godot's rest-pose retargeter")
-	var retarget := guard_skeleton.get_parent() as RetargetModifier3D
+	_check(guard.get_model_mesh().mesh != null, "Guard mesh must load")
+	_check(guard.character_type == OperatorCharacter.CharacterType.GUARD, "Guard scene must keep its role")
+
+
+func _validate_inmate_rig(inmate: ModularCharacter) -> void:
+	var inmate_rig := inmate.get_node("PSXSharedRig") as Node3D
+	_check(inmate_rig.get_meta("source_pack") == "Elbolilloduro Characters PSX 1.1", "Inmate instance must identify the Characters PSX source")
+	_check(inmate_rig.get_meta("forward_axis") == "+Y source corrected to Godot -Z", "Axis correction must be documented on the inmate rig instance")
+	var inmate_skeleton := inmate.get_rig_root() as Skeleton3D
+	_check(inmate_skeleton.get_bone_name(0) == &"Hips", "Target skeleton and copied skin binds must use the humanoid profile")
+	_check(inmate_skeleton.basis.is_equal_approx(ModularCharacter.SOURCE_TO_GODOT_BASIS), "PSX +X/+Z axes must be corrected to Godot forward/up")
+	_check(is_equal_approx(inmate_skeleton.position.y, 0.0076), "Model feet must sit on a zeroed origin")
+	var inmate_animation := inmate.get_animation_player()
+	_check(inmate_animation.get_animation_list().size() == EXPECTED_ANIMATIONS.size(), "Only the five requested locomotion clips should ship")
+	for clip in EXPECTED_ANIMATIONS:
+		_check(inmate_animation.has_animation(clip), "Missing Mixamo clip: " + clip)
+	_check(inmate_skeleton.get_parent() is RetargetModifier3D, "PSX skeleton must be driven by Godot's rest-pose retargeter")
+	var retarget := inmate_skeleton.get_parent() as RetargetModifier3D
 	_check(retarget.profile.get_bone_size() >= 25, "Retarget profile must cover the shared Mixamo body bones")
-
-
-func _validate_role_appearance(guard: ModularCharacter, inmate: ModularCharacter) -> void:
-	_check(guard.character_type == ModularCharacter.CharacterType.GUARD, "Guard scene must keep its role")
 	_check(inmate.character_type == ModularCharacter.CharacterType.INMATE, "Inmate scene must keep its role")
-	var guard_material := guard.get_model_mesh().material_override as ShaderMaterial
 	var inmate_material := inmate.get_model_mesh().material_override as ShaderMaterial
-	_check(is_equal_approx(float(guard_material.get_shader_parameter(&"inmate_mix")), 0.0), "Guard must retain the authored balaclava/operator palette")
 	_check(is_equal_approx(float(inmate_material.get_shader_parameter(&"inmate_mix")), 1.0), "Inmate must use palette-only jumpsuit conversion")
 	_check(inmate_material.get_shader_parameter(&"inmate_primary") == PALETTE.INMATE_ORANGE, "Inmate primary color must remain configurable")
 
@@ -123,7 +128,7 @@ func _validate_guard_scene() -> void:
 	guard.name = "IntegratedGuardVariant4"
 	add_child(guard)
 	var visual := guard.get_node("GuardVisual") as GuardVisual
-	_check(visual.get_rig_root() != null and visual.get_animation_player() != null, "Guard.tscn must use the shared PSX visual")
+	_check(visual.get_rig_root() != null and visual.get_animation_player() != null, "Guard.tscn must use the Mixamo operator visual")
 	guard.velocity = Vector3(guard.patrol_speed, 0.0, 0.0)
 	visual._process(0.2)
 	_check(visual.get_animation_player().current_animation == "walk", "Existing guard patrol speed must drive walk without AI changes")

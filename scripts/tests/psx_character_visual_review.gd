@@ -5,10 +5,10 @@ const INMATE_SCENE := preload("res://scenes/npc/InmateVisual.tscn")
 
 
 func _ready() -> void:
-	var guard := GUARD_SCENE.instantiate() as ModularCharacter
+	# Guard now uses the Mixamo operator rig (its own baked-in tactical
+	# texture, no palette/skin-tone parameters like the PSX pipeline).
+	var guard := GUARD_SCENE.instantiate() as GuardVisual
 	guard.name = "GuardOperator"
-	guard.auto_skin_tone = false
-	guard.skin_tone = CharacterMaterialPalette.SKIN_TAN
 	guard.position = Vector3(-0.72, 0.0, 0.0)
 	add_child(guard)
 	var inmate := INMATE_SCENE.instantiate() as ModularCharacter

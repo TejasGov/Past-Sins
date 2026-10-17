@@ -1,0 +1,548 @@
+{
+  "generatedAt": "2026-10-17T03:58:17.308Z",
+  "source": "../../assets/characters/models_mixamo",
+  "clips": {
+    "idle": {
+      "file": "Idle.fbx",
+      "sourceTake": "mixamo.com",
+      "loop": true,
+      "hipsScale": 1,
+      "rootMode": "linear",
+      "rootTravelRemoved": [
+        0,
+        0
+      ],
+      "rootSpeed": 0,
+      "hipsMaxXZExcursionAfterStrip": 0.11,
+      "hipsY": [
+        0.976,
+        1
+      ],
+      "duration": 16.6333,
+      "channels": 53,
+      "constantRotationKeys": 0,
+      "unmatchedBones": [],
+      "bonesMissingFromClip": [],
+      "boneLengthDifferences": [],
+      "prefixes": [
+        "mixamorig:"
+      ]
+    },
+    "walk": {
+      "file": "Walking.fbx",
+      "sourceTake": "mixamo.com",
+      "loop": true,
+      "hipsScale": 1,
+      "rootMode": "linear",
+      "rootTravelRemoved": [
+        0,
+        1.817
+      ],
+      "rootSpeed": 1.758,
+      "hipsMaxXZExcursionAfterStrip": 0.042,
+      "hipsY": [
+        0.924,
+        1.002
+      ],
+      "duration": 1.0333,
+      "channels": 53,
+      "constantRotationKeys": 10,
+      "unmatchedBones": [],
+      "bonesMissingFromClip": [],
+      "boneLengthDifferences": [],
+      "prefixes": [
+        "mixamorig:"
+      ]
+    },
+    "run_forward": {
+      "file": "Run Forward.fbx",
+      "sourceTake": "mixamo.com",
+      "loop": true,
+      "hipsScale": 1,
+      "rootMode": "linear",
+      "rootTravelRemoved": [
+        0,
+        2.382
+      ],
+      "rootSpeed": 4.765,
+      "hipsMaxXZExcursionAfterStrip": 0.06,
+      "hipsY": [
+        0.831,
+        0.928
+      ],
+      "duration": 0.5,
+      "channels": 53,
+      "constantRotationKeys": 0,
+      "unmatchedBones": [],
+      "bonesMissingFromClip": [],
+      "boneLengthDifferences": [],
+      "prefixes": [
+        "mixamorig:"
+      ]
+    },
+    "run_backward": {
+      "file": "Run Backwards.fbx",
+      "sourceTake": "mixamo.com",
+      "loop": false,
+      "hipsScale": 1,
+      "rootMode": "pin",
+      "rootTravelRemoved": [
+        0.115,
+        -1.317
+      ],
+      "rootSpeed": 0,
+      "hipsMaxXZExcursionAfterStrip": 0,
+      "hipsY": [
+        0.433,
+        0.906
+      ],
+      "duration": 1.5,
+      "channels": 53,
+      "constantRotationKeys": 0,
+      "unmatchedBones": [],
+      "bonesMissingFromClip": [],
+      "boneLengthDifferences": [],
+      "prefixes": [
+        "mixamorig:"
+      ]
+    },
+    "run_left": {
+      "file": "Run Left.fbx",
+      "sourceTake": "mixamo.com",
+      "loop": true,
+      "hipsScale": 1,
+      "rootMode": "linear",
+      "rootTravelRemoved": [
+        2.382,
+        0
+      ],
+      "rootSpeed": 4.765,
+      "hipsMaxXZExcursionAfterStrip": 0.073,
+      "hipsY": [
+        0.925,
+        0.991
+      ],
+      "duration": 0.5,
+      "channels": 53,
+      "constantRotationKeys": 0,
+      "unmatchedBones": [],
+      "bonesMissingFromClip": [],
+      "boneLengthDifferences": [],
+      "prefixes": [
+        "mixamorig:"
+      ]
+    },
+    "run_right": {
+      "file": "Run Right.fbx",
+      "sourceTake": "mixamo.com",
+      "loop": true,
+      "hipsScale": 1,
+      "rootMode": "linear",
+      "rootTravelRemoved": [
+        -2.382,
+        0
+      ],
+      "rootSpeed": 4.765,
+      "hipsMaxXZExcursionAfterStrip": 0.041,
+      "hipsY": [
+        0.867,
+        0.946
+      ],
+      "duration": 0.5,
+      "channels": 53,
+      "constantRotationKeys": 0,
+      "unmatchedBones": [],
+      "bonesMissingFromClip": [],
+      "boneLengthDifferences": [],
+      "prefixes": [
+        "mixamorig:"
+      ]
+    },
+    "crouch_idle": {
+      "file": "Idle Crouching.fbx",
+      "sourceTake": "mixamo.com",
+      "loop": true,
+      "hipsScale": 1,
+      "rootMode": "linear",
+      "rootTravelRemoved": [
+        0,
+        0
+      ],
+      "rootSpeed": 0,
+      "hipsMaxXZExcursionAfterStrip": 0.005,
+      "hipsY": [
+        0.462,
+        0.464
+      ],
+      "duration": 2.1,
+      "channels": 53,
+      "constantRotationKeys": 0,
+      "unmatchedBones": [],
+      "bonesMissingFromClip": [],
+      "boneLengthDifferences": [],
+      "prefixes": [
+        "mixamorig:"
+      ]
+    },
+    "crouch_walk": {
+      "file": "Crouch Walking.fbx",
+      "sourceTake": "mixamo.com",
+      "loop": true,
+      "hipsScale": 1,
+      "rootMode": "linear",
+      "rootTravelRemoved": [
+        0,
+        1.417
+      ],
+      "rootSpeed": 1.214,
+      "hipsMaxXZExcursionAfterStrip": 0.05,
+      "hipsY": [
+        0.734,
+        0.778
+      ],
+      "duration": 1.1667,
+      "channels": 53,
+      "constantRotationKeys": 0,
+      "unmatchedBones": [],
+      "bonesMissingFromClip": [],
+      "boneLengthDifferences": [],
+      "prefixes": [
+        "mixamorig:"
+      ]
+    },
+    "gunplay": {
+      "file": "Gunplay.fbx",
+      "sourceTake": "mixamo.com",
+      "loop": true,
+      "hipsScale": 1,
+      "rootMode": "linear",
+      "rootTravelRemoved": [
+        0,
+        0
+      ],
+      "rootSpeed": 0,
+      "hipsMaxXZExcursionAfterStrip": 0.013,
+      "hipsY": [
+        0.89,
+        0.893
+      ],
+      "duration": 0.2667,
+      "channels": 53,
+      "constantRotationKeys": 0,
+      "unmatchedBones": [],
+      "bonesMissingFromClip": [],
+      "boneLengthDifferences": [],
+      "prefixes": [
+        "mixamorig:"
+      ]
+    },
+    "reload_standing": {
+      "file": "Reload_standing.fbx",
+      "sourceTake": "mixamo.com",
+      "loop": false,
+      "hipsScale": 1,
+      "rootMode": "linear",
+      "rootTravelRemoved": [
+        0,
+        4.021
+      ],
+      "rootSpeed": 0.981,
+      "hipsMaxXZExcursionAfterStrip": 0.05,
+      "hipsY": [
+        0.909,
+        0.965
+      ],
+      "duration": 4.1,
+      "channels": 53,
+      "constantRotationKeys": 0,
+      "unmatchedBones": [],
+      "bonesMissingFromClip": [],
+      "boneLengthDifferences": [],
+      "prefixes": [
+        "mixamorig:"
+      ]
+    },
+    "reload_crouch": {
+      "file": "Reload_crouch.fbx",
+      "sourceTake": "mixamo.com",
+      "loop": false,
+      "hipsScale": 1,
+      "rootMode": "pin",
+      "rootTravelRemoved": [
+        0,
+        0
+      ],
+      "rootSpeed": 0,
+      "hipsMaxXZExcursionAfterStrip": 0,
+      "hipsY": [
+        0.433,
+        0.461
+      ],
+      "duration": 6.8667,
+      "channels": 53,
+      "constantRotationKeys": 0,
+      "unmatchedBones": [],
+      "bonesMissingFromClip": [],
+      "boneLengthDifferences": [],
+      "prefixes": [
+        "mixamorig:"
+      ]
+    },
+    "reload_idle": {
+      "file": "Reloading_idle.fbx",
+      "sourceTake": "mixamo.com",
+      "loop": false,
+      "hipsScale": 1,
+      "rootMode": "pin",
+      "rootTravelRemoved": [
+        0,
+        0
+      ],
+      "rootSpeed": 0,
+      "hipsMaxXZExcursionAfterStrip": 0,
+      "hipsY": [
+        0.958,
+        0.978
+      ],
+      "duration": 3.3,
+      "channels": 53,
+      "constantRotationKeys": 0,
+      "unmatchedBones": [],
+      "bonesMissingFromClip": [],
+      "boneLengthDifferences": [],
+      "prefixes": [
+        "mixamorig:"
+      ]
+    },
+    "death_crouch": {
+      "file": "Crouch Death.fbx",
+      "sourceTake": "mixamo.com",
+      "loop": false,
+      "hipsScale": 1,
+      "rootMode": "pin",
+      "rootTravelRemoved": [
+        -0.082,
+        -1.005
+      ],
+      "rootSpeed": 0,
+      "hipsMaxXZExcursionAfterStrip": 0,
+      "hipsY": [
+        0.158,
+        0.478
+      ],
+      "duration": 2.3667,
+      "channels": 53,
+      "constantRotationKeys": 0,
+      "unmatchedBones": [],
+      "bonesMissingFromClip": [],
+      "boneLengthDifferences": [],
+      "prefixes": [
+        "mixamorig:"
+      ]
+    },
+    "death_from_right": {
+      "file": "Death From Right.fbx",
+      "sourceTake": "mixamo.com",
+      "loop": false,
+      "hipsScale": 1,
+      "rootMode": "pin",
+      "rootTravelRemoved": [
+        0.864,
+        -0.101
+      ],
+      "rootSpeed": 0,
+      "hipsMaxXZExcursionAfterStrip": 0,
+      "hipsY": [
+        0.127,
+        0.949
+      ],
+      "duration": 3.3,
+      "channels": 53,
+      "constantRotationKeys": 0,
+      "unmatchedBones": [],
+      "bonesMissingFromClip": [],
+      "boneLengthDifferences": [],
+      "prefixes": [
+        "mixamorig:"
+      ]
+    },
+    "death_fall_back": {
+      "file": "Falling Back Death.fbx",
+      "sourceTake": "mixamo.com",
+      "loop": false,
+      "hipsScale": 1,
+      "rootMode": "pin",
+      "rootTravelRemoved": [
+        -0.165,
+        -0.599
+      ],
+      "rootSpeed": 0,
+      "hipsMaxXZExcursionAfterStrip": 0,
+      "hipsY": [
+        0.147,
+        0.857
+      ],
+      "duration": 2.2,
+      "channels": 53,
+      "constantRotationKeys": 0,
+      "unmatchedBones": [],
+      "bonesMissingFromClip": [],
+      "boneLengthDifferences": [],
+      "prefixes": [
+        "mixamorig:"
+      ]
+    },
+    "death_fall_forward": {
+      "file": "Falling Forward Death.fbx",
+      "sourceTake": "mixamo.com",
+      "loop": false,
+      "hipsScale": 1,
+      "rootMode": "pin",
+      "rootTravelRemoved": [
+        -0.151,
+        0.854
+      ],
+      "rootSpeed": 0,
+      "hipsMaxXZExcursionAfterStrip": 0,
+      "hipsY": [
+        0.17,
+        0.861
+      ],
+      "duration": 2.5667,
+      "channels": 53,
+      "constantRotationKeys": 0,
+      "unmatchedBones": [],
+      "bonesMissingFromClip": [],
+      "boneLengthDifferences": [],
+      "prefixes": [
+        "mixamorig:"
+      ]
+    },
+    "death_react_left": {
+      "file": "Standing React Death Left.fbx",
+      "sourceTake": "mixamo.com",
+      "loop": false,
+      "hipsScale": 1,
+      "rootMode": "pin",
+      "rootTravelRemoved": [
+        0.929,
+        -0.134
+      ],
+      "rootSpeed": 0,
+      "hipsMaxXZExcursionAfterStrip": 0,
+      "hipsY": [
+        0.111,
+        0.952
+      ],
+      "duration": 3.6,
+      "channels": 53,
+      "constantRotationKeys": 0,
+      "unmatchedBones": [],
+      "bonesMissingFromClip": [],
+      "boneLengthDifferences": [],
+      "prefixes": [
+        "mixamorig:"
+      ]
+    }
+  },
+  "warnings": [],
+  "character": {
+    "file": "Ch35_nonPBR.fbx",
+    "joints": 65,
+    "jointPrefix": "mixamorig:"
+  },
+  "textures": [
+    {
+      "name": "Ch35_1003_Roughness",
+      "size": "1024x1024",
+      "kb": 69.5
+    },
+    {
+      "name": "Ch35_1003_BaseColor",
+      "size": "1024x1024",
+      "kb": 75.1
+    },
+    {
+      "name": "Ch35_1003_Normal",
+      "size": "1024x1024",
+      "kb": 321.3
+    },
+    {
+      "name": "Ch35_1001_Roughness",
+      "size": "1024x1024",
+      "kb": 135.9
+    },
+    {
+      "name": "Ch35_1001_BaseColor",
+      "size": "1024x1024",
+      "kb": 80.7
+    },
+    {
+      "name": "Ch35_1001_Normal",
+      "size": "1024x1024",
+      "kb": 278.7
+    },
+    {
+      "name": "Ch35_1002_Roughness",
+      "size": "1024x1024",
+      "kb": 71.9
+    },
+    {
+      "name": "Ch35_1002_BaseColor",
+      "size": "1024x1024",
+      "kb": 38.5
+    },
+    {
+      "name": "Ch35_1002_Normal",
+      "size": "1024x1024",
+      "kb": 261.3
+    }
+  ],
+  "materials": [
+    {
+      "name": "Ch35_body2",
+      "stem": "Ch35_1003",
+      "roughnessFrom": "Ch35_1003_Glossiness.png"
+    },
+    {
+      "name": "Ch35_body",
+      "stem": "Ch35_1001",
+      "roughnessFrom": "Ch35_1001_Glossiness.png"
+    },
+    {
+      "name": "Ch35_body1",
+      "stem": "Ch35_1002",
+      "roughnessFrom": "Ch35_1002_Glossiness.png"
+    }
+  ],
+  "bounds": {
+    "min": [
+      -0.8916,
+      -0.0011,
+      -0.1456
+    ],
+    "max": [
+      0.8916,
+      1.7927,
+      0.1943
+    ],
+    "height": 1.7938
+  },
+  "validation": {
+    "errors": 0,
+    "warnings": 3,
+    "infos": 1,
+    "messages": [
+      "info UNSUPPORTED_EXTENSION: Cannot validate an extension as it is not supported by the validator: 'EXT_meshopt_compression'. /extensionsUsed/0",
+      "WARN MESH_PRIMITIVE_GENERATED_TANGENT_SPACE: Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations. /meshes/0/primitives/0/material",
+      "WARN MESH_PRIMITIVE_GENERATED_TANGENT_SPACE: Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations. /meshes/0/primitives/1/material",
+      "WARN MESH_PRIMITIVE_GENERATED_TANGENT_SPACE: Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations. /meshes/0/primitives/2/material"
+    ]
+  },
+  "output": {
+    "glb": "../public/assets/characters/guard.glb",
+    "bytes": 2362772,
+    "mb": 2.25
+  },
+  "seconds": 11.9
+}

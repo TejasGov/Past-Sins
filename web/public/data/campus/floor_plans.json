@@ -1,0 +1,5708 @@
+{
+  "version": 1,
+  "plans": [
+    {
+      "id": "cellhouse-a-1",
+      "name": "Cellhouse A",
+      "level": "Floor 1",
+      "width": 44,
+      "depth": 34,
+      "elevation": 0,
+      "summary": "Ordinary cells around an open atrium; 15 cells and one north-east guard/lift corner per floor. Parth stays in Floor 3, north cell 03.",
+      "rooms": [
+        {
+          "id": "n0",
+          "label": "N01",
+          "x": 2,
+          "y": 0.3,
+          "w": 5,
+          "d": 5.7,
+          "type": "cell",
+          "detail": "Wall-bracket bed; toilet and basin behind a low privacy wall; cupboard; empty wooden chair. Door opens into gallery.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "s0",
+          "label": "S01",
+          "x": 2,
+          "y": 28,
+          "w": 5,
+          "d": 5.7,
+          "type": "cell",
+          "detail": "Same reusable furnished cell and keyed sliding bars.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "n1",
+          "label": "N02",
+          "x": 7,
+          "y": 0.3,
+          "w": 5,
+          "d": 5.7,
+          "type": "cell",
+          "detail": "Wall-bracket bed; toilet and basin behind a low privacy wall; cupboard; empty wooden chair. Door opens into gallery.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "s1",
+          "label": "S02",
+          "x": 7,
+          "y": 28,
+          "w": 5,
+          "d": 5.7,
+          "type": "cell",
+          "detail": "Same reusable furnished cell and keyed sliding bars.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "n2",
+          "label": "N03",
+          "x": 12,
+          "y": 0.3,
+          "w": 5,
+          "d": 5.7,
+          "type": "cell",
+          "detail": "Wall-bracket bed; toilet and basin behind a low privacy wall; cupboard; empty wooden chair. Door opens into gallery.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "s2",
+          "label": "S03",
+          "x": 12,
+          "y": 28,
+          "w": 5,
+          "d": 5.7,
+          "type": "cell",
+          "detail": "Same reusable furnished cell and keyed sliding bars.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "n3",
+          "label": "N04",
+          "x": 17,
+          "y": 0.3,
+          "w": 5,
+          "d": 5.7,
+          "type": "cell",
+          "detail": "Wall-bracket bed; toilet and basin behind a low privacy wall; cupboard; empty wooden chair. Door opens into gallery.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "s3",
+          "label": "S04",
+          "x": 17,
+          "y": 28,
+          "w": 5,
+          "d": 5.7,
+          "type": "cell",
+          "detail": "Same reusable furnished cell and keyed sliding bars.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "n4",
+          "label": "N05",
+          "x": 22,
+          "y": 0.3,
+          "w": 5,
+          "d": 5.7,
+          "type": "cell",
+          "detail": "Wall-bracket bed; toilet and basin behind a low privacy wall; cupboard; empty wooden chair. Door opens into gallery.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "s4",
+          "label": "S05",
+          "x": 22,
+          "y": 28,
+          "w": 5,
+          "d": 5.7,
+          "type": "cell",
+          "detail": "Same reusable furnished cell and keyed sliding bars.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "n5",
+          "label": "N06",
+          "x": 27,
+          "y": 0.3,
+          "w": 5,
+          "d": 5.7,
+          "type": "cell",
+          "detail": "Wall-bracket bed; toilet and basin behind a low privacy wall; cupboard; empty wooden chair. Door opens into gallery.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "s5",
+          "label": "S06",
+          "x": 27,
+          "y": 28,
+          "w": 5,
+          "d": 5.7,
+          "type": "cell",
+          "detail": "Same reusable furnished cell and keyed sliding bars.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "n6",
+          "label": "N07",
+          "x": 32,
+          "y": 0.3,
+          "w": 5,
+          "d": 5.7,
+          "type": "cell",
+          "detail": "Wall-bracket bed; toilet and basin behind a low privacy wall; cupboard; empty wooden chair. Door opens into gallery.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "s6",
+          "label": "S07",
+          "x": 32,
+          "y": 28,
+          "w": 5,
+          "d": 5.7,
+          "type": "cell",
+          "detail": "Same reusable furnished cell and keyed sliding bars.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "s7",
+          "label": "S08",
+          "x": 37,
+          "y": 28,
+          "w": 5,
+          "d": 5.7,
+          "type": "cell",
+          "detail": "Same reusable furnished cell and keyed sliding bars.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "guard",
+          "label": "GUARD QUARTER",
+          "x": 37,
+          "y": 0.3,
+          "w": 2.6,
+          "d": 5.7,
+          "type": "staff",
+          "detail": "Detailed desk/radio, supported chair, locker, notice board. Door swings inward into a clear pocket.",
+          "lighting_type": "office"
+        },
+        {
+          "id": "lift",
+          "label": "LIFT SHAFT",
+          "x": 39.6,
+          "y": 0.3,
+          "w": 2.4,
+          "d": 3.2,
+          "type": "lift",
+          "detail": "Same shaft footprint on all tiers. Sealed landing doors until lift implementation.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "lobby",
+          "label": "LIFT LOBBY",
+          "x": 39.6,
+          "y": 3.5,
+          "w": 2.4,
+          "d": 2.5,
+          "type": "corridor",
+          "detail": "Clear waiting space; call panel; floor number.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "north",
+          "label": "NORTH GALLERY",
+          "x": 0.5,
+          "y": 6,
+          "w": 43,
+          "d": 4,
+          "type": "corridor",
+          "detail": "",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "south",
+          "label": "SOUTH GALLERY",
+          "x": 0.5,
+          "y": 24,
+          "w": 43,
+          "d": 4,
+          "type": "corridor",
+          "detail": "",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "west",
+          "label": "WEST BYPASS",
+          "x": 0.5,
+          "y": 10,
+          "w": 2.2,
+          "d": 14,
+          "type": "corridor",
+          "detail": "",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "east",
+          "label": "EAST BYPASS",
+          "x": 41.3,
+          "y": 10,
+          "w": 2.2,
+          "d": 14,
+          "type": "corridor",
+          "detail": "",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "weststair",
+          "label": "STAIR A · 1 ↔ 2",
+          "x": 2.7,
+          "y": 10,
+          "w": 2.6,
+          "d": 14,
+          "type": "stair",
+          "detail": "Reserve the entire vertical clearance volume. Floor 2 has an open stairwell, not a covering slab.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "eaststair",
+          "label": "EAST LANDING",
+          "x": 38.7,
+          "y": 10,
+          "w": 2.6,
+          "d": 14,
+          "type": "corridor",
+          "detail": "Floor 3 has a matching slab cutout; guard the outside bypass edge separately from the sloped stair rails.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "bridge",
+          "label": "CENTRAL BRIDGE",
+          "x": 19.9,
+          "y": 10,
+          "w": 4.2,
+          "d": 14,
+          "type": "corridor",
+          "detail": "",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "voidw",
+          "label": "DAYROOM / SEATING",
+          "x": 5.3,
+          "y": 10,
+          "w": 14.6,
+          "d": 14,
+          "type": "open",
+          "detail": "",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "voide",
+          "label": "COMMON / OFFICER DESK",
+          "x": 24.1,
+          "y": 10,
+          "w": 14.6,
+          "d": 14,
+          "type": "open",
+          "detail": "",
+          "lighting_type": "cellblock"
+        }
+      ],
+      "doors": [
+        {
+          "a": "n0",
+          "b": "north",
+          "x": 4.5,
+          "y": 6,
+          "axis": "x",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "s0",
+          "b": "south",
+          "x": 4.5,
+          "y": 28,
+          "axis": "x",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "n1",
+          "b": "north",
+          "x": 9.5,
+          "y": 6,
+          "axis": "x",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "s1",
+          "b": "south",
+          "x": 9.5,
+          "y": 28,
+          "axis": "x",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "n2",
+          "b": "north",
+          "x": 14.5,
+          "y": 6,
+          "axis": "x",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "s2",
+          "b": "south",
+          "x": 14.5,
+          "y": 28,
+          "axis": "x",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "n3",
+          "b": "north",
+          "x": 19.5,
+          "y": 6,
+          "axis": "x",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "s3",
+          "b": "south",
+          "x": 19.5,
+          "y": 28,
+          "axis": "x",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "n4",
+          "b": "north",
+          "x": 24.5,
+          "y": 6,
+          "axis": "x",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "s4",
+          "b": "south",
+          "x": 24.5,
+          "y": 28,
+          "axis": "x",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "n5",
+          "b": "north",
+          "x": 29.5,
+          "y": 6,
+          "axis": "x",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "s5",
+          "b": "south",
+          "x": 29.5,
+          "y": 28,
+          "axis": "x",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "n6",
+          "b": "north",
+          "x": 34.5,
+          "y": 6,
+          "axis": "x",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "s6",
+          "b": "south",
+          "x": 34.5,
+          "y": 28,
+          "axis": "x",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "s7",
+          "b": "south",
+          "x": 39.5,
+          "y": 28,
+          "axis": "x",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "guard",
+          "b": "north",
+          "x": 38.3,
+          "y": 6,
+          "axis": "x",
+          "width": 1.1,
+          "kind": "door",
+          "detail": ""
+        },
+        {
+          "a": "lift",
+          "b": "lobby",
+          "x": 40.8,
+          "y": 3.5,
+          "axis": "x",
+          "width": 1.5,
+          "kind": "sealed",
+          "detail": ""
+        },
+        {
+          "a": "lobby",
+          "b": "north",
+          "x": 40.8,
+          "y": 6,
+          "axis": "x",
+          "width": 2,
+          "kind": "open",
+          "detail": ""
+        },
+        {
+          "a": "west",
+          "b": "north",
+          "x": 1.6,
+          "y": 10,
+          "axis": "x",
+          "width": 2,
+          "kind": "open",
+          "detail": ""
+        },
+        {
+          "a": "west",
+          "b": "south",
+          "x": 1.6,
+          "y": 24,
+          "axis": "x",
+          "width": 2,
+          "kind": "open",
+          "detail": ""
+        },
+        {
+          "a": "east",
+          "b": "north",
+          "x": 42.4,
+          "y": 10,
+          "axis": "x",
+          "width": 2,
+          "kind": "open",
+          "detail": ""
+        },
+        {
+          "a": "east",
+          "b": "south",
+          "x": 42.4,
+          "y": 24,
+          "axis": "x",
+          "width": 2,
+          "kind": "open",
+          "detail": ""
+        },
+        {
+          "a": "bridge",
+          "b": "north",
+          "x": 22,
+          "y": 10,
+          "axis": "x",
+          "width": 2,
+          "kind": "open",
+          "detail": ""
+        },
+        {
+          "a": "bridge",
+          "b": "south",
+          "x": 22,
+          "y": 24,
+          "axis": "x",
+          "width": 2,
+          "kind": "open",
+          "detail": ""
+        },
+        {
+          "a": "weststair",
+          "b": "north",
+          "x": 4,
+          "y": 10,
+          "axis": "x",
+          "width": 2,
+          "kind": "open",
+          "detail": ""
+        },
+        {
+          "a": "eaststair",
+          "b": "north",
+          "x": 40,
+          "y": 10,
+          "axis": "x",
+          "width": 2,
+          "kind": "open",
+          "detail": ""
+        },
+        {
+          "a": "eaststair",
+          "b": "south",
+          "x": 40,
+          "y": 24,
+          "axis": "x",
+          "width": 2,
+          "kind": "open",
+          "detail": ""
+        },
+        {
+          "a": "voidw",
+          "b": "north",
+          "x": 12.6,
+          "y": 10,
+          "axis": "x",
+          "width": 3,
+          "kind": "open",
+          "detail": ""
+        },
+        {
+          "a": "voide",
+          "b": "north",
+          "x": 31.400000000000002,
+          "y": 10,
+          "axis": "x",
+          "width": 3,
+          "kind": "open",
+          "detail": ""
+        },
+        {
+          "a": "west",
+          "b": "OUTSIDE",
+          "x": 0.5,
+          "y": 17,
+          "axis": "z",
+          "width": 3,
+          "kind": "gate",
+          "detail": "Existing west entrance; use outer bypass to reach north gallery, never route beneath the low end of stair A.",
+          "side": "W"
+        },
+        {
+          "a": "east",
+          "b": "OUTSIDE",
+          "x": 43.5,
+          "y": 17,
+          "axis": "z",
+          "width": 3,
+          "kind": "gate",
+          "detail": "Existing yard exit.",
+          "side": "E"
+        }
+      ],
+      "notes": [
+        "Uncolored outer side strips beside the cell rows are sealed wall/service chases, not accessible rooms.",
+        "Gallery and stair bypass rails follow actual exposed edges. A door symbol at a stair denotes its landing connection, not a literal door.",
+        "Cell access is individual key or future chief master key; Parth's gate remains unlocked."
+      ]
+    },
+    {
+      "id": "cellhouse-a-2",
+      "name": "Cellhouse A",
+      "level": "Floor 2",
+      "width": 44,
+      "depth": 34,
+      "elevation": 4,
+      "summary": "Ordinary cells around an open atrium; 15 cells and one north-east guard/lift corner per floor. Parth stays in Floor 3, north cell 03.",
+      "rooms": [
+        {
+          "id": "n0",
+          "label": "N01",
+          "x": 2,
+          "y": 0.3,
+          "w": 5,
+          "d": 5.7,
+          "type": "cell",
+          "detail": "Wall-bracket bed; toilet and basin behind a low privacy wall; cupboard; empty wooden chair. Door opens into gallery.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "s0",
+          "label": "S01",
+          "x": 2,
+          "y": 28,
+          "w": 5,
+          "d": 5.7,
+          "type": "cell",
+          "detail": "Same reusable furnished cell and keyed sliding bars.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "n1",
+          "label": "N02",
+          "x": 7,
+          "y": 0.3,
+          "w": 5,
+          "d": 5.7,
+          "type": "cell",
+          "detail": "Wall-bracket bed; toilet and basin behind a low privacy wall; cupboard; empty wooden chair. Door opens into gallery.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "s1",
+          "label": "S02",
+          "x": 7,
+          "y": 28,
+          "w": 5,
+          "d": 5.7,
+          "type": "cell",
+          "detail": "Same reusable furnished cell and keyed sliding bars.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "n2",
+          "label": "N03",
+          "x": 12,
+          "y": 0.3,
+          "w": 5,
+          "d": 5.7,
+          "type": "cell",
+          "detail": "Wall-bracket bed; toilet and basin behind a low privacy wall; cupboard; empty wooden chair. Door opens into gallery.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "s2",
+          "label": "S03",
+          "x": 12,
+          "y": 28,
+          "w": 5,
+          "d": 5.7,
+          "type": "cell",
+          "detail": "Same reusable furnished cell and keyed sliding bars.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "n3",
+          "label": "N04",
+          "x": 17,
+          "y": 0.3,
+          "w": 5,
+          "d": 5.7,
+          "type": "cell",
+          "detail": "Wall-bracket bed; toilet and basin behind a low privacy wall; cupboard; empty wooden chair. Door opens into gallery.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "s3",
+          "label": "S04",
+          "x": 17,
+          "y": 28,
+          "w": 5,
+          "d": 5.7,
+          "type": "cell",
+          "detail": "Same reusable furnished cell and keyed sliding bars.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "n4",
+          "label": "N05",
+          "x": 22,
+          "y": 0.3,
+          "w": 5,
+          "d": 5.7,
+          "type": "cell",
+          "detail": "Wall-bracket bed; toilet and basin behind a low privacy wall; cupboard; empty wooden chair. Door opens into gallery.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "s4",
+          "label": "S05",
+          "x": 22,
+          "y": 28,
+          "w": 5,
+          "d": 5.7,
+          "type": "cell",
+          "detail": "Same reusable furnished cell and keyed sliding bars.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "n5",
+          "label": "N06",
+          "x": 27,
+          "y": 0.3,
+          "w": 5,
+          "d": 5.7,
+          "type": "cell",
+          "detail": "Wall-bracket bed; toilet and basin behind a low privacy wall; cupboard; empty wooden chair. Door opens into gallery.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "s5",
+          "label": "S06",
+          "x": 27,
+          "y": 28,
+          "w": 5,
+          "d": 5.7,
+          "type": "cell",
+          "detail": "Same reusable furnished cell and keyed sliding bars.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "n6",
+          "label": "N07",
+          "x": 32,
+          "y": 0.3,
+          "w": 5,
+          "d": 5.7,
+          "type": "cell",
+          "detail": "Wall-bracket bed; toilet and basin behind a low privacy wall; cupboard; empty wooden chair. Door opens into gallery.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "s6",
+          "label": "S07",
+          "x": 32,
+          "y": 28,
+          "w": 5,
+          "d": 5.7,
+          "type": "cell",
+          "detail": "Same reusable furnished cell and keyed sliding bars.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "s7",
+          "label": "S08",
+          "x": 37,
+          "y": 28,
+          "w": 5,
+          "d": 5.7,
+          "type": "cell",
+          "detail": "Same reusable furnished cell and keyed sliding bars.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "guard",
+          "label": "GUARD QUARTER",
+          "x": 37,
+          "y": 0.3,
+          "w": 2.6,
+          "d": 5.7,
+          "type": "staff",
+          "detail": "Detailed desk/radio, supported chair, locker, notice board. Door swings inward into a clear pocket.",
+          "lighting_type": "office"
+        },
+        {
+          "id": "lift",
+          "label": "LIFT SHAFT",
+          "x": 39.6,
+          "y": 0.3,
+          "w": 2.4,
+          "d": 3.2,
+          "type": "lift",
+          "detail": "Same shaft footprint on all tiers. Sealed landing doors until lift implementation.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "lobby",
+          "label": "LIFT LOBBY",
+          "x": 39.6,
+          "y": 3.5,
+          "w": 2.4,
+          "d": 2.5,
+          "type": "corridor",
+          "detail": "Clear waiting space; call panel; floor number.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "north",
+          "label": "NORTH GALLERY",
+          "x": 0.5,
+          "y": 6,
+          "w": 43,
+          "d": 4,
+          "type": "corridor",
+          "detail": "",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "south",
+          "label": "SOUTH GALLERY",
+          "x": 0.5,
+          "y": 24,
+          "w": 43,
+          "d": 4,
+          "type": "corridor",
+          "detail": "",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "west",
+          "label": "WEST BYPASS",
+          "x": 0.5,
+          "y": 10,
+          "w": 2.2,
+          "d": 14,
+          "type": "corridor",
+          "detail": "",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "east",
+          "label": "EAST BYPASS",
+          "x": 41.3,
+          "y": 10,
+          "w": 2.2,
+          "d": 14,
+          "type": "corridor",
+          "detail": "",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "weststair",
+          "label": "STAIR A · 1 ↔ 2",
+          "x": 2.7,
+          "y": 10,
+          "w": 2.6,
+          "d": 14,
+          "type": "stair",
+          "detail": "Reserve the entire vertical clearance volume. Floor 2 has an open stairwell, not a covering slab.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "eaststair",
+          "label": "STAIR B · 2 ↔ 3",
+          "x": 38.7,
+          "y": 10,
+          "w": 2.6,
+          "d": 14,
+          "type": "stair",
+          "detail": "Floor 3 has a matching slab cutout; guard the outside bypass edge separately from the sloped stair rails.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "bridge",
+          "label": "CENTRAL BRIDGE",
+          "x": 19.9,
+          "y": 10,
+          "w": 4.2,
+          "d": 14,
+          "type": "corridor",
+          "detail": "",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "voidw",
+          "label": "OPEN ATRIUM",
+          "x": 5.3,
+          "y": 10,
+          "w": 14.6,
+          "d": 14,
+          "type": "void",
+          "detail": "",
+          "lighting_type": "office"
+        },
+        {
+          "id": "voide",
+          "label": "OPEN ATRIUM",
+          "x": 24.1,
+          "y": 10,
+          "w": 14.6,
+          "d": 14,
+          "type": "void",
+          "detail": "",
+          "lighting_type": "office"
+        }
+      ],
+      "doors": [
+        {
+          "a": "n0",
+          "b": "north",
+          "x": 4.5,
+          "y": 6,
+          "axis": "x",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "s0",
+          "b": "south",
+          "x": 4.5,
+          "y": 28,
+          "axis": "x",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "n1",
+          "b": "north",
+          "x": 9.5,
+          "y": 6,
+          "axis": "x",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "s1",
+          "b": "south",
+          "x": 9.5,
+          "y": 28,
+          "axis": "x",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "n2",
+          "b": "north",
+          "x": 14.5,
+          "y": 6,
+          "axis": "x",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "s2",
+          "b": "south",
+          "x": 14.5,
+          "y": 28,
+          "axis": "x",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "n3",
+          "b": "north",
+          "x": 19.5,
+          "y": 6,
+          "axis": "x",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "s3",
+          "b": "south",
+          "x": 19.5,
+          "y": 28,
+          "axis": "x",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "n4",
+          "b": "north",
+          "x": 24.5,
+          "y": 6,
+          "axis": "x",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "s4",
+          "b": "south",
+          "x": 24.5,
+          "y": 28,
+          "axis": "x",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "n5",
+          "b": "north",
+          "x": 29.5,
+          "y": 6,
+          "axis": "x",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "s5",
+          "b": "south",
+          "x": 29.5,
+          "y": 28,
+          "axis": "x",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "n6",
+          "b": "north",
+          "x": 34.5,
+          "y": 6,
+          "axis": "x",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "s6",
+          "b": "south",
+          "x": 34.5,
+          "y": 28,
+          "axis": "x",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "s7",
+          "b": "south",
+          "x": 39.5,
+          "y": 28,
+          "axis": "x",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "guard",
+          "b": "north",
+          "x": 38.3,
+          "y": 6,
+          "axis": "x",
+          "width": 1.1,
+          "kind": "door",
+          "detail": ""
+        },
+        {
+          "a": "lift",
+          "b": "lobby",
+          "x": 40.8,
+          "y": 3.5,
+          "axis": "x",
+          "width": 1.5,
+          "kind": "sealed",
+          "detail": ""
+        },
+        {
+          "a": "lobby",
+          "b": "north",
+          "x": 40.8,
+          "y": 6,
+          "axis": "x",
+          "width": 2,
+          "kind": "open",
+          "detail": ""
+        },
+        {
+          "a": "west",
+          "b": "north",
+          "x": 1.6,
+          "y": 10,
+          "axis": "x",
+          "width": 2,
+          "kind": "open",
+          "detail": ""
+        },
+        {
+          "a": "west",
+          "b": "south",
+          "x": 1.6,
+          "y": 24,
+          "axis": "x",
+          "width": 2,
+          "kind": "open",
+          "detail": ""
+        },
+        {
+          "a": "east",
+          "b": "north",
+          "x": 42.4,
+          "y": 10,
+          "axis": "x",
+          "width": 2,
+          "kind": "open",
+          "detail": ""
+        },
+        {
+          "a": "east",
+          "b": "south",
+          "x": 42.4,
+          "y": 24,
+          "axis": "x",
+          "width": 2,
+          "kind": "open",
+          "detail": ""
+        },
+        {
+          "a": "bridge",
+          "b": "north",
+          "x": 22,
+          "y": 10,
+          "axis": "x",
+          "width": 2,
+          "kind": "open",
+          "detail": ""
+        },
+        {
+          "a": "bridge",
+          "b": "south",
+          "x": 22,
+          "y": 24,
+          "axis": "x",
+          "width": 2,
+          "kind": "open",
+          "detail": ""
+        },
+        {
+          "a": "weststair",
+          "b": "south",
+          "x": 4,
+          "y": 24,
+          "axis": "x",
+          "width": 2,
+          "kind": "open",
+          "detail": ""
+        },
+        {
+          "a": "eaststair",
+          "b": "south",
+          "x": 40,
+          "y": 24,
+          "axis": "x",
+          "width": 2,
+          "kind": "open",
+          "detail": ""
+        }
+      ],
+      "notes": [
+        "Uncolored outer side strips beside the cell rows are sealed wall/service chases, not accessible rooms.",
+        "Gallery and stair bypass rails follow actual exposed edges. A door symbol at a stair denotes its landing connection, not a literal door.",
+        "Cell access is individual key or future chief master key; Parth's gate remains unlocked."
+      ]
+    },
+    {
+      "id": "cellhouse-a-3",
+      "name": "Cellhouse A",
+      "level": "Floor 3",
+      "width": 44,
+      "depth": 34,
+      "elevation": 8,
+      "summary": "Ordinary cells around an open atrium; 15 cells and one north-east guard/lift corner per floor. Parth stays in Floor 3, north cell 03.",
+      "rooms": [
+        {
+          "id": "n0",
+          "label": "N01",
+          "x": 2,
+          "y": 0.3,
+          "w": 5,
+          "d": 5.7,
+          "type": "cell",
+          "detail": "Wall-bracket bed; toilet and basin behind a low privacy wall; cupboard; empty wooden chair. Door opens into gallery.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "s0",
+          "label": "S01",
+          "x": 2,
+          "y": 28,
+          "w": 5,
+          "d": 5.7,
+          "type": "cell",
+          "detail": "Same reusable furnished cell and keyed sliding bars.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "n1",
+          "label": "N02",
+          "x": 7,
+          "y": 0.3,
+          "w": 5,
+          "d": 5.7,
+          "type": "cell",
+          "detail": "Wall-bracket bed; toilet and basin behind a low privacy wall; cupboard; empty wooden chair. Door opens into gallery.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "s1",
+          "label": "S02",
+          "x": 7,
+          "y": 28,
+          "w": 5,
+          "d": 5.7,
+          "type": "cell",
+          "detail": "Same reusable furnished cell and keyed sliding bars.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "n2",
+          "label": "PARTH · N03",
+          "x": 12,
+          "y": 0.3,
+          "w": 5,
+          "d": 5.7,
+          "type": "cell",
+          "detail": "Wall-bracket bed; toilet and basin behind a low privacy wall; cupboard; empty wooden chair. Door opens into gallery.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "s2",
+          "label": "S03",
+          "x": 12,
+          "y": 28,
+          "w": 5,
+          "d": 5.7,
+          "type": "cell",
+          "detail": "Same reusable furnished cell and keyed sliding bars.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "n3",
+          "label": "N04",
+          "x": 17,
+          "y": 0.3,
+          "w": 5,
+          "d": 5.7,
+          "type": "cell",
+          "detail": "Wall-bracket bed; toilet and basin behind a low privacy wall; cupboard; empty wooden chair. Door opens into gallery.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "s3",
+          "label": "S04",
+          "x": 17,
+          "y": 28,
+          "w": 5,
+          "d": 5.7,
+          "type": "cell",
+          "detail": "Same reusable furnished cell and keyed sliding bars.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "n4",
+          "label": "N05",
+          "x": 22,
+          "y": 0.3,
+          "w": 5,
+          "d": 5.7,
+          "type": "cell",
+          "detail": "Wall-bracket bed; toilet and basin behind a low privacy wall; cupboard; empty wooden chair. Door opens into gallery.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "s4",
+          "label": "S05",
+          "x": 22,
+          "y": 28,
+          "w": 5,
+          "d": 5.7,
+          "type": "cell",
+          "detail": "Same reusable furnished cell and keyed sliding bars.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "n5",
+          "label": "N06",
+          "x": 27,
+          "y": 0.3,
+          "w": 5,
+          "d": 5.7,
+          "type": "cell",
+          "detail": "Wall-bracket bed; toilet and basin behind a low privacy wall; cupboard; empty wooden chair. Door opens into gallery.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "s5",
+          "label": "S06",
+          "x": 27,
+          "y": 28,
+          "w": 5,
+          "d": 5.7,
+          "type": "cell",
+          "detail": "Same reusable furnished cell and keyed sliding bars.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "n6",
+          "label": "N07",
+          "x": 32,
+          "y": 0.3,
+          "w": 5,
+          "d": 5.7,
+          "type": "cell",
+          "detail": "Wall-bracket bed; toilet and basin behind a low privacy wall; cupboard; empty wooden chair. Door opens into gallery.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "s6",
+          "label": "S07",
+          "x": 32,
+          "y": 28,
+          "w": 5,
+          "d": 5.7,
+          "type": "cell",
+          "detail": "Same reusable furnished cell and keyed sliding bars.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "s7",
+          "label": "S08",
+          "x": 37,
+          "y": 28,
+          "w": 5,
+          "d": 5.7,
+          "type": "cell",
+          "detail": "Same reusable furnished cell and keyed sliding bars.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "guard",
+          "label": "GUARD QUARTER",
+          "x": 37,
+          "y": 0.3,
+          "w": 2.6,
+          "d": 5.7,
+          "type": "staff",
+          "detail": "Detailed desk/radio, supported chair, locker, notice board. Door swings inward into a clear pocket.",
+          "lighting_type": "office"
+        },
+        {
+          "id": "lift",
+          "label": "LIFT SHAFT",
+          "x": 39.6,
+          "y": 0.3,
+          "w": 2.4,
+          "d": 3.2,
+          "type": "lift",
+          "detail": "Same shaft footprint on all tiers. Sealed landing doors until lift implementation.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "lobby",
+          "label": "LIFT LOBBY",
+          "x": 39.6,
+          "y": 3.5,
+          "w": 2.4,
+          "d": 2.5,
+          "type": "corridor",
+          "detail": "Clear waiting space; call panel; floor number.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "north",
+          "label": "NORTH GALLERY",
+          "x": 0.5,
+          "y": 6,
+          "w": 43,
+          "d": 4,
+          "type": "corridor",
+          "detail": "",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "south",
+          "label": "SOUTH GALLERY",
+          "x": 0.5,
+          "y": 24,
+          "w": 43,
+          "d": 4,
+          "type": "corridor",
+          "detail": "",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "west",
+          "label": "WEST BYPASS",
+          "x": 0.5,
+          "y": 10,
+          "w": 2.2,
+          "d": 14,
+          "type": "corridor",
+          "detail": "",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "east",
+          "label": "EAST BYPASS",
+          "x": 41.3,
+          "y": 10,
+          "w": 2.2,
+          "d": 14,
+          "type": "corridor",
+          "detail": "",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "weststair",
+          "label": "WEST LANDING",
+          "x": 2.7,
+          "y": 10,
+          "w": 2.6,
+          "d": 14,
+          "type": "corridor",
+          "detail": "Reserve the entire vertical clearance volume. Floor 2 has an open stairwell, not a covering slab.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "eaststair",
+          "label": "STAIR B · 2 ↔ 3",
+          "x": 38.7,
+          "y": 10,
+          "w": 2.6,
+          "d": 14,
+          "type": "stair",
+          "detail": "Floor 3 has a matching slab cutout; guard the outside bypass edge separately from the sloped stair rails.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "bridge",
+          "label": "CENTRAL BRIDGE",
+          "x": 19.9,
+          "y": 10,
+          "w": 4.2,
+          "d": 14,
+          "type": "corridor",
+          "detail": "",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "voidw",
+          "label": "OPEN ATRIUM",
+          "x": 5.3,
+          "y": 10,
+          "w": 14.6,
+          "d": 14,
+          "type": "void",
+          "detail": "",
+          "lighting_type": "office"
+        },
+        {
+          "id": "voide",
+          "label": "OPEN ATRIUM",
+          "x": 24.1,
+          "y": 10,
+          "w": 14.6,
+          "d": 14,
+          "type": "void",
+          "detail": "",
+          "lighting_type": "office"
+        }
+      ],
+      "doors": [
+        {
+          "a": "n0",
+          "b": "north",
+          "x": 4.5,
+          "y": 6,
+          "axis": "x",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "s0",
+          "b": "south",
+          "x": 4.5,
+          "y": 28,
+          "axis": "x",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "n1",
+          "b": "north",
+          "x": 9.5,
+          "y": 6,
+          "axis": "x",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "s1",
+          "b": "south",
+          "x": 9.5,
+          "y": 28,
+          "axis": "x",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "n2",
+          "b": "north",
+          "x": 14.5,
+          "y": 6,
+          "axis": "x",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "s2",
+          "b": "south",
+          "x": 14.5,
+          "y": 28,
+          "axis": "x",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "n3",
+          "b": "north",
+          "x": 19.5,
+          "y": 6,
+          "axis": "x",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "s3",
+          "b": "south",
+          "x": 19.5,
+          "y": 28,
+          "axis": "x",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "n4",
+          "b": "north",
+          "x": 24.5,
+          "y": 6,
+          "axis": "x",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "s4",
+          "b": "south",
+          "x": 24.5,
+          "y": 28,
+          "axis": "x",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "n5",
+          "b": "north",
+          "x": 29.5,
+          "y": 6,
+          "axis": "x",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "s5",
+          "b": "south",
+          "x": 29.5,
+          "y": 28,
+          "axis": "x",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "n6",
+          "b": "north",
+          "x": 34.5,
+          "y": 6,
+          "axis": "x",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "s6",
+          "b": "south",
+          "x": 34.5,
+          "y": 28,
+          "axis": "x",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "s7",
+          "b": "south",
+          "x": 39.5,
+          "y": 28,
+          "axis": "x",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "guard",
+          "b": "north",
+          "x": 38.3,
+          "y": 6,
+          "axis": "x",
+          "width": 1.1,
+          "kind": "door",
+          "detail": ""
+        },
+        {
+          "a": "lift",
+          "b": "lobby",
+          "x": 40.8,
+          "y": 3.5,
+          "axis": "x",
+          "width": 1.5,
+          "kind": "sealed",
+          "detail": ""
+        },
+        {
+          "a": "lobby",
+          "b": "north",
+          "x": 40.8,
+          "y": 6,
+          "axis": "x",
+          "width": 2,
+          "kind": "open",
+          "detail": ""
+        },
+        {
+          "a": "west",
+          "b": "north",
+          "x": 1.6,
+          "y": 10,
+          "axis": "x",
+          "width": 2,
+          "kind": "open",
+          "detail": ""
+        },
+        {
+          "a": "west",
+          "b": "south",
+          "x": 1.6,
+          "y": 24,
+          "axis": "x",
+          "width": 2,
+          "kind": "open",
+          "detail": ""
+        },
+        {
+          "a": "east",
+          "b": "north",
+          "x": 42.4,
+          "y": 10,
+          "axis": "x",
+          "width": 2,
+          "kind": "open",
+          "detail": ""
+        },
+        {
+          "a": "east",
+          "b": "south",
+          "x": 42.4,
+          "y": 24,
+          "axis": "x",
+          "width": 2,
+          "kind": "open",
+          "detail": ""
+        },
+        {
+          "a": "bridge",
+          "b": "north",
+          "x": 22,
+          "y": 10,
+          "axis": "x",
+          "width": 2,
+          "kind": "open",
+          "detail": ""
+        },
+        {
+          "a": "bridge",
+          "b": "south",
+          "x": 22,
+          "y": 24,
+          "axis": "x",
+          "width": 2,
+          "kind": "open",
+          "detail": ""
+        },
+        {
+          "a": "eaststair",
+          "b": "north",
+          "x": 40,
+          "y": 10,
+          "axis": "x",
+          "width": 2,
+          "kind": "open",
+          "detail": ""
+        },
+        {
+          "a": "weststair",
+          "b": "north",
+          "x": 4,
+          "y": 10,
+          "axis": "x",
+          "width": 2,
+          "kind": "open",
+          "detail": ""
+        },
+        {
+          "a": "weststair",
+          "b": "south",
+          "x": 4,
+          "y": 24,
+          "axis": "x",
+          "width": 2,
+          "kind": "open",
+          "detail": ""
+        }
+      ],
+      "notes": [
+        "Uncolored outer side strips beside the cell rows are sealed wall/service chases, not accessible rooms.",
+        "Gallery and stair bypass rails follow actual exposed edges. A door symbol at a stair denotes its landing connection, not a literal door.",
+        "Cell access is individual key or future chief master key; Parth's gate remains unlocked."
+      ]
+    },
+    {
+      "id": "food-ground",
+      "name": "Food Services",
+      "level": "Ground",
+      "width": 38,
+      "depth": 34,
+      "elevation": 0,
+      "summary": "Public dining faces south. Receiving, storage, preparation and cooking form a controlled service sequence to the north.",
+      "rooms": [
+        {
+          "id": "hall",
+          "label": "STAFF / CART CORRIDOR",
+          "x": 0.5,
+          "y": 14,
+          "w": 37,
+          "d": 4,
+          "type": "corridor",
+          "detail": "4 m clear transfer aisle; prisoner access ends at the serving counter.",
+          "lighting_type": "service"
+        },
+        {
+          "id": "receiving",
+          "label": "RECEIVING / INSPECTION",
+          "x": 0.5,
+          "y": 7,
+          "w": 10,
+          "d": 7,
+          "type": "service",
+          "detail": "",
+          "lighting_type": "service"
+        },
+        {
+          "id": "dry",
+          "label": "DRY FOOD STORAGE",
+          "x": 0.5,
+          "y": 0.5,
+          "w": 10,
+          "d": 6.5,
+          "type": "service",
+          "detail": "Shelves around walls, two trolley aisles.",
+          "lighting_type": "service"
+        },
+        {
+          "id": "cold",
+          "label": "CHILLER / FREEZER",
+          "x": 10.5,
+          "y": 0.5,
+          "w": 8,
+          "d": 6.5,
+          "type": "service",
+          "detail": "Two insulated compartments entered from preparation receiving area.",
+          "lighting_type": "service"
+        },
+        {
+          "id": "prep",
+          "label": "FOOD PREPARATION",
+          "x": 10.5,
+          "y": 7,
+          "w": 8,
+          "d": 7,
+          "type": "service",
+          "detail": "",
+          "lighting_type": "food"
+        },
+        {
+          "id": "kitchen",
+          "label": "COOKING LINE",
+          "x": 18.5,
+          "y": 0.5,
+          "w": 19,
+          "d": 13.5,
+          "type": "service",
+          "detail": "Wall ranges, hood, ovens; center islands with at least 1.5 m working aisles. Separate handwash sink.",
+          "lighting_type": "food"
+        },
+        {
+          "id": "dining",
+          "label": "CAFETERIA · 72 SEATS",
+          "x": 0.5,
+          "y": 18,
+          "w": 27,
+          "d": 15.5,
+          "type": "open",
+          "detail": "12 six-seat table/bench modules in three rows; 2.4 m primary aisle, 1.2 m secondary aisles. Clock, boards, water, condiments and bins against walls.",
+          "lighting_type": "food"
+        },
+        {
+          "id": "serving",
+          "label": "3 SERVING WINDOWS",
+          "x": 27.5,
+          "y": 18,
+          "w": 10,
+          "d": 8,
+          "type": "service",
+          "detail": "Two standard counters and one dietary/medical stall face west into dining. Keep queue on dining side.",
+          "lighting_type": "food"
+        },
+        {
+          "id": "wash",
+          "label": "TRAY RETURN / DISHWASH",
+          "x": 27.5,
+          "y": 26,
+          "w": 10,
+          "d": 7.5,
+          "type": "service",
+          "detail": "Dirty landing, scrape sink, washer, drying racks and clean passback; refuse holds inside service zone.",
+          "lighting_type": "food"
+        }
+      ],
+      "doors": [
+        {
+          "a": "dry",
+          "b": "receiving",
+          "x": 5.5,
+          "y": 7,
+          "axis": "x",
+          "width": 1.4,
+          "kind": "door",
+          "detail": ""
+        },
+        {
+          "a": "cold",
+          "b": "prep",
+          "x": 14.5,
+          "y": 7,
+          "axis": "x",
+          "width": 1.4,
+          "kind": "door",
+          "detail": ""
+        },
+        {
+          "a": "receiving",
+          "b": "prep",
+          "x": 10.5,
+          "y": 10.5,
+          "axis": "z",
+          "width": 1.8,
+          "kind": "door",
+          "detail": ""
+        },
+        {
+          "a": "prep",
+          "b": "kitchen",
+          "x": 18.5,
+          "y": 10.5,
+          "axis": "z",
+          "width": 1.8,
+          "kind": "door",
+          "detail": ""
+        },
+        {
+          "a": "receiving",
+          "b": "hall",
+          "x": 5.5,
+          "y": 14,
+          "axis": "x",
+          "width": 1.8,
+          "kind": "staff",
+          "detail": ""
+        },
+        {
+          "a": "prep",
+          "b": "hall",
+          "x": 14.5,
+          "y": 14,
+          "axis": "x",
+          "width": 1.8,
+          "kind": "staff",
+          "detail": ""
+        },
+        {
+          "a": "kitchen",
+          "b": "hall",
+          "x": 28,
+          "y": 14,
+          "axis": "x",
+          "width": 1.8,
+          "kind": "staff",
+          "detail": ""
+        },
+        {
+          "a": "serving",
+          "b": "hall",
+          "x": 32.5,
+          "y": 18,
+          "axis": "x",
+          "width": 1.8,
+          "kind": "staff",
+          "detail": ""
+        },
+        {
+          "a": "dining",
+          "b": "hall",
+          "x": 14,
+          "y": 18,
+          "axis": "x",
+          "width": 1.8,
+          "kind": "staff",
+          "detail": "Staff/service door; remains restricted to avoid a kitchen shortcut."
+        },
+        {
+          "a": "dining",
+          "b": "serving",
+          "x": 27.5,
+          "y": 22,
+          "axis": "z",
+          "width": 6,
+          "kind": "hatch",
+          "detail": "Three counters/windows; fixed lower counter collision prevents walking through."
+        },
+        {
+          "a": "dining",
+          "b": "wash",
+          "x": 27.5,
+          "y": 29.75,
+          "axis": "z",
+          "width": 2,
+          "kind": "hatch",
+          "detail": "Tray-return opening, not walk-through."
+        },
+        {
+          "a": "serving",
+          "b": "wash",
+          "x": 32.5,
+          "y": 26,
+          "axis": "x",
+          "width": 1.8,
+          "kind": "staff",
+          "detail": ""
+        },
+        {
+          "a": "dining",
+          "b": "OUTSIDE",
+          "x": 19,
+          "y": 33.5,
+          "axis": "x",
+          "width": 3.2,
+          "kind": "gate",
+          "detail": "Current main dining entrance.",
+          "side": "S"
+        },
+        {
+          "a": "hall",
+          "b": "OUTSIDE",
+          "x": 0.5,
+          "y": 16,
+          "axis": "z",
+          "width": 3.6,
+          "kind": "staff",
+          "detail": "Move existing west dock opening 1 m north to center on the cart corridor.",
+          "side": "W"
+        }
+      ],
+      "notes": [
+        "Receiving/dry/chilled supply → prep → cook → clean service. Tray return → wash → clean racks runs inside the east service strip.",
+        "Loading stays flush to grade. Deliveries approach from west ring road; diners arrive from the south promenade.",
+        "Single tall room under the existing 5.5 m shell; no mezzanine over the kitchen."
+      ]
+    },
+    {
+      "id": "medical-ground",
+      "name": "Medical & Wellness",
+      "level": "Ground",
+      "width": 38,
+      "depth": 34,
+      "elevation": 0,
+      "summary": "Medical uses the west half; recreation and hygiene use the east half. The north/south lobby spine separates patients from gym traffic.",
+      "rooms": [
+        {
+          "id": "spine",
+          "label": "CONTROLLED LOBBY SPINE",
+          "x": 17,
+          "y": 0.5,
+          "w": 4,
+          "d": 33,
+          "type": "corridor",
+          "detail": "",
+          "lighting_type": "medical"
+        },
+        {
+          "id": "westhall",
+          "label": "MEDICAL CROSS CORRIDOR",
+          "x": 0.5,
+          "y": 14,
+          "w": 16.5,
+          "d": 4,
+          "type": "corridor",
+          "detail": "",
+          "lighting_type": "medical"
+        },
+        {
+          "id": "easthall",
+          "label": "GYM / SHOWER LOBBY",
+          "x": 21,
+          "y": 14,
+          "w": 16.5,
+          "d": 4,
+          "type": "corridor",
+          "detail": "",
+          "lighting_type": "medical"
+        },
+        {
+          "id": "ward",
+          "label": "INFIRMARY · 6 BEDS",
+          "x": 0.5,
+          "y": 0.5,
+          "w": 10.5,
+          "d": 13.5,
+          "type": "medical",
+          "detail": "Bed spacing and privacy screens; bedside cabinets, IV stands, wall diagnostics and cart parking.",
+          "lighting_type": "medical"
+        },
+        {
+          "id": "exam",
+          "label": "EXAM / TRIAGE",
+          "x": 11,
+          "y": 7,
+          "w": 6,
+          "d": 7,
+          "type": "medical",
+          "detail": "Two screened exam positions, sink, clinical desk.",
+          "lighting_type": "medical"
+        },
+        {
+          "id": "consult",
+          "label": "CONSULTATION",
+          "x": 11,
+          "y": 0.5,
+          "w": 6,
+          "d": 6.5,
+          "type": "medical",
+          "detail": "Direct door to spine; private consultation.",
+          "lighting_type": "medical"
+        },
+        {
+          "id": "medicine",
+          "label": "SECURE MEDICINE",
+          "x": 0.5,
+          "y": 18,
+          "w": 6,
+          "d": 7.5,
+          "type": "secure",
+          "detail": "Locked cabinets and safe. No medicine gameplay yet.",
+          "lighting_type": "medical"
+        },
+        {
+          "id": "treatment",
+          "label": "TREATMENT / ISOLATION",
+          "x": 6.5,
+          "y": 18,
+          "w": 10.5,
+          "d": 7.5,
+          "type": "medical",
+          "detail": "",
+          "lighting_type": "medical"
+        },
+        {
+          "id": "staff",
+          "label": "MEDICAL STAFF / RECORDS",
+          "x": 0.5,
+          "y": 25.5,
+          "w": 16.5,
+          "d": 8,
+          "type": "staff",
+          "detail": "Staff rest point, clinical records, clean supplies and a separated dirty utility alcove.",
+          "lighting_type": "office"
+        },
+        {
+          "id": "gym",
+          "label": "GYM / EXERCISE",
+          "x": 21,
+          "y": 0.5,
+          "w": 16.5,
+          "d": 13.5,
+          "type": "open",
+          "detail": "Rack and bench stations around perimeter, bike/cable corner, open mat lane. Heavy bag clear of circulation.",
+          "floor_finish": "gym_rubber",
+          "lighting_type": "wellness"
+        },
+        {
+          "id": "changing",
+          "label": "CHANGING / LOCKERS",
+          "x": 21,
+          "y": 18,
+          "w": 16.5,
+          "d": 3.5,
+          "type": "room",
+          "detail": "Benches and lockers flank a 2 m route. Controlled connection to pool/yard path via east lobby.",
+          "lighting_type": "wellness"
+        },
+        {
+          "id": "showers",
+          "label": "SHOWERS · 10",
+          "x": 21,
+          "y": 21.5,
+          "w": 8,
+          "d": 12,
+          "type": "room",
+          "detail": "Two banks of five, short privacy dividers, 1.8 m center lane, drain fall and maintenance access.",
+          "floor_finish": "tile_shower",
+          "lighting_type": "wellness"
+        },
+        {
+          "id": "toilets",
+          "label": "TOILETS / URINALS",
+          "x": 29,
+          "y": 21.5,
+          "w": 8.5,
+          "d": 12,
+          "type": "room",
+          "detail": "8 enclosed toilet cubicles, 8 urinals with panels, washbasins; allocate one enlarged accessible cubicle within the count.",
+          "floor_finish": "tile_shower",
+          "lighting_type": "wellness"
+        }
+      ],
+      "doors": [
+        {
+          "a": "ward",
+          "b": "westhall",
+          "x": 5.75,
+          "y": 14,
+          "axis": "x",
+          "width": 1.8,
+          "kind": "door",
+          "detail": ""
+        },
+        {
+          "a": "exam",
+          "b": "westhall",
+          "x": 14,
+          "y": 14,
+          "axis": "x",
+          "width": 1.8,
+          "kind": "door",
+          "detail": ""
+        },
+        {
+          "a": "consult",
+          "b": "spine",
+          "x": 17,
+          "y": 3.75,
+          "axis": "z",
+          "width": 1.4,
+          "kind": "door",
+          "detail": ""
+        },
+        {
+          "a": "exam",
+          "b": "consult",
+          "x": 14,
+          "y": 7,
+          "axis": "x",
+          "width": 1.4,
+          "kind": "door",
+          "detail": ""
+        },
+        {
+          "a": "westhall",
+          "b": "spine",
+          "x": 17,
+          "y": 16,
+          "axis": "z",
+          "width": 2,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "easthall",
+          "b": "spine",
+          "x": 21,
+          "y": 16,
+          "axis": "z",
+          "width": 2,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "medicine",
+          "b": "westhall",
+          "x": 3.5,
+          "y": 18,
+          "axis": "x",
+          "width": 1.4,
+          "kind": "staff",
+          "detail": ""
+        },
+        {
+          "a": "treatment",
+          "b": "westhall",
+          "x": 11.75,
+          "y": 18,
+          "axis": "x",
+          "width": 1.8,
+          "kind": "door",
+          "detail": ""
+        },
+        {
+          "a": "staff",
+          "b": "treatment",
+          "x": 11.75,
+          "y": 25.5,
+          "axis": "x",
+          "width": 1.4,
+          "kind": "staff",
+          "detail": ""
+        },
+        {
+          "a": "treatment",
+          "b": "spine",
+          "x": 17,
+          "y": 21.75,
+          "axis": "z",
+          "width": 1.8,
+          "kind": "door",
+          "detail": ""
+        },
+        {
+          "a": "gym",
+          "b": "easthall",
+          "x": 29.25,
+          "y": 14,
+          "axis": "x",
+          "width": 2,
+          "kind": "door",
+          "detail": ""
+        },
+        {
+          "a": "changing",
+          "b": "easthall",
+          "x": 29.25,
+          "y": 18,
+          "axis": "x",
+          "width": 2,
+          "kind": "door",
+          "detail": ""
+        },
+        {
+          "a": "showers",
+          "b": "changing",
+          "x": 25,
+          "y": 21.5,
+          "axis": "x",
+          "width": 1.8,
+          "kind": "open",
+          "detail": ""
+        },
+        {
+          "a": "toilets",
+          "b": "changing",
+          "x": 33.25,
+          "y": 21.5,
+          "axis": "x",
+          "width": 1.8,
+          "kind": "door",
+          "detail": ""
+        },
+        {
+          "a": "spine",
+          "b": "OUTSIDE",
+          "x": 19,
+          "y": 0.5,
+          "axis": "x",
+          "width": 3.2,
+          "kind": "gate",
+          "detail": "Existing medical entrance.",
+          "side": "N"
+        },
+        {
+          "a": "westhall",
+          "b": "OUTSIDE",
+          "x": 0.5,
+          "y": 16,
+          "axis": "z",
+          "width": 3.6,
+          "kind": "staff",
+          "detail": "Shift ambulance opening 1 m north to center it on clinical corridor.",
+          "side": "W"
+        },
+        {
+          "a": "easthall",
+          "b": "OUTSIDE",
+          "x": 37.5,
+          "y": 16,
+          "axis": "z",
+          "width": 2.8,
+          "kind": "gate",
+          "detail": "Shift gym entrance 1 m north; fenced path reaches yard and planned pool.",
+          "side": "E"
+        }
+      ],
+      "notes": [
+        "Medicine access is medical_key. No prisoner route through the infirmary is required to reach gym, showers or yard.",
+        "Fixture positions inside wet rooms require a second-stage detailed fixture layout; reserve counts and aisle clearances before dressing.",
+        "Use the existing 6 m shell as one floor; clinical ceilings can be lower than the gym ceiling."
+      ]
+    },
+    {
+      "id": "cellhouse-b-0",
+      "name": "Cellhouse B",
+      "level": "Ground",
+      "width": 36,
+      "depth": 46,
+      "elevation": 0,
+      "summary": "High security stays in its separate east compound, with two gated residential wings and a controlled central spine.",
+      "rooms": [
+        {
+          "id": "spine",
+          "label": "SECURE SPINE",
+          "x": 16,
+          "y": 0.5,
+          "w": 4,
+          "d": 45,
+          "type": "corridor",
+          "detail": "",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "cross",
+          "label": "WEST CHECKPOINT LOBBY",
+          "x": 0.5,
+          "y": 20,
+          "w": 15.5,
+          "d": 6,
+          "type": "corridor",
+          "detail": "",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "eastcross",
+          "label": "STAFF CROSS CORRIDOR",
+          "x": 20,
+          "y": 20,
+          "w": 15.5,
+          "d": 6,
+          "type": "corridor",
+          "detail": "",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "westwing",
+          "label": "NORTH WING CORRIDOR",
+          "x": 7,
+          "y": 0.5,
+          "w": 3.5,
+          "d": 19.5,
+          "type": "corridor",
+          "detail": "",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "eastwing",
+          "label": "SOUTH WING CORRIDOR",
+          "x": 25.5,
+          "y": 26,
+          "w": 3.5,
+          "d": 19.5,
+          "type": "corridor",
+          "detail": "",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "n0",
+          "label": "SECURE N1",
+          "x": 0.5,
+          "y": 0.5,
+          "w": 6.5,
+          "d": 3.25,
+          "type": "cell",
+          "detail": "6.5 × 3.25 m bay: bed, sanitary corner and clear entry; sliding bars or approved secure door.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "s0",
+          "label": "SECURE S1",
+          "x": 29,
+          "y": 26,
+          "w": 6.5,
+          "d": 3.25,
+          "type": "cell",
+          "detail": "Matching 6.5 × 3.25 m secure cell bay.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "n1",
+          "label": "SECURE N2",
+          "x": 0.5,
+          "y": 3.75,
+          "w": 6.5,
+          "d": 3.25,
+          "type": "cell",
+          "detail": "6.5 × 3.25 m bay: bed, sanitary corner and clear entry; sliding bars or approved secure door.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "s1",
+          "label": "SECURE S2",
+          "x": 29,
+          "y": 29.25,
+          "w": 6.5,
+          "d": 3.25,
+          "type": "cell",
+          "detail": "Matching 6.5 × 3.25 m secure cell bay.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "n2",
+          "label": "SECURE N3",
+          "x": 0.5,
+          "y": 7,
+          "w": 6.5,
+          "d": 3.25,
+          "type": "cell",
+          "detail": "6.5 × 3.25 m bay: bed, sanitary corner and clear entry; sliding bars or approved secure door.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "s2",
+          "label": "SECURE S3",
+          "x": 29,
+          "y": 32.5,
+          "w": 6.5,
+          "d": 3.25,
+          "type": "cell",
+          "detail": "Matching 6.5 × 3.25 m secure cell bay.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "n3",
+          "label": "SECURE N4",
+          "x": 0.5,
+          "y": 10.25,
+          "w": 6.5,
+          "d": 3.25,
+          "type": "cell",
+          "detail": "6.5 × 3.25 m bay: bed, sanitary corner and clear entry; sliding bars or approved secure door.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "s3",
+          "label": "SECURE S4",
+          "x": 29,
+          "y": 35.75,
+          "w": 6.5,
+          "d": 3.25,
+          "type": "cell",
+          "detail": "Matching 6.5 × 3.25 m secure cell bay.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "n4",
+          "label": "SECURE N5",
+          "x": 0.5,
+          "y": 13.5,
+          "w": 6.5,
+          "d": 3.25,
+          "type": "cell",
+          "detail": "6.5 × 3.25 m bay: bed, sanitary corner and clear entry; sliding bars or approved secure door.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "s4",
+          "label": "SECURE S5",
+          "x": 29,
+          "y": 39,
+          "w": 6.5,
+          "d": 3.25,
+          "type": "cell",
+          "detail": "Matching 6.5 × 3.25 m secure cell bay.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "n5",
+          "label": "SECURE N6",
+          "x": 0.5,
+          "y": 16.75,
+          "w": 6.5,
+          "d": 3.25,
+          "type": "cell",
+          "detail": "6.5 × 3.25 m bay: bed, sanitary corner and clear entry; sliding bars or approved secure door.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "s5",
+          "label": "SECURE S6",
+          "x": 29,
+          "y": 42.25,
+          "w": 6.5,
+          "d": 3.25,
+          "type": "cell",
+          "detail": "Matching 6.5 × 3.25 m secure cell bay.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "stairn",
+          "label": "STAIR A",
+          "x": 20,
+          "y": 0.5,
+          "w": 6,
+          "d": 9,
+          "type": "stair",
+          "detail": "Stacked enclosed switchback stair; floor void shared by both levels.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "staff",
+          "label": "GUARD / CONTROL",
+          "x": 26,
+          "y": 0.5,
+          "w": 9.5,
+          "d": 9,
+          "type": "staff",
+          "detail": "",
+          "lighting_type": "office"
+        },
+        {
+          "id": "glassa",
+          "label": "SPECIAL ROOM A",
+          "x": 20,
+          "y": 9.5,
+          "w": 7.75,
+          "d": 10.5,
+          "type": "secure",
+          "detail": "Full-height viewing panel and framed see-through security door. No weapon simulation.",
+          "lighting_type": "office"
+        },
+        {
+          "id": "glassb",
+          "label": "SPECIAL ROOM B",
+          "x": 27.75,
+          "y": 9.5,
+          "w": 7.75,
+          "d": 10.5,
+          "type": "secure",
+          "detail": "Second separated special room with its own clear security door.",
+          "lighting_type": "office"
+        },
+        {
+          "id": "stairs",
+          "label": "STAIR B",
+          "x": 0.5,
+          "y": 26,
+          "w": 6,
+          "d": 9,
+          "type": "stair",
+          "detail": "",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "lift",
+          "label": "LIFT SHAFT",
+          "x": 6.5,
+          "y": 26,
+          "w": 3.5,
+          "d": 4,
+          "type": "lift",
+          "detail": "",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "liftlobby",
+          "label": "LIFT LOBBY",
+          "x": 6.5,
+          "y": 30,
+          "w": 3.5,
+          "d": 5,
+          "type": "corridor",
+          "detail": "",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "staffcorr",
+          "label": "STAFF LINK",
+          "x": 10,
+          "y": 26,
+          "w": 6,
+          "d": 19.5,
+          "type": "corridor",
+          "detail": "",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "interview",
+          "label": "INTERVIEW / CONSULT",
+          "x": 0.5,
+          "y": 35,
+          "w": 9.5,
+          "d": 10.5,
+          "type": "staff",
+          "detail": "",
+          "lighting_type": "office"
+        },
+        {
+          "id": "nsupport0",
+          "label": "WING DUTY POINT",
+          "x": 10.5,
+          "y": 0.5,
+          "w": 5.5,
+          "d": 6.5,
+          "type": "staff",
+          "detail": "Small support room opening only to its gated wing corridor.",
+          "lighting_type": "office"
+        },
+        {
+          "id": "ssupport0",
+          "label": "WING DUTY POINT",
+          "x": 20,
+          "y": 26,
+          "w": 5.5,
+          "d": 6.5,
+          "type": "staff",
+          "detail": "Small support room opening only to its gated wing corridor.",
+          "lighting_type": "office"
+        },
+        {
+          "id": "nsupport1",
+          "label": "LINEN / CLEANING",
+          "x": 10.5,
+          "y": 7,
+          "w": 5.5,
+          "d": 6.5,
+          "type": "staff",
+          "detail": "Small support room opening only to its gated wing corridor.",
+          "lighting_type": "office"
+        },
+        {
+          "id": "ssupport1",
+          "label": "LINEN / CLEANING",
+          "x": 20,
+          "y": 32.5,
+          "w": 5.5,
+          "d": 6.5,
+          "type": "staff",
+          "detail": "Small support room opening only to its gated wing corridor.",
+          "lighting_type": "office"
+        },
+        {
+          "id": "nsupport2",
+          "label": "PRIVATE CONSULT",
+          "x": 10.5,
+          "y": 13.5,
+          "w": 5.5,
+          "d": 6.5,
+          "type": "staff",
+          "detail": "Small support room opening only to its gated wing corridor.",
+          "lighting_type": "office"
+        },
+        {
+          "id": "ssupport2",
+          "label": "PRIVATE CONSULT",
+          "x": 20,
+          "y": 39,
+          "w": 5.5,
+          "d": 6.5,
+          "type": "staff",
+          "detail": "Small support room opening only to its gated wing corridor.",
+          "lighting_type": "office"
+        }
+      ],
+      "doors": [
+        {
+          "a": "n0",
+          "b": "westwing",
+          "x": 7,
+          "y": 2.125,
+          "axis": "z",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "s0",
+          "b": "eastwing",
+          "x": 29,
+          "y": 27.625,
+          "axis": "z",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "n1",
+          "b": "westwing",
+          "x": 7,
+          "y": 5.375,
+          "axis": "z",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "s1",
+          "b": "eastwing",
+          "x": 29,
+          "y": 30.875,
+          "axis": "z",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "n2",
+          "b": "westwing",
+          "x": 7,
+          "y": 8.625,
+          "axis": "z",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "s2",
+          "b": "eastwing",
+          "x": 29,
+          "y": 34.125,
+          "axis": "z",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "n3",
+          "b": "westwing",
+          "x": 7,
+          "y": 11.875,
+          "axis": "z",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "s3",
+          "b": "eastwing",
+          "x": 29,
+          "y": 37.375,
+          "axis": "z",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "n4",
+          "b": "westwing",
+          "x": 7,
+          "y": 15.125,
+          "axis": "z",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "s4",
+          "b": "eastwing",
+          "x": 29,
+          "y": 40.625,
+          "axis": "z",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "n5",
+          "b": "westwing",
+          "x": 7,
+          "y": 18.375,
+          "axis": "z",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "s5",
+          "b": "eastwing",
+          "x": 29,
+          "y": 43.875,
+          "axis": "z",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "cross",
+          "b": "spine",
+          "x": 16,
+          "y": 23,
+          "axis": "z",
+          "width": 2.4,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "eastcross",
+          "b": "spine",
+          "x": 20,
+          "y": 23,
+          "axis": "z",
+          "width": 2,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "westwing",
+          "b": "cross",
+          "x": 8.75,
+          "y": 20,
+          "axis": "x",
+          "width": 2,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "eastwing",
+          "b": "eastcross",
+          "x": 27.25,
+          "y": 26,
+          "axis": "x",
+          "width": 2,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "stairn",
+          "b": "spine",
+          "x": 20,
+          "y": 5,
+          "axis": "z",
+          "width": 1.6,
+          "kind": "door",
+          "detail": ""
+        },
+        {
+          "a": "staff",
+          "b": "stairn",
+          "x": 26,
+          "y": 1.15,
+          "axis": "z",
+          "width": 1.1,
+          "kind": "staff",
+          "detail": ""
+        },
+        {
+          "a": "glassa",
+          "b": "eastcross",
+          "x": 23.875,
+          "y": 20,
+          "axis": "x",
+          "width": 1.4,
+          "kind": "glass",
+          "detail": ""
+        },
+        {
+          "a": "glassb",
+          "b": "eastcross",
+          "x": 31.625,
+          "y": 20,
+          "axis": "x",
+          "width": 1.4,
+          "kind": "glass",
+          "detail": ""
+        },
+        {
+          "a": "stairs",
+          "b": "cross",
+          "x": 3.5,
+          "y": 26,
+          "axis": "x",
+          "width": 1.6,
+          "kind": "door",
+          "detail": ""
+        },
+        {
+          "a": "staffcorr",
+          "b": "cross",
+          "x": 13,
+          "y": 26,
+          "axis": "x",
+          "width": 2,
+          "kind": "staff",
+          "detail": ""
+        },
+        {
+          "a": "lift",
+          "b": "liftlobby",
+          "x": 8.25,
+          "y": 30,
+          "axis": "x",
+          "width": 1.6,
+          "kind": "sealed",
+          "detail": ""
+        },
+        {
+          "a": "liftlobby",
+          "b": "staffcorr",
+          "x": 10,
+          "y": 32.5,
+          "axis": "z",
+          "width": 2,
+          "kind": "open",
+          "detail": ""
+        },
+        {
+          "a": "interview",
+          "b": "staffcorr",
+          "x": 10,
+          "y": 40.25,
+          "axis": "z",
+          "width": 1.4,
+          "kind": "staff",
+          "detail": ""
+        },
+        {
+          "a": "cross",
+          "b": "OUTSIDE",
+          "x": 0.5,
+          "y": 23,
+          "axis": "z",
+          "width": 3,
+          "kind": "gate",
+          "detail": "Existing west building gate; align with outer compound gate.",
+          "side": "W"
+        },
+        {
+          "a": "spine",
+          "b": "OUTSIDE",
+          "x": 18,
+          "y": 0.5,
+          "axis": "x",
+          "width": 3.6,
+          "kind": "gate",
+          "detail": "Transport entrance; gated holding vestibule in northern spine.",
+          "side": "N"
+        },
+        {
+          "a": "nsupport0",
+          "b": "westwing",
+          "x": 10.5,
+          "y": 3.75,
+          "axis": "z",
+          "width": 1.4,
+          "kind": "staff",
+          "detail": ""
+        },
+        {
+          "a": "ssupport0",
+          "b": "eastwing",
+          "x": 25.5,
+          "y": 29.25,
+          "axis": "z",
+          "width": 1.4,
+          "kind": "staff",
+          "detail": ""
+        },
+        {
+          "a": "nsupport1",
+          "b": "westwing",
+          "x": 10.5,
+          "y": 10.25,
+          "axis": "z",
+          "width": 1.4,
+          "kind": "staff",
+          "detail": ""
+        },
+        {
+          "a": "ssupport1",
+          "b": "eastwing",
+          "x": 25.5,
+          "y": 35.75,
+          "axis": "z",
+          "width": 1.4,
+          "kind": "staff",
+          "detail": ""
+        },
+        {
+          "a": "nsupport2",
+          "b": "westwing",
+          "x": 10.5,
+          "y": 16.75,
+          "axis": "z",
+          "width": 1.4,
+          "kind": "staff",
+          "detail": ""
+        },
+        {
+          "a": "ssupport2",
+          "b": "eastwing",
+          "x": 25.5,
+          "y": 42.25,
+          "axis": "z",
+          "width": 1.4,
+          "kind": "staff",
+          "detail": ""
+        }
+      ],
+      "notes": [
+        "24 secure cells proposed across two floors, plus two glass-door special rooms per floor. Cells are 6.5 × 3.25 m bays; wing support rooms occupy the remaining bank depth.",
+        "Keep the four-metre fenced perimeter strip clear. Staff stations have views into wing thresholds; patrol routes remain within their assigned wings.",
+        "Stair connections are planned routes; lift is closed until functional. Every secure room retains an ordinary escape/access route for development testing."
+      ]
+    },
+    {
+      "id": "cellhouse-b-1",
+      "name": "Cellhouse B",
+      "level": "Upper",
+      "width": 36,
+      "depth": 46,
+      "elevation": 4,
+      "summary": "High security stays in its separate east compound, with two gated residential wings and a controlled central spine.",
+      "rooms": [
+        {
+          "id": "spine",
+          "label": "SECURE SPINE",
+          "x": 16,
+          "y": 0.5,
+          "w": 4,
+          "d": 45,
+          "type": "corridor",
+          "detail": "",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "cross",
+          "label": "WEST CHECKPOINT LOBBY",
+          "x": 0.5,
+          "y": 20,
+          "w": 15.5,
+          "d": 6,
+          "type": "corridor",
+          "detail": "",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "eastcross",
+          "label": "STAFF CROSS CORRIDOR",
+          "x": 20,
+          "y": 20,
+          "w": 15.5,
+          "d": 6,
+          "type": "corridor",
+          "detail": "",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "westwing",
+          "label": "NORTH WING CORRIDOR",
+          "x": 7,
+          "y": 0.5,
+          "w": 3.5,
+          "d": 19.5,
+          "type": "corridor",
+          "detail": "",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "eastwing",
+          "label": "SOUTH WING CORRIDOR",
+          "x": 25.5,
+          "y": 26,
+          "w": 3.5,
+          "d": 19.5,
+          "type": "corridor",
+          "detail": "",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "n0",
+          "label": "SECURE N1",
+          "x": 0.5,
+          "y": 0.5,
+          "w": 6.5,
+          "d": 3.25,
+          "type": "cell",
+          "detail": "6.5 × 3.25 m bay: bed, sanitary corner and clear entry; sliding bars or approved secure door.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "s0",
+          "label": "SECURE S1",
+          "x": 29,
+          "y": 26,
+          "w": 6.5,
+          "d": 3.25,
+          "type": "cell",
+          "detail": "Matching 6.5 × 3.25 m secure cell bay.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "n1",
+          "label": "SECURE N2",
+          "x": 0.5,
+          "y": 3.75,
+          "w": 6.5,
+          "d": 3.25,
+          "type": "cell",
+          "detail": "6.5 × 3.25 m bay: bed, sanitary corner and clear entry; sliding bars or approved secure door.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "s1",
+          "label": "SECURE S2",
+          "x": 29,
+          "y": 29.25,
+          "w": 6.5,
+          "d": 3.25,
+          "type": "cell",
+          "detail": "Matching 6.5 × 3.25 m secure cell bay.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "n2",
+          "label": "SECURE N3",
+          "x": 0.5,
+          "y": 7,
+          "w": 6.5,
+          "d": 3.25,
+          "type": "cell",
+          "detail": "6.5 × 3.25 m bay: bed, sanitary corner and clear entry; sliding bars or approved secure door.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "s2",
+          "label": "SECURE S3",
+          "x": 29,
+          "y": 32.5,
+          "w": 6.5,
+          "d": 3.25,
+          "type": "cell",
+          "detail": "Matching 6.5 × 3.25 m secure cell bay.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "n3",
+          "label": "SECURE N4",
+          "x": 0.5,
+          "y": 10.25,
+          "w": 6.5,
+          "d": 3.25,
+          "type": "cell",
+          "detail": "6.5 × 3.25 m bay: bed, sanitary corner and clear entry; sliding bars or approved secure door.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "s3",
+          "label": "SECURE S4",
+          "x": 29,
+          "y": 35.75,
+          "w": 6.5,
+          "d": 3.25,
+          "type": "cell",
+          "detail": "Matching 6.5 × 3.25 m secure cell bay.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "n4",
+          "label": "SECURE N5",
+          "x": 0.5,
+          "y": 13.5,
+          "w": 6.5,
+          "d": 3.25,
+          "type": "cell",
+          "detail": "6.5 × 3.25 m bay: bed, sanitary corner and clear entry; sliding bars or approved secure door.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "s4",
+          "label": "SECURE S5",
+          "x": 29,
+          "y": 39,
+          "w": 6.5,
+          "d": 3.25,
+          "type": "cell",
+          "detail": "Matching 6.5 × 3.25 m secure cell bay.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "n5",
+          "label": "SECURE N6",
+          "x": 0.5,
+          "y": 16.75,
+          "w": 6.5,
+          "d": 3.25,
+          "type": "cell",
+          "detail": "6.5 × 3.25 m bay: bed, sanitary corner and clear entry; sliding bars or approved secure door.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "s5",
+          "label": "SECURE S6",
+          "x": 29,
+          "y": 42.25,
+          "w": 6.5,
+          "d": 3.25,
+          "type": "cell",
+          "detail": "Matching 6.5 × 3.25 m secure cell bay.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "stairn",
+          "label": "STAIR A",
+          "x": 20,
+          "y": 0.5,
+          "w": 6,
+          "d": 9,
+          "type": "stair",
+          "detail": "Stacked enclosed switchback stair; floor void shared by both levels.",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "staff",
+          "label": "GUARD / CONTROL",
+          "x": 26,
+          "y": 0.5,
+          "w": 9.5,
+          "d": 9,
+          "type": "staff",
+          "detail": "",
+          "lighting_type": "office"
+        },
+        {
+          "id": "glassa",
+          "label": "SPECIAL ROOM A",
+          "x": 20,
+          "y": 9.5,
+          "w": 7.75,
+          "d": 10.5,
+          "type": "secure",
+          "detail": "Full-height viewing panel and framed see-through security door. No weapon simulation.",
+          "lighting_type": "office"
+        },
+        {
+          "id": "glassb",
+          "label": "SPECIAL ROOM B",
+          "x": 27.75,
+          "y": 9.5,
+          "w": 7.75,
+          "d": 10.5,
+          "type": "secure",
+          "detail": "Second separated special room with its own clear security door.",
+          "lighting_type": "office"
+        },
+        {
+          "id": "stairs",
+          "label": "STAIR B",
+          "x": 0.5,
+          "y": 26,
+          "w": 6,
+          "d": 9,
+          "type": "stair",
+          "detail": "",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "lift",
+          "label": "LIFT SHAFT",
+          "x": 6.5,
+          "y": 26,
+          "w": 3.5,
+          "d": 4,
+          "type": "lift",
+          "detail": "",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "liftlobby",
+          "label": "LIFT LOBBY",
+          "x": 6.5,
+          "y": 30,
+          "w": 3.5,
+          "d": 5,
+          "type": "corridor",
+          "detail": "",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "staffcorr",
+          "label": "STAFF LINK",
+          "x": 10,
+          "y": 26,
+          "w": 6,
+          "d": 19.5,
+          "type": "corridor",
+          "detail": "",
+          "lighting_type": "cellblock"
+        },
+        {
+          "id": "interview",
+          "label": "INTERVIEW / CONSULT",
+          "x": 0.5,
+          "y": 35,
+          "w": 9.5,
+          "d": 10.5,
+          "type": "staff",
+          "detail": "",
+          "lighting_type": "office"
+        },
+        {
+          "id": "nsupport0",
+          "label": "WING DUTY POINT",
+          "x": 10.5,
+          "y": 0.5,
+          "w": 5.5,
+          "d": 6.5,
+          "type": "staff",
+          "detail": "Small support room opening only to its gated wing corridor.",
+          "lighting_type": "office"
+        },
+        {
+          "id": "ssupport0",
+          "label": "WING DUTY POINT",
+          "x": 20,
+          "y": 26,
+          "w": 5.5,
+          "d": 6.5,
+          "type": "staff",
+          "detail": "Small support room opening only to its gated wing corridor.",
+          "lighting_type": "office"
+        },
+        {
+          "id": "nsupport1",
+          "label": "LINEN / CLEANING",
+          "x": 10.5,
+          "y": 7,
+          "w": 5.5,
+          "d": 6.5,
+          "type": "staff",
+          "detail": "Small support room opening only to its gated wing corridor.",
+          "lighting_type": "office"
+        },
+        {
+          "id": "ssupport1",
+          "label": "LINEN / CLEANING",
+          "x": 20,
+          "y": 32.5,
+          "w": 5.5,
+          "d": 6.5,
+          "type": "staff",
+          "detail": "Small support room opening only to its gated wing corridor.",
+          "lighting_type": "office"
+        },
+        {
+          "id": "nsupport2",
+          "label": "PRIVATE CONSULT",
+          "x": 10.5,
+          "y": 13.5,
+          "w": 5.5,
+          "d": 6.5,
+          "type": "staff",
+          "detail": "Small support room opening only to its gated wing corridor.",
+          "lighting_type": "office"
+        },
+        {
+          "id": "ssupport2",
+          "label": "PRIVATE CONSULT",
+          "x": 20,
+          "y": 39,
+          "w": 5.5,
+          "d": 6.5,
+          "type": "staff",
+          "detail": "Small support room opening only to its gated wing corridor.",
+          "lighting_type": "office"
+        }
+      ],
+      "doors": [
+        {
+          "a": "n0",
+          "b": "westwing",
+          "x": 7,
+          "y": 2.125,
+          "axis": "z",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "s0",
+          "b": "eastwing",
+          "x": 29,
+          "y": 27.625,
+          "axis": "z",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "n1",
+          "b": "westwing",
+          "x": 7,
+          "y": 5.375,
+          "axis": "z",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "s1",
+          "b": "eastwing",
+          "x": 29,
+          "y": 30.875,
+          "axis": "z",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "n2",
+          "b": "westwing",
+          "x": 7,
+          "y": 8.625,
+          "axis": "z",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "s2",
+          "b": "eastwing",
+          "x": 29,
+          "y": 34.125,
+          "axis": "z",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "n3",
+          "b": "westwing",
+          "x": 7,
+          "y": 11.875,
+          "axis": "z",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "s3",
+          "b": "eastwing",
+          "x": 29,
+          "y": 37.375,
+          "axis": "z",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "n4",
+          "b": "westwing",
+          "x": 7,
+          "y": 15.125,
+          "axis": "z",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "s4",
+          "b": "eastwing",
+          "x": 29,
+          "y": 40.625,
+          "axis": "z",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "n5",
+          "b": "westwing",
+          "x": 7,
+          "y": 18.375,
+          "axis": "z",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "s5",
+          "b": "eastwing",
+          "x": 29,
+          "y": 43.875,
+          "axis": "z",
+          "width": 1.35,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "cross",
+          "b": "spine",
+          "x": 16,
+          "y": 23,
+          "axis": "z",
+          "width": 2.4,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "eastcross",
+          "b": "spine",
+          "x": 20,
+          "y": 23,
+          "axis": "z",
+          "width": 2,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "westwing",
+          "b": "cross",
+          "x": 8.75,
+          "y": 20,
+          "axis": "x",
+          "width": 2,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "eastwing",
+          "b": "eastcross",
+          "x": 27.25,
+          "y": 26,
+          "axis": "x",
+          "width": 2,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "stairn",
+          "b": "spine",
+          "x": 20,
+          "y": 5,
+          "axis": "z",
+          "width": 1.6,
+          "kind": "door",
+          "detail": ""
+        },
+        {
+          "a": "staff",
+          "b": "stairn",
+          "x": 26,
+          "y": 1.15,
+          "axis": "z",
+          "width": 1.1,
+          "kind": "staff",
+          "detail": ""
+        },
+        {
+          "a": "glassa",
+          "b": "eastcross",
+          "x": 23.875,
+          "y": 20,
+          "axis": "x",
+          "width": 1.4,
+          "kind": "glass",
+          "detail": ""
+        },
+        {
+          "a": "glassb",
+          "b": "eastcross",
+          "x": 31.625,
+          "y": 20,
+          "axis": "x",
+          "width": 1.4,
+          "kind": "glass",
+          "detail": ""
+        },
+        {
+          "a": "stairs",
+          "b": "cross",
+          "x": 3.5,
+          "y": 26,
+          "axis": "x",
+          "width": 1.6,
+          "kind": "door",
+          "detail": ""
+        },
+        {
+          "a": "staffcorr",
+          "b": "cross",
+          "x": 13,
+          "y": 26,
+          "axis": "x",
+          "width": 2,
+          "kind": "staff",
+          "detail": ""
+        },
+        {
+          "a": "lift",
+          "b": "liftlobby",
+          "x": 8.25,
+          "y": 30,
+          "axis": "x",
+          "width": 1.6,
+          "kind": "sealed",
+          "detail": ""
+        },
+        {
+          "a": "liftlobby",
+          "b": "staffcorr",
+          "x": 10,
+          "y": 32.5,
+          "axis": "z",
+          "width": 2,
+          "kind": "open",
+          "detail": ""
+        },
+        {
+          "a": "interview",
+          "b": "staffcorr",
+          "x": 10,
+          "y": 40.25,
+          "axis": "z",
+          "width": 1.4,
+          "kind": "staff",
+          "detail": ""
+        },
+        {
+          "a": "nsupport0",
+          "b": "westwing",
+          "x": 10.5,
+          "y": 3.75,
+          "axis": "z",
+          "width": 1.4,
+          "kind": "staff",
+          "detail": ""
+        },
+        {
+          "a": "ssupport0",
+          "b": "eastwing",
+          "x": 25.5,
+          "y": 29.25,
+          "axis": "z",
+          "width": 1.4,
+          "kind": "staff",
+          "detail": ""
+        },
+        {
+          "a": "nsupport1",
+          "b": "westwing",
+          "x": 10.5,
+          "y": 10.25,
+          "axis": "z",
+          "width": 1.4,
+          "kind": "staff",
+          "detail": ""
+        },
+        {
+          "a": "ssupport1",
+          "b": "eastwing",
+          "x": 25.5,
+          "y": 35.75,
+          "axis": "z",
+          "width": 1.4,
+          "kind": "staff",
+          "detail": ""
+        },
+        {
+          "a": "nsupport2",
+          "b": "westwing",
+          "x": 10.5,
+          "y": 16.75,
+          "axis": "z",
+          "width": 1.4,
+          "kind": "staff",
+          "detail": ""
+        },
+        {
+          "a": "ssupport2",
+          "b": "eastwing",
+          "x": 25.5,
+          "y": 42.25,
+          "axis": "z",
+          "width": 1.4,
+          "kind": "staff",
+          "detail": ""
+        }
+      ],
+      "notes": [
+        "24 secure cells proposed across two floors, plus two glass-door special rooms per floor. Cells are 6.5 × 3.25 m bays; wing support rooms occupy the remaining bank depth.",
+        "Keep the four-metre fenced perimeter strip clear. Staff stations have views into wing thresholds; patrol routes remain within their assigned wings.",
+        "Stair connections are planned routes; lift is closed until functional. Every secure room retains an ordinary escape/access route for development testing."
+      ]
+    },
+    {
+      "id": "hq-0",
+      "name": "Security HQ",
+      "level": "Ground / Operations",
+      "width": 36,
+      "depth": 34,
+      "elevation": 0,
+      "summary": "Two separated circulation axes connect secure departments, with stairs at opposite ends and a restricted lift corner.",
+      "rooms": [
+        {
+          "id": "spine",
+          "label": "SECURE NORTH–SOUTH SPINE",
+          "x": 16,
+          "y": 0.5,
+          "w": 4,
+          "d": 33,
+          "type": "corridor",
+          "detail": "",
+          "lighting_type": "office"
+        },
+        {
+          "id": "westhall",
+          "label": "WEST STAFF CORRIDOR",
+          "x": 0.5,
+          "y": 14,
+          "w": 15.5,
+          "d": 4,
+          "type": "corridor",
+          "detail": "",
+          "lighting_type": "office"
+        },
+        {
+          "id": "easthall",
+          "label": "EAST SECURE CORRIDOR",
+          "x": 20,
+          "y": 14,
+          "w": 15.5,
+          "d": 4,
+          "type": "corridor",
+          "detail": "",
+          "lighting_type": "office"
+        },
+        {
+          "id": "stairn",
+          "label": "NORTH STAIR",
+          "x": 10,
+          "y": 0.5,
+          "w": 6,
+          "d": 9,
+          "type": "stair",
+          "detail": "",
+          "lighting_type": "office"
+        },
+        {
+          "id": "northlobby",
+          "label": "NORTH LANDING",
+          "x": 10,
+          "y": 9.5,
+          "w": 6,
+          "d": 4.5,
+          "type": "corridor",
+          "detail": "",
+          "lighting_type": "office"
+        },
+        {
+          "id": "stairs",
+          "label": "SOUTH STAIR",
+          "x": 0.5,
+          "y": 24.5,
+          "w": 6,
+          "d": 9,
+          "type": "stair",
+          "detail": "",
+          "lighting_type": "office"
+        },
+        {
+          "id": "southlobby",
+          "label": "SOUTH LANDING",
+          "x": 0.5,
+          "y": 18,
+          "w": 6,
+          "d": 6.5,
+          "type": "corridor",
+          "detail": "",
+          "lighting_type": "office"
+        },
+        {
+          "id": "lift",
+          "label": "RESTRICTED LIFT",
+          "x": 31.5,
+          "y": 25.5,
+          "w": 4,
+          "d": 8,
+          "type": "lift",
+          "detail": "4 × 4 m shaft plus reserved machinery zone; upper/ground/B2 align. No general lift access to NIDRA.",
+          "lighting_type": "office"
+        },
+        {
+          "id": "liftlobby",
+          "label": "LIFT VESTIBULE",
+          "x": 27.5,
+          "y": 25.5,
+          "w": 4,
+          "d": 8,
+          "type": "corridor",
+          "detail": "",
+          "lighting_type": "office"
+        },
+        {
+          "id": "eastlink",
+          "label": "SECURITY LINK",
+          "x": 20,
+          "y": 18,
+          "w": 15.5,
+          "d": 7.5,
+          "type": "corridor",
+          "detail": "",
+          "lighting_type": "office"
+        },
+        {
+          "id": "staff",
+          "label": "BRIEFING / STAFF READY",
+          "x": 0.5,
+          "y": 0.5,
+          "w": 9.5,
+          "d": 13.5,
+          "type": "staff",
+          "detail": "Briefing table, duty lockers, radio charging and staff WC compartment.",
+          "lighting_type": "office"
+        },
+        {
+          "id": "equipment",
+          "label": "SECURE EQUIPMENT STORE",
+          "x": 20,
+          "y": 0.5,
+          "w": 8,
+          "d": 13.5,
+          "type": "secure",
+          "detail": "Reserved armory/equipment architecture only; no usable weapons or combat.",
+          "lighting_type": "office"
+        },
+        {
+          "id": "evidence",
+          "label": "EVIDENCE / INTAKE",
+          "x": 28,
+          "y": 0.5,
+          "w": 7.5,
+          "d": 13.5,
+          "type": "secure",
+          "detail": "Transfer bench, logged shelves and large evidence safe.",
+          "lighting_type": "office"
+        },
+        {
+          "id": "processing",
+          "label": "CHECKPOINT / INTERVIEW",
+          "x": 6.5,
+          "y": 18,
+          "w": 9.5,
+          "d": 15.5,
+          "type": "staff",
+          "detail": "Small screening desk and separated interview room; connected to south landing and spine.",
+          "lighting_type": "office"
+        },
+        {
+          "id": "keys",
+          "label": "CELL-KEY STORAGE",
+          "x": 20,
+          "y": 25.5,
+          "w": 7.5,
+          "d": 8,
+          "type": "secure",
+          "detail": "Key cabinet slots labeled by building/floor/cell; individual cell keys relocate here from legacy Floor 4.",
+          "lighting_type": "office"
+        }
+      ],
+      "doors": [
+        {
+          "a": "spine",
+          "b": "westhall",
+          "x": 16,
+          "y": 16,
+          "axis": "z",
+          "width": 2,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "spine",
+          "b": "easthall",
+          "x": 20,
+          "y": 16,
+          "axis": "z",
+          "width": 2,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "northlobby",
+          "b": "stairn",
+          "x": 13,
+          "y": 9.5,
+          "axis": "x",
+          "width": 1.6,
+          "kind": "door",
+          "detail": ""
+        },
+        {
+          "a": "northlobby",
+          "b": "westhall",
+          "x": 13,
+          "y": 14,
+          "axis": "x",
+          "width": 2,
+          "kind": "open",
+          "detail": ""
+        },
+        {
+          "a": "southlobby",
+          "b": "stairs",
+          "x": 3.5,
+          "y": 24.5,
+          "axis": "x",
+          "width": 1.6,
+          "kind": "door",
+          "detail": ""
+        },
+        {
+          "a": "southlobby",
+          "b": "westhall",
+          "x": 3.5,
+          "y": 18,
+          "axis": "x",
+          "width": 2,
+          "kind": "open",
+          "detail": ""
+        },
+        {
+          "a": "eastlink",
+          "b": "easthall",
+          "x": 27.75,
+          "y": 18,
+          "axis": "x",
+          "width": 2,
+          "kind": "open",
+          "detail": ""
+        },
+        {
+          "a": "eastlink",
+          "b": "spine",
+          "x": 20,
+          "y": 21.75,
+          "axis": "z",
+          "width": 2,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "liftlobby",
+          "b": "eastlink",
+          "x": 29.5,
+          "y": 25.5,
+          "axis": "x",
+          "width": 2,
+          "kind": "staff",
+          "detail": ""
+        },
+        {
+          "a": "lift",
+          "b": "liftlobby",
+          "x": 31.5,
+          "y": 29.5,
+          "axis": "z",
+          "width": 1.8,
+          "kind": "sealed",
+          "detail": ""
+        },
+        {
+          "a": "staff",
+          "b": "westhall",
+          "x": 5.25,
+          "y": 14,
+          "axis": "x",
+          "width": 1.4,
+          "kind": "staff",
+          "detail": ""
+        },
+        {
+          "a": "equipment",
+          "b": "easthall",
+          "x": 24,
+          "y": 14,
+          "axis": "x",
+          "width": 1.6,
+          "kind": "staff",
+          "detail": ""
+        },
+        {
+          "a": "evidence",
+          "b": "easthall",
+          "x": 31.75,
+          "y": 14,
+          "axis": "x",
+          "width": 1.6,
+          "kind": "staff",
+          "detail": ""
+        },
+        {
+          "a": "processing",
+          "b": "spine",
+          "x": 16,
+          "y": 25.75,
+          "axis": "z",
+          "width": 1.6,
+          "kind": "staff",
+          "detail": ""
+        },
+        {
+          "a": "processing",
+          "b": "southlobby",
+          "x": 6.5,
+          "y": 21.25,
+          "axis": "z",
+          "width": 1.4,
+          "kind": "staff",
+          "detail": ""
+        },
+        {
+          "a": "keys",
+          "b": "eastlink",
+          "x": 23.75,
+          "y": 25.5,
+          "axis": "x",
+          "width": 1.4,
+          "kind": "staff",
+          "detail": ""
+        },
+        {
+          "a": "spine",
+          "b": "OUTSIDE",
+          "x": 18,
+          "y": 33.5,
+          "axis": "x",
+          "width": 3,
+          "kind": "gate",
+          "detail": "Existing south entrance.",
+          "side": "S"
+        },
+        {
+          "a": "westhall",
+          "b": "OUTSIDE",
+          "x": 0.5,
+          "y": 16,
+          "axis": "z",
+          "width": 2.4,
+          "kind": "staff",
+          "detail": "Shift west staff door 1 m north for corridor alignment.",
+          "side": "W"
+        }
+      ],
+      "notes": [
+        "Proposed shell height 8.6 m, up from 7 m: two 4 m levels plus roof structure. Existing second-storey anchors and windows need repositioning.",
+        "Ground and upper stairs occupy identical footprints. Main restricted lift lobby is separated from general offices.",
+        "security_key and lab_key stay unavailable at player start. Relocating legacy Floor 4 key storage preserves its function; it does not recreate a fourth floor in Cellhouse A."
+      ]
+    },
+    {
+      "id": "hq-1",
+      "name": "Security HQ",
+      "level": "Upper / Command",
+      "width": 36,
+      "depth": 34,
+      "elevation": 4,
+      "summary": "Two separated circulation axes connect secure departments, with stairs at opposite ends and a restricted lift corner.",
+      "rooms": [
+        {
+          "id": "spine",
+          "label": "SECURE NORTH–SOUTH SPINE",
+          "x": 16,
+          "y": 0.5,
+          "w": 4,
+          "d": 33,
+          "type": "corridor",
+          "detail": "",
+          "lighting_type": "office"
+        },
+        {
+          "id": "westhall",
+          "label": "WEST STAFF CORRIDOR",
+          "x": 0.5,
+          "y": 14,
+          "w": 15.5,
+          "d": 4,
+          "type": "corridor",
+          "detail": "",
+          "lighting_type": "office"
+        },
+        {
+          "id": "easthall",
+          "label": "EAST SECURE CORRIDOR",
+          "x": 20,
+          "y": 14,
+          "w": 15.5,
+          "d": 4,
+          "type": "corridor",
+          "detail": "",
+          "lighting_type": "office"
+        },
+        {
+          "id": "stairn",
+          "label": "NORTH STAIR",
+          "x": 10,
+          "y": 0.5,
+          "w": 6,
+          "d": 9,
+          "type": "stair",
+          "detail": "",
+          "lighting_type": "office"
+        },
+        {
+          "id": "northlobby",
+          "label": "NORTH LANDING",
+          "x": 10,
+          "y": 9.5,
+          "w": 6,
+          "d": 4.5,
+          "type": "corridor",
+          "detail": "",
+          "lighting_type": "office"
+        },
+        {
+          "id": "stairs",
+          "label": "SOUTH STAIR",
+          "x": 0.5,
+          "y": 24.5,
+          "w": 6,
+          "d": 9,
+          "type": "stair",
+          "detail": "",
+          "lighting_type": "office"
+        },
+        {
+          "id": "southlobby",
+          "label": "SOUTH LANDING",
+          "x": 0.5,
+          "y": 18,
+          "w": 6,
+          "d": 6.5,
+          "type": "corridor",
+          "detail": "",
+          "lighting_type": "office"
+        },
+        {
+          "id": "lift",
+          "label": "RESTRICTED LIFT",
+          "x": 31.5,
+          "y": 25.5,
+          "w": 4,
+          "d": 8,
+          "type": "lift",
+          "detail": "4 × 4 m shaft plus reserved machinery zone; upper/ground/B2 align. No general lift access to NIDRA.",
+          "lighting_type": "office"
+        },
+        {
+          "id": "liftlobby",
+          "label": "LIFT VESTIBULE",
+          "x": 27.5,
+          "y": 25.5,
+          "w": 4,
+          "d": 8,
+          "type": "corridor",
+          "detail": "",
+          "lighting_type": "office"
+        },
+        {
+          "id": "eastlink",
+          "label": "SECURITY LINK",
+          "x": 20,
+          "y": 18,
+          "w": 15.5,
+          "d": 7.5,
+          "type": "corridor",
+          "detail": "",
+          "lighting_type": "office"
+        },
+        {
+          "id": "chief",
+          "label": "POLICE CHIEF / COMMAND",
+          "x": 0.5,
+          "y": 0.5,
+          "w": 9.5,
+          "d": 13.5,
+          "type": "staff",
+          "detail": "Office, small planning table and private records alcove. Future chief retains cell_master_key.",
+          "lighting_type": "office"
+        },
+        {
+          "id": "surveillance",
+          "label": "SURVEILLANCE",
+          "x": 20,
+          "y": 0.5,
+          "w": 8,
+          "d": 13.5,
+          "type": "secure",
+          "detail": "Monitor wall, two console rows, maintenance clearance behind equipment.",
+          "lighting_type": "office"
+        },
+        {
+          "id": "control",
+          "label": "CONTROL / RADIO",
+          "x": 28,
+          "y": 0.5,
+          "w": 7.5,
+          "d": 13.5,
+          "type": "secure",
+          "detail": "Doors/tower coordination consoles; dark materials with inexpensive monitor emission.",
+          "lighting_type": "office"
+        },
+        {
+          "id": "briefing",
+          "label": "INCIDENT / PLANNING",
+          "x": 6.5,
+          "y": 18,
+          "w": 9.5,
+          "d": 15.5,
+          "type": "staff",
+          "detail": "Operations table and separate supervisor workstations.",
+          "lighting_type": "office"
+        },
+        {
+          "id": "server",
+          "label": "SERVER / ARCHIVE",
+          "x": 20,
+          "y": 25.5,
+          "w": 7.5,
+          "d": 8,
+          "type": "secure",
+          "detail": "Racks and secured records, dedicated cooling zone.",
+          "lighting_type": "office"
+        }
+      ],
+      "doors": [
+        {
+          "a": "spine",
+          "b": "westhall",
+          "x": 16,
+          "y": 16,
+          "axis": "z",
+          "width": 2,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "spine",
+          "b": "easthall",
+          "x": 20,
+          "y": 16,
+          "axis": "z",
+          "width": 2,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "northlobby",
+          "b": "stairn",
+          "x": 13,
+          "y": 9.5,
+          "axis": "x",
+          "width": 1.6,
+          "kind": "door",
+          "detail": ""
+        },
+        {
+          "a": "northlobby",
+          "b": "westhall",
+          "x": 13,
+          "y": 14,
+          "axis": "x",
+          "width": 2,
+          "kind": "open",
+          "detail": ""
+        },
+        {
+          "a": "southlobby",
+          "b": "stairs",
+          "x": 3.5,
+          "y": 24.5,
+          "axis": "x",
+          "width": 1.6,
+          "kind": "door",
+          "detail": ""
+        },
+        {
+          "a": "southlobby",
+          "b": "westhall",
+          "x": 3.5,
+          "y": 18,
+          "axis": "x",
+          "width": 2,
+          "kind": "open",
+          "detail": ""
+        },
+        {
+          "a": "eastlink",
+          "b": "easthall",
+          "x": 27.75,
+          "y": 18,
+          "axis": "x",
+          "width": 2,
+          "kind": "open",
+          "detail": ""
+        },
+        {
+          "a": "eastlink",
+          "b": "spine",
+          "x": 20,
+          "y": 21.75,
+          "axis": "z",
+          "width": 2,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "liftlobby",
+          "b": "eastlink",
+          "x": 29.5,
+          "y": 25.5,
+          "axis": "x",
+          "width": 2,
+          "kind": "staff",
+          "detail": ""
+        },
+        {
+          "a": "lift",
+          "b": "liftlobby",
+          "x": 31.5,
+          "y": 29.5,
+          "axis": "z",
+          "width": 1.8,
+          "kind": "sealed",
+          "detail": ""
+        },
+        {
+          "a": "chief",
+          "b": "westhall",
+          "x": 5.25,
+          "y": 14,
+          "axis": "x",
+          "width": 1.4,
+          "kind": "staff",
+          "detail": ""
+        },
+        {
+          "a": "surveillance",
+          "b": "easthall",
+          "x": 24,
+          "y": 14,
+          "axis": "x",
+          "width": 1.6,
+          "kind": "staff",
+          "detail": ""
+        },
+        {
+          "a": "control",
+          "b": "easthall",
+          "x": 31.75,
+          "y": 14,
+          "axis": "x",
+          "width": 1.6,
+          "kind": "staff",
+          "detail": ""
+        },
+        {
+          "a": "briefing",
+          "b": "spine",
+          "x": 16,
+          "y": 25.75,
+          "axis": "z",
+          "width": 1.6,
+          "kind": "staff",
+          "detail": ""
+        },
+        {
+          "a": "briefing",
+          "b": "southlobby",
+          "x": 6.5,
+          "y": 21.25,
+          "axis": "z",
+          "width": 1.4,
+          "kind": "staff",
+          "detail": ""
+        },
+        {
+          "a": "server",
+          "b": "eastlink",
+          "x": 23.75,
+          "y": 25.5,
+          "axis": "x",
+          "width": 1.4,
+          "kind": "staff",
+          "detail": ""
+        }
+      ],
+      "notes": [
+        "Proposed shell height 8.6 m, up from 7 m: two 4 m levels plus roof structure. Existing second-storey anchors and windows need repositioning.",
+        "Ground and upper stairs occupy identical footprints. Main restricted lift lobby is separated from general offices.",
+        "security_key and lab_key stay unavailable at player start. Relocating legacy Floor 4 key storage preserves its function; it does not recreate a fourth floor in Cellhouse A."
+      ]
+    },
+    {
+      "id": "maintenance-ground",
+      "name": "Maintenance",
+      "level": "Ground",
+      "width": 36,
+      "depth": 34,
+      "elevation": 0,
+      "summary": "North entry issues tools and work assignments. Workshops sit west, laundry east, and service/plant functions face south.",
+      "rooms": [
+        {
+          "id": "spine",
+          "label": "SERVICE SPINE",
+          "x": 16,
+          "y": 0.5,
+          "w": 4,
+          "d": 33,
+          "type": "corridor",
+          "detail": "",
+          "lighting_type": "service"
+        },
+        {
+          "id": "crossw",
+          "label": "WORKSHOP TRANSFER",
+          "x": 0.5,
+          "y": 14,
+          "w": 15.5,
+          "d": 4,
+          "type": "corridor",
+          "detail": "",
+          "lighting_type": "service"
+        },
+        {
+          "id": "crosse",
+          "label": "LAUNDRY TRANSFER",
+          "x": 20,
+          "y": 14,
+          "w": 15.5,
+          "d": 4,
+          "type": "corridor",
+          "detail": "",
+          "lighting_type": "service"
+        },
+        {
+          "id": "workshop",
+          "label": "WORKSHOP / REPAIR",
+          "x": 0.5,
+          "y": 0.5,
+          "w": 15.5,
+          "d": 13.5,
+          "type": "service",
+          "detail": "Workbenches, fixed tool racks, repair tables; central movement lane.",
+          "lighting_type": "service"
+        },
+        {
+          "id": "dirty",
+          "label": "SOILED LAUNDRY / WASH",
+          "x": 20,
+          "y": 0.5,
+          "w": 7.5,
+          "d": 13.5,
+          "type": "service",
+          "detail": "",
+          "lighting_type": "service"
+        },
+        {
+          "id": "clean",
+          "label": "DRY / FOLD / CLEAN LINEN",
+          "x": 27.5,
+          "y": 0.5,
+          "w": 8,
+          "d": 13.5,
+          "type": "service",
+          "detail": "",
+          "lighting_type": "service"
+        },
+        {
+          "id": "tool",
+          "label": "TOOL ISSUE / PARTS",
+          "x": 0.5,
+          "y": 18,
+          "w": 9.5,
+          "d": 7.5,
+          "type": "secure",
+          "detail": "",
+          "lighting_type": "service"
+        },
+        {
+          "id": "stair",
+          "label": "B1 SERVICE STAIR",
+          "x": 10,
+          "y": 18,
+          "w": 6,
+          "d": 9,
+          "type": "stair",
+          "detail": "Separate 3 m landing, then a gate; exact same footprint on B1.",
+          "lighting_type": "service"
+        },
+        {
+          "id": "utilities",
+          "label": "ELECTRICAL / PUMP ROOM",
+          "x": 0.5,
+          "y": 25.5,
+          "w": 9.5,
+          "d": 8,
+          "type": "service",
+          "detail": "",
+          "lighting_type": "service"
+        },
+        {
+          "id": "landing",
+          "label": "B1 STAIR LOBBY",
+          "x": 10,
+          "y": 27,
+          "w": 6,
+          "d": 6.5,
+          "type": "corridor",
+          "detail": "",
+          "lighting_type": "service"
+        },
+        {
+          "id": "store",
+          "label": "BULK / JANITOR STORAGE",
+          "x": 20,
+          "y": 18,
+          "w": 8,
+          "d": 15.5,
+          "type": "service",
+          "detail": "",
+          "lighting_type": "service"
+        },
+        {
+          "id": "waste",
+          "label": "WASTE / CART WASH",
+          "x": 28,
+          "y": 18,
+          "w": 7.5,
+          "d": 15.5,
+          "type": "service",
+          "detail": "Separated refuse holding and cleaning supplies; service yard access, not recreation yard.",
+          "lighting_type": "service"
+        }
+      ],
+      "doors": [
+        {
+          "a": "spine",
+          "b": "crossw",
+          "x": 16,
+          "y": 16,
+          "axis": "z",
+          "width": 2.4,
+          "kind": "staff",
+          "detail": ""
+        },
+        {
+          "a": "spine",
+          "b": "crosse",
+          "x": 20,
+          "y": 16,
+          "axis": "z",
+          "width": 2.4,
+          "kind": "staff",
+          "detail": ""
+        },
+        {
+          "a": "workshop",
+          "b": "crossw",
+          "x": 8.25,
+          "y": 14,
+          "axis": "x",
+          "width": 2,
+          "kind": "door",
+          "detail": ""
+        },
+        {
+          "a": "dirty",
+          "b": "crosse",
+          "x": 23.75,
+          "y": 14,
+          "axis": "x",
+          "width": 2,
+          "kind": "door",
+          "detail": ""
+        },
+        {
+          "a": "clean",
+          "b": "crosse",
+          "x": 31.5,
+          "y": 14,
+          "axis": "x",
+          "width": 2,
+          "kind": "door",
+          "detail": ""
+        },
+        {
+          "a": "dirty",
+          "b": "clean",
+          "x": 27.5,
+          "y": 7.25,
+          "axis": "z",
+          "width": 2,
+          "kind": "staff",
+          "detail": "Clean transfer only after wash."
+        },
+        {
+          "a": "tool",
+          "b": "crossw",
+          "x": 5.25,
+          "y": 18,
+          "axis": "x",
+          "width": 1.6,
+          "kind": "staff",
+          "detail": ""
+        },
+        {
+          "a": "utilities",
+          "b": "tool",
+          "x": 5.25,
+          "y": 25.5,
+          "axis": "x",
+          "width": 1.4,
+          "kind": "staff",
+          "detail": ""
+        },
+        {
+          "a": "stair",
+          "b": "landing",
+          "x": 13,
+          "y": 27,
+          "axis": "x",
+          "width": 1.6,
+          "kind": "door",
+          "detail": ""
+        },
+        {
+          "a": "landing",
+          "b": "spine",
+          "x": 16,
+          "y": 30.25,
+          "axis": "z",
+          "width": 2,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "store",
+          "b": "crosse",
+          "x": 24,
+          "y": 18,
+          "axis": "x",
+          "width": 2,
+          "kind": "door",
+          "detail": ""
+        },
+        {
+          "a": "waste",
+          "b": "crosse",
+          "x": 31.75,
+          "y": 18,
+          "axis": "x",
+          "width": 2,
+          "kind": "door",
+          "detail": ""
+        },
+        {
+          "a": "spine",
+          "b": "OUTSIDE",
+          "x": 18,
+          "y": 0.5,
+          "axis": "x",
+          "width": 3,
+          "kind": "staff",
+          "detail": "",
+          "side": "N"
+        },
+        {
+          "a": "spine",
+          "b": "OUTSIDE",
+          "x": 18,
+          "y": 33.5,
+          "axis": "x",
+          "width": 3.8,
+          "kind": "staff",
+          "detail": "Existing waste/service yard door.",
+          "side": "S"
+        }
+      ],
+      "notes": [
+        "Exterior transformer enclosure stays outside the east wall with a protected inspection strip.",
+        "The tool-issue room is the future destination for the existing maintenance keypad/locker content; migration preserves IDs and memory clue behavior.",
+        "Single 5.5 m shell; B1 is a later independent underground scene."
+      ]
+    },
+    {
+      "id": "maintenance-b1",
+      "name": "Maintenance",
+      "level": "B1 / Service Hub",
+      "width": 36,
+      "depth": 34,
+      "elevation": -4,
+      "summary": "A small underground service hub beneath Maintenance; tunnel connections are sealed until their destination buildings are ready.",
+      "rooms": [
+        {
+          "id": "spine",
+          "label": "B1 SERVICE SPINE",
+          "x": 16,
+          "y": 0.5,
+          "w": 4,
+          "d": 33,
+          "type": "corridor",
+          "detail": "",
+          "lighting_type": "service"
+        },
+        {
+          "id": "crossw",
+          "label": "PLANT CORRIDOR",
+          "x": 0.5,
+          "y": 14,
+          "w": 15.5,
+          "d": 4,
+          "type": "corridor",
+          "detail": "",
+          "lighting_type": "service"
+        },
+        {
+          "id": "crosse",
+          "label": "SERVICE CORRIDOR",
+          "x": 20,
+          "y": 14,
+          "w": 15.5,
+          "d": 4,
+          "type": "corridor",
+          "detail": "",
+          "lighting_type": "service"
+        },
+        {
+          "id": "plant",
+          "label": "WATER / HEAT PLANT",
+          "x": 0.5,
+          "y": 0.5,
+          "w": 15.5,
+          "d": 13.5,
+          "type": "service",
+          "detail": "",
+          "lighting_type": "service"
+        },
+        {
+          "id": "distribution",
+          "label": "ELECTRICAL DISTRIBUTION",
+          "x": 20,
+          "y": 0.5,
+          "w": 15.5,
+          "d": 13.5,
+          "type": "service",
+          "detail": "",
+          "lighting_type": "service"
+        },
+        {
+          "id": "spares",
+          "label": "SPARES / SERVICE STORE",
+          "x": 0.5,
+          "y": 18,
+          "w": 9.5,
+          "d": 7.5,
+          "type": "service",
+          "detail": "",
+          "lighting_type": "service"
+        },
+        {
+          "id": "stair",
+          "label": "STAIR TO MAINTENANCE",
+          "x": 10,
+          "y": 18,
+          "w": 6,
+          "d": 9,
+          "type": "stair",
+          "detail": "",
+          "lighting_type": "service"
+        },
+        {
+          "id": "pump",
+          "label": "DRAINAGE / SUMP",
+          "x": 0.5,
+          "y": 25.5,
+          "w": 9.5,
+          "d": 8,
+          "type": "service",
+          "detail": "",
+          "lighting_type": "service"
+        },
+        {
+          "id": "landing",
+          "label": "GATED LANDING",
+          "x": 10,
+          "y": 27,
+          "w": 6,
+          "d": 6.5,
+          "type": "corridor",
+          "detail": "",
+          "lighting_type": "service"
+        },
+        {
+          "id": "utility",
+          "label": "VENTILATION / UTILITY",
+          "x": 20,
+          "y": 18,
+          "w": 15.5,
+          "d": 15.5,
+          "type": "service",
+          "detail": "",
+          "lighting_type": "service"
+        }
+      ],
+      "doors": [
+        {
+          "a": "spine",
+          "b": "crossw",
+          "x": 16,
+          "y": 16,
+          "axis": "z",
+          "width": 2,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "spine",
+          "b": "crosse",
+          "x": 20,
+          "y": 16,
+          "axis": "z",
+          "width": 2,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "spine",
+          "b": "landing",
+          "x": 16,
+          "y": 30.25,
+          "axis": "z",
+          "width": 2,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "plant",
+          "b": "crossw",
+          "x": 8.25,
+          "y": 14,
+          "axis": "x",
+          "width": 1.8,
+          "kind": "door",
+          "detail": ""
+        },
+        {
+          "a": "distribution",
+          "b": "crosse",
+          "x": 27.75,
+          "y": 14,
+          "axis": "x",
+          "width": 1.8,
+          "kind": "staff",
+          "detail": ""
+        },
+        {
+          "a": "spares",
+          "b": "crossw",
+          "x": 5.25,
+          "y": 18,
+          "axis": "x",
+          "width": 1.8,
+          "kind": "door",
+          "detail": ""
+        },
+        {
+          "a": "spares",
+          "b": "pump",
+          "x": 5.25,
+          "y": 25.5,
+          "axis": "x",
+          "width": 1.4,
+          "kind": "door",
+          "detail": ""
+        },
+        {
+          "a": "stair",
+          "b": "landing",
+          "x": 13,
+          "y": 27,
+          "axis": "x",
+          "width": 1.6,
+          "kind": "door",
+          "detail": ""
+        },
+        {
+          "a": "utility",
+          "b": "crosse",
+          "x": 27.75,
+          "y": 18,
+          "axis": "x",
+          "width": 1.8,
+          "kind": "door",
+          "detail": ""
+        },
+        {
+          "a": "spine",
+          "b": "OUTSIDE",
+          "x": 18,
+          "y": 0.5,
+          "axis": "x",
+          "width": 2.4,
+          "kind": "sealed",
+          "detail": "Reserved tunnel toward Security HQ; route survey required.",
+          "side": "N"
+        },
+        {
+          "a": "crossw",
+          "b": "OUTSIDE",
+          "x": 0.5,
+          "y": 16,
+          "axis": "z",
+          "width": 2.4,
+          "kind": "sealed",
+          "detail": "Reserved service branch toward Medical/Food utility access, not prisoner circulation.",
+          "side": "W"
+        }
+      ],
+      "notes": [
+        "Only Maintenance has a usable B1 entry in the first underground slice. Do not generate tunnels with no exits or accidental routes into NIDRA.",
+        "Plant spaces use equipment footprints with maintenance aisles. No live hazards are proposed."
+      ]
+    },
+    {
+      "id": "nidra-b2",
+      "name": "Security HQ",
+      "level": "B2 / NIDRA",
+      "width": 36,
+      "depth": 34,
+      "elevation": -8,
+      "summary": "Concealed laboratory floor under HQ; clean work, subject handling and interrogation have separate controlled routes.",
+      "rooms": [
+        {
+          "id": "spine",
+          "label": "SUBJECT TRANSFER CORRIDOR",
+          "x": 16,
+          "y": 0.5,
+          "w": 4,
+          "d": 33,
+          "type": "corridor",
+          "detail": "",
+          "lighting_type": "service"
+        },
+        {
+          "id": "crossw",
+          "label": "CLINICAL TRANSFER",
+          "x": 0.5,
+          "y": 14,
+          "w": 15.5,
+          "d": 4,
+          "type": "corridor",
+          "detail": "",
+          "lighting_type": "service"
+        },
+        {
+          "id": "crosse",
+          "label": "LAB ACCESS CORRIDOR",
+          "x": 20,
+          "y": 14,
+          "w": 15.5,
+          "d": 4,
+          "type": "corridor",
+          "detail": "",
+          "lighting_type": "service"
+        },
+        {
+          "id": "stairn",
+          "label": "RESTRICTED EGRESS STAIR",
+          "x": 10,
+          "y": 0.5,
+          "w": 6,
+          "d": 9,
+          "type": "stair",
+          "detail": "Continues through an enclosed, inaccessible B1 shaft segment to HQ ground. Reserve geometry through intervening slabs.",
+          "lighting_type": "service"
+        },
+        {
+          "id": "northlobby",
+          "label": "STAIR CHECKPOINT",
+          "x": 10,
+          "y": 9.5,
+          "w": 6,
+          "d": 4.5,
+          "type": "corridor",
+          "detail": "",
+          "lighting_type": "service"
+        },
+        {
+          "id": "subjects",
+          "label": "SUBJECT HOLD / PREP",
+          "x": 0.5,
+          "y": 0.5,
+          "w": 9.5,
+          "d": 13.5,
+          "type": "secure",
+          "detail": "Two bounded holding rooms and a preparation room; signs, no new collectibles.",
+          "lighting_type": "service"
+        },
+        {
+          "id": "lab",
+          "label": "NEURAL RESPONSE LAB",
+          "x": 20,
+          "y": 0.5,
+          "w": 8,
+          "d": 13.5,
+          "type": "medical",
+          "detail": "Benches, microscopy, sample racks, terminals and diagnostics.",
+          "lighting_type": "medical"
+        },
+        {
+          "id": "chem",
+          "label": "CHEMICAL RESEARCH",
+          "x": 28,
+          "y": 0.5,
+          "w": 7.5,
+          "d": 9,
+          "type": "medical",
+          "detail": "",
+          "lighting_type": "medical"
+        },
+        {
+          "id": "hazmat",
+          "label": "HAZARDOUS STORAGE",
+          "x": 28,
+          "y": 9.5,
+          "w": 7.5,
+          "d": 4.5,
+          "type": "secure",
+          "detail": "Cabinets, spill tray and emergency shower outside in the controlled lab corridor.",
+          "lighting_type": "medical"
+        },
+        {
+          "id": "interrogationa",
+          "label": "INTERROGATION A",
+          "x": 0.5,
+          "y": 18,
+          "w": 7.75,
+          "d": 8,
+          "type": "secure",
+          "detail": "",
+          "lighting_type": "service"
+        },
+        {
+          "id": "interrogationb",
+          "label": "INTERROGATION B",
+          "x": 8.25,
+          "y": 18,
+          "w": 7.75,
+          "d": 8,
+          "type": "secure",
+          "detail": "",
+          "lighting_type": "service"
+        },
+        {
+          "id": "observation",
+          "label": "OBSERVATION / RECORDING",
+          "x": 0.5,
+          "y": 26,
+          "w": 15.5,
+          "d": 3,
+          "type": "staff",
+          "detail": "Fixed viewing windows north into both rooms; staff-only entrance from spine.",
+          "lighting_type": "service"
+        },
+        {
+          "id": "records",
+          "label": "SUBJECT ARCHIVE",
+          "x": 0.5,
+          "y": 29,
+          "w": 15.5,
+          "d": 4.5,
+          "type": "secure",
+          "detail": "",
+          "lighting_type": "service"
+        },
+        {
+          "id": "clean",
+          "label": "GOWNING / DECONTAMINATION",
+          "x": 20,
+          "y": 18,
+          "w": 15.5,
+          "d": 7.5,
+          "type": "medical",
+          "detail": "",
+          "lighting_type": "medical"
+        },
+        {
+          "id": "samples",
+          "label": "SAMPLE COLD STORE",
+          "x": 20,
+          "y": 25.5,
+          "w": 7.5,
+          "d": 8,
+          "type": "secure",
+          "detail": "",
+          "lighting_type": "medical"
+        },
+        {
+          "id": "liftlobby",
+          "label": "LIFT ARRIVAL / CHECKPOINT",
+          "x": 27.5,
+          "y": 25.5,
+          "w": 4,
+          "d": 8,
+          "type": "corridor",
+          "detail": "",
+          "lighting_type": "service"
+        },
+        {
+          "id": "lift",
+          "label": "HQ RESTRICTED LIFT",
+          "x": 31.5,
+          "y": 25.5,
+          "w": 4,
+          "d": 8,
+          "type": "lift",
+          "detail": "",
+          "lighting_type": "service"
+        }
+      ],
+      "doors": [
+        {
+          "a": "spine",
+          "b": "crossw",
+          "x": 16,
+          "y": 16,
+          "axis": "z",
+          "width": 2,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "spine",
+          "b": "crosse",
+          "x": 20,
+          "y": 16,
+          "axis": "z",
+          "width": 2,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "stairn",
+          "b": "northlobby",
+          "x": 13,
+          "y": 9.5,
+          "axis": "x",
+          "width": 1.6,
+          "kind": "staff",
+          "detail": ""
+        },
+        {
+          "a": "northlobby",
+          "b": "crossw",
+          "x": 13,
+          "y": 14,
+          "axis": "x",
+          "width": 2,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "subjects",
+          "b": "crossw",
+          "x": 5.25,
+          "y": 14,
+          "axis": "x",
+          "width": 1.8,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "lab",
+          "b": "crosse",
+          "x": 24,
+          "y": 14,
+          "axis": "x",
+          "width": 1.8,
+          "kind": "staff",
+          "detail": ""
+        },
+        {
+          "a": "chem",
+          "b": "lab",
+          "x": 28,
+          "y": 5,
+          "axis": "z",
+          "width": 1.4,
+          "kind": "staff",
+          "detail": ""
+        },
+        {
+          "a": "hazmat",
+          "b": "crosse",
+          "x": 31.75,
+          "y": 14,
+          "axis": "x",
+          "width": 1.4,
+          "kind": "staff",
+          "detail": ""
+        },
+        {
+          "a": "interrogationa",
+          "b": "crossw",
+          "x": 4.375,
+          "y": 18,
+          "axis": "x",
+          "width": 1.4,
+          "kind": "staff",
+          "detail": ""
+        },
+        {
+          "a": "interrogationb",
+          "b": "crossw",
+          "x": 12.125,
+          "y": 18,
+          "axis": "x",
+          "width": 1.4,
+          "kind": "staff",
+          "detail": ""
+        },
+        {
+          "a": "observation",
+          "b": "spine",
+          "x": 16,
+          "y": 27.5,
+          "axis": "z",
+          "width": 1.4,
+          "kind": "staff",
+          "detail": ""
+        },
+        {
+          "a": "records",
+          "b": "observation",
+          "x": 8.25,
+          "y": 29,
+          "axis": "x",
+          "width": 1.4,
+          "kind": "staff",
+          "detail": ""
+        },
+        {
+          "a": "clean",
+          "b": "crosse",
+          "x": 27.75,
+          "y": 18,
+          "axis": "x",
+          "width": 1.8,
+          "kind": "staff",
+          "detail": ""
+        },
+        {
+          "a": "samples",
+          "b": "clean",
+          "x": 23.75,
+          "y": 25.5,
+          "axis": "x",
+          "width": 1.4,
+          "kind": "staff",
+          "detail": ""
+        },
+        {
+          "a": "liftlobby",
+          "b": "clean",
+          "x": 29.5,
+          "y": 25.5,
+          "axis": "x",
+          "width": 1.8,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "lift",
+          "b": "liftlobby",
+          "x": 31.5,
+          "y": 29.5,
+          "axis": "z",
+          "width": 1.8,
+          "kind": "sealed",
+          "detail": ""
+        }
+      ],
+      "notes": [
+        "The lift and stair do not provide public B1 stops. B2 remains inaccessible until its access and movement slice is deliberately implemented.",
+        "Observation windows are collision-backed glazing, not open holes or traversable doors.",
+        "Non-graphic environmental storytelling through restraints, recording gear and labels: NIDRA / NEURAL RESPONSE / SUBJECT STORAGE."
+      ]
+    },
+    {
+      "id": "admin-ground",
+      "name": "Administration & Intake",
+      "level": "Ground",
+      "width": 40,
+      "depth": 24,
+      "elevation": 0,
+      "summary": "Public visitors enter south; prisoners enter north. Two parallel corridors and a screened visitation interface keep those routes separate.",
+      "rooms": [
+        {
+          "id": "public",
+          "label": "PUBLIC RECEPTION CORRIDOR",
+          "x": 18,
+          "y": 13,
+          "w": 4,
+          "d": 10.5,
+          "type": "corridor",
+          "detail": "",
+          "lighting_type": "office"
+        },
+        {
+          "id": "secure",
+          "label": "INTAKE SECURE SPINE",
+          "x": 18,
+          "y": 0.5,
+          "w": 4,
+          "d": 12.5,
+          "type": "corridor",
+          "detail": "",
+          "lighting_type": "office"
+        },
+        {
+          "id": "visitorhall",
+          "label": "VISITOR WAITING / SCREEN",
+          "x": 0.5,
+          "y": 13,
+          "w": 17.5,
+          "d": 5,
+          "type": "room",
+          "detail": "Reception desk, visitor lockers and queuing; screening at visitation door.",
+          "lighting_type": "office"
+        },
+        {
+          "id": "visitation",
+          "label": "VISITATION",
+          "x": 0.5,
+          "y": 7,
+          "w": 17.5,
+          "d": 6,
+          "type": "room",
+          "detail": "Fixed screened booths; public access from south, escorted prisoner strip on north. Partition each side; no opening between occupants.",
+          "lighting_type": "office"
+        },
+        {
+          "id": "holding",
+          "label": "HOLDING / TRANSFER",
+          "x": 0.5,
+          "y": 0.5,
+          "w": 8,
+          "d": 6.5,
+          "type": "secure",
+          "detail": "",
+          "lighting_type": "office"
+        },
+        {
+          "id": "processing",
+          "label": "SEARCH / PROPERTY",
+          "x": 8.5,
+          "y": 0.5,
+          "w": 9.5,
+          "d": 6.5,
+          "type": "secure",
+          "detail": "Identity check, property bags and separated changing bay.",
+          "lighting_type": "office"
+        },
+        {
+          "id": "publicwc",
+          "label": "PUBLIC WCs",
+          "x": 0.5,
+          "y": 18,
+          "w": 6,
+          "d": 5.5,
+          "type": "room",
+          "detail": "",
+          "lighting_type": "office"
+        },
+        {
+          "id": "reception",
+          "label": "RECEPTION / VISITOR DESK",
+          "x": 6.5,
+          "y": 18,
+          "w": 11.5,
+          "d": 5.5,
+          "type": "staff",
+          "detail": "",
+          "lighting_type": "office"
+        },
+        {
+          "id": "records",
+          "label": "INTAKE RECORDS",
+          "x": 22,
+          "y": 0.5,
+          "w": 8.5,
+          "d": 6.5,
+          "type": "staff",
+          "detail": "",
+          "lighting_type": "office"
+        },
+        {
+          "id": "interview",
+          "label": "ADMISSION INTERVIEW",
+          "x": 30.5,
+          "y": 0.5,
+          "w": 9,
+          "d": 6.5,
+          "type": "staff",
+          "detail": "",
+          "lighting_type": "office"
+        },
+        {
+          "id": "staffhall",
+          "label": "ADMIN STAFF CORRIDOR",
+          "x": 22,
+          "y": 7,
+          "w": 17.5,
+          "d": 3,
+          "type": "corridor",
+          "detail": "",
+          "lighting_type": "office"
+        },
+        {
+          "id": "office",
+          "label": "ADMIN / WARDEN OFFICE",
+          "x": 22,
+          "y": 10,
+          "w": 17.5,
+          "d": 8,
+          "type": "staff",
+          "detail": "Office and small meeting nook; warden administration is separate from police chief security command.",
+          "lighting_type": "office"
+        },
+        {
+          "id": "meeting",
+          "label": "VISITOR MEETING / LEGAL",
+          "x": 22,
+          "y": 18,
+          "w": 10,
+          "d": 5.5,
+          "type": "room",
+          "detail": "",
+          "lighting_type": "office"
+        },
+        {
+          "id": "staffwc",
+          "label": "STAFF REST / WCs",
+          "x": 32,
+          "y": 18,
+          "w": 7.5,
+          "d": 5.5,
+          "type": "staff",
+          "detail": "",
+          "lighting_type": "office"
+        }
+      ],
+      "doors": [
+        {
+          "a": "public",
+          "b": "secure",
+          "x": 20,
+          "y": 13,
+          "axis": "x",
+          "width": 2,
+          "kind": "gate",
+          "detail": "Staff-only controlled partition; public visitors do not pass north."
+        },
+        {
+          "a": "visitorhall",
+          "b": "public",
+          "x": 18,
+          "y": 15.5,
+          "axis": "z",
+          "width": 2,
+          "kind": "open",
+          "detail": ""
+        },
+        {
+          "a": "visitation",
+          "b": "visitorhall",
+          "x": 9.25,
+          "y": 13,
+          "axis": "x",
+          "width": 1.8,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "holding",
+          "b": "processing",
+          "x": 8.5,
+          "y": 3.75,
+          "axis": "z",
+          "width": 1.4,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "holding",
+          "b": "visitation",
+          "x": 4.5,
+          "y": 7,
+          "axis": "x",
+          "width": 1.4,
+          "kind": "gate",
+          "detail": "Door into the separated prisoner booth strip only."
+        },
+        {
+          "a": "processing",
+          "b": "secure",
+          "x": 18,
+          "y": 3.75,
+          "axis": "z",
+          "width": 1.6,
+          "kind": "gate",
+          "detail": ""
+        },
+        {
+          "a": "publicwc",
+          "b": "visitorhall",
+          "x": 3.5,
+          "y": 18,
+          "axis": "x",
+          "width": 1.4,
+          "kind": "door",
+          "detail": ""
+        },
+        {
+          "a": "reception",
+          "b": "visitorhall",
+          "x": 12.25,
+          "y": 18,
+          "axis": "x",
+          "width": 1.4,
+          "kind": "staff",
+          "detail": ""
+        },
+        {
+          "a": "records",
+          "b": "staffhall",
+          "x": 26.25,
+          "y": 7,
+          "axis": "x",
+          "width": 1.4,
+          "kind": "staff",
+          "detail": ""
+        },
+        {
+          "a": "interview",
+          "b": "staffhall",
+          "x": 35,
+          "y": 7,
+          "axis": "x",
+          "width": 1.4,
+          "kind": "door",
+          "detail": ""
+        },
+        {
+          "a": "staffhall",
+          "b": "secure",
+          "x": 22,
+          "y": 8.5,
+          "axis": "z",
+          "width": 1.8,
+          "kind": "staff",
+          "detail": ""
+        },
+        {
+          "a": "office",
+          "b": "staffhall",
+          "x": 30.75,
+          "y": 10,
+          "axis": "x",
+          "width": 1.4,
+          "kind": "staff",
+          "detail": ""
+        },
+        {
+          "a": "meeting",
+          "b": "public",
+          "x": 22,
+          "y": 20.75,
+          "axis": "z",
+          "width": 1.4,
+          "kind": "door",
+          "detail": ""
+        },
+        {
+          "a": "staffwc",
+          "b": "office",
+          "x": 35.75,
+          "y": 18,
+          "axis": "x",
+          "width": 1.4,
+          "kind": "staff",
+          "detail": ""
+        },
+        {
+          "a": "public",
+          "b": "OUTSIDE",
+          "x": 20,
+          "y": 23.5,
+          "axis": "x",
+          "width": 3.6,
+          "kind": "door",
+          "detail": "Existing front portico entrance.",
+          "side": "S"
+        },
+        {
+          "a": "secure",
+          "b": "OUTSIDE",
+          "x": 20,
+          "y": 0.5,
+          "axis": "x",
+          "width": 3.4,
+          "kind": "gate",
+          "detail": "Existing prison intake entrance.",
+          "side": "N"
+        }
+      ],
+      "notes": [
+        "The visitation block requires two internal parallel aisles separated by the booth screen; its diagram boundary represents the whole assembly.",
+        "No public path connects reception to a cellhouse through unlocked office doors. Public garden/path ends at reception.",
+        "Single floor under existing 6 m shell; no elevator or stairs needed."
+      ]
+    }
+  ]
+}
