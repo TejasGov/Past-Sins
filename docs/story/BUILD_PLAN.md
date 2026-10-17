@@ -76,6 +76,8 @@ Existing systems you'll use: `game.env` (clock `timeHours`, `dayNumber`, `setTim
 
 **Items:** `cellblock_key`, `service_key`, `medical_key` (dayroom rack), `maintenance_access_card` (2718 locker), `security_key`, `lab_key`, `cell_master_key` (HQ command), `bhosle_card` (ACCESS_CARD, Act III; opens Maintenance B1 Gated Landing), `pill` (pocketed dose), `jagran` (vial), `raman_notebook`, `mother_photo`.
 
+**Counters:** `story.getVar/setVar/addVar(name)`, action `{ "add": name, "by": n }`, condition `{ "count": { "name": …, "atLeast": n, "below": n } }`; persisted, `cycle:` names cleared by the wipe. Prefix names with your workstream (`npcs:kabir_visits`).
+
 **Flags** (persist unless prefixed `cycle:`): `capture_first`, `stash_unlocked`, `searchlights_off`, `kabir_freed`, `pistol_fired` (locks Mercy), `harmed_someone`, `confessed`, `observation_done`, `termination_tonight`; per cycle: `cycle:dose_taken`, `cycle:dose_pocketed`, `cycle:withdrawal`, `cycle:jagran`, `cycle:bhosle_card`, `cycle:locked_in`, `cycle:lights_out`. Triggers that fire once set `trigger:<id>` automatically.
 
 **Signals** (`story.signal(id, data)`): `routine:<beat>` with beats `count`, `breakfast`, `work`, `lunch`, `yard`, `dinner`, `lockin`, `lightsout`, `visitation`; `dose_offered`, `dose_taken`, `dose_pocketed`; `breath_segment {segment: 0–3}`, `breath_out`; `air_pocket {index}`; `hand_offered`, `hand_released`, `hand_taken`; `lift_ride {to: "b2" | "hq"}`; `alarm {reason}`; `observation_choice {choice}`; `searchlights_off`.

@@ -238,6 +238,22 @@ export class StoryDirector {
     this.refreshObjectives();
   }
 
+  getVar(name: string): number {
+    return this.state.vars.get(name) ?? 0;
+  }
+
+  setVar(name: string, value: number): void {
+    this.state.vars.set(name, value);
+    this.markDirty();
+    this.refreshObjectives();
+  }
+
+  addVar(name: string, by = 1): number {
+    const v = this.getVar(name) + by;
+    this.setVar(name, v);
+    return v;
+  }
+
   signal(id: string, data?: Record<string, unknown>): void {
     this.events.emit("signal", { id, data });
   }
@@ -262,6 +278,11 @@ export class StoryDirector {
       if (!(a <= b ? h >= a && h < b : h >= a || h < b)) return false;
     }
     if (c.day !== undefined && g.env.dayNumber !== c.day) return false;
+    if (c.count) {
+      const v = this.getVar(c.count.name);
+      if (c.count.atLeast !== undefined && v < c.count.atLeast) return false;
+      if (c.count.below !== undefined && v >= c.count.below) return false;
+    }
     return true;
   }
 
@@ -283,6 +304,7 @@ export class StoryDirector {
           : g.inventory.add({ id: a.give.id, displayName: a.give.label, category: cat as ItemCategory }, 1, false);
       if (ok) g.hud.showMessage(`${a.give.label.toUpperCase()} ACQUIRED`, 2);
     } else if ("take" in a) g.inventory.remove(a.take);
+    else if ("add" in a) this.addVar(a.add, a.by ?? 1);
     else if ("learnCode" in a) {
       this.state.codes.add(a.learnCode);
       this.markDirty();
@@ -454,6 +476,7 @@ export class StoryDirector {
     // "cycle:"-prefixed flags last one cycle (today's dose, Jagran, Bhosle's card…); onWipe
     // hooks above still see the ending cycle's values.
     for (const f of [...this.state.flags]) if (f.startsWith("cycle:")) this.setFlag(f, false);
+    for (const k of [...this.state.vars.keys()]) if (k.startsWith("cycle:")) this.state.vars.delete(k);
     this.save();
     this.events.emit("wipe", { cycle: this.state.cycle });
     this.refreshObjectives();
@@ -466,6 +489,7 @@ export class StoryDirector {
       act: this.state.act,
       objective: this.objectiveId,
       flags: [...this.state.flags].filter((f) => !f.startsWith("trigger:")),
+      vars: Object.fromEntries(this.state.vars),
       wall: this.state.wall.length,
     };
   }

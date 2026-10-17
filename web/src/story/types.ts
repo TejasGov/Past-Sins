@@ -35,6 +35,8 @@ export interface Condition {
   hours?: [number, number];
   /** Day of the current cycle (1-based; visitation is day 3). */
   day?: number;
+  /** Numeric story variable test (e.g. Kabir's visit count). Missing vars read as 0. */
+  count?: { name: string; atLeast?: number; below?: number };
 }
 
 /** Data-driven actions, run in order (some wait: shards, documents, dialogue). */
@@ -46,6 +48,7 @@ export type Action =
   | { give: { id: string; label: string; category?: "KEY" | "ACCESS_CARD" | "MISSION_ITEM" | "EQUIPMENT" } }
   | { take: string }
   | { learnCode: string }
+  | { add: string; by?: number }
   | { message: string; seconds?: number }
   | { say: string; speaker?: string; seconds?: number }
   | { dialogue: string }

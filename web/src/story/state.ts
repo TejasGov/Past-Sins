@@ -10,6 +10,7 @@ export interface SaveData {
   codes: string[];
   stash: string[];
   endings: string[];
+  vars?: Record<string, number>;
   memories: unknown;
 }
 
@@ -28,6 +29,8 @@ export class StoryState {
   readonly codes = new Set<string>();
   readonly stash = new Set<string>();
   readonly endings = new Set<string>();
+  /** Persistent numeric counters (visit counts, …); `cycle:` names are cleared by the wipe. */
+  readonly vars = new Map<string, number>();
 
   serialize(memories: unknown): SaveData {
     return {
@@ -38,6 +41,7 @@ export class StoryState {
       codes: [...this.codes],
       stash: [...this.stash],
       endings: [...this.endings],
+      vars: Object.fromEntries(this.vars),
       memories,
     };
   }
@@ -55,6 +59,8 @@ export class StoryState {
     for (const s of d.stash ?? []) this.stash.add(s);
     this.endings.clear();
     for (const e of d.endings ?? []) this.endings.add(e);
+    this.vars.clear();
+    for (const [k, v] of Object.entries(d.vars ?? {})) this.vars.set(k, v);
   }
 
   static load(): Partial<SaveData> | null {
