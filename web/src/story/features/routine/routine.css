@@ -1,0 +1,10 @@
+/* W2 routine line under the HUD clock (.hud-env, hud.css). Shares the HUD tokens. */
+.routine-hud { position: absolute; right: 28px; top: 35px; font-size: 10px; line-height: 12px; letter-spacing: 0.16em; color: var(--hud-dim); text-align: right; text-shadow: 0 1px 4px #000; white-space: nowrap; transition: color 0.4s; }
+.routine-hud .now { color: rgba(217, 223, 210, 0.82); }
+.routine-hud .sep { color: rgba(141, 150, 140, 0.55); }
+.routine-hud .next { color: var(--hud-dim); }
+.routine-hud.fresh .now { color: var(--hud-accent); }
+.routine-hud.urgent .now { color: #ff8a6b; animation: routine-pulse 1.1s ease-in-out infinite; }
+@keyframes routine-pulse { 0%, 100% { opacity: 0.55; } 50% { opacity: 1; } }
+/* Hidden with the rest of the gameplay HUD during loop cinematics (W1 adds .loop-cine to #hud). */
+#hud.loop-cine .routine-hud { opacity: 0; }

@@ -1,1 +1,209 @@
-{}
+{
+  "$comment": "W2 · Daily routine & the dose (src/story/features/routine). Hours are on the 12-real-minute clock (game.env, 30 real seconds per hour); `until` < `at` wraps past midnight; `day` limits a beat to one day of the cycle (the wipe resets the clock to 06:00 day 1). Every beat emits story.signal(\"routine:<id>\", { day, hour, until, label, ...signalData }). Beat ids count / lockin / lightsout drive the N03 checks below; `dose: true` beats open the dietary window.",
+  "beats": [
+    {
+      "id": "count",
+      "at": 6.0,
+      "until": 6.5,
+      "label": "COUNT",
+      "hint": "STAND AT THE BARS",
+      "lines": [
+        { "speaker": "TIER OFFICER", "text": "Count! Tier three, on your feet. At the bars." }
+      ]
+    },
+    {
+      "id": "breakfast",
+      "at": 7.0,
+      "until": 9.0,
+      "label": "BREAKFAST",
+      "hint": "DOSE · DIETARY WINDOW",
+      "dose": true,
+      "lines": [
+        { "speaker": "PA", "text": "Breakfast. Cellhouse A to Food Services. Dietary window is open." }
+      ]
+    },
+    {
+      "id": "work",
+      "at": 9.0,
+      "until": 12.5,
+      "label": "WORK ASSIGNMENT",
+      "hint": "MAINTENANCE · LAUNDRY",
+      "lines": [
+        { "speaker": "PA", "text": "Work assignments. Maintenance and laundry details, report to your stations." }
+      ]
+    },
+    {
+      "id": "visitation",
+      "at": 10.0,
+      "until": 11.0,
+      "day": 3,
+      "label": "VISITATION",
+      "hint": "ADMINISTRATION · BOOTHS",
+      "lines": [
+        { "speaker": "PA", "text": "Visitation. S-07, Administration. Booth two. You have a visitor." }
+      ]
+    },
+    {
+      "id": "lunch",
+      "at": 12.5,
+      "until": 14.0,
+      "label": "LUNCH",
+      "hint": "FOOD SERVICES",
+      "signalData": { "bhosleAwayUntil": 13.0 },
+      "lines": [
+        { "speaker": "PA", "text": "Lunch. Tier officers, rotate for your break." }
+      ]
+    },
+    {
+      "id": "yard",
+      "at": 14.0,
+      "until": 18.0,
+      "label": "YARD · GYM · POOL",
+      "hint": "RECREATION",
+      "lines": [
+        { "speaker": "PA", "text": "Yard is open. Gym and pool time until eighteen hundred." }
+      ]
+    },
+    {
+      "id": "dinner",
+      "at": 18.0,
+      "until": 19.0,
+      "label": "DINNER",
+      "hint": "DOSE · DIETARY WINDOW",
+      "dose": true,
+      "lines": [
+        { "speaker": "PA", "text": "Dinner. Evening medication at the dietary window. Lock-in at nineteen hundred." }
+      ]
+    },
+    {
+      "id": "lockin",
+      "at": 19.0,
+      "until": 21.0,
+      "label": "LOCK-IN",
+      "hint": "BACK IN N03 BY 19:30",
+      "lines": [
+        { "speaker": "TIER OFFICER", "text": "Lock-in! Everybody back in your cells. Chalo, chalo." }
+      ]
+    },
+    {
+      "id": "lightsout",
+      "at": 21.0,
+      "until": 6.0,
+      "label": "LIGHTS OUT",
+      "hint": "QUIET UNTIL THE COUNT",
+      "lines": [
+        { "speaker": "TIER OFFICER", "text": "Lights out." }
+      ]
+    }
+  ],
+  "hud": {
+    "now": "{label} · {hint}",
+    "nowNoHint": "{label}",
+    "next": "NEXT {time} {label}",
+    "separator": "   ",
+    "idle": "FREE TIME",
+    "toCell": "GET BACK TO N03"
+  },
+  "cell": {
+    "$comment": "Inside-N03 box in the parth_spawn anchor's frame (x right, z forward of its yaw; the gate is at z ≈ −3.4).",
+    "anchor": "parth_spawn",
+    "min": [-2.9, -0.6, -2.9],
+    "max": [1.8, 3.0, 2.45],
+    "gate": "cellhouse_a_floor3_north_03"
+  },
+  "count": {
+    "checkAt": 6.3,
+    "excuseWhen": { "flag": "cycle:loop_infirmary" },
+    "presentLines": [
+      { "speaker": "TIER OFFICER", "text": "S-07. Present." }
+    ],
+    "openGate": true,
+    "missed": {
+      "message": "MISSED THE COUNT",
+      "hint": "THEY ARE LOOKING FOR YOU",
+      "lines": [
+        { "speaker": "TIER OFFICER", "text": "N03 is empty! S-07 is off the count. Tier three, find him." }
+      ],
+      "suspicion": 60,
+      "holdSeconds": 20,
+      "alertGuards": ["cellhouse_a_tier3"],
+      "flag": "cycle:routine_missed_count"
+    }
+  },
+  "lockin": {
+    "graceUntil": 19.5,
+    "closeDelay": 1.2,
+    "lock": true,
+    "gateKey": "cellblock_key",
+    "lockedMessage": "LOCKED IN",
+    "lockedHint": "LOCKED IN",
+    "lockedLines": [
+      { "speaker": "TIER OFFICER", "text": "N03, secure." }
+    ],
+    "missed": {
+      "message": "MISSING AT LOCK-IN",
+      "hint": "OUT AFTER LOCK-IN",
+      "lines": [
+        { "speaker": "TIER OFFICER", "text": "N03 is still open. Where is S-07? Check the tier." }
+      ],
+      "suspicion": 55,
+      "holdSeconds": 15,
+      "alertGuards": ["cellhouse_a_tier3"],
+      "flag": "cycle:routine_missed_lockin"
+    }
+  },
+  "lightsOut": {
+    "fixtures": 0.22,
+    "grade": 0.72,
+    "rampSeconds": 2.5,
+    "chunks": ["cellhouseA", "cellhouseB"],
+    "message": "LIGHTS OUT"
+  },
+  "sleep": {
+    "at": { "anchor": "parth_spawn", "offset": [-1.55, 0.6, 1.98] },
+    "size": [2.0, 0.34, 1.05],
+    "prompt": "[E] Sleep until the count",
+    "when": { "all": [{ "flag": "cycle:lights_out" }, { "not": { "actAtLeast": 3 } }] },
+    "wakeHour": 5.9,
+    "fadeSeconds": 1.4,
+    "lines": [
+      { "speaker": "PARTH", "text": "Two. Seven. One. Eight…", "seconds": 2.6 }
+    ],
+    "wakeLines": []
+  },
+  "dose": {
+    "window": { "plan": "food-ground", "a": "dining", "b": "serving", "slots": 3, "slot": 2, "counterHeight": 1.02, "sign": "DIETARY · MEDICAL" },
+    "prompt": "[E] Take the paper cup",
+    "servedHint": "DOSE GIVEN",
+    "firstShard": "m03_dietary_window",
+    "offerLines": [
+      { "speaker": "DIETARY WINDOW", "text": "S-07. Your medication. In front of me, please." }
+    ],
+    "choicePrompt": "ONE WHITE PILL IN A PAPER CUP",
+    "swallow": {
+      "text": "Swallow it.",
+      "lines": [
+        { "speaker": "DIETARY WINDOW", "text": "Swallow. Good." }
+      ]
+    },
+    "pocket": {
+      "text": "Pocket it. Tongue, cheek, cuff.",
+      "lines": [
+        { "speaker": "DIETARY WINDOW", "text": "…Good. Next." },
+        { "speaker": "PARTH", "text": "(It's in my sleeve. She didn't look.)", "seconds": 2.8 }
+      ]
+    },
+    "item": { "id": "pill", "label": "Pocketed Pill" },
+    "swallowEndsWithdrawal": true
+  },
+  "withdrawal": {
+    "onsetSeconds": 24,
+    "recoverSeconds": 12,
+    "suspicionMultiplier": 1.3,
+    "grade": { "saturation": 0.45, "desaturate": 0.12, "contrast": 0.14, "tint": 0.22, "vignette": 0.22, "speed": 1.0 },
+    "sway": { "roll": 1.6, "pitch": 0.8, "yaw": 1.1, "bob": 0.018, "speed": 1.0 },
+    "onsetLines": [
+      { "speaker": "PARTH", "text": "(The light's wrong. My hands won't keep still.)", "seconds": 3.2 }
+    ]
+  }
+}
