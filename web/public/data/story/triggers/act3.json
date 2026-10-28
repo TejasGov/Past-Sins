@@ -84,7 +84,7 @@
       "room": "surveillance",
       "offset": [
         0,
-        1.1,
+        1.45,
         -5.95
       ]
     },
@@ -150,6 +150,32 @@
       {
         "message": "SEARCHLIGHTS OFF",
         "seconds": 2.2
+      }
+    ]
+  },
+  {
+    "id": "content_radio_after",
+    "kind": "interact",
+    "at": {
+      "plan": "hq-1",
+      "room": "control",
+      "offset": [
+        2.2,
+        0.925,
+        -0.45
+      ]
+    },
+    "model": "none",
+    "prompt": "[E] Use the radio",
+    "once": false,
+    "when": {
+      "flag": "searchlights_off"
+    },
+    "actions": [
+      {
+        "say": "Static. Out past the wall, the towers are dark.",
+        "speaker": "",
+        "seconds": 2.8
       }
     ]
   },

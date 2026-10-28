@@ -87,6 +87,7 @@
     "content_room_b_card": { "kind": "clipboard" },
     "content_lab_key": { "kind": "keytag", "color": 5214136 },
     "content_radio": { "kind": "radio" },
+    "content_radio_after": { "kind": "radio" },
     "content_master_key": { "kind": "keytag", "color": 12073260, "flat": true }
   },
   "locker": { "code": "2718", "flag": "cycle:content:locker_open" },

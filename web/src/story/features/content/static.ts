@@ -2,8 +2,11 @@ import { Vector3 } from "three";
 import type { StaticBuilder } from "../../../world/builder";
 import type { BuiltFloor } from "../../../world/campus/blueprintFloor";
 import { V } from "../../../world/props";
+import { SignAtlas } from "../../../world/signAtlas";
 import { chunkAt, resolvePlace } from "../../place";
 import type { ContentData, ContentPlace, FurnitureDef, PlateDef, Vec3 } from "./data";
+
+const PLATE_MAX = 0.42;
 
 interface Frame {
   position: Vector3;
@@ -75,7 +78,7 @@ function build(b: StaticBuilder, f: FurnitureDef): number {
           b.cylinder(V(x, h + 0.225, -0.05), 0.03, 0.02, { mat: "steel", shadow: false });
         }
         b.box(V(0.2, h + 0.08, 0.152), V(0.12, 0.03, 0.005), { mat: "emissive_red", collide: false, shadow: false });
-        for (let i = 0; i < 4; i++) b.box(V(-w / 2 + 0.16, h + 0.04 + i * 0.022, 0.12 - (i % 2) * 0.02), V(0.11, 0.018, 0.07), { mat: "plastic", color: 0x2a2b2c, collide: false, shadow: false });
+        for (let i = 0; i < 4; i++) b.box(V(-w / 2 + 0.16 + (i % 2) * 0.02, h + 0.034 + i * 0.019, -d / 2 + 0.1), V(0.11, 0.018, 0.07), { mat: "plastic", color: 0x2a2b2c, collide: false, shadow: false });
       }
       b.blocker(V(0, h / 2, 0), V(w, h, d));
       return h + 0.025;
@@ -153,12 +156,23 @@ function doorplate(b: StaticBuilder, floors: Map<string, BuiltFloor>, p: PlateDe
   const h = p.height ?? 1.55;
   const center = at.clone().addScaledVector(normal, 0.125).addScaledVector(axis, along);
   b.setChunk(chunkAt(center, b.chunks), true);
-  const lineH = 0.075;
+  // Name line large, the rest small; each shrinks to fit the plate.
+  const lines = p.lines.map((text, i) => {
+    const rect = b.atlas.add(text);
+    let px = i === 0 ? 0.0016 : 0.001;
+    const width = (q: number) => SignAtlas.quadHeight(rect, q) * rect.aspect;
+    if (width(px) > PLATE_MAX) px *= PLATE_MAX / width(px);
+    return { text, px, w: width(px), h: SignAtlas.quadHeight(rect, px) };
+  });
+  const plateW = Math.max(...lines.map((l) => l.w)) + 0.07;
+  const plateH = lines.reduce((sum, l) => sum + l.h * 0.62, 0) + 0.05;
   b.within(center, yaw, () => {
-    b.box(V(0, h, 0), V(0.46, 0.05 + lineH * p.lines.length, 0.015), { mat: "metal", color: 0x2b302d, collide: false, shadow: false });
-    p.lines.forEach((text, i) => {
-      const y = h + ((p.lines.length - 1) / 2 - i) * lineH;
-      b.sign(text, V(0, y, 0.004), 0, i === 0 ? 0xe2d8b0 : 0xb7b09a, i === 0 ? 0.0019 : 0.0012);
+    b.box(V(0, h, 0), V(plateW, plateH, 0.015), { mat: "metal", color: 0x2b302d, collide: false, shadow: false });
+    let y = h + plateH / 2 - 0.025;
+    lines.forEach((l, i) => {
+      y -= (l.h * 0.62) / 2;
+      b.sign(l.text, V(0, y, 0.004), 0, i === 0 ? 0xe2d8b0 : 0xb7b09a, l.px);
+      y -= (l.h * 0.62) / 2;
     });
   });
 }
