@@ -144,8 +144,15 @@ export class Meera {
   }
 
   onCapture(): void {
-    // The capture sequence takes the camera; nothing to restore.
+    // The capture sequence ("Again, then.") takes the camera: hand back the override and the fade.
     this.run++;
+    if (this.seated) {
+      const g = this.rt.game;
+      this.cineTween = null;
+      this.fadeTween = null;
+      g.cine.weight = 0;
+      g.render.fade.uniforms.get("amount")!.value = this.savedFade;
+    }
     this.seated = false;
     this.lightTarget = 0;
     if (this.falseWindow) this.falseWindow.visible = false;
@@ -211,7 +218,11 @@ export class Meera {
     if (!eye) return;
     g.cine.position.copy(eye.position);
     if (look) g.cine.look.copy(look.position);
-    else this.actor.bonePoint("mixamorigSpine2", g.cine.look);
+    else {
+      // False window: frame the glass with her in it.
+      const p = this.actor.position;
+      g.cine.look.set(p.x, eye.position.y + 0.3, p.z);
+    }
   }
 
   async sit(): Promise<void> {
@@ -221,16 +232,12 @@ export class Meera {
     this.seated = true;
     const pl = g.player;
     pl.setControlEnabled(false);
+    this.story.ui.clearSubtitles();
     this.story.signal("npcs:chair", { beat: "sit" });
     this.savedFade = g.render.fade.uniforms.get("amount")!.value as number;
     await this.fade(1, 0.7);
     if (run !== this.run) return;
     // Parth on the seat facing the glass (the restraint chair faces the far wall, so the shot is the subject's view).
-    const eye = this.rt.resolve(this.chair.eye);
-    if (eye) {
-      pl.teleport(eye.position.clone().setY(eye.position.y - 1.2), eye.yaw);
-      pl.setControlEnabled(false);
-    }
     if (this.falseWindow) this.falseWindow.visible = true;
     const at = this.standPlace();
     const a = this.actor;
@@ -239,6 +246,15 @@ export class Meera {
     a.pose("folded", 1, 0);
     this.lightTarget = 1;
     this.aimSeated();
+    const eye = this.rt.resolve(this.chair.eye);
+    if (eye) {
+      // Parth's own camera faces the glass too: the shard hands the camera back to it.
+      pl.teleport(eye.position.clone().setY(eye.position.y - 1.2), 0);
+      const d = g.cine.look.clone().sub(g.cine.position);
+      pl.yaw = Math.atan2(-d.x, -d.z);
+      pl.pitch = Math.atan2(d.y, Math.hypot(d.x, d.z));
+      pl.setControlEnabled(false);
+    }
     g.cine.weight = 1;
     await this.fade(this.savedFade, 1.2);
     if (run !== this.run) return;
