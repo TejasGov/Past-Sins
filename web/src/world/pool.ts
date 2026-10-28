@@ -19,6 +19,8 @@ export interface WaterOptions {
   colors?: { deep?: number; shallow?: number; sky?: number };
   /** Underwater fog while the camera is in this volume (`color` before `scale`, density at full immersion). */
   fog?: { color: number; scale?: number; density: number };
+  /** Open to the sky (default true); underground water never shows the sun's glint. */
+  sunlit?: boolean;
 }
 
 /**
@@ -36,6 +38,7 @@ export class SwimmingPool {
   readonly ceiling: boolean;
   readonly tag: string;
   readonly fog: { color: Color; density: number };
+  readonly sunlit: boolean;
 
   /** Water filling the box `min`..`max` (surface at `max.y`). */
   static box(min: Vector3, max: Vector3, opts: WaterOptions = {}): SwimmingPool {
@@ -48,6 +51,7 @@ export class SwimmingPool {
     this.bottomY = center.y - depth;
     this.ceiling = opts.ceiling ?? false;
     this.tag = opts.tag ?? "pool";
+    this.sunlit = opts.sunlit ?? true;
     const fog = opts.fog ?? POOL_FOG;
     this.fog = { color: new Color(fog.color).multiplyScalar(fog.scale ?? 1), density: fog.density };
     const colors = opts.colors ?? {};
@@ -65,7 +69,7 @@ export class SwimmingPool {
           sky: { value: new Color(colors.sky ?? 0x9fb4bd) },
           sunDir: { value: new Vector3(0.3, 0.8, 0.2) },
           sunColor: { value: new Color(1, 0.95, 0.85) },
-          sunStrength: { value: 1 },
+          sunStrength: { value: this.sunlit ? 1 : 0 },
         },
       ]),
       vertexShader: /* glsl */ `
@@ -130,6 +134,11 @@ export class SwimmingPool {
 
   update(dt: number): void {
     this.material.uniforms.time.value += dt;
+  }
+
+  /** Glint strength from the sky (0 at night); ignored for underground water. */
+  setSun(strength: number): void {
+    if (this.sunlit) this.material.uniforms.sunStrength.value = strength;
   }
 }
 

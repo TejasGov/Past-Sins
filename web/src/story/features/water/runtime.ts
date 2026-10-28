@@ -120,6 +120,9 @@ export class WaterRuntime {
     const swim = g.swim;
     this.stepFades(dt);
     this.hatchWater?.update(dt);
+    // The water shader's glint follows the sky (it stayed at full sun through the night).
+    const sun = Math.min(1, g.env.skySample().daylight * 1.2) * (g.env.weather === "RAINY" ? 0.15 : 1);
+    for (const w of g.pools) w.setSun(sun);
     this.hand.update(dt);
     this.guards.update(dt);
     if (this.guardsCleanup && !s.capturing && this.mode !== "t3") {

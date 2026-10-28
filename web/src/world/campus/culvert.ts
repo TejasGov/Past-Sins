@@ -113,12 +113,12 @@ export function culvertWater(L: CulvertLayout): SwimmingPool[] {
   const dark = { deep: 0x05100f, shallow: 0x0d2524, sky: 0x31403e };
   const blackFog = { color: 0x0a1514, density: 0.24 };
   const out = [
-    SwimmingPool.box(V(t.x0, t.y0, L.shaft.z0), V(t.x1, L.shaft.surfaceY, L.shaft.z1), { tag: "culvert:sump", colors: dark, fog: blackFog }),
-    SwimmingPool.box(V(t.x0, t.y0, L.shaft.z1), V(t.x1, t.y1, t.z1 + 0.6), { tag: "culvert:tube", ceiling: true, fog: blackFog }),
+    SwimmingPool.box(V(t.x0, t.y0, L.shaft.z0), V(t.x1, L.shaft.surfaceY, L.shaft.z1), { tag: "culvert:sump", colors: dark, fog: blackFog, sunlit: false }),
+    SwimmingPool.box(V(t.x0, t.y0, L.shaft.z1), V(t.x1, t.y1, t.z1 + 0.6), { tag: "culvert:tube", ceiling: true, fog: blackFog, sunlit: false }),
   ];
   // Seen from below, a pocket's surface catches the vent's grey light: the only thing to aim for.
   const glint = { deep: 0x1c3533, shallow: 0x5d807c, sky: 0xc4d4d0 };
-  for (const p of L.pockets) out.push(SwimmingPool.box(p.min, p.max, { tag: `culvert:pocket:${p.index}`, colors: glint, fog: blackFog }));
+  for (const p of L.pockets) out.push(SwimmingPool.box(p.min, p.max, { tag: `culvert:pocket:${p.index}`, colors: glint, fog: blackFog, sunlit: false }));
   const r = L.reservoir;
   out.push(
     SwimmingPool.box(V(r.x0, r.floorY, r.z0), V(r.x1, r.surfaceY, r.z1), {
@@ -135,6 +135,7 @@ export function culvertHatchWater(L: CulvertLayout): SwimmingPool {
   const w = new SwimmingPool(L.hatch.clone().add(V(0, 0.012, 0)), 1.08, 1.08, 0.01, 0, {
     tag: "culvert:hatch",
     colors: { deep: 0x020606, shallow: 0x0b1d1c, sky: 0x4a5552 },
+    sunlit: false,
   });
   w.mesh.name = "Water:culvert:hatch";
   return w;
