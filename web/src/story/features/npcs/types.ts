@@ -96,7 +96,8 @@ export interface KabirDef extends NpcDef {
   freedFlag: string;
   followFlag: string;
   follow: { near: number; far: number; walk: number; run: number; repath: number };
-  freedLines?: { speaker: string; text: string }[];
+  /** Said when he is stuck behind a closed door for a few seconds. */
+  blockedLine?: { speaker: string; text: string };
 }
 
 export interface MotherDef extends NpcDef {

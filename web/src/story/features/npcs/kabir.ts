@@ -17,6 +17,8 @@ export class Kabir {
   private lastParth = new Vector3();
   private goal = new Vector3();
   private leaving = false;
+  private blocked = 0;
+  private calledOut = -1e9;
 
   constructor(
     private rt: NpcRuntime,
@@ -93,6 +95,7 @@ export class Kabir {
     this.leaving = false;
     this.following = true;
     this.repath = 0;
+    this.lastParth.copy(this.rt.game.player.position);
   }
 
   onSignal(id: string, _data?: Record<string, unknown>): void {
@@ -131,13 +134,24 @@ export class Kabir {
     this.lastParth.copy(parth);
     const d = a.position.distanceTo(parth);
     a.lookTargetWeight = d < 6 ? 0.6 : 0;
+    // Stuck behind a door Parth closed: he says so (data `blockedLine`), once in a while.
+    this.blocked = a.blockedFor > 0 ? this.blocked + dt : 0;
+    const now = this.rt.game.env.timeHours * 3600;
+    const line = this.def.blockedLine;
+    if (line && this.blocked > 3 && d < 18 && Math.abs(now - this.calledOut) > 1800 && !this.story.ui.speaking) {
+      this.calledOut = now;
+      a.talking = true;
+      this.story.events.emit("dialogue", { id: "npcs_kabir_blocked", speaker: line.speaker, text: line.text });
+      void this.story.ui.say(line.speaker, line.text).then(() => (a.talking = false));
+    }
     this.repath -= dt;
     if (d < this.def.follow.near) {
       if (a.walking) a.stop();
       a.faceTo(parth);
       return;
     }
-    if (this.repath > 0 && a.walking && this.goal.distanceTo(parth) < 1.5) return;
+    // Re-plan only when he has stopped, or Parth has moved on and the timer allows.
+    if (a.walking && (this.repath > 0 || this.goal.distanceTo(parth) < 1.5)) return;
     this.repath = this.def.follow.repath;
     this.goal.copy(parth);
     const speed = d > this.def.follow.far ? this.def.follow.run : this.def.follow.walk;

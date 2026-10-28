@@ -185,7 +185,7 @@
         "Ch35_body1": "#cbc4b0"
       },
       "face": {
-        "skin": "#7a4e34"
+        "skin": "#9a6a4c"
       },
       "scale": 0.95,
       "props": [
@@ -211,7 +211,7 @@
       "offset": [
         0.15,
         0,
-        0.85
+        0.62
       ],
       "yaw": 3.14159
     },
@@ -246,7 +246,11 @@
           }
         ]
       }
-    ]
+    ],
+    "blockedLine": {
+      "speaker": "KABIR",
+      "text": "Parth. The door, yaar. I'm a prisoner, not a ghost."
+    }
   },
   "mother": {
     "speaker": "VISITOR",

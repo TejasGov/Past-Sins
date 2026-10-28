@@ -143,8 +143,8 @@ const PROPS: Record<string, PropSpec> = {
       const hair = mesh(new SphereGeometry(0.106, 18, 12, 0, Math.PI * 2, 0, Math.PI * 0.52), ink, 0, 0.152, 0.03);
       hair.scale.set(0.94, 1.0, 1.08);
       g.add(hair);
-      const beard = mesh(new SphereGeometry(0.06, 12, 8), ink, 0, 0.05, 0.1);
-      beard.scale.set(1.05, 0.95, 0.75);
+      const beard = mesh(new SphereGeometry(0.052, 12, 8), ink, 0, 0.042, 0.092);
+      beard.scale.set(1.0, 0.8, 0.62);
       g.add(beard);
       return g;
     },
