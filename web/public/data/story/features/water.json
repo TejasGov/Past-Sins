@@ -1,1 +1,75 @@
-{}
+{
+  "$comment": "W3 · Water (src/story/features/water). Breath 2·7·1·8, pool shards T1–T3 (act 2 → 3), the drainage culvert to the reservoir and the hand (T4). Pool-local coordinates are metres from the pool anchor (deck level, +x = deep end). Numbers left out fall back to src/story/features/water/data.ts.",
+  "breath": {
+    "segments": [2, 7, 1, 8],
+    "labels": ["2", "7", "1", "8"],
+    "caption": "BREATH",
+    "chokeSeconds": 3,
+    "refillPerSecond": 9,
+    "speaker": "RAMAN",
+    "count": [
+      { "text": "Two…", "seconds": 1.5, "audio": "count_2" },
+      { "text": "Seven…", "seconds": 2.4, "audio": "count_7" },
+      { "text": "One…", "seconds": 0.9, "audio": "count_1" },
+      { "text": "Eight…", "seconds": 2.6, "audio": "count_8" }
+    ],
+    "countWhen": { "any": [{ "shard": "t1_summer" }, { "actAtLeast": 3 }] },
+    "drownReason": "drowned"
+  },
+  "pool": {
+    "t1": {
+      "shard": "t1_summer",
+      "region": [-10, -5, 0, 5],
+      "delay": 1.2
+    },
+    "grate": {
+      "at": [7, -2.4, -3.6],
+      "prompt": "[E] Grip the grate",
+      "letGoPrompt": "[E] Let go",
+      "fullBreath": 17.5,
+      "atSegment": 3,
+      "t2": { "shard": "t2_deeper", "when": { "flag": "cycle:withdrawal" } },
+      "t3": { "shard": "t3_the_hand", "when": { "all": [{ "flag": "cycle:withdrawal" }, { "flag": "cycle:jagran" }, { "shard": "t2_deeper" }] } },
+      "shimmerWhen": { "flag": "cycle:withdrawal" },
+      "notYet": "JUST A DRAIN",
+      "needFullBreath": "FROM THE TWO · A FULL BREATH",
+      "done": "ONLY A DRAIN NOW"
+    },
+    "t3": {
+      "guards": [[11.0, 0, -2.6], [10.9, 0, 0.9], [8.6, 0, -6.1]],
+      "speaker": [11.9, 0, -5.4],
+      "surfaceLines": [
+        { "say": "(gasping)", "speaker": "PARTH", "seconds": 1.8 }
+      ],
+      "speakerLines": [
+        { "say": "You remembered. You always remember the tank.", "speaker": "MEERA", "seconds": 3.6 },
+        { "say": "You never remember why you came.", "speaker": "MEERA", "seconds": 3.4 }
+      ],
+      "after": [{ "wait": 1.2 }, { "capture": "caught" }]
+    }
+  },
+  "culvert": {
+    "hatchPrompt": "[E] Lower yourself into the sump",
+    "ladderPrompt": "[E] Climb out",
+    "sumpSign": "SUMP 3 · CULVERT ACCESS\nCONFINED SPACE · NO ENTRY",
+    "outfallSign": "OUTFALL C-3",
+    "enterLines": [
+      { "say": "Two. Seven. One. Eight.", "speaker": "PARTH", "seconds": 2.6 }
+    ],
+    "gaps": [2, 7, 1, 8]
+  },
+  "hand": {
+    "shard": "t4_surface",
+    "releasePrompt": "LET GO",
+    "holdPrompt": "HOLD ON",
+    "holdSeconds": 1.4,
+    "releasedLines": [],
+    "takenLines": [],
+    "dawnHours": 6.1
+  },
+  "route": {
+    "landingDoor": "campus_maintenance-b1_spine_landing",
+    "landingKey": "bhosle_card",
+    "masterDoors": ["campus_maintenance-b1_spine_crossw"]
+  }
+}
