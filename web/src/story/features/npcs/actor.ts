@@ -1,6 +1,6 @@
 import {
   AnimationAction, AnimationMixer, BoxGeometry, Color, Euler, Group, LoopRepeat, Mesh, MeshBasicMaterial, MeshStandardMaterial, Object3D,
-  Quaternion, Source, Vector3, type Material, type SkinnedMesh, type Texture,
+  Quaternion, TextureSource, Vector3, type Material, type SkinnedMesh, type Texture,
 } from "three";
 import * as SkeletonUtils from "three/addons/utils/SkeletonUtils.js";
 import type { CharacterAsset } from "../../../ai/guardVisual";
@@ -45,7 +45,7 @@ function recolored(src: Texture, hex: string, contrast: number): Texture {
   ctx.putImageData(data, 0, 0);
   // clone() shares the Source (setting .image would repaint every guard): give it its own.
   const tex = src.clone();
-  tex.source = new Source(canvas);
+  tex.source = new TextureSource(canvas);
   tex.needsUpdate = true;
   return tex;
 }
