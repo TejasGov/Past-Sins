@@ -87,6 +87,10 @@ export class RoutineRuntime {
     this.station = new DoseStation(game, data.dose, () => void this.offerDose());
     if (!this.station.place(dietaryWindow(game.floors, data.dose.window), game)) console.warn("[routine] dietary window not found; no dose");
     this.spawnBunk();
+    // Act III night restart (W1): the clock goes back to 19:00, so lock-in runs again.
+    this.story.events.on("signal", (e) => {
+      if (e.id === "loop:night_restart") this.schedule.reset();
+    });
   }
 
   private get t(): number {
@@ -186,8 +190,11 @@ export class RoutineRuntime {
   // ── 19:00 lock-in ─────────────────────────────────────────────────────────
   private startLockin(o: Occurrence): void {
     const l = this.data.lockin;
-    // Cells stand open for lock-in (also covers a gate still locked from a skipped morning).
-    this.cell?.unlock(true, this.game.player);
+    // A re-run evening (night restart) starts with the lights on; a gate still locked from a
+    // skipped morning is opened so Parth can get back in.
+    this.setLightsOut(false);
+    if (this.cell?.gate?.isLocked) this.cell.unlock(!this.inCell, this.game.player);
+    else this.cell?.restoreKey();
     this.lockDeadline = absHours(o.day, l.graceUntil < o.beat.at ? l.graceUntil + 24 : l.graceUntil);
     this.lock = "waiting";
     this.story.setFlag("cycle:locked_in", false);
@@ -206,41 +213,42 @@ export class RoutineRuntime {
         } else if (this.t >= this.lockDeadline) {
           this.lock = "missed";
           this.missed(l.missed, "lockin");
-          cell.close(p);
-          this.lockTimer = 0.9;
+          this.lockTimer = 0;
         }
         break;
       case "closing":
         if (!this.inCell) this.lock = "waiting";
         else if ((this.lockTimer -= dt) <= 0) {
-          cell.close(p);
           this.lock = "locking";
-          this.lockTimer = 0.9;
+          this.lockTimer = 0;
         }
         break;
       case "locking":
-        if ((this.lockTimer -= dt) > 0) break;
-        if (cell.gate?.isOpen) {
-          // Stepped back out into the doorway: the officer waits.
-          this.lock = this.inCell ? "closing" : "waiting";
-          this.lockTimer = l.closeDelay;
+      case "missed": {
+        if (this.lockTimer < 0 || (this.lockTimer -= dt) > 0) break;
+        if (this.lock === "locking" && !this.inCell) {
+          this.lock = "waiting";
           break;
         }
-        this.lockGate();
-        this.lock = "locked";
-        this.story.setFlag("cycle:locked_in");
-        this.game.hud.showMessage(l.lockedMessage, 2.2);
-        void sayLines(this.story, l.lockedLines);
-        break;
-      case "missed":
-        // Lock the empty cell once the gate is shut.
-        if (this.lockTimer > 0 && (this.lockTimer -= dt) <= 0) {
-          if (cell.gate?.isOpen) {
-            cell.close(p);
-            this.lockTimer = 0.9;
-          } else this.lockGate();
+        // Let a moving gate finish, roll an open one shut (retrying while the doorway is
+        // blocked), then lock it.
+        const gate = cell.gate;
+        if (gate?.isMoving) this.lockTimer = 0.2;
+        else if (gate?.isOpen) {
+          cell.close(p);
+          this.lockTimer = 0.9;
+        } else {
+          this.lockGate();
+          this.lockTimer = -1;
+          if (this.lock === "locking") {
+            this.lock = "locked";
+            this.story.setFlag("cycle:locked_in");
+            this.game.hud.showMessage(l.lockedMessage, 2.2);
+            void sayLines(this.story, l.lockedLines);
+          }
         }
         break;
+      }
     }
   }
 
