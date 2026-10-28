@@ -1,3 +1,4 @@
+import { gsap } from "gsap";
 import "./loop.css";
 
 function div(cls: string, parent: HTMLElement, html = ""): HTMLDivElement {
@@ -86,6 +87,7 @@ export class LoopOverlay {
     this.flash = div("loop-flash", this.root);
     this.klaxonEl = div("loop-klaxon", this.root);
     this.skipEl = div("loop-skip", this.root);
+    this.clear();
   }
 
   setCaption(text: string): void {
@@ -106,10 +108,10 @@ export class LoopOverlay {
   /** Back to fully transparent (nothing covering the view). */
   clear(): void {
     for (const e of [this.water, this.streaks, this.caption, this.flash]) e.style.opacity = "0";
-    this.lidTop.style.transform = "translateY(-110%)";
-    this.lidBottom.style.transform = "translateY(110%)";
-    this.barTop.style.transform = "scaleY(0)";
-    this.barBottom.style.transform = "scaleY(0)";
+    // GSAP owns these transforms (the timelines tween yPercent / scaleY).
+    gsap.set(this.lidTop, { yPercent: -112 });
+    gsap.set(this.lidBottom, { yPercent: 112 });
+    gsap.set([this.barTop, this.barBottom], { scaleY: 0 });
     this.setSkipHint(null);
   }
 }

@@ -114,6 +114,8 @@ export class LoopRuntime {
     g.memory.events.on("clue_learned", () => this.refreshWall());
     // The cold open waits for the real start click (automation calling begin() skips it).
     g.hud.start.addEventListener("click", () => (this.introArmed = true));
+    // A reload is another wake-up: the klaxon isn't saved, so the stair may sound again.
+    story.setFlag("cycle:loop_alarm", false);
     this.refreshTally();
     this.refreshWall();
   }
@@ -311,7 +313,7 @@ export class LoopRuntime {
     tl.to(amount, { value: 1, duration: 2.0, ease: "power2.in" }, t + 6.0);
     t += 8.4;
     tl.call(() => this.beat("black", reason), [], t - 0.3);
-    tl.to(o.barTop, { opacity: 1, duration: 0.01 }, t);
+    tl.to({}, { duration: 0.01 }, t);
 
     o.setSkipHint(skippable ? (c.skipHint ?? "") : null);
     await this.clock.play(tl, skippable, () => {
@@ -372,8 +374,7 @@ export class LoopRuntime {
       };
     }
     const f = this.frame;
-    const spawn = this.game.anchors.get("parth_spawn");
-    if (!f || !spawn) return null;
+    if (!f) return null;
     const p = (a: readonly number[]) => f.toWorld(a[0], a[1], a[2]);
     return {
       lying: p(CELL_SHOTS.lying.eye),
@@ -381,9 +382,9 @@ export class LoopRuntime {
       sitting: p(CELL_SHOTS.sitting.eye),
       sitLook: p(CELL_SHOTS.sitting.look),
       tally: { eye: p(CELL_SHOTS.tally.eye), look: p(CELL_SHOTS.tally.look) },
-      feet: spawn.position.clone(),
+      feet: p(CELL_SHOTS.stand.feet),
       // Facing the wall: the first thing every cycle shows is what he already knows.
-      yaw: f.facing(-1, 0),
+      yaw: f.facing(CELL_SHOTS.stand.dir[0], CELL_SHOTS.stand.dir[1]),
     };
   }
 
@@ -459,6 +460,7 @@ export class LoopRuntime {
       tl.to(o.lidTop, { yPercent: -112, duration: 1.3, ease: "power2.out" }, 2.0);
       tl.to(o.lidBottom, { yPercent: 112, duration: 1.3, ease: "power2.out" }, 2.0);
       tl.to(amount, { value: 0, duration: 2.2 }, 1.9);
+      tl.to([o.barTop, o.barBottom], { scaleY: 0, duration: 1.4, ease: "power2.inOut" }, 2.2);
       tl.to(desat, { value: 0, duration: 3.2 }, 1.9);
       tl.call(() => this.story.signal("loop:breath", { heavy: false }), [], 2.4);
       tl.to(g.cine.position, { y: `+=0.035`, duration: 1.1, yoyo: true, repeat: 1, ease: "sine.inOut" }, 2.4);

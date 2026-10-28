@@ -3,7 +3,6 @@ import {
 } from "three";
 import { markInteractable, type Interactable } from "../../../interact/interactable";
 import { PARTH_SPAWN_LOCAL, PARTH_SPAWN_YAW } from "../../../world/campus/cell";
-import type { Game } from "../../../game/game";
 import type { WallEntry } from "../../types";
 
 /**
@@ -264,38 +263,54 @@ export class CellMarks {
     });
 
     // Codes: big, deep, top right (the first thing a thumb finds).
-    let codeY = 150;
+    let codeY = 40;
+    let codeLeft = c.width;
     for (const code of w.codes) {
       const text = w.codeFormat(code);
       ctx.font = `600 120px ${HAND}`;
-      const width = ctx.measureText(text).width;
-      scratchText(ctx, text, c.width - width - 90, codeY, 120, 1, hash(code));
-      codeY += 140;
+      const x = c.width - ctx.measureText(text).width - 90;
+      codeY += 120;
+      scratchText(ctx, text, x, codeY, 120, 1, hash(code));
+      codeLeft = Math.min(codeLeft, x - 30);
+      codeY += 20;
     }
 
-    // Entries flow in columns, oldest first, skipping the hidden nook and the codes.
-    const colW = (c.width - 160) / 3;
-    const size = 54;
-    const lineH = size * 1.15;
-    let col = 0;
-    let y = 110;
-    const colX = (i: number) => 80 + i * colW;
-    const bottomFor = (i: number) => (colX(i) < nookRight ? nookTop - 30 : c.height - 40);
-    const topFor = (i: number) => (i === 2 && w.codes.length ? codeY + 10 : 110);
-    y = topFor(0);
-    for (const e of w.entries) {
-      const lines = wrap(ctx, w.entryFormat(e), size, colW - 70);
-      const height = lines.length * lineH + 36;
-      while (col < 3 && y + height > bottomFor(col)) {
-        col++;
-        y = topFor(col);
+    // Entries flow in columns, oldest first, around the hidden nook and the codes;
+    // the writing gets smaller as the wall fills up.
+    const layout = (size: number, cols: number, force: boolean) => {
+      const colW = (c.width - 160) / cols;
+      const lineH = size * 1.15;
+      const colX = (i: number) => 80 + i * colW;
+      const bottomFor = (i: number) => (colX(i) < nookRight ? nookTop - 30 : c.height - 40);
+      const topFor = (i: number) => (colX(i) + colW > codeLeft ? codeY + 30 : 110);
+      const out: { e: WallEntry; lines: string[]; x: number; y: number }[] = [];
+      let col = 0;
+      let y = topFor(0);
+      for (const e of w.entries) {
+        const r = rng(hash(e.id));
+        const lines = wrap(ctx, w.entryFormat(e), size, colW - 50);
+        const height = lines.length * lineH + size * 0.65;
+        while (col < cols && y + height > bottomFor(col)) {
+          col++;
+          y = col < cols ? topFor(col) : y;
+        }
+        if (col >= cols) {
+          if (force) break;
+          return null;
+        }
+        out.push({ e, lines, x: colX(col) + r() * 20, y });
+        y += height + size * 0.45 + r() * 14;
       }
-      if (col >= 3) break;
-      const r = rng(hash(e.id));
-      const x = colX(col) + r() * 24;
+      return { out, size, lineH };
+    };
+    const sizes: [number, number][] = [[54, 3], [46, 3], [40, 3], [35, 4], [30, 4], [26, 5], [22, 5]];
+    let plan = null;
+    for (const [size, cols] of sizes) if ((plan = layout(size, cols, false))) break;
+    plan ??= layout(22, 5, true)!;
+    for (const { e, lines, x, y } of plan.out) {
+      const { size, lineH } = plan;
       lines.forEach((line, i) => scratchText(ctx, line, x, y + i * lineH + size, size, 0.95, hash(e.id) + i));
-      scratchText(ctx, w.cycleFormat(e), x + 4, y + lines.length * lineH + size + 4, 30, 0.6, hash(e.id) ^ 7);
-      y += height + 24 + r() * 16;
+      scratchText(ctx, w.cycleFormat(e), x + 4, y + lines.length * lineH + size * 1.05, size * 0.55, 0.6, hash(e.id) ^ 7);
     }
     this.wallTex.needsUpdate = true;
   }
@@ -330,7 +345,8 @@ export class CellHotspot implements Interactable {
 
 /** Hotspots: the wall above the bunk, and the toilet cistern (stash). */
 export const HOTSPOTS = {
-  wall: { center: [REAR_FACE + 0.08, 1.75, -1.0] as [number, number, number], size: [0.14, 1.7, 2.6] as [number, number, number] },
+  // Whole wall; below the privacy wall's top the occluder hides the nook part.
+  wall: { center: [REAR_FACE + 0.08, 2.1, 0] as [number, number, number], size: [0.14, 2.5, 4.6] as [number, number, number] },
   cistern: { center: [-2.4, 0.78, 2.04] as [number, number, number], size: [0.62, 0.62, 0.42] as [number, number, number] },
 };
 
@@ -339,9 +355,6 @@ export const CELL_SHOTS = {
   lying: { eye: [-2.2, 0.98, -1.5], look: [-0.9, 3.1, -0.7] },
   sitting: { eye: [-1.8, 1.32, -0.8], look: [0.6, 1.25, -0.2] },
   tally: { eye: [-1.0, 0.3, -1.0], look: [REAR_FACE, 0.15, -1.0] },
+  /** Where he stands when the camera hands back: clear of the privacy wall, facing the wall. */
+  stand: { feet: [-0.3, 0.05, -0.55], dir: [-1, 0.12] },
 } as const;
-
-export function standingPose(game: Game, frame: CellFrame): { feet: Vector3; yaw: number } {
-  const spawn = game.anchors.get("parth_spawn")!;
-  return { feet: spawn.position.clone(), yaw: frame.facing(-1, -0.12) };
-}

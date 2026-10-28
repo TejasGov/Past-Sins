@@ -32,16 +32,17 @@ function silhouette(): Group {
   const bun = new Mesh(new SphereGeometry(0.058, 12, 8), ink);
   bun.position.set(0.01, 1.7, 0.1);
   g.add(head, bun);
-  // Left arm hangs; the right is folded across her, holding something (the tape remote).
-  const arm = (x: number, rz: number, rx: number, y: number, z: number) => {
-    const a = new Mesh(new CapsuleGeometry(0.045, 0.5, 4, 8), ink);
+  // Arms folded: she has watched this forty times.
+  const arm = (x: number, y: number, z: number, rz: number, length: number) => {
+    const a = new Mesh(new CapsuleGeometry(0.047, length, 4, 8), ink);
     a.position.set(x, y, z);
-    a.rotation.set(rx, 0, rz);
+    a.rotation.z = rz;
     g.add(a);
   };
-  arm(-0.25, -0.12, 0, 1.1, 0);
-  arm(0.24, 0.1, 0, 1.24, 0);
-  arm(0.12, 1.25, 0, 1.06, -0.12);
+  arm(-0.215, 1.25, 0, -0.16, 0.24);
+  arm(0.215, 1.25, 0, 0.16, 0.24);
+  arm(0, 1.15, -0.08, Math.PI / 2 + 0.12, 0.36);
+  arm(0, 1.11, -0.09, Math.PI / 2 - 0.12, 0.36);
   return g;
 }
 
@@ -50,7 +51,7 @@ function silhouette(): Group {
  * the observation window in NIDRA B2 Interrogation A (with Meera's silhouette
  * behind the glass) and two escort guards for the HQ lift shot.
  *
- * The window is built as a false wall 1.3 m in front of Interrogation A's
+ * The window is built as a false wall 0.95 m in front of Interrogation A's
  * south wall: the plan's observation windows are misplaced (they stand inside
  * the Observation room after the floor-plan compaction), and this keeps the
  * shot right either way.
@@ -94,7 +95,7 @@ export class CaptureSet {
     if (!floor || !room || !center) return;
     // Interrogation A's south wall (towards Observation) is at +z in world space.
     const south = center.z + room.d / 2 - 0.12;
-    const wallZ = south - 1.3;
+    const wallZ = south - 0.95;
     const glass = { w: 3, y0: 0.96, y1: 2.08 };
     const h = 3.7;
     const width = room.w - 0.06;
@@ -113,8 +114,8 @@ export class CaptureSet {
     for (let i = 0; i < 4; i++) kit.box(V(1.95, 1.35 + i * 0.045, -0.125), V(0.28, 0.012, 0.01), "steel", 0x5d6461);
     kit.box(V(0, (glass.y0 + glass.y1) / 2, 0), V(glass.w, glass.y1 - glass.y0, 0.03), "glass", 0x4f6766);
     // Behind the glass: desk edge with two monitors (backs to us), a bright wall.
-    kit.box(V(-0.6, 0.74, 0.45), V(2.2, 0.05, 0.6), "metal", 0x2b302e);
-    for (const x of [-1.2, -0.25]) kit.box(V(x, 1.0, 0.42), V(0.5, 0.34, 0.06), "dark", 0x111414);
+    kit.box(V(-0.6, 0.74, 0.32), V(2.2, 0.05, 0.56), "metal", 0x2b302e);
+    for (const x of [-1.2, -0.3]) kit.box(V(x, 1.0, 0.3), V(0.5, 0.34, 0.06), "dark", 0x111414);
     const wall = kit.build("CaptureSet:window");
     wall.position.set(center.x, center.y, wallZ);
     // Built facing −z (towards the chair); our local −z already points into the room.
@@ -123,13 +124,13 @@ export class CaptureSet {
     light.position.set(center.x, center.y + 1.6, south - 0.02);
     light.rotation.y = Math.PI;
     const woman = silhouette();
-    woman.position.set(center.x + 0.25, center.y, wallZ + 0.78);
-    woman.rotation.y = Math.PI;
+    woman.position.set(center.x + 0.2, center.y, wallZ + 0.68);
+    woman.rotation.y = -0.5;
     this.window.add(light, woman);
-    // The chair faces the glass from across the table.
-    this.chair.eye.set(center.x, center.y + 1.22, center.z + 0.15);
-    this.chair.push.set(center.x + 0.05, center.y + 1.2, center.z + 0.6);
-    this.chair.look.set(center.x + 0.2, center.y + 1.52, wallZ + 0.8);
+    // Seated, facing the glass (just past the interviewer's chair so its back stays out of frame).
+    this.chair.eye.set(center.x - 0.1, center.y + 1.16, center.z + 1.3);
+    this.chair.push.set(center.x, center.y + 1.15, center.z + 1.62);
+    this.chair.look.set(center.x + 0.15, center.y + 1.5, wallZ + 0.68);
     this.ok = true;
   }
 
@@ -152,7 +153,7 @@ export class CaptureSet {
     const side = V(-d.z, 0, d.x);
     this.escorts.forEach((v, i) => {
       const s = i === 0 ? 1 : -1;
-      v.root.position.copy(eye).addScaledVector(d, 0.95).addScaledVector(side, s * 0.62);
+      v.root.position.copy(eye).addScaledVector(d, 1.1).addScaledVector(side, s * 0.8);
       v.root.position.y = eye.y - 1.4 - 0.05;
       v.root.rotation.y = Math.atan2(d.x, d.z);
       v.locomote(0.75, false, false);

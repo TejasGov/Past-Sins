@@ -20,11 +20,11 @@
 .loop-streaks i:nth-child(3) { animation-delay: 0.93s; }
 @keyframes loop-streak { from { top: 104%; } to { top: -4%; } }
 
-.loop-lid { left: -5%; right: -5%; height: 58%; background: #000; transform: translateY(-110%); }
+.loop-lid { left: -5%; right: -5%; height: 58%; background: #000; }
 .loop-lid.top { top: 0; background: linear-gradient(to bottom, #000 82%, rgba(0, 0, 0, 0)); }
-.loop-lid.bottom { bottom: 0; background: linear-gradient(to top, #000 82%, rgba(0, 0, 0, 0)); transform: translateY(110%); }
+.loop-lid.bottom { bottom: 0; background: linear-gradient(to top, #000 82%, rgba(0, 0, 0, 0)); }
 
-.loop-bar { left: 0; right: 0; height: 10vh; background: #000; transform: scaleY(0); }
+.loop-bar { left: 0; right: 0; height: 10vh; background: #000; }
 .loop-bar.top { top: 0; transform-origin: top; }
 .loop-bar.bottom { bottom: 0; transform-origin: bottom; }
 
