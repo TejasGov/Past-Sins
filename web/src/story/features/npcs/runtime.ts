@@ -123,10 +123,14 @@ export class NpcRuntime {
     this.meera.onWipe();
   }
 
-  /** A stool under a seated NPC: `at` is the actor's spot (the seat sits a little behind it). */
-  addStool(at: Placed, back = 0.12): Object3D {
+  /**
+   * A stool under a seated NPC: `at` is the actor's spot (the seat sits a little behind it);
+   * `lift` m above the floor makes it a taller stool (feet hang).
+   */
+  addStool(at: Placed, lift = 0, back = 0.12): Object3D {
     const st = stool((m) => this.game.render.prepareMaterial(m));
-    st.position.copy(at.position).add(new Vector3(-Math.sin(at.yaw) * back, 0, -Math.cos(at.yaw) * back));
+    st.position.copy(at.position).add(new Vector3(-Math.sin(at.yaw) * back, -lift, -Math.cos(at.yaw) * back));
+    st.scale.y = (0.46 + lift) / 0.46;
     st.rotation.y = at.yaw;
     this.game.chunkGroup(chunkAt(st.position, this.game.chunks)).add(st);
     return st;

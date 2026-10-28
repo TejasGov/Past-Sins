@@ -198,6 +198,8 @@ const PROPS: Record<string, PropSpec> = {
     bone: "mixamorigRightHand",
     build: (m) => {
       const p = mesh(new BoxGeometry(0.1, 0.15, 0.004), m(0xd8cfb4, 0.8), 0.01, 0.12, 0.03);
+      // Face out of the palm, towards the glass.
+      p.rotation.y = Math.PI / 2;
       p.name = "photo";
       return p;
     },

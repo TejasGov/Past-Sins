@@ -59,9 +59,9 @@ export const POSES: Record<string, PoseDef> = {
   /** Right palm flat on the glass in front of them. */
   palm: {
     bones: {
-      [`${R}Arm`]: [0, 0, -50],
-      [`${R}ForeArm`]: [0, 0, -35],
-      [`${R}Hand`]: [0, 0, -70],
+      [`${R}Arm`]: [0, -24, -118],
+      [`${R}ForeArm`]: [0, 0, -4],
+      [`${R}Hand`]: [0, 0, -80],
     },
   },
   /** Leaning in to the glass. */

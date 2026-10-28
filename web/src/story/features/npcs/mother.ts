@@ -30,7 +30,7 @@ export class Mother {
     this.photoProp(false);
     actor.show(false);
     const seat = rt.resolve(def.seat);
-    if (seat) rt.addStool(seat);
+    if (seat) rt.addStool(seat, def.seat && "offset" in def.seat ? (def.seat.offset?.[1] ?? 0) : 0);
   }
 
   private get story() {
@@ -96,7 +96,7 @@ export class Mother {
     a.pose("stoop", 1, 0);
     this.story.signal("npcs:visitation", { beat: "arrive" });
     // Up to the stool behind it, then down.
-    const behind = seat.position.clone().add(new Vector3(Math.sin(seat.yaw), 0, Math.cos(seat.yaw)).multiplyScalar(-0.55));
+    const behind = seat.position.clone().add(new Vector3(Math.sin(seat.yaw), 0, Math.cos(seat.yaw)).multiplyScalar(-0.55)).setY(door.position.y);
     await a.walkTo(behind, 1.1, true);
     if (run !== this.run) return;
     a.targetYaw = seat.yaw;
