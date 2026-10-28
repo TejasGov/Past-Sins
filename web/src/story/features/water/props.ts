@@ -103,7 +103,7 @@ export class HandRig {
   mode: "hidden" | "reach" | "grip" | "gone" = "hidden";
 
   constructor(prepare: (m: Material) => void) {
-    this.material = new MeshStandardMaterial({ color: 0xd4bca6, roughness: 0.62, emissive: 0x3a2a20, emissiveIntensity: 0.9, transparent: true, opacity: 0 });
+    this.material = new MeshStandardMaterial({ color: 0xdcc6b2, roughness: 0.62, emissive: 0x6a5446, emissiveIntensity: 1.5, transparent: true, opacity: 0 });
     prepare(this.material);
     const m = this.material;
     const cyl = (r: number, len: number) => {
@@ -124,7 +124,9 @@ export class HandRig {
     const tj = this.finger(0, 0.03, 0.0085, thumb);
     this.joints.push(tj);
     this.rig.add(thumb);
-    this.rig.scale.setScalar(1.45);
+    this.rig.scale.setScalar(1.9);
+    // Up out of the dark beyond the bars, towards Parth, a little side-on so the fingers read.
+    this.root.rotation.set(0.32, 0.5, 0, "YXZ");
     this.root.add(this.rig);
     this.root.visible = false;
     this.root.name = "WaterHand";
@@ -227,6 +229,7 @@ export class DeckGuards {
       const d = face.clone().sub(p);
       v.root.rotation.y = Math.atan2(-d.x, -d.z) + Math.PI;
       v.play(i === 0 ? "gunplay" : "idle", 0);
+      v.update(1 / 60);
       this.scene.add(v.root);
       this.visuals.push(v);
     });

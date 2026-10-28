@@ -87,7 +87,7 @@ export function culvertLayout(floors: Map<string, BuiltFloor>, gaps: number[] = 
   }
   const finalZ = z + (gaps[3] ?? 0) * swimSpeed;
   const outletZ = Math.max(PERIMETER_Z + 6, z + 7);
-  const hand = V(x, y0 + 0.95, outletZ - 0.6);
+  const hand = V(x, y0 + 1.15, outletZ - 0.75);
   const handZone = new Box3(V(x0, y0 - 0.5, outletZ - 2.8), V(x1, y1 + 0.5, outletZ - 0.2));
   const reservoir = { x0: x - 14, x1: x + 14, z0: outletZ, z1: outletZ + 30, floorY: y0 - 0.3, surfaceY: -0.7, rampZ: outletZ + 16 };
   return {
@@ -116,7 +116,9 @@ export function culvertWater(L: CulvertLayout): SwimmingPool[] {
     SwimmingPool.box(V(t.x0, t.y0, L.shaft.z0), V(t.x1, L.shaft.surfaceY, L.shaft.z1), { tag: "culvert:sump", colors: dark, fog: blackFog }),
     SwimmingPool.box(V(t.x0, t.y0, L.shaft.z1), V(t.x1, t.y1, t.z1 + 0.6), { tag: "culvert:tube", ceiling: true, fog: blackFog }),
   ];
-  for (const p of L.pockets) out.push(SwimmingPool.box(p.min, p.max, { tag: `culvert:pocket:${p.index}`, colors: dark, fog: blackFog }));
+  // Seen from below, a pocket's surface catches the vent's grey light: the only thing to aim for.
+  const glint = { deep: 0x1c3533, shallow: 0x5d807c, sky: 0xc4d4d0 };
+  for (const p of L.pockets) out.push(SwimmingPool.box(p.min, p.max, { tag: `culvert:pocket:${p.index}`, colors: glint, fog: blackFog }));
   const r = L.reservoir;
   out.push(
     SwimmingPool.box(V(r.x0, r.floorY, r.z0), V(r.x1, r.surfaceY, r.z1), {
@@ -126,6 +128,16 @@ export function culvertWater(L: CulvertLayout): SwimmingPool[] {
     }),
   );
   return out;
+}
+
+/** Visual-only water in the pump-room hatch (the swimmable sump is under the slab). */
+export function culvertHatchWater(L: CulvertLayout): SwimmingPool {
+  const w = new SwimmingPool(L.hatch.clone().add(V(0, 0.012, 0)), 1.08, 1.08, 0.01, 0, {
+    tag: "culvert:hatch",
+    colors: { deep: 0x020606, shallow: 0x0b1d1c, sky: 0x4a5552 },
+  });
+  w.mesh.name = "Water:culvert:hatch";
+  return w;
 }
 
 export interface CulvertText {
@@ -160,6 +172,8 @@ function buildHatch(b: StaticBuilder, L: CulvertLayout, text: CulvertText): void
     b.box(V(h.x + s * 0.66, y + 0.02, h.z), V(0.12, 0.04, 1.44), { mat: "steel", color: 0x59605a, collide: false });
     b.box(V(h.x, y + 0.02, h.z + s * 0.66), V(1.2, 0.04, 0.12), { mat: "steel", color: 0x59605a, collide: false });
   }
+  // The opening: black depth under the sump water (culvertHatchWater draws the surface).
+  b.box(V(h.x, y + 0.003, h.z), V(1.1, 0.006, 1.1), { mat: "dark", color: 0x000000, collide: false, shadow: false });
   const lid = new Quaternion().setFromAxisAngle(V(1, 0, 0), -1.35);
   b.box(V(h.x, y + 0.62, h.z - 0.86), V(1.24, 0.05, 1.24), { mat: "metal", color: 0x4c5650, quat: lid, collide: false });
   // Sump pump, riser pipe and hazard plate.
@@ -233,7 +247,7 @@ function buildPocket(b: StaticBuilder, L: CulvertLayout, p: PocketLayout): void 
   b.box(V(p.center.x, top + w / 2, p.center.z), V(xw + 2 * w, w, zl + 2 * w), concrete(color));
   // A rusted vent in the roof: where the air (and a little grey light) seeps in.
   for (let i = -2; i <= 2; i++) b.box(V(p.center.x + i * 0.12, top - 0.03, p.center.z), V(0.03, 0.04, 0.5), { mat: "iron", color: 0x5b4a3c, collide: false, shadow: false });
-  b.lightPoint(V(p.center.x, top - 0.35, p.center.z), 0x9db4c4, 1.1, 4.2, false);
+  b.lightPoint(V(p.center.x, top - 0.35, p.center.z), 0x9db4c4, 2.2, 5.5, false);
 }
 
 function buildRack(b: StaticBuilder, L: CulvertLayout): void {
@@ -327,7 +341,8 @@ export function punchOuterGrass(root: Object3D): number {
   let removed = 0;
   root.traverse((o) => {
     const mesh = o as Mesh;
-    if (!mesh.isMesh || !mesh.name.includes("|grass|")) return;
+    // Only the campus batches: the replacement pieces (chunk "water") share the slab's outer corners.
+    if (!mesh.isMesh || !mesh.name.startsWith("exterior") || !mesh.name.includes("|grass|")) return;
     const geo = mesh.geometry;
     const pos = geo.getAttribute("position") as BufferAttribute;
     const index = geo.getIndex();

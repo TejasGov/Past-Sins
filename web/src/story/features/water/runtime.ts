@@ -1,7 +1,7 @@
 import { Vector3, type Object3D } from "three";
 import type { Game } from "../../../game/game";
 import type { SwimmingPool } from "../../../world/pool";
-import { culvertWater, punchOuterGrass, type CulvertLayout } from "../../../world/campus/culvert";
+import { culvertHatchWater, culvertWater, punchOuterGrass, type CulvertLayout } from "../../../world/campus/culvert";
 import { Breath } from "./breath";
 import { WaterOverlay } from "./overlay";
 import { DeckGuards, GrateShimmer, HandRig, WaterProp } from "./props";
@@ -42,6 +42,7 @@ export class WaterRuntime {
   readonly speakerAt: Vector3 | null = null;
   readonly hand: HandRig;
   private grate: WaterProp | null = null;
+  private hatchWater: SwimmingPool | null = null;
   private shimmer: GrateShimmer | null = null;
   private guards: DeckGuards;
   private guardsCleanup = false;
@@ -91,6 +92,10 @@ export class WaterRuntime {
         g.pools.push(w);
         if (w.mesh.visible) g.render.scene.add(w.mesh);
       }
+      // Hatch water is only a surface to look at: updated with the pools' clock, not swimmable.
+      const hatch = culvertHatchWater(L);
+      g.render.scene.add(hatch.mesh);
+      this.hatchWater = hatch;
       const punched = punchOuterGrass(g.render.scene);
       if (punched !== 12) console.warn(`[water] outer grass: removed ${punched} triangles (expected 12); the reservoir may show grass through it`);
       this.prop(L.hatch.clone().add(new Vector3(0, 0.25, 0)), new Vector3(1.3, 0.5, 1.3), () => this.hatchPrompt(), () => void this.enterSump());
@@ -114,6 +119,7 @@ export class WaterRuntime {
     const s = g.story;
     const swim = g.swim;
     this.stepFades(dt);
+    this.hatchWater?.update(dt);
     this.hand.update(dt);
     this.guards.update(dt);
     if (this.guardsCleanup && !s.capturing && this.mode !== "t3") {
@@ -147,8 +153,11 @@ export class WaterRuntime {
 
     const tag = air?.tag ?? "";
     const b = this.breath;
-    const meter = !!vol && !g.hud.memoryPlaying && this.mode !== "taken" && this.mode !== "hand" && (under || b.left < b.length - 0.05 || b.choke > 0);
-    this.ui.darkTarget = tag.startsWith("culvert:") ? (under ? 1 : 0.5) : 0;
+    const culvert = tag.startsWith("culvert:");
+    // In the culvert the meter stays up at the air spaces too: it shows which segment the air bought.
+    const ending = this.mode === "hand" || this.mode === "released" || this.mode === "surfaced" || this.mode === "taken";
+    const meter = !!vol && !g.hud.memoryPlaying && !ending && (under || culvert || b.left < b.length - 0.05 || b.choke > 0);
+    this.ui.darkTarget = culvert ? (under ? 1 : 0.5) : 0;
     this.ui.update(dt, b, meter, Math.min(1, b.choke / this.data.breath.chokeSeconds));
     this.wasUnder = under;
   }
