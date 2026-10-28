@@ -67,6 +67,8 @@ export class LoopRuntime {
   private klaxonState: { t: number; noise: number; pos: Vector3 } | null = null;
   private lastHour = -1;
   private envWasEnabled = true;
+  /** Bumped whenever a capture takes over, so an interrupted sequence doesn't hand control back. */
+  private seq = 0;
   private refreshTimer = 0;
   private readonly chromaBase: Vector2;
 
@@ -212,6 +214,8 @@ export class LoopRuntime {
   // ── Capture ───────────────────────────────────────────────────────────────
   /** `story.captureHandler`: the cinematic, then "wipe" — or, in Act III, a night restart ("handled"). */
   async onCapture(reason: string): Promise<"wipe" | "handled"> {
+    this.seq++;
+    this.clock.cancel();
     this.stopKlaxon();
     this.story.addVar("loop:captures");
     const restart = this.data.nightRestart?.reasons ?? NIGHT_RESTART_REASONS;
@@ -406,9 +410,10 @@ export class LoopRuntime {
       s.setFlag("cycle:loop_infirmary");
       s.setFlag("stash_unlocked");
     }
+    const token = this.seq;
     await this.wake(w.infirmary ? "infirmary" : "cell", "wipe");
     const shard = this.data.infirmary?.shard;
-    if (w.infirmary && shard) await s.playShard(shard);
+    if (w.infirmary && shard && token === this.seq) await s.playShard(shard);
   }
 
   /**
@@ -417,6 +422,7 @@ export class LoopRuntime {
    */
   async wake(where: Where, kind: WakeKind): Promise<void> {
     const g = this.game;
+    const token = this.seq;
     const m = this.wakeMarks(where) ?? (where === "infirmary" ? this.wakeMarks("cell") : null);
     this.begin();
     const amount = this.uniform("amount");
@@ -476,7 +482,8 @@ export class LoopRuntime {
       t += 3.0;
     }
     const w = this.data.wake ?? {};
-    const sub = kind === "reload" ? w.reloadSub : where === "infirmary" ? w.infirmarySub : w.sub;
+    // A wipe always wakes him at 06:00; a reload or the first start keeps the session's clock.
+    const sub = kind === "reload" || kind === "cold_open" ? w.reloadSub : where === "infirmary" ? w.infirmarySub : w.sub;
     const banner = kind === "night_restart" ? "" : fill(w.banner, { cycle });
     tl.call(() => banner && void this.story.ui.banner(banner, sub ?? "", 3.4), [], t);
     tl.to(g.cine, { weight: 0, duration: 1.5, ease: "power2.inOut" }, t);
@@ -487,7 +494,7 @@ export class LoopRuntime {
     await this.clock.play(tl, skippable, () => {
       if (banner) void this.story.ui.banner(banner, sub ?? "", 2.4);
     });
-    this.end();
+    if (token === this.seq) this.end();
   }
 
   // ── Cold open ─────────────────────────────────────────────────────────────
@@ -505,6 +512,7 @@ export class LoopRuntime {
   /** Black, water, a child counting "two… seven… one… eight…", a small hand slipping free — then N03. */
   async coldOpen(): Promise<void> {
     const o = this.overlay;
+    const token = this.seq;
     this.begin();
     this.uniform("amount").value = 1;
     const m = this.wakeMarks("cell");
@@ -540,7 +548,7 @@ export class LoopRuntime {
     });
     this.story.setFlag("cold_open_done");
     markSeen("coldOpen");
-    await this.wake("cell", "cold_open");
+    if (token === this.seq) await this.wake("cell", "cold_open");
   }
 
   // ── The 21:00 dose (first cycle only) ─────────────────────────────────────
@@ -556,6 +564,7 @@ export class LoopRuntime {
   /** Parth was never caught on his first cycle: the dose takes him down where he stands. */
   async knockout(): Promise<void> {
     const g = this.game;
+    const token = this.seq;
     this.begin();
     this.story.signal("loop:knockout");
     const amount = this.uniform("amount");
@@ -582,7 +591,7 @@ export class LoopRuntime {
     tl.to(amount, { value: 1, duration: 0.5 }, 3.8);
     tl.to({}, { duration: 0.01 }, 4.4);
     await this.clock.play(tl);
-    void this.story.capture("dose");
+    if (token === this.seq) void this.story.capture("dose");
   }
 
   // ── The B1 service stair alarm (acts 1–2) ─────────────────────────────────

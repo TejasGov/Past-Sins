@@ -44,6 +44,14 @@ export class CineClock {
     }
   }
 
+  /** Stops everything without running skip handlers (a capture is taking over). */
+  cancel(): void {
+    for (const r of [...this.runs]) {
+      r.tl.kill();
+      this.finish(r, true);
+    }
+  }
+
   private finish(r: Run, skipped: boolean): void {
     const i = this.runs.indexOf(r);
     if (i < 0) return;
