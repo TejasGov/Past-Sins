@@ -133,7 +133,9 @@
   "lockin": {
     "graceUntil": 19.5,
     "closeDelay": 1.2,
+    "$comment": "The gate locks behind Parth (gateKey opens it from inside). Act III leaves it unlocked so the termination night can be played (Bhosle: \"I'll be slow\"); change freely.",
     "lock": true,
+    "leaveUnlockedWhen": { "actAtLeast": 3 },
     "gateKey": "cellblock_key",
     "lockedMessage": "LOCKED IN",
     "lockedHint": "LOCKED IN",
@@ -200,7 +202,7 @@
     "onsetSeconds": 24,
     "recoverSeconds": 12,
     "suspicionMultiplier": 1.3,
-    "grade": { "saturation": 0.45, "desaturate": 0.12, "contrast": 0.14, "tint": 0.22, "vignette": 0.22, "speed": 1.0 },
+    "grade": { "saturation": 0.55, "desaturate": 0.15, "contrast": 0.18, "tint": 0.3, "vignette": 0.24, "speed": 1.0 },
     "sway": { "roll": 1.6, "pitch": 0.8, "yaw": 1.1, "bob": 0.018, "speed": 1.0 },
     "onsetLines": [
       { "speaker": "PARTH", "text": "(The light's wrong. My hands won't keep still.)", "seconds": 3.2 }

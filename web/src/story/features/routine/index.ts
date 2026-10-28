@@ -8,7 +8,7 @@ let runtime: RoutineRuntime | null = null;
 
 /**
  * W2 · Daily routine & the dose.
- * 06:00 count, meals, work, yard, lock-in, lights out, visitation day; the dietary-window pill (take / pocket), withdrawal effects and shimmering shards.
+ * 06:00 count, meals, work, yard, lock-in, lights out, visitation day; the dietary-window pill (take / pocket) and withdrawal effects (shimmering shards key off `cycle:withdrawal`).
  * Owned by one workstream — see docs/story/BUILD_PLAN.md. Data: index.json `features.routine`.
  * Automation/dev: `__game.story.features.find((f) => f.id === "routine").runtime`.
  */

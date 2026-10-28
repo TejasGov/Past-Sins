@@ -105,7 +105,9 @@ export class RoutineRuntime {
   update(dt: number): void {
     const g = this.game;
     this.hud.update(dt);
-    if (!this.story.capturing && !g.failureInProgress) {
+    // The routine holds while a cinematic has the clock frozen (W1's cold open / wake), so the
+    // 06:00 count is called once Parth is actually awake.
+    if (!this.story.capturing && !g.failureInProgress && g.env.cycleEnabled) {
       for (const o of this.schedule.advance(this.t)) this.fire(o);
       this.updateCount();
       this.updateLockin(dt);
@@ -184,7 +186,8 @@ export class RoutineRuntime {
   // ── 19:00 lock-in ─────────────────────────────────────────────────────────
   private startLockin(o: Occurrence): void {
     const l = this.data.lockin;
-    this.cell?.restoreKey();
+    // Cells stand open for lock-in (also covers a gate still locked from a skipped morning).
+    this.cell?.unlock(true, this.game.player);
     this.lockDeadline = absHours(o.day, l.graceUntil < o.beat.at ? l.graceUntil + 24 : l.graceUntil);
     this.lock = "waiting";
     this.story.setFlag("cycle:locked_in", false);

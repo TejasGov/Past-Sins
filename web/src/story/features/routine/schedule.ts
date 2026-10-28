@@ -45,6 +45,8 @@ export class Schedule {
   private last: number | null = null;
   /** Largest per-update advance still treated as continuous time. */
   maxStep = 0.75;
+  /** Smallest backwards move treated as a rewind (wipe, night restart) rather than frame jitter. */
+  rewind = 0.1;
 
   constructor(readonly beats: BeatDef[]) {}
 
@@ -54,8 +56,10 @@ export class Schedule {
     const near = occurrences(this.beats, day - 1, day + 1);
     const out: Occurrence[] = [];
     const last = this.last;
+    // The frame loop can hand the clock a hair of negative dt; only a real rewind counts.
+    if (last !== null && t < last && t > last - this.rewind) return out;
     this.last = t;
-    if (last === null || t < last - 1e-6 || t - last > this.maxStep) {
+    if (last === null || t < last || t - last > this.maxStep) {
       if (last === null || t < last) this.fired.clear();
       for (const o of near) {
         if (o.start > t) continue;
