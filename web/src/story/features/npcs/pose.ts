@@ -19,12 +19,12 @@ export const POSES: Record<string, PoseDef> = {
     absolute: true,
     hips: [0, -0.44, -0.12],
     bones: {
-      [`${L}UpLeg`]: [-90, 0, 0],
-      [`${R}UpLeg`]: [-90, 0, 0],
-      [`${L}Leg`]: [92, 0, 0],
-      [`${R}Leg`]: [92, 0, 0],
-      [`${L}Foot`]: [-8, 0, 0],
-      [`${R}Foot`]: [-8, 0, 0],
+      [`${L}UpLeg`]: [90, 0, 0],
+      [`${R}UpLeg`]: [90, 0, 0],
+      [`${L}Leg`]: [-92, 0, 0],
+      [`${R}Leg`]: [-92, 0, 0],
+      [`${L}Foot`]: [8, 0, 0],
+      [`${R}Foot`]: [8, 0, 0],
     },
   },
   /** Old shoulders: a little stoop, head forward. */

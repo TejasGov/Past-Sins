@@ -1,10 +1,11 @@
 import { Object3D, Vector3, type Material } from "three";
 import { loadCharacter, type CharacterAsset } from "../../../ai/guardVisual";
 import type { Game } from "../../../game/game";
-import { resolvePlace } from "../../place";
+import { chunkAt, resolvePlace } from "../../place";
 import type { DocumentDef } from "../../types";
 import { NpcActor } from "./actor";
 import { POSES } from "./pose";
+import { stool } from "./props";
 import { NpcDialogue } from "./script";
 import { Bhosle } from "./bhosle";
 import { Kabir } from "./kabir";
@@ -122,6 +123,15 @@ export class NpcRuntime {
     this.meera.onWipe();
   }
 
+  /** A stool under a seated NPC: `at` is the actor's spot (the seat sits a little behind it). */
+  addStool(at: Placed, back = 0.12): Object3D {
+    const st = stool((m) => this.game.render.prepareMaterial(m));
+    st.position.copy(at.position).add(new Vector3(-Math.sin(at.yaw) * back, 0, -Math.cos(at.yaw) * back));
+    st.rotation.y = at.yaw;
+    this.game.chunkGroup(chunkAt(st.position, this.game.chunks)).add(st);
+    return st;
+  }
+
   // ── Places ────────────────────────────────────────────────────────────────
   resolve(p: NpcPlace): Placed | null {
     const g = this.game;
@@ -161,7 +171,8 @@ export class NpcRuntime {
     this.talkingTo = actor;
     this.abortTalk = false;
     actor.lookTargetWeight = 1;
-    actor.faceTo(g.player.position);
+    // Seated talkers turn their head, not their body (the stool doesn't swivel).
+    if (!actor.hasPose("sit")) actor.faceTo(g.player.position);
     if (talk.lock && g.player.controlEnabled) {
       this.ownsControl = true;
       g.player.setControlEnabled(false);

@@ -62,11 +62,11 @@
     "home": {
       "door": "cellhouse_a_floor3_guard_quarter",
       "offset": [
-        0.15,
+        0.55,
         0,
-        -3.62
+        -2.1
       ],
-      "yaw": 2.6
+      "yaw": 0.35
     },
     "homePose": "sit,stoop",
     "gate": {
@@ -89,17 +89,17 @@
     },
     "lunchAway": {
       "position": [
-        -30.5,
-        4.0,
-        -9.0
+        -32.0,
+        6.45,
+        -2.2
       ],
-      "yaw": 0
+      "yaw": 3.14159
     },
     "lunchHours": [
       12.5,
       13.0
     ],
-    "walkSpeed": 1.15,
+    "walkSpeed": 1.3,
     "morning": {
       "line": {
         "speaker": "BHOSLE",
@@ -108,7 +108,7 @@
       },
       "counter": "npcs:bhosle_mornings",
       "hearDistance": 5.5,
-      "giveUpHour": 7.0,
+      "giveUpHour": 7.5,
       "fallbackHours": [
         6.0,
         6.5

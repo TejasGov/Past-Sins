@@ -29,6 +29,8 @@ export class Mother {
     rt.behaviours.set("mother_photo_down", () => this.photo(false));
     this.photoProp(false);
     actor.show(false);
+    const seat = rt.resolve(def.seat);
+    if (seat) rt.addStool(seat);
   }
 
   private get story() {

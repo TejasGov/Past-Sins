@@ -33,6 +33,22 @@ export function tumbler(mat: Material): Object3D {
   return g;
 }
 
+/** A steel-framed stool with a wooden seat (origin at its feet; the seat is 0.46 m up). */
+export function stool(prepare: Prepare): Object3D {
+  const g = new Group();
+  const wood = new MeshStandardMaterial({ color: 0x6b5843, roughness: 0.8 });
+  const steel = new MeshStandardMaterial({ color: 0x5c6660, roughness: 0.5, metalness: 0.6 });
+  prepare(wood);
+  prepare(steel);
+  g.add(mesh(new CylinderGeometry(0.17, 0.17, 0.035, 16), wood, 0, 0.445, 0));
+  for (const [x, z] of [[0.11, 0.11], [-0.11, 0.11], [0.11, -0.11], [-0.11, -0.11]]) {
+    const leg = mesh(new CylinderGeometry(0.012, 0.014, 0.43, 6), steel, x, 0.215, z);
+    leg.rotation.set(z * 0.5, 0, -x * 0.5);
+    g.add(leg);
+  }
+  return g;
+}
+
 /**
  * A plain face in place of the guard's gas mask, in the head bone's frame
  * (+Y up the skull, +Z forward). Ink = a silhouette.

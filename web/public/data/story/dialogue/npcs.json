@@ -2,239 +2,805 @@
   {
     "id": "npcs_bhosle",
     "nodes": [
-      { "speaker": "BHOSLE", "text": "Arre, beta. Out of the cell already?" },
-      { "label": "menu" },
+      {
+        "speaker": "BHOSLE",
+        "text": "Arre, beta. Out of the cell already?"
+      },
+      {
+        "label": "menu"
+      },
       {
         "choice": [
-          { "text": "Who are you?", "goto": "who" },
-          { "text": "You said exactly the same thing yesterday.", "when": { "count": { "name": "npcs:bhosle_mornings", "atLeast": 2 } }, "goto": "same" },
-          { "text": "You never painted over my wall.", "when": { "shard": "m02_chai" }, "goto": "wall" },
-          { "text": "[Leave]", "goto": "bye" }
+          {
+            "text": "Who are you?",
+            "goto": "who",
+            "when": {
+              "not": {
+                "flag": "cycle:npcs_bhosle_who"
+              }
+            }
+          },
+          {
+            "text": "You said exactly the same thing yesterday.",
+            "when": {
+              "count": {
+                "name": "npcs:bhosle_mornings",
+                "atLeast": 2
+              }
+            },
+            "goto": "same"
+          },
+          {
+            "text": "You never painted over my wall.",
+            "when": {
+              "shard": "m02_chai"
+            },
+            "goto": "wall"
+          },
+          {
+            "text": "[Leave]",
+            "goto": "bye"
+          }
         ]
       },
-      { "label": "who" },
-      { "speaker": "BHOSLE", "text": "Bhosle. Tier three. Thirty-one years in this building, and my knees remember every one of them." },
-      { "speaker": "BHOSLE", "text": "Breakfast is at seven. Keep your head down and your hands where they can see them." },
-      { "goto": "menu" },
-      { "label": "same" },
-      { "speaker": "PARTH", "text": "Good morning, beta. Sleep well? Same words, same cup. Every time." },
-      { "speaker": "BHOSLE", "text": "Did I? Old men repeat themselves, beta. Ask my wife." },
-      { "speaker": "BHOSLE", "text": "...They give us a card with the words printed on it. Same breakfast, same keys on the same hooks. I'm not supposed to tell you that either." },
-      { "speaker": "BHOSLE", "text": "Drink your chai while it's hot." },
-      { "goto": "menu" },
-      { "label": "wall" },
-      { "speaker": "PARTH", "text": "The wall in my cell. You've seen what's scratched on it. You never painted over it." },
-      { "speaker": "BHOSLE", "text": "Paint costs money, beta. The state is poor." },
-      { "speaker": "BHOSLE", "text": "Some things a man should be allowed to keep. Even if he keeps forgetting where he put them." },
-      { "goto": "menu" },
-      { "label": "bye" },
-      { "speaker": "BHOSLE", "text": "Go, go. And don't make me run, haan? Not at my age." }
+      {
+        "label": "who"
+      },
+      {
+        "speaker": "BHOSLE",
+        "text": "Bhosle. Tier three. Thirty-one years in this building, and my knees remember every one of them.",
+        "actions": [
+          {
+            "setFlag": "cycle:npcs_bhosle_who"
+          }
+        ]
+      },
+      {
+        "speaker": "BHOSLE",
+        "text": "Breakfast is at seven. Keep your head down and your hands where they can see them."
+      },
+      {
+        "goto": "menu"
+      },
+      {
+        "label": "same"
+      },
+      {
+        "speaker": "PARTH",
+        "text": "Good morning, beta. Sleep well? Same words, same cup. Every time."
+      },
+      {
+        "speaker": "BHOSLE",
+        "text": "Did I? Old men repeat themselves, beta. Ask my wife."
+      },
+      {
+        "speaker": "BHOSLE",
+        "text": "...They give us a card with the words printed on it. Same breakfast, same keys on the same hooks. I'm not supposed to tell you that either."
+      },
+      {
+        "speaker": "BHOSLE",
+        "text": "Drink your chai while it's hot."
+      },
+      {
+        "goto": "menu"
+      },
+      {
+        "label": "wall"
+      },
+      {
+        "speaker": "PARTH",
+        "text": "The wall in my cell. You've seen what's scratched on it. You never painted over it."
+      },
+      {
+        "speaker": "BHOSLE",
+        "text": "Paint costs money, beta. The state is poor."
+      },
+      {
+        "speaker": "BHOSLE",
+        "text": "Some things a man should be allowed to keep. Even if he keeps forgetting where he put them."
+      },
+      {
+        "goto": "menu"
+      },
+      {
+        "label": "bye"
+      },
+      {
+        "speaker": "BHOSLE",
+        "text": "Go, go. And don't make me run, haan? Not at my age."
+      }
     ]
   },
   {
     "id": "npcs_bhosle_night",
     "nodes": [
-      { "speaker": "BHOSLE", "text": "Not so loud, beta. Tonight even the walls are on duty." },
-      { "speaker": "BHOSLE", "text": "Drink your chai. All of it. Don't leave the cup lying about.", "when": { "not": { "item": "bhosle_card" } } },
-      { "speaker": "BHOSLE", "text": "Two o'clock. I'll take the long way round. My knees, you know.", "when": { "item": "bhosle_card" } }
+      {
+        "speaker": "BHOSLE",
+        "text": "Not so loud, beta. Tonight even the walls are on duty."
+      },
+      {
+        "speaker": "BHOSLE",
+        "text": "Drink your chai. All of it. Don't leave the cup lying about.",
+        "when": {
+          "not": {
+            "item": "bhosle_card"
+          }
+        }
+      },
+      {
+        "speaker": "BHOSLE",
+        "text": "Two o'clock. I'll take the long way round. My knees, you know.",
+        "when": {
+          "item": "bhosle_card"
+        }
+      }
     ]
   },
   {
     "id": "npcs_kabir",
     "nodes": [
-      { "speaker": "KABIR", "text": "Back again? You can't keep away from me, yaar.", "when": { "flag": "cycle:npcs_kabir_met" } },
-      { "speaker": "PARTH", "text": "Do I know you?", "when": { "not": { "flag": "cycle:npcs_kabir_met" } } },
-      { "speaker": "KABIR", "text": "This is the {kabir_time} time you've asked me that.", "when": { "not": { "flag": "cycle:npcs_kabir_met" } } },
-      { "speaker": "KABIR", "text": "Kabir. S-03. I'd shake your hand, but the glass is very particular about that.", "when": { "not": { "flag": "cycle:npcs_kabir_met" } } },
+      {
+        "speaker": "KABIR",
+        "text": "Back again? You can't keep away from me, yaar.",
+        "when": {
+          "flag": "cycle:npcs_kabir_met"
+        }
+      },
+      {
+        "speaker": "PARTH",
+        "text": "Do I know you?",
+        "when": {
+          "not": {
+            "flag": "cycle:npcs_kabir_met"
+          }
+        }
+      },
+      {
+        "speaker": "KABIR",
+        "text": "This is the {kabir_time} time you've asked me that.",
+        "when": {
+          "not": {
+            "flag": "cycle:npcs_kabir_met"
+          }
+        }
+      },
+      {
+        "speaker": "KABIR",
+        "text": "Kabir. S-03. I'd shake your hand, but the glass is very particular about that.",
+        "when": {
+          "not": {
+            "flag": "cycle:npcs_kabir_met"
+          }
+        }
+      },
       {
         "speaker": "KABIR",
         "text": "Their medicine stopped working on me years ago. So I remember. Every cycle. Yours too. Cycle {cycle_words}, and you still walk like you're late for something.",
-        "when": { "not": { "flag": "cycle:npcs_kabir_met" } },
-        "actions": [{ "setFlag": "cycle:npcs_kabir_met" }]
-      },
-      { "label": "menu" },
-      {
-        "choice": [
-          { "text": "Who is doing this to us?", "when": { "not": { "shard": "m08_subject_three" } }, "goto": "doctor" },
+        "when": {
+          "not": {
+            "flag": "cycle:npcs_kabir_met"
+          }
+        },
+        "actions": [
           {
-            "text": "Her name is Varma. Dr. M. Varma.",
-            "when": { "all": [{ "not": { "shard": "m08_subject_three" } }, { "any": [{ "shard": "m06_visitor" }, { "shard": "m07_consent" }] }] },
-            "goto": "varma"
-          },
-          { "text": "Tell me about her again.", "when": { "shard": "m08_subject_three" }, "goto": "meera" },
-          { "text": "Why do you remember, and I don't?", "goto": "why" },
-          { "text": "What's in the room next to yours?", "goto": "plate" },
-          { "text": "How do I get out of here?", "goto": "out" },
-          { "text": "[Master key] Open the door.", "when": { "all": [{ "item": "cell_master_key" }, { "not": { "flag": "kabir_freed" } }] }, "goto": "free" },
-          { "text": "[Leave]", "goto": "bye" }
+            "setFlag": "cycle:npcs_kabir_met"
+          }
         ]
       },
-      { "label": "doctor" },
-      { "speaker": "KABIR", "text": "A woman behind a pane of glass, two floors under Security. She watches you sit in the chair. She looks more tired every time." },
-      { "speaker": "KABIR", "text": "You know her name. You just keep losing it. Find it on paper, Parth. They write everything down in this place." },
-      { "choice": [{ "text": "Just tell me her name.", "when": { "count": { "name": "npcs:kabir_visits", "atLeast": 3 } }, "goto": "tired" }] },
-      { "goto": "menu" },
-      { "label": "tired" },
-      { "speaker": "KABIR", "text": "Arre, fine. Three cycles of watching you look for it is enough. Varma. Dr. Meera Varma." },
-      { "label": "varma" },
-      { "speaker": "KABIR", "text": "Meera Varma. Good. Now the part you never like." },
-      { "speaker": "KABIR", "text": "She had a brother. Raman." },
-      { "speaker": "PARTH", "text": "...Raman." },
-      { "speaker": "KABIR", "text": "Meera is Raman's sister, Parth. She was six when he went into the tank." },
-      { "speaker": "KABIR", "text": "And you came here because of her. You told me that in cycle nineteen. You never stayed long enough to tell me why." },
-      { "speaker": "KABIR", "text": "Now listen. Listen properly, for once. Everything in this place drains to the old reservoir.", "seconds": 5, "actions": [{ "shard": "m08_subject_three" }] },
-      { "speaker": "KABIR", "text": "We drew it together, on the shower floor, with the handle of a spoon. Pump room under Maintenance. The sump. Then the culvert, under the wall." },
-      { "speaker": "KABIR", "text": "Water knows the way out. It's the only thing in here that does." },
-      { "goto": "menu" },
-      { "label": "meera" },
-      { "speaker": "KABIR", "text": "Raman's sister. She thinks she's being kind to you. Maybe she even is. That's the worst part." },
-      { "speaker": "KABIR", "text": "She's waiting for something from you, Parth. She's been waiting {cycle_words} cycles. I would have given up at ten." },
-      { "goto": "menu" },
-      { "label": "why" },
-      { "speaker": "KABIR", "text": "I stopped swallowing the pills in cycle nine. Then my head stopped letting them in." },
-      { "speaker": "KABIR", "text": "So now they keep me behind glass and pretend I'm furniture. Furniture with an excellent memory." },
-      { "goto": "menu" },
-      { "label": "plate" },
-      { "speaker": "KABIR", "text": "Special Room B. Empty. Freshly mopped. Go and read the plate on the door." },
-      { "speaker": "KABIR", "text": "S-07. That's your number, yaar. They're making up your bed." },
-      { "goto": "menu" },
-      { "label": "out" },
-      { "speaker": "KABIR", "text": "Everybody asks that by day two. Ask me better questions and I'll give you better answers.", "when": { "not": { "shard": "m08_subject_three" } } },
-      { "speaker": "KABIR", "text": "Follow the water. And breathe the way the boy taught you. Two, seven, one, eight.", "when": { "shard": "m08_subject_three" } },
-      { "goto": "menu" },
-      { "label": "free" },
-      { "speaker": "KABIR", "text": "Rathore's master key. You actually went and got it." },
-      { "speaker": "KABIR", "text": "Three years in a glass box. My knees have forgotten how to be knees." },
-      { "speaker": "KABIR", "text": "Chal. You walk, I follow. I've always been following you around, that's the joke.", "actions": [{ "signal": "npcs:do", "data": { "do": "kabir_free" } }] },
-      { "end": true },
-      { "label": "bye" },
-      { "speaker": "KABIR", "text": "Go. I'll be here. I'm always here." }
+      {
+        "label": "menu"
+      },
+      {
+        "choice": [
+          {
+            "text": "Who is doing this to us?",
+            "when": {
+              "not": {
+                "shard": "m08_subject_three"
+              }
+            },
+            "goto": "doctor"
+          },
+          {
+            "text": "Her name is Varma. Dr. M. Varma.",
+            "when": {
+              "all": [
+                {
+                  "not": {
+                    "shard": "m08_subject_three"
+                  }
+                },
+                {
+                  "any": [
+                    {
+                      "shard": "m06_visitor"
+                    },
+                    {
+                      "shard": "m07_consent"
+                    }
+                  ]
+                }
+              ]
+            },
+            "goto": "varma"
+          },
+          {
+            "text": "Tell me about her again.",
+            "when": {
+              "shard": "m08_subject_three"
+            },
+            "goto": "meera"
+          },
+          {
+            "text": "Why do you remember, and I don't?",
+            "goto": "why"
+          },
+          {
+            "text": "What's in the room next to yours?",
+            "goto": "plate"
+          },
+          {
+            "text": "How do I get out of here?",
+            "goto": "out"
+          },
+          {
+            "text": "[Master key] Open the door.",
+            "when": {
+              "all": [
+                {
+                  "item": "cell_master_key"
+                },
+                {
+                  "not": {
+                    "flag": "kabir_freed"
+                  }
+                }
+              ]
+            },
+            "goto": "free"
+          },
+          {
+            "text": "[Leave]",
+            "goto": "bye"
+          }
+        ]
+      },
+      {
+        "label": "doctor"
+      },
+      {
+        "speaker": "KABIR",
+        "text": "A woman behind a pane of glass, two floors under Security. She watches you sit in the chair. She looks more tired every time."
+      },
+      {
+        "speaker": "KABIR",
+        "text": "You know her name. You just keep losing it. Find it on paper, Parth. They write everything down in this place."
+      },
+      {
+        "choice": [
+          {
+            "text": "Just tell me her name.",
+            "when": {
+              "count": {
+                "name": "npcs:kabir_visits",
+                "atLeast": 3
+              }
+            },
+            "goto": "tired"
+          }
+        ]
+      },
+      {
+        "goto": "menu"
+      },
+      {
+        "label": "tired"
+      },
+      {
+        "speaker": "KABIR",
+        "text": "Arre, fine. Three cycles of watching you look for it is enough. Varma. Dr. Meera Varma."
+      },
+      {
+        "label": "varma"
+      },
+      {
+        "speaker": "KABIR",
+        "text": "Meera Varma. Good. Now the part you never like."
+      },
+      {
+        "speaker": "KABIR",
+        "text": "She had a brother. Raman."
+      },
+      {
+        "speaker": "PARTH",
+        "text": "...Raman."
+      },
+      {
+        "speaker": "KABIR",
+        "text": "Meera is Raman's sister, Parth. She was six when he went into the tank."
+      },
+      {
+        "speaker": "KABIR",
+        "text": "And you came here because of her. You told me that in cycle nineteen. You never stayed long enough to tell me why."
+      },
+      {
+        "speaker": "KABIR",
+        "text": "Now listen. Listen properly, for once. Everything in this place drains to the old reservoir.",
+        "seconds": 5,
+        "actions": [
+          {
+            "shard": "m08_subject_three"
+          }
+        ]
+      },
+      {
+        "speaker": "KABIR",
+        "text": "We drew it together, on the shower floor, with the handle of a spoon. Pump room under Maintenance. The sump. Then the culvert, under the wall."
+      },
+      {
+        "speaker": "KABIR",
+        "text": "Water knows the way out. It's the only thing in here that does."
+      },
+      {
+        "goto": "menu"
+      },
+      {
+        "label": "meera"
+      },
+      {
+        "speaker": "KABIR",
+        "text": "Raman's sister. She thinks she's being kind to you. Maybe she even is. That's the worst part."
+      },
+      {
+        "speaker": "KABIR",
+        "text": "She's waiting for something from you, Parth. She's been waiting {cycle_words} cycles. I would have given up at ten."
+      },
+      {
+        "goto": "menu"
+      },
+      {
+        "label": "why"
+      },
+      {
+        "speaker": "KABIR",
+        "text": "I stopped swallowing the pills in cycle nine. Then my head stopped letting them in."
+      },
+      {
+        "speaker": "KABIR",
+        "text": "So now they keep me behind glass and pretend I'm furniture. Furniture with an excellent memory."
+      },
+      {
+        "goto": "menu"
+      },
+      {
+        "label": "plate"
+      },
+      {
+        "speaker": "KABIR",
+        "text": "Special Room B. Empty. Freshly mopped. Go and read the plate on the door."
+      },
+      {
+        "speaker": "KABIR",
+        "text": "S-07. That's your number, yaar. They're making up your bed."
+      },
+      {
+        "goto": "menu"
+      },
+      {
+        "label": "out"
+      },
+      {
+        "speaker": "KABIR",
+        "text": "Everybody asks that by day two. Ask me better questions and I'll give you better answers.",
+        "when": {
+          "not": {
+            "shard": "m08_subject_three"
+          }
+        }
+      },
+      {
+        "speaker": "KABIR",
+        "text": "Follow the water. And breathe the way the boy taught you. Two, seven, one, eight.",
+        "when": {
+          "shard": "m08_subject_three"
+        }
+      },
+      {
+        "goto": "menu"
+      },
+      {
+        "label": "free"
+      },
+      {
+        "speaker": "KABIR",
+        "text": "Rathore's master key. You actually went and got it."
+      },
+      {
+        "speaker": "KABIR",
+        "text": "Three years in a glass box. My knees have forgotten how to be knees."
+      },
+      {
+        "speaker": "KABIR",
+        "text": "Chal. You walk, I follow. I've always been following you around, that's the joke.",
+        "actions": [
+          {
+            "signal": "npcs:do",
+            "data": {
+              "do": "kabir_free"
+            }
+          }
+        ]
+      },
+      {
+        "end": true
+      },
+      {
+        "label": "bye"
+      },
+      {
+        "speaker": "KABIR",
+        "text": "Go. I'll be here. I'm always here."
+      }
     ]
   },
   {
     "id": "npcs_kabir_following",
     "nodes": [
-      { "speaker": "KABIR", "text": "Don't stop for me. I waited three years, I can wait for you to pick a door." },
-      { "speaker": "KABIR", "text": "And Parth. Whatever she asks you down there, answer it awake.", "when": { "all": [{ "actAtLeast": 3 }, { "not": { "flag": "observation_done" } }] } },
-      { "speaker": "KABIR", "text": "So. We just walk out the front, like visitors? I'd like to see their faces.", "when": { "flag": "confessed" } }
+      {
+        "speaker": "KABIR",
+        "text": "Don't stop for me. I waited three years, I can wait for you to pick a door."
+      },
+      {
+        "speaker": "KABIR",
+        "text": "And Parth. Whatever she asks you down there, answer it awake.",
+        "when": {
+          "all": [
+            {
+              "actAtLeast": 3
+            },
+            {
+              "not": {
+                "flag": "observation_done"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "speaker": "KABIR",
+        "text": "So. We just walk out the front, like visitors? I'd like to see their faces.",
+        "when": {
+          "flag": "confessed"
+        }
+      }
     ]
   },
   {
     "id": "npcs_mother_visit",
     "nodes": [
-      { "speaker": "VISITOR", "text": "There you are. Sit, sit. Don't stand there like a guest." },
-      { "speaker": "VISITOR", "text": "I won't keep you long. The bus back is at twelve, and the driver doesn't wait for anybody's mother." },
+      {
+        "speaker": "VISITOR",
+        "text": "There you are. Sit, sit. Don't stand there like a guest."
+      },
+      {
+        "speaker": "VISITOR",
+        "text": "I won't keep you long. The bus back is at twelve, and the driver doesn't wait for anybody's mother."
+      },
       {
         "choice": [
-          { "text": "Do I know you?", "goto": "know" },
-          { "text": "[Listen]", "goto": "listen" }
+          {
+            "text": "Do I know you?",
+            "goto": "know"
+          },
+          {
+            "text": "[Listen]",
+            "goto": "listen"
+          }
         ]
       },
-      { "label": "know" },
-      { "speaker": "VISITOR", "text": "...You used to." },
-      { "speaker": "VISITOR", "text": "It doesn't matter, beta. I talk, you listen. That was always our arrangement." },
-      { "label": "listen" },
-      { "speaker": "VISITOR", "text": "The rains came late this year. The whole village is complaining, as if complaining brings clouds." },
-      { "speaker": "VISITOR", "text": "The mango tree behind the temple split down the middle. Half of it still gives fruit. Stubborn thing." },
-      { "speaker": "VISITOR", "text": "And the old tank. They drained it, finally. After twenty-five years." },
-      { "speaker": "VISITOR", "text": "Nothing in it. Mud, and an iron grate at the bottom, all rusted through. Half the village went to look, like it was a fair." },
-      { "speaker": "VISITOR", "text": "I didn't go. I couldn't." },
-      { "speaker": "VISITOR", "text": "I brought this. I bring it every time." }
+      {
+        "label": "know"
+      },
+      {
+        "speaker": "VISITOR",
+        "text": "...You used to."
+      },
+      {
+        "speaker": "VISITOR",
+        "text": "It doesn't matter, beta. I talk, you listen. That was always our arrangement."
+      },
+      {
+        "label": "listen"
+      },
+      {
+        "speaker": "VISITOR",
+        "text": "The rains came late this year. The whole village is complaining, as if complaining brings clouds."
+      },
+      {
+        "speaker": "VISITOR",
+        "text": "The mango tree behind the temple split down the middle. Half of it still gives fruit. Stubborn thing."
+      },
+      {
+        "speaker": "VISITOR",
+        "text": "And the old tank. They drained it, finally. After twenty-five years."
+      },
+      {
+        "speaker": "VISITOR",
+        "text": "Nothing in it. Mud, and an iron grate at the bottom, all rusted through. Half the village went to look, like it was a fair."
+      },
+      {
+        "speaker": "VISITOR",
+        "text": "I didn't go. I couldn't."
+      },
+      {
+        "speaker": "VISITOR",
+        "text": "I brought this. I bring it every time."
+      }
     ]
   },
   {
     "id": "npcs_mother_photo",
     "nodes": [
-      { "speaker": "VISITOR", "text": "Keep it. I have the negatives." },
-      { "speaker": "VISITOR", "text": "Eat properly. You've gone thin in the face again." }
+      {
+        "speaker": "VISITOR",
+        "text": "Keep it. I have the negatives."
+      },
+      {
+        "speaker": "VISITOR",
+        "text": "Eat properly. You've gone thin in the face again."
+      }
     ]
   },
   {
     "id": "npcs_mother_again",
     "nodes": [
-      { "speaker": "VISITOR", "text": "You're looking at me like a stranger again. It's all right. I'm used to it." },
-      { "speaker": "VISITOR", "text": "Your father's cousin asked after you. I said you were working. They say you work in here, na? So it isn't a lie." },
-      { "speaker": "VISITOR", "text": "The tank is still empty. Children dare each other to climb down the ladder. I told them there's nothing down there. I don't know why I said it like that." },
-      { "speaker": "VISITOR", "text": "I brought another one. I always bring another one." }
+      {
+        "speaker": "VISITOR",
+        "text": "You're looking at me like a stranger again. It's all right. I'm used to it."
+      },
+      {
+        "speaker": "VISITOR",
+        "text": "Your father's cousin asked after you. I said you were working. They say you work in here, na? So it isn't a lie."
+      },
+      {
+        "speaker": "VISITOR",
+        "text": "The tank is still empty. Children dare each other to climb down the ladder. I told them there's nothing down there. I don't know why I said it like that."
+      },
+      {
+        "speaker": "VISITOR",
+        "text": "I brought another one. I always bring another one."
+      }
     ]
   },
   {
     "id": "npcs_mother_again_end",
     "nodes": [
-      { "speaker": "VISITOR", "text": "Next week. Same day, same time. Eat properly." }
+      {
+        "speaker": "VISITOR",
+        "text": "Next week. Same day, same time. Eat properly."
+      }
     ]
   },
   {
     "id": "npcs_mother_after",
     "nodes": [
-      { "speaker": "VISITOR", "text": "Go on, beta. They only give us the hour." },
-      { "speaker": "VISITOR", "text": "Keep the photo somewhere they won't find it." }
+      {
+        "speaker": "VISITOR",
+        "text": "Go on, beta. They only give us the hour."
+      },
+      {
+        "speaker": "VISITOR",
+        "text": "Keep the photo somewhere they won't find it."
+      }
     ]
   },
   {
     "id": "npcs_observation",
     "nodes": [
-      { "speaker": "MEERA", "text": "You sat down by yourself." },
-      { "speaker": "MEERA", "text": "In {cycle_words} cycles you have never once sat in that chair without two men holding your arms." },
-      { "speaker": "PARTH", "text": "I know who you are." },
-      { "speaker": "MEERA", "text": "You always know who I am, by the end. You never know why you came." },
-      { "speaker": "PARTH", "text": "I do now. I saw your name on a notice, and I signed." },
-      { "label": "menu" },
+      {
+        "speaker": "MEERA",
+        "text": "You sat down by yourself."
+      },
+      {
+        "speaker": "MEERA",
+        "text": "In {cycle_words} cycles you have never once sat in that chair without two men holding your arms."
+      },
+      {
+        "speaker": "PARTH",
+        "text": "I know who you are."
+      },
+      {
+        "speaker": "MEERA",
+        "text": "You always know who I am, by the end. You never know why you came."
+      },
+      {
+        "speaker": "PARTH",
+        "text": "I do now. I saw your name on a notice, and I signed."
+      },
+      {
+        "label": "menu"
+      },
       {
         "prompt": "What do you say to her?",
         "choice": [
-          { "text": "Tell her about the tank.", "goto": "confess" },
-          { "text": "Beg her to wipe you again.", "goto": "wipe" },
-          { "text": "Ask why she kept going.", "when": { "not": { "flag": "cycle:npcs_asked_why" } }, "goto": "why" },
-          { "text": "[Stay silent]", "goto": "silent" }
+          {
+            "text": "Tell her about the tank.",
+            "goto": "confess"
+          },
+          {
+            "text": "Beg her to wipe you again.",
+            "goto": "wipe"
+          },
+          {
+            "text": "Ask why she kept going.",
+            "when": {
+              "not": {
+                "flag": "cycle:npcs_asked_why"
+              }
+            },
+            "goto": "why"
+          },
+          {
+            "text": "[Stay silent]",
+            "goto": "silent"
+          }
         ]
       },
-      { "label": "why" },
+      {
+        "label": "why"
+      },
       {
         "speaker": "PARTH",
         "text": "Why did you keep going? All these cycles.",
-        "actions": [{ "setFlag": "cycle:npcs_asked_why" }, { "signal": "observation_choice", "data": { "choice": "why" } }]
+        "actions": [
+          {
+            "setFlag": "cycle:npcs_asked_why"
+          },
+          {
+            "signal": "observation_choice",
+            "data": {
+              "choice": "why"
+            }
+          }
+        ]
       },
-      { "speaker": "MEERA", "text": "Because on tape twelve you begged me to, and I said yes." },
-      { "speaker": "MEERA", "text": "And because for a few hours after every wipe you're not the boy who came back from the tank alone. You're a stranger in a cell. I can look at a stranger." },
-      { "speaker": "MEERA", "text": "I told myself I'd stop when you remembered why you came." },
-      { "speaker": "MEERA", "text": "So. Why did you come, Parth?" },
-      { "goto": "menu" },
-      { "label": "confess" },
-      { "speaker": "PARTH", "text": "He didn't go in by himself." },
-      { "speaker": "PARTH", "text": "His foot caught in the grate, on the last eight. He grabbed my hand." },
-      { "speaker": "PARTH", "text": "I was out of air. I pulled my hand away, Meera. I let go of him." },
-      { "speaker": "PARTH", "text": "Then I stood in front of your mother, dripping, and I told her he went in alone." },
-      { "speaker": "PARTH", "text": "That's why I came. Not to forget it. To say it to you." },
-      { "speaker": "MEERA", "text": "...", "seconds": 2.6 },
-      { "speaker": "MEERA", "text": "Twenty-five years. {cycle_words_cap} cycles. That's the first time you've said it awake." },
-      { "speaker": "MEERA", "text": "I thought I'd feel something when I finally heard it." },
+      {
+        "speaker": "MEERA",
+        "text": "Because on tape twelve you begged me to, and I said yes."
+      },
+      {
+        "speaker": "MEERA",
+        "text": "And because for a few hours after every wipe you're not the boy who came back from the tank alone. You're a stranger in a cell. I can look at a stranger."
+      },
+      {
+        "speaker": "MEERA",
+        "text": "I told myself I'd stop when you remembered why you came."
+      },
+      {
+        "speaker": "MEERA",
+        "text": "So. Why did you come, Parth?"
+      },
+      {
+        "goto": "menu"
+      },
+      {
+        "label": "confess"
+      },
+      {
+        "speaker": "PARTH",
+        "text": "He didn't go in by himself."
+      },
+      {
+        "speaker": "PARTH",
+        "text": "His foot caught in the grate, on the last eight. He grabbed my hand."
+      },
+      {
+        "speaker": "PARTH",
+        "text": "I was out of air. I pulled my hand away, Meera. I let go of him."
+      },
+      {
+        "speaker": "PARTH",
+        "text": "Then I stood in front of your mother, dripping, and I told her he went in alone."
+      },
+      {
+        "speaker": "PARTH",
+        "text": "That's why I came. Not to forget it. To say it to you."
+      },
+      {
+        "speaker": "MEERA",
+        "text": "...",
+        "seconds": 2.6
+      },
+      {
+        "speaker": "MEERA",
+        "text": "Twenty-five years. {cycle_words_cap} cycles. That's the first time you've said it awake."
+      },
+      {
+        "speaker": "MEERA",
+        "text": "I thought I'd feel something when I finally heard it."
+      },
       {
         "speaker": "MEERA",
         "text": "I don't know what this is.",
         "seconds": 3.6,
-        "actions": [{ "setFlag": "confessed" }, { "setFlag": "observation_done" }, { "signal": "observation_choice", "data": { "choice": "confess" } }]
+        "actions": [
+          {
+            "setFlag": "confessed"
+          },
+          {
+            "setFlag": "observation_done"
+          },
+          {
+            "signal": "observation_choice",
+            "data": {
+              "choice": "confess"
+            }
+          }
+        ]
       },
-      { "end": true },
-      { "label": "wipe" },
-      { "speaker": "PARTH", "text": "I can't carry it. Please. Make me forget." },
-      { "speaker": "MEERA", "text": "That's what you said on tape twelve. Word for word." },
+      {
+        "end": true
+      },
+      {
+        "label": "wipe"
+      },
+      {
+        "speaker": "PARTH",
+        "text": "I can't carry it. Please. Make me forget."
+      },
+      {
+        "speaker": "MEERA",
+        "text": "That's what you said on tape twelve. Word for word."
+      },
       {
         "speaker": "MEERA",
         "text": "...Again, then.",
         "seconds": 3,
-        "actions": [{ "signal": "observation_choice", "data": { "choice": "wipe" } }, { "capture": "voluntary" }]
+        "actions": [
+          {
+            "signal": "observation_choice",
+            "data": {
+              "choice": "wipe"
+            }
+          },
+          {
+            "capture": "voluntary"
+          }
+        ]
       },
-      { "end": true },
-      { "label": "silent" },
-      { "speaker": "MEERA", "text": "...", "seconds": 3 },
-      { "speaker": "MEERA", "text": "Every time." },
+      {
+        "end": true
+      },
+      {
+        "label": "silent"
+      },
+      {
+        "speaker": "MEERA",
+        "text": "...",
+        "seconds": 3
+      },
+      {
+        "speaker": "MEERA",
+        "text": "Every time."
+      },
       {
         "speaker": "MEERA",
         "text": "Go, then. You know the way out better than I do. You've drawn it on enough walls.",
-        "actions": [{ "setFlag": "observation_done" }, { "signal": "observation_choice", "data": { "choice": "silent" } }]
+        "actions": [
+          {
+            "setFlag": "observation_done"
+          },
+          {
+            "signal": "observation_choice",
+            "data": {
+              "choice": "silent"
+            }
+          }
+        ]
       },
-      { "end": true }
+      {
+        "end": true
+      }
     ]
   }
 ]

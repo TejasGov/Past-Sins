@@ -21,7 +21,7 @@ class GateChai implements Interactable {
     private rt: NpcRuntime,
     private def: BhosleDef,
   ) {
-    const steel = new MeshStandardMaterial({ color: 0xb9beb8, roughness: 0.32, metalness: 0.9 });
+    const steel = new MeshStandardMaterial({ color: 0xd0d4cf, roughness: 0.3, metalness: 0.65 });
     rt.game.render.prepareMaterial(steel as Material);
     this.root.add(tumbler(steel));
     this.cardMesh = new Mesh(new BoxGeometry(0.086, 0.002, 0.054), new MeshStandardMaterial({ color: 0xd9dcd2, roughness: 0.5 }));
@@ -95,6 +95,8 @@ export class Bhosle {
       const t = this.rt.pickTalk(def);
       if (t) void this.rt.talk(actor, t).then(() => this.settle());
     };
+    const home = rt.resolve(def.home);
+    if (home && def.homePose?.includes("sit")) rt.addStool(home);
     rt.behaviours.set("bhosle_morning", () => this.startRound("morning"));
     rt.behaviours.set("bhosle_lockin", () => this.startRound("lockin"));
     this.goHome();
@@ -264,7 +266,7 @@ export class Bhosle {
       // Without the routine feature's signals (or after a reload mid-window) the clock decides.
       if (inHours(h, this.def.lunchHours)) void this.startLunch();
       else if (inHours(h, this.def.morning.fallbackHours) && this.morningKey !== this.dayKey()) void this.startRound("morning");
-    } else if ((this.state === "away" || this.state === "lunch_out") && !inHours(h, this.def.lunchHours)) {
+    } else if ((this.state === "away" || this.state === "lunch_out") && h >= this.def.lunchHours[1] && h < this.def.lunchHours[1] + 2) {
       void this.endLunch();
     }
   }
