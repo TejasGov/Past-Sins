@@ -34,7 +34,16 @@
     "data/story/objectives.json"
   ],
   "shards": [
-    "memory_001"
+    "memory_001",
+    "m03_dietary_window",
+    "t1_summer",
+    "t2_deeper",
+    "t3_the_hand",
+    "t4_surface",
+    "m06_visitor",
+    "m08_subject_three",
+    "m09_infirmary",
+    "m14_why_i_came"
   ],
   "features": {
     "loop": "data/story/features/loop.json",

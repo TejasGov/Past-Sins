@@ -1,4 +1,4 @@
-import { Color, Group, Mesh, Object3D, Quaternion, Raycaster, Vector3, Matrix4 } from "three";
+import { Group, Mesh, Object3D, Quaternion, Raycaster, Vector3, Matrix4 } from "three";
 import { engine as animeEngine } from "animejs";
 import { gsap } from "gsap";
 import { Input } from "../core/input";
@@ -9,6 +9,7 @@ import { LightPool } from "../render/lightPool";
 import { WorldLighting } from "../render/worldLighting";
 import { StaticBuilder, type ChunkInfo } from "../world/builder";
 import { buildCampus } from "../world/campus/campus";
+import { buildOuterGrass } from "../world/campus/ground";
 import { loadFloorPlans, type FloorPlan } from "../world/campus/plans";
 import type { BuiltFloor } from "../world/campus/blueprintFloor";
 import { Player } from "../player/player";
@@ -132,6 +133,7 @@ export class Game {
     this.session = new Session(this.content, loaded.memories);
     this.session.buildStatic(builder, this.floors, builder.doors);
     this.story.buildStatic(builder, this.floors);
+    buildOuterGrass(builder);
     const world = builder.finalize();
     this.render.scene.add(world.root);
     this.occluder = world.occluder;
@@ -152,7 +154,7 @@ export class Game {
     }
     this.swim = new SwimMotor(this.pools, this.input);
     this.player.waterMotor = this.swim;
-    this.swim.events.on("swimming_state_changed", (s) => this.hud.setSwimming(s));
+    this.swim.events.on("swimming_state_changed", (s) => this.hud.setSwimming(s, this.swim.water?.ceiling ?? false));
     this.render.scene.add(this.rain.mesh, this.dust.points);
     this.searchlights = new Searchlights(this.render.scene, this.anchors);
     const sky = this.anchors.get("cellhouse_a_skylight");
@@ -303,7 +305,7 @@ export class Game {
     animeEngine.update();
     gsap.ticker.tick();
     const frameMs = now - this.last;
-    const dt = Math.min(0.05, frameMs / 1000);
+    const dt = Math.max(0, Math.min(0.05, frameMs / 1000));
     if (this.started && !this.paused) this.adaptResolution(frameMs, dt);
     this.last = now;
     this.update(dt);
@@ -382,9 +384,11 @@ export class Game {
     this.swim.updateCamera(cam, dt);
     this.render.underwater.uniforms.get("time")!.value += dt;
     this.render.underwater.uniforms.get("immersion")!.value = this.swim.immersion;
-    this.lighting.overrideFogDensity = this.swim.immersion > 0.001 ? 0.11 * this.swim.immersion + 0.02 : null;
-    if (this.swim.immersion > 0.001) this.render.fog.color.lerp(new Color(0x286374).multiplyScalar(0.35), this.swim.immersion);
+    this.lighting.overrideFogDensity = this.swim.immersion > 0.001 ? this.swim.fogDensity * this.swim.immersion + 0.02 : null;
+    if (this.swim.immersion > 0.001) this.render.fog.color.lerp(this.swim.fogColor, this.swim.immersion);
     const night = this.env.nightLevel();
+    // The control-room radio (Act III) kills the towers' beams for good.
+    this.searchlights.enabled = !this.story?.hasFlag("searchlights_off");
     this.searchlights.update(dt, night);
     if (this.shafts) {
       const sun = this.env.sunTravelDirection();

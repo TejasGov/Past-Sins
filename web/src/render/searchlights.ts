@@ -28,6 +28,8 @@ export class Searchlights {
   private beams: Beam[] = [];
   private t = 0;
   level = 0;
+  /** False = the towers are dark (beams, lights and exposure off). */
+  enabled = true;
   private lensMat = new MeshBasicMaterial({ color: new Color(0xfff0c8) });
 
   constructor(scene: Scene, anchors: Map<string, Anchor>) {
@@ -116,6 +118,7 @@ export class Searchlights {
 
   /** level: 0 day … 1 night. */
   update(dt: number, level: number): void {
+    if (!this.enabled) level = 0;
     this.t += dt;
     this.level = level;
     this.coneMaterial.uniforms.level.value = level;

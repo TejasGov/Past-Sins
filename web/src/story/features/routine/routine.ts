@@ -54,6 +54,7 @@ export class RoutineRuntime {
   /** Withdrawal 0..1 (effects strength) and lights-out 0..1 (before the indoor weighting). */
   withdrawal = 0;
   dark = 0;
+  private fixturesDark = 0;
   lightsOut = false;
   private served = new Set<string>();
   private countDeadline = -1;
@@ -126,7 +127,9 @@ export class RoutineRuntime {
     const wd = this.data.withdrawal;
     const lo = this.data.lightsOut;
     this.dark = approach(this.dark, this.lightsOut && this.cameraInDarkChunk() ? 1 : 0, dt / Math.max(0.01, lo.rampSeconds));
-    this.look.apply(dt, this.withdrawal, this.dark * g.lighting.indoor, wd, lo);
+    // The buildings' tubes go out whether or not Parth is inside; the grade only darkens in there.
+    this.fixturesDark = approach(this.fixturesDark, this.lightsOut ? 1 : 0, dt / Math.max(0.01, lo.rampSeconds));
+    this.look.apply(dt, this.withdrawal, this.dark * g.lighting.indoor, wd, lo, this.fixturesDark);
     if (this.fadeOwned) {
       this.fade = approach(this.fade, this.fadeTarget, dt / Math.max(0.01, this.data.sleep.fadeSeconds));
       g.render.fade.uniforms.get("amount")!.value = this.fade;
@@ -392,6 +395,7 @@ export class RoutineRuntime {
     this.holdTimer = 0;
     this.lightsOut = false;
     this.dark = 0;
+    this.fixturesDark = 0;
     this.withdrawal = 0;
     this.withdrawalOn = false;
     this.onsetSaid = false;

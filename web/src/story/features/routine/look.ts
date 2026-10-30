@@ -18,7 +18,6 @@ export class ScreenLook {
   private readonly baseSaturation: number;
   private readonly baseContrast: number;
   private readonly baseTint: Vector3;
-  private readonly baseFixtures: number;
   private readonly baseVignette: number;
   private time = 0;
   private gradeDirty = false;
@@ -32,7 +31,6 @@ export class ScreenLook {
     this.baseSaturation = u.get("saturation")!.value as number;
     this.baseContrast = u.get("contrast")!.value as number;
     this.baseTint = (u.get("tint")!.value as Vector3).clone();
-    this.baseFixtures = game.pool.intensityScale;
     this.baseVignette = game.render.vignette.darkness;
   }
 
@@ -40,7 +38,7 @@ export class ScreenLook {
    * `w` withdrawal 0..1, `dark` lights out 0..1 (already indoor-weighted).
    * Runs after player.updateCamera, so the sway layers on the posed camera.
    */
-  apply(dt: number, w: number, dark: number, wd: WithdrawalDef, lo: LightsOutDef): void {
+  apply(dt: number, w: number, dark: number, wd: WithdrawalDef, lo: LightsOutDef, fixturesDark = dark): void {
     this.time += dt;
     const g = this.game;
     const grade = g.render.grade;
@@ -72,11 +70,16 @@ export class ScreenLook {
       g.render.vignette.darkness = this.baseVignette;
       this.gradeDirty = false;
     }
-    if (dark > 0.001) {
-      g.pool.intensityScale = this.baseFixtures * (1 + (lo.fixtures - 1) * dark);
+    // Lights out dims those buildings' fixtures only (point lights and tube panels).
+    if (fixturesDark > 0.001) {
+      const dim = 1 + (lo.fixtures - 1) * fixturesDark;
+      for (const c of lo.chunks) {
+        g.pool.chunkDim.set(c, dim);
+        g.materials.setChunkFixtureDim(c, dim);
+      }
       this.lightsDirty = true;
     } else if (this.lightsDirty) {
-      g.pool.intensityScale = this.baseFixtures;
+      this.clearDims(lo.chunks);
       this.lightsDirty = false;
     }
     // Camera sway: slow drunk roll/pitch/yaw plus a small bob; cinematics own the camera.
@@ -99,8 +102,15 @@ export class ScreenLook {
     grade.set("contrast", this.baseContrast);
     grade.set("tint", this.baseTint.clone());
     this.game.render.vignette.darkness = this.baseVignette;
-    this.game.pool.intensityScale = this.baseFixtures;
+    this.clearDims([...this.game.pool.chunkDim.keys()]);
     this.gradeDirty = false;
     this.lightsDirty = false;
+  }
+
+  private clearDims(chunks: string[]): void {
+    for (const c of chunks) {
+      this.game.pool.chunkDim.delete(c);
+      this.game.materials.setChunkFixtureDim(c, 1);
+    }
   }
 }

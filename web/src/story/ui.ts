@@ -110,6 +110,12 @@ export class StoryUI {
     });
   }
 
+  /** Closes an open choice (resolves -1) and document, e.g. when a capture starts. */
+  cancelBlocking(): void {
+    this.choiceResolve?.(-1);
+    this.docResolve?.();
+  }
+
   /** Big centred title ("CYCLE 42", "ACT II · THE PATTERN"). */
   banner(title: string, sub = "", seconds = 3.2): Promise<void> {
     this.bannerResolve?.();

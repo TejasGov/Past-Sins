@@ -109,10 +109,12 @@ export function buildBlueprintFloor(b: StaticBuilder, plan: FloorPlan, storyHeig
     doors.push(d);
   }
   if (plan.id === "nidra-b2") {
+    // Observation glass into Interrogation A/B, on their shared (compacted) boundary.
+    const wy = rooms.get("observation")?.y ?? 25.2;
     for (const x of [4.375, 12.125]) {
       doors.push({
-        a: "observation", b: x < 8 ? "interrogationa" : "interrogationb", x, y: 26, axis: "x", width: 3, clearWidth: 3,
-        kind: "window", position: point(x, 26), normal: V(0, 0, 1),
+        a: "observation", b: x < 8 ? "interrogationa" : "interrogationb", x, y: wy, axis: "x", width: 3, clearWidth: 3,
+        kind: "window", position: point(x, wy), normal: V(0, 0, 1),
       });
     }
   }

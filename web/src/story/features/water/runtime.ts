@@ -1,7 +1,7 @@
 import { Vector3, type Object3D } from "three";
 import type { Game } from "../../../game/game";
 import type { SwimmingPool } from "../../../world/pool";
-import { culvertHatchWater, culvertWater, punchOuterGrass, type CulvertLayout } from "../../../world/campus/culvert";
+import { culvertHatchWater, culvertWater, type CulvertLayout } from "../../../world/campus/culvert";
 import { Breath } from "./breath";
 import { WaterOverlay } from "./overlay";
 import { DeckGuards, GrateShimmer, HandRig, WaterProp } from "./props";
@@ -96,8 +96,6 @@ export class WaterRuntime {
       const hatch = culvertHatchWater(L);
       g.render.scene.add(hatch.mesh);
       this.hatchWater = hatch;
-      const punched = punchOuterGrass(g.render.scene);
-      if (punched !== 12) console.warn(`[water] outer grass: removed ${punched} triangles (expected 12); the reservoir may show grass through it`);
       this.prop(L.hatch.clone().add(new Vector3(0, 0.25, 0)), new Vector3(1.3, 0.5, 1.3), () => this.hatchPrompt(), () => void this.enterSump());
       this.prop(new Vector3(L.x, L.shaft.surfaceY + 0.25, L.tube.z0 + 0.22), new Vector3(0.8, 1.2, 0.36), () => this.ladderPrompt(), () => void this.climbOut());
     } else console.warn("[water] maintenance-b1 pump room not found: no culvert");

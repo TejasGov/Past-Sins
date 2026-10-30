@@ -250,10 +250,44 @@ export class MaterialLibrary {
     return mat;
   }
 
+  private nightLevel = 1;
+  private nightVariants = new Map<string, { mat: MeshBasicMaterial; dim: number }>();
+
+  /**
+   * The night-only diffuser material for one building (chunk base name), so a
+   * building's tubes can be dimmed on their own (lights out) without touching
+   * the rest of the campus.
+   */
+  nightFor(chunk: string): Material {
+    const base = chunk.split("_")[0].split("@")[0];
+    let v = this.nightVariants.get(base);
+    if (!v) {
+      const mat = (this.get("emissive_night") as MeshBasicMaterial).clone();
+      mat.userData.baseColor = (this.get("emissive_night").userData.baseColor as Color).clone();
+      v = { mat, dim: 1 };
+      this.nightVariants.set(base, v);
+      this.applyNight(v.mat, v.dim);
+    }
+    return v.mat;
+  }
+
+  /** 0..1 multiplier on one building's night-only diffusers (1 = authored). */
+  setChunkFixtureDim(chunk: string, dim: number): void {
+    const v = this.nightVariants.get(chunk);
+    if (!v || v.dim === dim) return;
+    v.dim = dim;
+    this.applyNight(v.mat, dim);
+  }
+
+  private applyNight(mat: MeshBasicMaterial, dim: number): void {
+    mat.color.copy(mat.userData.baseColor as Color).multiplyScalar((0.06 + 0.94 * this.nightLevel) * dim);
+  }
+
   /** Night-only diffusers fade between a dim daytime glow and full output. */
   setNightLevel(level: number): void {
-    const mat = this.materials.get("emissive_night") as MeshBasicMaterial;
-    mat.color.copy(mat.userData.baseColor as Color).multiplyScalar(0.06 + 0.94 * level);
+    this.nightLevel = level;
+    this.applyNight(this.materials.get("emissive_night") as MeshBasicMaterial, 1);
+    for (const v of this.nightVariants.values()) this.applyNight(v.mat, v.dim);
   }
 }
 

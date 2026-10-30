@@ -1,4 +1,4 @@
-import { Box3, Mesh, Quaternion, Vector3, type BufferAttribute, type Object3D } from "three";
+import { Box3, Quaternion, Vector3 } from "three";
 import type { StaticBuilder } from "../builder";
 import type { BuiltFloor } from "./blueprintFloor";
 import { subtract, type Rect } from "./ground";
@@ -18,7 +18,6 @@ import { V } from "../props";
 const PERIMETER_Z = 94;
 /** The far grass beyond the south wall (ground.ts buildGround): x −78…78, z 94…300, y −0.45…−0.05. */
 const OUTER_GRASS = { x0: -78, x1: 78, z0: 94, z1: 300, y0: -0.45, y1: -0.05 };
-const OUTER_GRASS_COLOR = 0x7a8468;
 
 const WALL = 0.3;
 const TUBE_WIDTH = 2.6;
@@ -321,48 +320,7 @@ function buildReservoir(b: StaticBuilder, L: CulvertLayout, text: CulvertText): 
   b.blocker(V(apron.x - 0.25, fence / 2, apron.z + apron.d / 2), V(0.5, fence, apron.d));
   b.blocker(V(apron.x + apron.w + 0.25, fence / 2, apron.z + apron.d / 2), V(0.5, fence, apron.d));
   b.blocker(V(apron.x + apron.w / 2, fence / 2, apron.z + apron.d + 0.25), V(apron.w + 1, fence, 0.5));
-  // Replacement outer grass with the basin cut out (see punchOuterGrass).
-  const outer: Rect = { x: OUTER_GRASS.x0, z: OUTER_GRASS.z0, w: OUTER_GRASS.x1 - OUTER_GRASS.x0, d: OUTER_GRASS.z1 - OUTER_GRASS.z0 };
-  const gy = (OUTER_GRASS.y0 + OUTER_GRASS.y1) / 2;
-  for (const g of subtract([outer], hole)) {
-    b.box(V(g.x + g.w / 2, gy, g.z + g.d / 2), V(g.w, OUTER_GRASS.y1 - OUTER_GRASS.y0, g.d), { mat: "grass", color: OUTER_GRASS_COLOR, collide: false, occlude: false, shadow: false });
-  }
+  // The outer grass (ground.ts buildOuterGrass, built after this) leaves the basin out.
+  b.terrainCutouts.push(hole);
 }
 
-/**
- * The far grass beyond the south wall is one visual slab (ground.ts), which
- * would cut straight through the reservoir. buildReservoir rebuilds it around
- * the basin; this removes the original box's triangles from the merged static
- * batch (matched exactly on its eight corners, so nothing else is touched).
- * Returns the number of triangles removed (12 when found).
- */
-export function punchOuterGrass(root: Object3D): number {
-  const g = OUTER_GRASS;
-  const near = (v: number, a: number, c: number) => Math.abs(v - a) < 1e-3 || Math.abs(v - c) < 1e-3;
-  let removed = 0;
-  root.traverse((o) => {
-    const mesh = o as Mesh;
-    // Only the campus batches: the replacement pieces (chunk "water") share the slab's outer corners.
-    if (!mesh.isMesh || !mesh.name.startsWith("exterior") || !mesh.name.includes("|grass|")) return;
-    const geo = mesh.geometry;
-    const pos = geo.getAttribute("position") as BufferAttribute;
-    const index = geo.getIndex();
-    if (!index) return;
-    const onCorner = (i: number) => near(pos.getX(i), g.x0, g.x1) && near(pos.getY(i), g.y0, g.y1) && near(pos.getZ(i), g.z0, g.z1);
-    let changed = false;
-    for (let t = 0; t < index.count; t += 3) {
-      const a = index.getX(t);
-      const b = index.getX(t + 1);
-      const c = index.getX(t + 2);
-      if (a === b && b === c) continue;
-      if (onCorner(a) && onCorner(b) && onCorner(c)) {
-        index.setX(t + 1, a);
-        index.setX(t + 2, a);
-        removed++;
-        changed = true;
-      }
-    }
-    if (changed) index.needsUpdate = true;
-  });
-  return removed;
-}

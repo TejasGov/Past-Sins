@@ -33,7 +33,10 @@ export async function runDialogue(def: DialogueDef, story: StoryDirector): Promi
         i++;
         continue;
       }
-      const picked = options[await story.ui.choose(options.map((c) => c.text), n.prompt)];
+      const index = await story.ui.choose(options.map((c) => c.text), n.prompt);
+      // -1: the choice was cancelled (a capture started).
+      if (index < 0 || story.capturing) return;
+      const picked = options[index];
       if (picked.actions) await story.run(picked.actions);
       i = picked.goto ? (labels.get(picked.goto) ?? def.nodes.length) : i + 1;
     }

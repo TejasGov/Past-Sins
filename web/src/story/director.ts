@@ -119,7 +119,8 @@ export class StoryDirector {
     location.search = "?fresh";
   }
 
-  private markDirty(): void {
+  /** Schedules a save (within a second); features that change `state` directly call this. */
+  markDirty(): void {
     this.dirty = true;
   }
 
@@ -310,7 +311,7 @@ export class StoryDirector {
       this.markDirty();
     } else if ("message" in a) g.hud.showMessage(a.message, a.seconds ?? 2);
     else if ("say" in a) {
-      this.events.emit("dialogue", { id: "", speaker: a.speaker ?? "", text: a.say });
+      this.events.emit("dialogue", { id: "", speaker: a.speaker ?? "", text: a.say, audio: a.audio });
       await this.ui.say(a.speaker ?? "", a.say, a.seconds);
     } else if ("dialogue" in a) {
       const d = this.data.dialogue.get(a.dialogue);
@@ -436,6 +437,7 @@ export class StoryDirector {
     g.failureInProgress = true;
     g.player.setFailureLocked();
     this.ui.clearSubtitles();
+    this.ui.cancelBlocking();
     this.events.emit("capture", { reason });
     try {
       let next: "wipe" | "handled" = "wipe";

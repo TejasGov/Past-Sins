@@ -104,6 +104,8 @@ export class StaticBuilder {
   readonly doors: DoorSpec[] = [];
   readonly anchors = new Map<string, Anchor>();
   readonly chunks = new Map<string, ChunkInfo>();
+  /** Footprints the outer (beyond-the-wall) grass leaves out, e.g. the reservoir basin. */
+  readonly terrainCutouts: { x: number; z: number; w: number; d: number }[] = [];
   /** Guard navigation data recorded alongside the geometry (see world/nav.ts). */
   readonly nav: NavExport = { paths: [], regions: [] };
   private chunk!: ChunkInfo;
@@ -403,7 +405,13 @@ export class StaticBuilder {
       geo.setIndex(new Uint32BufferAttribute(b.idx, 1));
       geo.computeBoundingSphere();
       geo.computeBoundingBox();
-      const material = matKey === "__sign" ? this.signMaterial : this.materials.get(matKey as MaterialKey);
+      const interior = this.chunks.get(chunkName)?.interior ?? false;
+      const material =
+        matKey === "__sign"
+          ? this.signMaterial
+          : matKey === "emissive_night" && interior
+            ? this.materials.nightFor(chunkName)
+            : this.materials.get(matKey as MaterialKey);
       const mesh = new Mesh(geo, material);
       mesh.name = key;
       // Interior batches sit under roofs; only Cellhouse A (skylight) needs them in the sun's shadow passes.

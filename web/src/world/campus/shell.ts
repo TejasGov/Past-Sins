@@ -75,7 +75,7 @@ export function buildShell(b: StaticBuilder, def: ShellDef): void {
     slab(-rw / 2, z0, x0, z1);
     slab(x1, z0, rw / 2, z1);
     // Glazing is non-shadowing; mullions and trusses give the light shafts structure.
-    b.box(V((x0 + x1) / 2, roofY + 0.05, (z0 + z1) / 2), V(x1 - x0, 0.04, z1 - z0), { mat: "glass", collide: true, shadow: false, occlude: false });
+    b.box(V((x0 + x1) / 2, roofY + 0.05, (z0 + z1) / 2), V(x1 - x0, 0.04, z1 - z0), { mat: "glass", collide: true, shadow: false, occlude: true });
     for (let x = x0; x <= x1 + 0.01; x += 2) {
       b.box(V(x, roofY - 0.05, (z0 + z1) / 2), V(0.12, 0.3, z1 - z0), { mat: "dark", color: 0x2f3431, collide: false });
     }

@@ -50,7 +50,7 @@ export type Action =
   | { learnCode: string }
   | { add: string; by?: number }
   | { message: string; seconds?: number }
-  | { say: string; speaker?: string; seconds?: number }
+  | { say: string; speaker?: string; seconds?: number; audio?: string }
   | { dialogue: string }
   | { document: string }
   | { act: number }
