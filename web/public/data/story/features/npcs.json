@@ -1,1 +1,510 @@
-{}
+{
+  "$comment": "W4 · NPCs & dialogue (src/story/features/npcs). Places are story Places or {door, offset, yaw} in a door's frame. Talks: the first entry whose `when` holds runs its steps (dialogue / run / shard / document / pose / do / wait / if). Dialogue text lives in dialogue/npcs.json; {tokens} below are filled in lines and choices.",
+  "talkPrompt": "[E] Talk",
+  "drawDistance": 45,
+  "tokens": {
+    "kabir_time": {
+      "var": "npcs:kabir_visits",
+      "add": 40,
+      "format": "ordinal"
+    },
+    "cycle_words": {
+      "cycle": true,
+      "format": "words"
+    },
+    "cycle": {
+      "cycle": true
+    },
+    "cycle_words_cap": {
+      "cycle": true,
+      "format": "Words"
+    }
+  },
+  "documents": [
+    {
+      "id": "npcs_mother_photo",
+      "title": "PHOTOGRAPH",
+      "body": "Two boys on the steps of a concrete water tank, squinting into the sun. The smaller one holds up a mango pit like a trophy. The taller one is counting something on his fingers.\n\nOn the back, in blue ballpoint, in a hand you don't know:\n\nParth & Raman Varma",
+      "footer": "Pressed flat. The corners are soft from being handled.",
+      "style": "paper"
+    }
+  ],
+  "bhosle": {
+    "speaker": "BHOSLE",
+    "look": {
+      "recolor": {
+        "Ch35_body": "#c4b07e",
+        "Ch35_body1": "#a99568"
+      },
+      "face": {
+        "skin": "#8a5a3c",
+        "brows": "#8d8a84"
+      },
+      "scale": 0.97,
+      "props": [
+        "tumbler",
+        "cap",
+        "greyhair"
+      ]
+    },
+    "hit": {
+      "size": [
+        0.8,
+        1.3,
+        0.8
+      ],
+      "offset": [
+        0,
+        1.0,
+        0
+      ]
+    },
+    "home": {
+      "door": "cellhouse_a_floor3_guard_quarter",
+      "offset": [
+        0.55,
+        0,
+        -2.1
+      ],
+      "yaw": 0.35
+    },
+    "homePose": "sit,stoop",
+    "gate": {
+      "door": "cellhouse_a_floor3_north_03",
+      "offset": [
+        0.3,
+        0,
+        0.72
+      ],
+      "yaw": 3.14159
+    },
+    "tumblerAt": {
+      "door": "cellhouse_a_floor3_north_03",
+      "offset": [
+        0.38,
+        0.01,
+        -0.32
+      ],
+      "yaw": 0.4
+    },
+    "lunchAway": {
+      "position": [
+        -32.0,
+        6.45,
+        -2.2
+      ],
+      "yaw": 3.14159
+    },
+    "lunchHours": [
+      12.5,
+      13.0
+    ],
+    "walkSpeed": 1.3,
+    "morning": {
+      "line": {
+        "speaker": "BHOSLE",
+        "text": "Good morning, beta. Sleep well?",
+        "seconds": 3.4
+      },
+      "counter": "npcs:bhosle_mornings",
+      "hearDistance": 5.5,
+      "giveUpHour": 7.5,
+      "fallbackHours": [
+        6.0,
+        6.5
+      ]
+    },
+    "lockin": {
+      "act": 3,
+      "line": {
+        "speaker": "BHOSLE",
+        "text": "They told me to bring you down at two. I'll be slow.",
+        "seconds": 4.4
+      }
+    },
+    "chai": {
+      "prompt": "[E] Drink the chai",
+      "actions": [
+        {
+          "say": "Sweet. Too much cardamom. It's still hot.",
+          "speaker": "PARTH"
+        }
+      ],
+      "cardPrompt": "[E] Lift the tumbler",
+      "cardWhen": {
+        "not": {
+          "item": "bhosle_card"
+        }
+      },
+      "cardActions": [
+        {
+          "give": {
+            "id": "bhosle_card",
+            "label": "Bhosle's Access Card",
+            "category": "ACCESS_CARD"
+          }
+        },
+        {
+          "setFlag": "cycle:bhosle_card"
+        },
+        {
+          "say": "His access card. Still warm from his pocket.",
+          "speaker": "PARTH"
+        }
+      ]
+    },
+    "talk": [
+      {
+        "when": {
+          "actAtLeast": 3
+        },
+        "steps": [
+          {
+            "dialogue": "npcs_bhosle_night"
+          }
+        ]
+      },
+      {
+        "lock": true,
+        "steps": [
+          {
+            "dialogue": "npcs_bhosle"
+          }
+        ]
+      }
+    ]
+  },
+  "kabir": {
+    "speaker": "KABIR",
+    "look": {
+      "hide": [
+        "Ch35_body2"
+      ],
+      "recolor": {
+        "Ch35_body": "#d9d2bf",
+        "Ch35_body1": "#cbc4b0"
+      },
+      "face": {
+        "skin": "#9a6a4c"
+      },
+      "scale": 0.95,
+      "props": [
+        "kurta",
+        "wildhair"
+      ],
+      "contrast": 0.45
+    },
+    "hit": {
+      "size": [
+        0.9,
+        0.95,
+        1.3
+      ],
+      "offset": [
+        0,
+        1.45,
+        0.55
+      ]
+    },
+    "stand": {
+      "door": "campus_cellhouse-b-0_glassa_eastcross",
+      "offset": [
+        0.15,
+        0,
+        0.62
+      ],
+      "yaw": 3.14159
+    },
+    "door": "campus_cellhouse-b-0_glassa_eastcross",
+    "visits": "npcs:kabir_visits",
+    "seenFlag": "cycle:npcs_kabir_seen",
+    "freedFlag": "kabir_freed",
+    "followFlag": "npcs:kabir_following",
+    "follow": {
+      "near": 2.2,
+      "far": 9,
+      "walk": 1.6,
+      "run": 3.6,
+      "repath": 0.8
+    },
+    "talk": [
+      {
+        "when": {
+          "flag": "npcs:kabir_following"
+        },
+        "steps": [
+          {
+            "dialogue": "npcs_kabir_following"
+          }
+        ]
+      },
+      {
+        "lock": true,
+        "steps": [
+          {
+            "dialogue": "npcs_kabir"
+          }
+        ]
+      }
+    ],
+    "blockedLine": {
+      "speaker": "KABIR",
+      "text": "Parth. The door, yaar. I'm a prisoner, not a ghost."
+    }
+  },
+  "mother": {
+    "speaker": "VISITOR",
+    "prompt": "[E] Sit at the glass",
+    "look": {
+      "hide": [
+        "Ch35_body2"
+      ],
+      "recolor": {
+        "Ch35_body": "#7e3a32",
+        "Ch35_body1": "#8c4c3c"
+      },
+      "face": {
+        "skin": "#94664a",
+        "brows": "#3a3430"
+      },
+      "scale": 0.9,
+      "props": [
+        "shawl",
+        "hood",
+        "photo"
+      ]
+    },
+    "hit": {
+      "size": [
+        0.9,
+        0.9,
+        1.4
+      ],
+      "offset": [
+        0,
+        1.0,
+        0.55
+      ]
+    },
+    "seat": {
+      "plan": "admin-ground",
+      "room": "visitation",
+      "offset": [
+        -0.95,
+        0.16,
+        0.5
+      ],
+      "yaw": 3.14159
+    },
+    "entrance": {
+      "plan": "admin-ground",
+      "room": "visitation",
+      "offset": [
+        0,
+        0,
+        4.2
+      ],
+      "yaw": 3.14159
+    },
+    "visit": {
+      "day": 3,
+      "hours": [
+        10.0,
+        11.0
+      ]
+    },
+    "talk": [
+      {
+        "when": {
+          "flag": "cycle:npcs_mother_photo"
+        },
+        "steps": [
+          {
+            "dialogue": "npcs_mother_after"
+          }
+        ]
+      },
+      {
+        "when": {
+          "not": {
+            "shard": "m06_visitor"
+          }
+        },
+        "lock": true,
+        "steps": [
+          {
+            "dialogue": "npcs_mother_visit"
+          },
+          {
+            "do": "mother_photo_up"
+          },
+          {
+            "shard": "m06_visitor",
+            "focus": "photo"
+          },
+          {
+            "run": [
+              {
+                "give": {
+                  "id": "mother_photo",
+                  "label": "Photo: Two Boys at the Tank"
+                }
+              },
+              {
+                "setFlag": "cycle:npcs_mother_photo"
+              }
+            ]
+          },
+          {
+            "document": "npcs_mother_photo"
+          },
+          {
+            "do": "mother_photo_down"
+          },
+          {
+            "dialogue": "npcs_mother_photo"
+          }
+        ]
+      },
+      {
+        "lock": true,
+        "steps": [
+          {
+            "dialogue": "npcs_mother_again"
+          },
+          {
+            "do": "mother_photo_up"
+          },
+          {
+            "wait": 1.4
+          },
+          {
+            "run": [
+              {
+                "give": {
+                  "id": "mother_photo",
+                  "label": "Photo: Two Boys at the Tank"
+                }
+              },
+              {
+                "setFlag": "cycle:npcs_mother_photo"
+              }
+            ]
+          },
+          {
+            "document": "npcs_mother_photo"
+          },
+          {
+            "do": "mother_photo_down"
+          },
+          {
+            "dialogue": "npcs_mother_again_end"
+          }
+        ]
+      }
+    ]
+  },
+  "meera": {
+    "speaker": "MEERA",
+    "look": {
+      "ink": true,
+      "hide": [
+        "Ch35_body2"
+      ],
+      "scale": 0.93,
+      "props": [
+        "coat",
+        "bun"
+      ]
+    },
+    "stand": {
+      "plan": "nidra-b2",
+      "room": "observation",
+      "offset": [
+        -3.68,
+        0,
+        0.25
+      ],
+      "yaw": 2.75
+    },
+    "backlight": {
+      "at": {
+        "plan": "nidra-b2",
+        "room": "observation",
+        "offset": [
+          -3.88,
+          1.6,
+          1.45
+        ],
+        "yaw": 3.14159
+      },
+      "size": [
+        3.8,
+        2.6
+      ],
+      "color": "#b9cbd2"
+    },
+    "present": {
+      "all": [
+        {
+          "actAtLeast": 3
+        },
+        {
+          "not": {
+            "flag": "observation_done"
+          }
+        }
+      ]
+    },
+    "room": {
+      "plan": "nidra-b2",
+      "room": "interrogationa"
+    },
+    "talk": []
+  },
+  "chair": {
+    "eye": {
+      "plan": "nidra-b2",
+      "room": "interrogationa",
+      "offset": [
+        -0.1,
+        1.16,
+        1.35
+      ]
+    },
+    "look": {
+      "plan": "nidra-b2",
+      "room": "observation",
+      "offset": [
+        -3.7,
+        1.45,
+        0.3
+      ]
+    },
+    "standUp": {
+      "plan": "nidra-b2",
+      "room": "interrogationa",
+      "offset": [
+        0.9,
+        0,
+        0.2
+      ],
+      "yaw": 3.14159
+    },
+    "shard": "m14_why_i_came",
+    "dialogue": "npcs_observation",
+    "falseWindow": {
+      "z": -0.95,
+      "glass": [
+        3.0,
+        0.96,
+        2.08
+      ],
+      "meera": [
+        0.2,
+        0,
+        0.68
+      ]
+    }
+  }
+}
