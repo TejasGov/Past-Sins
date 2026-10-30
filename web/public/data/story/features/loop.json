@@ -1,39 +1,90 @@
 {
-  "$comment": "W1 · Loop, capture & the wall (src/story/features/loop). Every string the player reads lives here; {cycle}, {text}, {item}, {code}, {codes}, {count} are filled in by the feature.",
+  "$comment": "W1 \u00b7 Loop, capture & the wall (src/story/features/loop). Every string the player reads lives here; {cycle}, {text}, {item}, {code}, {codes}, {count} are filled in by the feature.",
   "capture": {
     "skipHint": "SKIP",
-    "liftCaption": "SECURITY HQ  ·  RESTRICTED LIFT",
-    "chairCaption": "NIDRA  ·  B2  ·  INTERROGATION A",
-    "again": { "speaker": "SPEAKER", "text": "Again.", "audio": "again", "seconds": 3.4 },
+    "liftCaption": "SECURITY HQ  \u00b7  RESTRICTED LIFT",
+    "chairCaption": "NIDRA  \u00b7  B2  \u00b7  INTERROGATION A",
+    "again": {
+      "speaker": "SPEAKER",
+      "text": "Again.",
+      "audio": "again",
+      "seconds": 3.4
+    },
     "seize": {
-      "caught": [{ "speaker": "GUARD", "text": "Down. Stay down.", "seconds": 1.6 }],
-      "alarm": [{ "speaker": "GUARD", "text": "Stair runner. Same as always.", "seconds": 2 }],
-      "count": [{ "speaker": "GUARD", "text": "Missed the count, S-07.", "seconds": 1.8 }]
+      "caught": [
+        {
+          "speaker": "GUARD",
+          "text": "Down. Stay down.",
+          "seconds": 1.6
+        }
+      ],
+      "alarm": [
+        {
+          "speaker": "GUARD",
+          "text": "Stair runner. Same as always.",
+          "seconds": 2
+        }
+      ],
+      "count": [
+        {
+          "speaker": "GUARD",
+          "text": "Missed the count, S-07.",
+          "seconds": 1.8
+        }
+      ]
     }
   },
   "wake": {
     "banner": "CYCLE {cycle}",
-    "sub": "06:00  ·  DAY ONE",
-    "infirmarySub": "06:00  ·  INFIRMARY  ·  BED 4",
+    "sub": "06:00  \u00b7  DAY ONE",
+    "infirmarySub": "06:00  \u00b7  INFIRMARY  \u00b7  BED 4",
     "reloadSub": "DAY ONE"
   },
   "nightRestart": {
     "hour": 19,
     "banner": "19:00",
     "sub": "YOU HAVE LIVED THIS NIGHT BEFORE",
-    "reasons": ["caught", "alarm", "dose", "drowned", "count", "dev"]
+    "reasons": [
+      "caught",
+      "alarm",
+      "dose",
+      "drowned",
+      "count",
+      "dev",
+      "termination"
+    ]
   },
   "coldOpen": {
     "lines": [
-      { "speaker": "", "text": "two…", "seconds": 1.4, "audio": "count_2" },
-      { "speaker": "", "text": "two… seven…", "seconds": 1.4, "audio": "count_7" },
-      { "speaker": "", "text": "two… seven… one…", "seconds": 1.4, "audio": "count_1" },
-      { "speaker": "", "text": "two… seven… one… eight…", "seconds": 2.6, "audio": "count_8" }
+      {
+        "speaker": "",
+        "text": "two\u2026",
+        "seconds": 1.4,
+        "audio": "count_2"
+      },
+      {
+        "speaker": "",
+        "text": "two\u2026 seven\u2026",
+        "seconds": 1.4,
+        "audio": "count_7"
+      },
+      {
+        "speaker": "",
+        "text": "two\u2026 seven\u2026 one\u2026",
+        "seconds": 1.4,
+        "audio": "count_1"
+      },
+      {
+        "speaker": "",
+        "text": "two\u2026 seven\u2026 one\u2026 eight\u2026",
+        "seconds": 2.6,
+        "audio": "count_8"
+      }
     ]
   },
   "wall": {
     "prompt": "[E] Read the wall",
-    "title": "The wall · N03",
+    "title": "The wall \u00b7 N03",
     "style": "note",
     "entryFormat": "{text}",
     "cycleFormat": "{cycle}",
@@ -42,7 +93,14 @@
     "docCodes": "Numbers scratched deeper than the rest:  {codes}",
     "empty": "Scratches, layered over each other. Most of it has been worn smooth by a thumb. None of it means anything to you yet.",
     "footer": "Scratched into the paint with something blunt. The handwriting is yours.",
-    "faded": ["S-07", "again", "who is she", "water", "don't", "count"]
+    "faded": [
+      "S-07",
+      "again",
+      "who is she",
+      "water",
+      "don't",
+      "count"
+    ]
   },
   "stash": {
     "prompt": "[E] Lift the cistern lid",
@@ -54,36 +112,106 @@
     "stored": "{item} HIDDEN IN THE CISTERN",
     "retrieved": "{item} TAKEN FROM THE CISTERN",
     "items": {
-      "cellblock_key": { "label": "Cellblock Key", "category": "KEY" },
-      "service_key": { "label": "Service Key", "category": "KEY" },
-      "medical_key": { "label": "Medical Key", "category": "KEY" },
-      "security_key": { "label": "Security Key", "category": "KEY" },
-      "lab_key": { "label": "Lab Key", "category": "KEY" },
-      "cell_master_key": { "label": "Cell Master Key", "category": "KEY" },
-      "maintenance_access_card": { "label": "Maintenance Access Card", "category": "ACCESS_CARD" },
-      "bhosle_card": { "label": "Bhosle's Access Card", "category": "ACCESS_CARD" },
-      "pill": { "label": "Pill", "category": "MISSION_ITEM" },
-      "jagran": { "label": "Jagran Vial", "category": "MISSION_ITEM" },
-      "raman_notebook": { "label": "Raman's Notebook", "category": "MISSION_ITEM" },
-      "mother_photo": { "label": "Photograph", "category": "MISSION_ITEM" }
+      "cellblock_key": {
+        "label": "Cellblock Key",
+        "category": "KEY"
+      },
+      "service_key": {
+        "label": "Service Key",
+        "category": "KEY"
+      },
+      "medical_key": {
+        "label": "Medical Key",
+        "category": "KEY"
+      },
+      "security_key": {
+        "label": "Security Key",
+        "category": "KEY"
+      },
+      "lab_key": {
+        "label": "Lab Key",
+        "category": "KEY"
+      },
+      "cell_master_key": {
+        "label": "Cell Master Key",
+        "category": "KEY"
+      },
+      "maintenance_access_card": {
+        "label": "Maintenance Access Card",
+        "category": "ACCESS_CARD"
+      },
+      "bhosle_card": {
+        "label": "Bhosle's Access Card",
+        "category": "ACCESS_CARD"
+      },
+      "pill": {
+        "label": "Pill",
+        "category": "MISSION_ITEM"
+      },
+      "jagran": {
+        "label": "Jagran Vial",
+        "category": "MISSION_ITEM"
+      },
+      "raman_notebook": {
+        "label": "Raman's Notebook",
+        "category": "MISSION_ITEM"
+      },
+      "mother_photo": {
+        "label": "Photograph",
+        "category": "MISSION_ITEM"
+      }
     }
   },
   "alarm": {
-    "message": "ALARM  ·  B1 SERVICE STAIR",
+    "message": "ALARM  \u00b7  B1 SERVICE STAIR",
     "captureAfter": 12,
     "noiseEvery": 2.5
   },
   "dose": {
     "hour": 21,
-    "lines": [{ "speaker": "PARTH", "text": "My hands… why are my hands so heavy…", "seconds": 2.6 }]
+    "lines": [
+      {
+        "speaker": "PARTH",
+        "text": "My hands\u2026 why are my hands so heavy\u2026",
+        "seconds": 2.6
+      }
+    ]
   },
   "infirmary": {
-    "bed": { "plan": "medical-ground", "room": "ward", "offset": [4.04, 0, -3.6] },
-    "eye": [0.66, 0.98, 0.05],
-    "look": [-0.6, 2.6, 0.2],
-    "sit": [0.1, 1.28, -0.25],
-    "sitLook": [-2.4, 1.15, -0.4],
-    "stand": [0, 0, -1.0],
+    "bed": {
+      "plan": "medical-ground",
+      "room": "ward",
+      "offset": [
+        4.04,
+        0,
+        -3.6
+      ]
+    },
+    "eye": [
+      0.66,
+      0.98,
+      0.05
+    ],
+    "look": [
+      -0.6,
+      2.6,
+      0.2
+    ],
+    "sit": [
+      0.1,
+      1.28,
+      -0.25
+    ],
+    "sitLook": [
+      -2.4,
+      1.15,
+      -0.4
+    ],
+    "stand": [
+      0,
+      0,
+      -1.0
+    ],
     "standYaw": 1.5708,
     "shard": "m09_infirmary"
   }

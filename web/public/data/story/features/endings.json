@@ -1,1 +1,84 @@
-{}
+{
+  "$comment": "Act III night flow and the three endings (src/story/features/endings). All text here; places resolve like trigger places.",
+  "act3": {
+    "weather": "RAINY",
+    "monsoonMessage": "MONSOON",
+    "terminationHour": 2.0,
+    "terminationLines": [
+      { "speaker": "BHOSLE", "text": "It's two, beta. I was slow.", "seconds": 2.6 },
+      { "speaker": "BHOSLE", "text": "Not slow enough.", "seconds": 2.4 }
+    ]
+  },
+  "pistol": {
+    "at": { "plan": "hq-1", "room": "chief", "offset": [-1.1, 0.79, -1.4] },
+    "prompt": "[E] Take the pistol",
+    "message": "PISTOL · PRESS 1 TO EQUIP"
+  },
+  "letGo": {
+    "surfaceSeconds": 2.4,
+    "rise": { "seconds": 10, "height": 24, "back": 14, "look": [36, 6, 245] },
+    "town": { "center": [36, 0, 240] },
+    "doorstep": {
+      "origin": [-200, 0, 160],
+      "hour": 7.3,
+      "weather": "NORMAL",
+      "walkSeconds": 6.5,
+      "lines": [
+        { "speaker": "", "text": "Three knocks.", "seconds": 2.2 },
+        { "speaker": "PARTH", "text": "Aunty. It's Parth.", "seconds": 2.6 },
+        { "speaker": "PARTH", "text": "I came to tell you what happened at the tank. What really—", "seconds": 3.4 }
+      ]
+    }
+  },
+  "holdOn": {
+    "silenceSeconds": 2.6,
+    "lines": [{ "speaker": "BHOSLE", "text": "Good morning, beta. Sleep well?", "seconds": 3.2 }]
+  },
+  "mercy": {
+    "pa": [
+      { "speaker": "MEERA (TANNOY)", "text": "This is Dr. Varma.", "seconds": 2.2 },
+      { "speaker": "MEERA (TANNOY)", "text": "Programme NIDRA is suspended, effective now. Subjects are released to Medical.", "seconds": 4.2 },
+      { "speaker": "MEERA (TANNOY)", "text": "Open the Intake gates.", "seconds": 2.4 }
+    ],
+    "walkSpeed": 1.3,
+    "route": [
+      { "plan": "admin-ground", "room": "secure", "offset": [0, 0, -3] },
+      { "plan": "admin-ground", "room": "secure", "offset": [0, 0, 3] },
+      { "plan": "admin-ground", "room": "visitorhall" },
+      { "plan": "admin-ground", "room": "public" }
+    ],
+    "exitLines": [
+      { "speaker": "KABIR", "text": "Forty-one times I've watched you try to leave this place.", "seconds": 3.4 },
+      { "speaker": "KABIR", "text": "You never once tried the front door.", "seconds": 3.0 }
+    ],
+    "outsideDistance": 9
+  },
+  "credits": {
+    "title": "BLACKSITE",
+    "subtitle": "GHOST EXIT",
+    "names": { "let_go": "LET GO", "hold_on": "HOLD ON", "mercy": "MERCY" },
+    "lines": [
+      "",
+      "A game by Tejas",
+      "",
+      "STORY",
+      "\"Again\"",
+      "",
+      "BUILT WITH",
+      "three.js · Rapier · GSAP · anime.js",
+      "pmndrs postprocessing · N8AO · three-mesh-bvh",
+      "",
+      "CHARACTER",
+      "Mixamo Ch35",
+      "",
+      "TYPE",
+      "Oswald · IBM Plex Mono",
+      "",
+      "",
+      "Two. Seven. One. Eight."
+    ],
+    "theEnd": "THE END",
+    "again": "[E] WAKE AGAIN",
+    "seconds": 34
+  }
+}

@@ -192,7 +192,8 @@ export class Bhosle {
       if (kind === "morning" && g.env.timeHours >= this.def.morning.giveUpHour) break;
       await this.story.sleep(0.25);
     }
-    if (run !== this.run) return;
+    // An ending has the stage (Parth's body may still be standing at the bars).
+    if (run !== this.run || this.rt.suspended) return;
     const heard = g.player.position.distanceTo(gate.position) < this.def.morning.hearDistance;
     if (heard) {
       a.lookTargetWeight = 1;

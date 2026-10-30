@@ -1,0 +1,15 @@
+/* Credits roll and end card (src/story/features/endings/credits.ts). */
+.ending-credits { position: absolute; inset: 0; overflow: hidden; background: rgba(0, 0, 0, var(--dim, 1)); opacity: 0; pointer-events: none; transition: opacity 1.2s; z-index: 6; }
+.ending-credits.visible { opacity: 1; }
+.ending-credits .roll { position: absolute; left: 0; right: 0; top: 0; text-align: center; color: #d9dfd2; will-change: transform; }
+.ending-credits .title { font-family: var(--display); font-size: 54px; letter-spacing: 0.34em; margin-right: -0.34em; color: #e6e9e1; }
+.ending-credits .subtitle { font-size: 13px; letter-spacing: 0.5em; color: var(--hud-accent); margin: 6px 0 60px; }
+.ending-credits .ending { font-family: var(--display); font-size: 20px; letter-spacing: 0.4em; color: #cfeff2; margin-bottom: 70px; }
+.ending-credits .line { font-size: 14px; letter-spacing: 0.2em; line-height: 2.1; color: #c7d0c4; }
+.ending-credits .gap { height: 36px; }
+.ending-credits .card { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; opacity: 0; transition: opacity 1.4s; }
+.ending-credits.on-card .roll { opacity: 0; transition: opacity 0.8s; }
+.ending-credits.on-card .card { opacity: 1; }
+.ending-credits .card .end { font-family: var(--display); font-size: 40px; letter-spacing: 0.5em; margin-right: -0.5em; color: #e6e9e1; }
+.ending-credits .card .name { margin-top: 14px; font-size: 12px; letter-spacing: 0.45em; color: var(--hud-accent); }
+.ending-credits .card .again { margin-top: 48px; font-size: 11px; letter-spacing: 0.35em; color: var(--hud-dim); animation: pulse 2.4s ease-in-out infinite; }

@@ -22,6 +22,8 @@ const V = (x: number, y: number, z: number) => new Vector3(x, y, z);
  */
 export class Meera {
   seated = false;
+  /** Another feature (the Mercy walk-out) is driving her: the glass/chair logic stands aside. */
+  scripted = false;
   private light: Mesh;
   private lightMat: MeshBasicMaterial;
   private lightTarget = 0;
@@ -164,6 +166,7 @@ export class Meera {
   }
 
   update(dt: number): void {
+    if (this.scripted) return;
     const want = this.seated || (this.story.check(this.def.present) && this.parthInRoom() && this.realWindow);
     const a = this.actor;
     if (want && !a.present) {

@@ -201,8 +201,11 @@ export class NpcRuntime {
     this.abortTalk = false;
   }
 
+  /** An ending has the stage: scenes in progress stop as they would for a capture. */
+  suspended = false;
+
   get aborted(): boolean {
-    return this.abortTalk || this.story.capturing;
+    return this.abortTalk || this.story.capturing || this.suspended;
   }
 
   async steps(list: Step[], actor: NpcActor | null): Promise<void> {
