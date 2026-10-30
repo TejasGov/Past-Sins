@@ -1,1 +1,105 @@
-[]
+[
+  {
+    "id": "content_m02_tumbler",
+    "kind": "interact",
+    "at": {
+      "anchor": "content_bhosle_desk"
+    },
+    "model": "tumbler",
+    "prompt": "[E] Pick up the tumbler",
+    "actions": [
+      {
+        "shard": "m02_chai"
+      }
+    ]
+  },
+  {
+    "id": "content_tumbler_again",
+    "kind": "interact",
+    "at": {
+      "anchor": "content_bhosle_desk"
+    },
+    "model": "tumbler",
+    "prompt": "[E] Pick up the tumbler",
+    "once": false,
+    "when": {
+      "shard": "m02_chai"
+    },
+    "actions": [
+      {
+        "say": "Still warm. It is always still warm.",
+        "speaker": "PARTH",
+        "seconds": 3
+      }
+    ]
+  },
+  {
+    "id": "content_dayroom_notice",
+    "kind": "interact",
+    "at": {
+      "anchor": "content_dayroom_notice"
+    },
+    "model": "none",
+    "prompt": "[E] Read the notice",
+    "once": false,
+    "actions": [
+      {
+        "document": "content_schedule"
+      }
+    ]
+  },
+  {
+    "id": "content_m04_note",
+    "kind": "interact",
+    "at": {
+      "plan": "maintenance-ground",
+      "room": "tool",
+      "offset": [
+        2.4,
+        1.7,
+        3.415
+      ],
+      "yaw": 3.1416
+    },
+    "model": "none",
+    "prompt": "[E] Read the note",
+    "once": false,
+    "when": {
+      "flag": "cycle:content:locker_open"
+    },
+    "actions": [
+      {
+        "document": "content_note_parth"
+      },
+      {
+        "wall": "content_note",
+        "text": "Pool. Hold your breath. (my own hand)"
+      },
+      {
+        "shard": "m04_handwriting"
+      }
+    ]
+  },
+  {
+    "id": "content_m05_stair_gate",
+    "kind": "zone",
+    "at": {
+      "plan": "maintenance-ground",
+      "room": "landing"
+    },
+    "size": [
+      2.7,
+      1.6,
+      3.0
+    ],
+    "actions": [
+      {
+        "shard": "m05_stair_gate"
+      },
+      {
+        "wall": "content_alarm_wire",
+        "text": "The stair alarm runs to a junction box in the pump room."
+      }
+    ]
+  }
+]

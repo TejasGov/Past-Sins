@@ -1,1 +1,373 @@
-[]
+[
+  {
+    "id": "content_m11_bag",
+    "kind": "interact",
+    "at": {
+      "anchor": "content_evidence_table"
+    },
+    "model": "bag",
+    "prompt": "[E] Open the property bag (S-07)",
+    "once": false,
+    "when": {
+      "all": [
+        {
+          "actAtLeast": 3
+        },
+        {
+          "not": {
+            "flag": "cycle:content:notebook"
+          }
+        }
+      ]
+    },
+    "actions": [
+      {
+        "setFlag": "cycle:content:notebook"
+      },
+      {
+        "give": {
+          "id": "raman_notebook",
+          "label": "Raman's Notebook",
+          "category": "MISSION_ITEM"
+        }
+      },
+      {
+        "document": "content_raman_notebook"
+      },
+      {
+        "shard": "m11_effects"
+      },
+      {
+        "learnCode": "281828"
+      }
+    ]
+  },
+  {
+    "id": "content_lab_key",
+    "kind": "interact",
+    "at": {
+      "anchor": "content_lab_key_stand"
+    },
+    "model": "none",
+    "prompt": "[E] Take the NIDRA lab key",
+    "once": false,
+    "when": {
+      "all": [
+        {
+          "actAtLeast": 3
+        },
+        {
+          "not": {
+            "flag": "cycle:content:lab_key"
+          }
+        }
+      ]
+    },
+    "actions": [
+      {
+        "setFlag": "cycle:content:lab_key"
+      },
+      {
+        "give": {
+          "id": "lab_key",
+          "label": "Lab Key",
+          "category": "KEY"
+        }
+      }
+    ]
+  },
+  {
+    "id": "content_m12_monitors",
+    "kind": "interact",
+    "at": {
+      "plan": "hq-1",
+      "room": "surveillance",
+      "offset": [
+        0,
+        1.45,
+        -5.95
+      ]
+    },
+    "model": "none",
+    "prompt": "[E] Watch the monitors",
+    "once": false,
+    "when": {
+      "actAtLeast": 3
+    },
+    "actions": [
+      {
+        "shard": "m12_forty"
+      },
+      {
+        "document": "content_patrol_gaps"
+      },
+      {
+        "setFlag": "cycle:content:patrol_gaps"
+      },
+      {
+        "message": "OLD ROUTES · GUARD SIGHTLINES MARKED",
+        "seconds": 2.6
+      }
+    ]
+  },
+  {
+    "id": "content_radio",
+    "kind": "interact",
+    "at": {
+      "plan": "hq-1",
+      "room": "control",
+      "offset": [
+        2.2,
+        0.925,
+        -0.45
+      ]
+    },
+    "model": "none",
+    "prompt": "[E] Use the radio",
+    "once": false,
+    "when": {
+      "all": [
+        {
+          "act": 3
+        },
+        {
+          "not": {
+            "flag": "searchlights_off"
+          }
+        }
+      ]
+    },
+    "actions": [
+      {
+        "dialogue": "content_radio"
+      },
+      {
+        "setFlag": "searchlights_off"
+      },
+      {
+        "signal": "searchlights_off"
+      },
+      {
+        "message": "SEARCHLIGHTS OFF",
+        "seconds": 2.2
+      }
+    ]
+  },
+  {
+    "id": "content_radio_after",
+    "kind": "interact",
+    "at": {
+      "plan": "hq-1",
+      "room": "control",
+      "offset": [
+        2.2,
+        0.925,
+        -0.45
+      ]
+    },
+    "model": "none",
+    "prompt": "[E] Use the radio",
+    "once": false,
+    "when": {
+      "flag": "searchlights_off"
+    },
+    "actions": [
+      {
+        "say": "Static. Out past the wall, the towers are dark.",
+        "speaker": "",
+        "seconds": 2.8
+      }
+    ]
+  },
+  {
+    "id": "content_master_key",
+    "kind": "interact",
+    "at": {
+      "plan": "hq-1",
+      "room": "chief",
+      "offset": [
+        0.45,
+        0.778,
+        -5.4
+      ]
+    },
+    "model": "none",
+    "prompt": "[E] Take the cell master key",
+    "once": false,
+    "when": {
+      "all": [
+        {
+          "actAtLeast": 3
+        },
+        {
+          "not": {
+            "flag": "cycle:content:master_key"
+          }
+        }
+      ]
+    },
+    "actions": [
+      {
+        "setFlag": "cycle:content:master_key"
+      },
+      {
+        "give": {
+          "id": "cell_master_key",
+          "label": "Cell Master Key",
+          "category": "KEY"
+        }
+      }
+    ]
+  },
+  {
+    "id": "content_m13_tape",
+    "kind": "interact",
+    "at": {
+      "anchor": "content_archive_deck",
+      "offset": [
+        0.6,
+        0,
+        0.12
+      ]
+    },
+    "model": "tape",
+    "prompt": "[E] Play tape 12",
+    "once": false,
+    "when": {
+      "all": [
+        {
+          "actAtLeast": 3
+        },
+        {
+          "not": {
+            "shard": "m13_cycle_twelve"
+          }
+        }
+      ]
+    },
+    "actions": [
+      {
+        "shard": "m13_cycle_twelve"
+      },
+      {
+        "wall": "content_tape12",
+        "text": "Tape 12: I begged her to make me forget."
+      }
+    ]
+  },
+  {
+    "id": "content_archive_index",
+    "kind": "interact",
+    "at": {
+      "anchor": "content_archive_deck",
+      "offset": [
+        -0.62,
+        0,
+        0.12
+      ]
+    },
+    "model": "paper",
+    "prompt": "[E] Read the archive index",
+    "once": false,
+    "when": {
+      "actAtLeast": 3
+    },
+    "actions": [
+      {
+        "document": "content_archive_index"
+      }
+    ]
+  },
+  {
+    "id": "content_lift_hq",
+    "kind": "interact",
+    "at": {
+      "anchor": "content_lift_keypad_hq"
+    },
+    "model": "none",
+    "prompt": "[E] Enter override 281828",
+    "once": false,
+    "when": {
+      "code": "281828"
+    },
+    "actions": [
+      {
+        "message": "OVERRIDE ACCEPTED",
+        "seconds": 1.4
+      },
+      {
+        "signal": "lift_ride",
+        "data": {
+          "to": "b2"
+        }
+      }
+    ]
+  },
+  {
+    "id": "content_lift_hq_locked",
+    "kind": "interact",
+    "at": {
+      "anchor": "content_lift_keypad_hq"
+    },
+    "model": "none",
+    "prompt": "[E] Use the keypad",
+    "once": false,
+    "when": {
+      "not": {
+        "code": "281828"
+      }
+    },
+    "actions": [
+      {
+        "message": "LIFT OFFLINE · SIX-DIGIT OVERRIDE REQUIRED",
+        "seconds": 2.4
+      }
+    ]
+  },
+  {
+    "id": "content_lift_b2",
+    "kind": "interact",
+    "at": {
+      "anchor": "content_lift_keypad_b2"
+    },
+    "model": "none",
+    "prompt": "[E] Enter override 281828",
+    "once": false,
+    "when": {
+      "code": "281828"
+    },
+    "actions": [
+      {
+        "message": "OVERRIDE ACCEPTED",
+        "seconds": 1.4
+      },
+      {
+        "signal": "lift_ride",
+        "data": {
+          "to": "hq"
+        }
+      }
+    ]
+  },
+  {
+    "id": "content_lift_b2_locked",
+    "kind": "interact",
+    "at": {
+      "anchor": "content_lift_keypad_b2"
+    },
+    "model": "none",
+    "prompt": "[E] Use the keypad",
+    "once": false,
+    "when": {
+      "not": {
+        "code": "281828"
+      }
+    },
+    "actions": [
+      {
+        "message": "LIFT OFFLINE · SIX-DIGIT OVERRIDE REQUIRED",
+        "seconds": 2.4
+      }
+    ]
+  }
+]

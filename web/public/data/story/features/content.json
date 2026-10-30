@@ -1,1 +1,134 @@
-{}
+{
+  "$comment": "W5 · Content & interactables (src/story/features/content). anchors: furniture built at a place (door frame, plan room or anchor; offsets in metres, plan-room offsets are world axes from the room centre at floor level) plus an anchor id on top for triggers/act*.json. plates: doorplates beside plan doors. models: meshes on trigger props with model 'none'. lift: the 281828 ride (signal lift_ride {to}). regions: flags set while Parth is on a floor plan.",
+  "anchors": [
+    {
+      "id": "content_bhosle_desk",
+      "at": { "door": "cellhouse_a_floor3_guard_quarter", "offset": [-0.45, 0.78, -4.5] }
+    },
+    {
+      "id": "content_bhosle_hook",
+      "at": { "door": "cellhouse_a_floor3_guard_quarter", "offset": [1.29, 0, -3.5], "yaw": -1.5708 },
+      "build": { "kind": "hookboard", "size": [0.62, 0.42, 0], "label": "TIER 3 · DUTY KEYS" },
+      "local": [0.2, 1.48, 0.05]
+    },
+    {
+      "id": "content_dayroom_notice",
+      "at": { "anchor": "cellhouse_a_key_rack", "offset": [1.05, 0, 0.06] },
+      "local": [0, 1.62, 0]
+    },
+    {
+      "id": "content_alarm_junction",
+      "at": { "plan": "maintenance-ground", "room": "utilities", "offset": [-3.0, 0, -3.88] },
+      "build": { "kind": "junction", "label": "B1 STAIR ALARM LOOP" },
+      "local": [0, 1.15, 0.2]
+    },
+    {
+      "id": "content_intake_table",
+      "at": { "plan": "admin-ground", "room": "records", "offset": [0, 0, -0.9] },
+      "build": { "kind": "table", "size": [1.4, 0.7, 0.8] },
+      "local": [0.15, 0.825, 0.02]
+    },
+    {
+      "id": "content_warden_desk",
+      "at": { "plan": "admin-ground", "room": "office", "offset": [6.56, 0.775, -2.47] },
+      "build": { "kind": "nameplate", "label": "S. SETHI · WARDEN" },
+      "local": [0.4, 0.005, -0.18]
+    },
+    {
+      "id": "content_medicine_trolley",
+      "at": { "plan": "medical-ground", "room": "medicine", "offset": [0, 0, 1.3] },
+      "build": { "kind": "trolley" },
+      "local": [0.2, 0.915, 0.06]
+    },
+    {
+      "id": "content_evidence_table",
+      "at": { "plan": "hq-0", "room": "evidence", "offset": [0, 0, -1.2], "yaw": 1.5708 },
+      "build": { "kind": "table", "size": [1.2, 0.66, 0.9] },
+      "local": [0.2, 0.925, 0]
+    },
+    {
+      "id": "content_lab_key_stand",
+      "at": { "plan": "hq-0", "room": "keys", "offset": [0, 0, 1.2], "yaw": 3.1416 },
+      "build": { "kind": "hookstand", "size": [0.56, 0.4, 0], "label": "NIDRA · B2 ACCESS" },
+      "local": [0.0, 1.48, 0.05]
+    },
+    {
+      "id": "content_archive_deck",
+      "at": { "plan": "nidra-b2", "room": "records", "offset": [4.0, 0, 0.25] },
+      "build": { "kind": "deck", "size": [1.8, 0.7, 0.85] }
+    },
+    {
+      "id": "content_lift_keypad_hq",
+      "at": { "plan": "hq-0", "room": "liftlobby", "offset": [1.885, 0, -1.4], "yaw": -1.5708 },
+      "build": { "kind": "keypad", "label": "LIFT OVERRIDE" },
+      "local": [0, 1.1, 0.06]
+    },
+    {
+      "id": "content_lift_keypad_b2",
+      "at": { "plan": "nidra-b2", "room": "liftlobby", "offset": [1.885, 0, -1.4], "yaw": -1.5708 },
+      "build": { "kind": "keypad", "label": "LIFT OVERRIDE" },
+      "local": [0, 1.1, 0.06]
+    }
+  ],
+  "plates": [
+    { "plan": "nidra-b2", "door": ["observation", "spine"], "side": "spine", "lines": ["DR. M. VARMA", "PRINCIPAL INVESTIGATOR · NIDRA"] },
+    { "plan": "nidra-b2", "door": ["lab", "crosse"], "side": "crosse", "lines": ["DR. M. VARMA", "NEURAL RESPONSE LAB"] },
+    { "plan": "cellhouse-b-0", "door": ["glassa", "eastcross"], "side": "eastcross", "lines": ["S-03"] },
+    { "plan": "cellhouse-b-0", "door": ["glassb", "eastcross"], "side": "eastcross", "lines": ["S-07"] }
+  ],
+  "models": {
+    "content_security_key": { "kind": "keytag", "color": 13936186 },
+    "content_dayroom_notice": { "kind": "clipboard" },
+    "content_m04_note": { "kind": "sheet" },
+    "content_alarm_wire": { "kind": "wire" },
+    "content_m07_file": { "kind": "folder" },
+    "content_records_drawer": { "kind": "drawer" },
+    "content_jagran": { "kind": "vial", "color": 11740702 },
+    "content_room_b_card": { "kind": "clipboard" },
+    "content_lab_key": { "kind": "keytag", "color": 5214136 },
+    "content_radio": { "kind": "radio" },
+    "content_radio_after": { "kind": "radio" },
+    "content_master_key": { "kind": "keytag", "color": 12073260, "flat": true }
+  },
+  "locker": { "code": "2718", "flag": "cycle:content:locker_open" },
+  "regions": [
+    { "flag": "content:b2_reached", "plan": "nidra-b2", "when": { "actAtLeast": 3 } },
+    { "flag": "cycle:content:at_b1", "plan": "maintenance-b1", "when": { "act": 3 } }
+  ],
+  "lift": {
+    "fadeOut": 0.8,
+    "hold": 2.6,
+    "fadeIn": 1.0,
+    "stops": {
+      "b2": {
+        "at": { "plan": "nidra-b2", "room": "liftlobby", "offset": [0.9, 0, 0.5], "yaw": 0.6 },
+        "flag": "content:b2_reached",
+        "lines": [
+          { "speaker": "", "text": "No floor numbers. Just the hum, and the cable paying out.", "seconds": 2.4, "onceFlag": "content:lift_line_down" }
+        ]
+      },
+      "hq": {
+        "at": { "plan": "hq-0", "room": "liftlobby", "offset": [0.9, 0, 0.5], "yaw": 0.6 }
+      }
+    }
+  },
+  "water": [
+    {
+      "at": { "plan": "medical-ground", "room": "showers", "offset": [-3.55, 0, 0] },
+      "when": { "all": [{ "shard": "t2_deeper" }, { "flag": "cycle:withdrawal" }, { "not": { "shard": "m10_what_i_told_them" } }] },
+      "top": 1.95
+    }
+  ],
+  "monitors": {
+    "at": { "plan": "hq-1", "room": "surveillance", "offset": [0, 1.35, -6.385] },
+    "when": { "actAtLeast": 3 },
+    "cols": 8,
+    "rows": 3,
+    "spacing": [0.807, 0.5],
+    "screen": [0.62, 0.38],
+    "cycles": 40,
+    "highlight": [17, 33],
+    "labels": { "cycle": "S-07 · C{n}", "route": "ROUTE ▸", "rec": "● REC" }
+  },
+  "patrolGaps": { "flag": "cycle:content:patrol_gaps" }
+}
