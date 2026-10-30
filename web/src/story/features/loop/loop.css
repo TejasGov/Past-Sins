@@ -1,0 +1,44 @@
+/* W1 loop overlays (src/story/features/loop/overlay.ts). Sits under the story subtitles/banner, over the HUD. */
+.loop-overlay { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.loop-overlay > * { position: absolute; }
+
+.loop-water { inset: 0; opacity: 0; background: radial-gradient(ellipse at 50% 30%, #0b2a2f 0%, #04181c 45%, #010607 100%); }
+.loop-water .caustic { position: absolute; inset: -20%; opacity: 0.22; background:
+  radial-gradient(ellipse 30% 8% at 30% 20%, rgba(120, 200, 200, 0.35), transparent 70%),
+  radial-gradient(ellipse 22% 6% at 70% 35%, rgba(120, 200, 200, 0.28), transparent 70%),
+  radial-gradient(ellipse 26% 7% at 45% 55%, rgba(120, 200, 200, 0.2), transparent 70%);
+  animation: loop-caustic 7s ease-in-out infinite alternate; }
+.loop-water svg { position: absolute; left: 50%; top: 50%; width: min(70vh, 80vw); height: min(70vh, 80vw); transform: translate(-50%, -50%); overflow: visible; }
+.loop-water .bubbles { position: absolute; inset: 0; }
+.loop-water .bubbles i { position: absolute; bottom: -4%; width: 6px; height: 6px; border-radius: 50%; border: 1px solid rgba(170, 220, 220, 0.35); animation: loop-bubble 4.2s linear infinite; }
+@keyframes loop-caustic { from { transform: translate(-3%, -2%) scale(1); } to { transform: translate(3%, 2%) scale(1.08); } }
+@keyframes loop-bubble { from { transform: translateY(0); opacity: 0; } 15% { opacity: 1; } to { transform: translateY(-105vh) translateX(12px); opacity: 0; } }
+
+.loop-streaks { inset: 0; opacity: 0; }
+.loop-streaks i { position: absolute; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, rgba(220, 230, 225, 0.18) 30%, rgba(220, 230, 225, 0.32) 50%, rgba(220, 230, 225, 0.18) 70%, transparent); animation: loop-streak 1.4s linear infinite; }
+.loop-streaks i:nth-child(2) { animation-delay: 0.47s; }
+.loop-streaks i:nth-child(3) { animation-delay: 0.93s; }
+@keyframes loop-streak { from { top: 104%; } to { top: -4%; } }
+
+.loop-lid { left: -5%; right: -5%; height: 58%; background: #000; }
+.loop-lid.top { top: 0; background: linear-gradient(to bottom, #000 82%, rgba(0, 0, 0, 0)); }
+.loop-lid.bottom { bottom: 0; background: linear-gradient(to top, #000 82%, rgba(0, 0, 0, 0)); }
+
+.loop-bar { left: 0; right: 0; height: 10vh; background: #000; }
+.loop-bar.top { top: 0; transform-origin: top; }
+.loop-bar.bottom { bottom: 0; transform-origin: bottom; }
+
+.loop-caption { left: 6vw; bottom: calc(10vh + 22px); font-family: var(--display); font-size: 13px; letter-spacing: 0.42em; color: var(--hud-accent); text-shadow: 0 1px 8px #000; opacity: 0; white-space: nowrap; }
+
+.loop-flash { inset: 0; background: #e8f2f0; opacity: 0; }
+
+.loop-klaxon { inset: 0; opacity: 0; box-shadow: inset 0 0 240px rgba(255, 24, 18, 0.75); background: rgba(255, 20, 10, 0.07); }
+.loop-klaxon.on { animation: loop-klaxon 0.9s ease-in-out infinite; }
+@keyframes loop-klaxon { 0%, 100% { opacity: 0.15; } 50% { opacity: 1; } }
+
+.loop-skip { right: 4vw; bottom: calc(10vh + 20px); font-size: 11px; letter-spacing: 0.3em; color: var(--hud-dim); opacity: 0; transition: opacity 0.4s; }
+.loop-skip.visible { opacity: 1; }
+.loop-skip .key { display: inline-block; min-width: 20px; padding: 0 5px; margin-right: 10px; border: 1px solid rgba(227, 199, 122, 0.7); color: var(--hud-accent); font-size: 12px; line-height: 18px; text-align: center; }
+
+/* While a loop cinematic owns the screen, the gameplay HUD steps aside. */
+#hud.loop-cine .hud-suspicion, #hud.loop-cine .hud-env, #hud.loop-cine .minimap, #hud.loop-cine .alert-vignette { visibility: hidden; }

@@ -1,1 +1,20 @@
-[]
+[
+  {
+    "id": "loop_b1_stair_alarm",
+    "kind": "zone",
+    "at": { "plan": "maintenance-ground", "room": "stair", "offset": [0, -4, 0] },
+    "size": [2.8, 3.6, 4.3],
+    "once": false,
+    "when": {
+      "all": [
+        { "not": { "actAtLeast": 3 } },
+        { "not": { "flag": "cycle:bhosle_card" } },
+        { "not": { "flag": "cycle:loop_alarm" } }
+      ]
+    },
+    "actions": [
+      { "setFlag": "cycle:loop_alarm" },
+      { "signal": "alarm", "data": { "reason": "b1_stair" } }
+    ]
+  }
+]
