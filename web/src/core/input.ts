@@ -1,6 +1,7 @@
 // Keyboard/mouse state with per-frame "just pressed" edges and pointer lock.
 // Keyboard input works without pointer lock (as in Godot, where movement keys
-// ignore the mouse mode); mouse look only applies while the pointer is locked.
+// ignore the mouse mode). Mouse look prefers pointer lock, but falls back to
+// cursor movement over the canvas when the browser refuses or delays the lock.
 
 export class Input {
   private down = new Set<string>();
@@ -16,6 +17,8 @@ export class Input {
   suppressPause = false;
   readonly canvas: HTMLCanvasElement;
   private lockRequested = false;
+  /** Set once the browser rejects a lock request; clicks then reach gameplay unlocked. */
+  private lockRefused = false;
 
   constructor(canvas: HTMLCanvasElement) {
     this.canvas = canvas;
@@ -29,17 +32,22 @@ export class Input {
       this.mouseButtonsDown.clear();
     });
     document.addEventListener("mousemove", (e) => {
-      if (!this.locked) return;
+      // Unlocked, only the canvas counts, so moving over a menu or document never turns the camera.
+      if (!this.locked && e.target !== canvas) return;
       this.mouseDX += e.movementX;
       this.mouseDY += e.movementY;
     });
     canvas.addEventListener("mousedown", (e) => {
       if (!this.locked) {
         if (e.button === 0) this.requestLock();
-        return;
+        if (!this.lockRefused) return;
       }
       this.mouseButtonsDown.add(e.button);
       this.mousePressed.add(e.button);
+    });
+    document.addEventListener("pointerlockerror", () => {
+      this.lockRequested = false;
+      this.lockRefused = true;
     });
     window.addEventListener("mouseup", (e) => this.mouseButtonsDown.delete(e.button));
     canvas.addEventListener("contextmenu", (e) => e.preventDefault());
@@ -57,7 +65,11 @@ export class Input {
     if (this.locked || this.lockRequested) return;
     this.lockRequested = true;
     const result = this.canvas.requestPointerLock() as unknown;
-    if (result instanceof Promise) result.catch(() => (this.lockRequested = false));
+    if (result instanceof Promise)
+      result.catch(() => {
+        this.lockRequested = false;
+        this.lockRefused = true;
+      });
     window.setTimeout(() => (this.lockRequested = false), 1000);
   }
 

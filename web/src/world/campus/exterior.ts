@@ -274,11 +274,11 @@ export function buildRoads(b: StaticBuilder): void {
   // Street lamps along the cross roads.
   for (let x = -60; x <= 60; x += 20) for (const z of [-34, 34]) {
     if (Math.abs(x) < 5) continue;
-    b.box(V(x, 3.5, z), V(0.14, 7, 0.14), { mat: "metal_ext", color: 0x3f4743 });
-    b.box(V(x, 7.0, z + (z < 0 ? 0.6 : -0.6)), V(0.1, 0.1, 1.3), { mat: "metal_ext", collide: false });
-    b.box(V(x, 6.92, z + (z < 0 ? 1.2 : -1.2)), V(0.4, 0.12, 0.6), { mat: "dark_ext", collide: false });
-    b.box(V(x, 6.85, z + (z < 0 ? 1.2 : -1.2)), V(0.32, 0.02, 0.48), { mat: "emissive_night", collide: false, shadow: false });
-    b.lightPoint(V(x, 6.3, z + (z < 0 ? 1.4 : -1.4)), 0xff9a45, 30, 24, true);
+    // Post-top lantern (Poly Haven street_lamp_01, 3.87 m) scaled to 6.2 m; its glass is the night diffuser.
+    const scale = 1.6;
+    b.prop("street_lamp_01", V(x, 0, z), { scale, yaw: z < 0 ? 0 : Math.PI, glow: "night" });
+    b.blocker(V(x, 1.6, z), V(0.3, 3.2, 0.3), false);
+    b.lightPoint(V(x, 3.3 * scale, z), 0xff9a45, 30, 24, true);
   }
 }
 

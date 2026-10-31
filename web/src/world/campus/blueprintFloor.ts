@@ -4,6 +4,7 @@ import type { MaterialKey } from "../../render/materials";
 import { V } from "../props";
 import type { FloorPlan, PlanDoor, PlanRoom } from "./plans";
 import { furnishRoom, type Opening } from "./furnisher";
+import { Rng } from "../rng";
 
 const WALL = 0.22;
 const DOOR_HEIGHT = 2.65;
@@ -186,6 +187,9 @@ export function buildBlueprintFloor(b: StaticBuilder, plan: FloorPlan, storyHeig
       // Long rooms get a row of diffusers; each is a light-pool candidate.
       const count = Math.max(1, Math.round(Math.max(r.w, r.d) / 6));
       const alongX = r.w >= r.d;
+      // Some rooms have one dead tube (never the only one), leaving a dark pocket.
+      const deadRng = new Rng(`${plan.id}:${r.id}:dead-tube`);
+      const dead = count >= 2 && deadRng.chance(0.3) ? deadRng.int(0, count - 1) : -1;
       for (let i = 0; i < count; i++) {
         const t = (i + 0.5) / count - 0.5;
         const off = alongX ? V(t * r.w, 0, 0) : V(0, 0, t * r.d);
@@ -197,6 +201,7 @@ export function buildBlueprintFloor(b: StaticBuilder, plan: FloorPlan, storyHeig
           intensity: lab ? 5 : 4.2,
           range: Math.max(7, Math.min(13, Math.max(r.w, r.d) * 0.9)),
           flicker: hashFlicker(plan.id + r.id + i),
+          broken: i === dead,
         });
       }
     }

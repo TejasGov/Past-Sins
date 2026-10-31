@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Prop Viewer</title>
+    <style>
+      :root { color-scheme: dark; font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; }
+      html, body { margin: 0; height: 100%; background: #20242a; color: #d8dde3; overflow: hidden; }
+      #app { position: fixed; inset: 0; }
+      #status { position: fixed; top: 8px; left: 10px; color: #f0c674; }
+      .label { position: absolute; transform: translate(-50%, 0); white-space: nowrap; color: #e8edf2; background: rgba(0, 0, 0, 0.55); padding: 1px 4px; border-radius: 3px; pointer-events: none; }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <div id="status">loading…</div>
+    <script type="module" src="./props.js"></script>
+  </body>
+</html>

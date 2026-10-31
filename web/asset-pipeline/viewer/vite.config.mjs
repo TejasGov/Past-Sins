@@ -44,5 +44,7 @@ export default defineConfig({
   // Serve web/public so the viewer loads the same /assets/characters/* URLs as the game.
   publicDir: path.resolve(here, '../../public'),
   server: { port: 5180, strictPort: true },
+  // props.html?src=<id> reads the raw Poly Haven downloads straight from the cache.
+  define: { __PROPS_SOURCE__: JSON.stringify(path.resolve(here, '../.cache/polyhaven')) },
   plugins: [saveScreenshots()],
 });

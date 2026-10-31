@@ -1,0 +1,275 @@
+{
+  "source": "Poly Haven (CC0)",
+  "props": {
+    "trashbag": {
+      "file": "trashbag.glb",
+      "size": [
+        0.519,
+        0.568,
+        0.463
+      ],
+      "tris": 500,
+      "emissive": false
+    },
+    "plastic_monobloc_chair_01": {
+      "file": "plastic_monobloc_chair_01.glb",
+      "size": [
+        0.642,
+        0.88,
+        0.628
+      ],
+      "tris": 700,
+      "emissive": false
+    },
+    "Television_01": {
+      "file": "Television_01.glb",
+      "size": [
+        0.6,
+        0.457,
+        0.471
+      ],
+      "tris": 700,
+      "emissive": false
+    },
+    "standing_chalkboard_01": {
+      "file": "standing_chalkboard_01.glb",
+      "size": [
+        0.92,
+        1.509,
+        0.759
+      ],
+      "tris": 2372,
+      "emissive": false
+    },
+    "desk_lamp_arm_01": {
+      "file": "desk_lamp_arm_01.glb",
+      "size": [
+        0.202,
+        0.893,
+        0.613
+      ],
+      "tris": 2353,
+      "emissive": true
+    },
+    "classic_laptop": {
+      "file": "classic_laptop.glb",
+      "size": [
+        0.652,
+        0.543,
+        0.486
+      ],
+      "tris": 2620,
+      "emissive": false
+    },
+    "vintage_radio_transceiver": {
+      "file": "vintage_radio_transceiver.glb",
+      "size": [
+        0.547,
+        0.332,
+        0.41
+      ],
+      "tris": 8849,
+      "emissive": false
+    },
+    "plastic_crate_02": {
+      "file": "plastic_crate_02.glb",
+      "size": [
+        0.506,
+        0.25,
+        0.406
+      ],
+      "tris": 1046,
+      "emissive": false
+    },
+    "cardboard_box_01": {
+      "file": "cardboard_box_01.glb",
+      "size": [
+        0.383,
+        0.336,
+        0.516
+      ],
+      "tris": 300,
+      "emissive": false
+    },
+    "long_life_food": {
+      "file": "long_life_food.glb",
+      "size": [
+        0.523,
+        0.236,
+        0.111
+      ],
+      "tris": 694,
+      "emissive": false
+    },
+    "russian_food_cans_01": {
+      "file": "russian_food_cans_01.glb",
+      "size": [
+        0.142,
+        0.085,
+        0.046
+      ],
+      "tris": 499,
+      "emissive": false
+    },
+    "medical_box": {
+      "file": "medical_box.glb",
+      "size": [
+        0.525,
+        0.098,
+        0.35
+      ],
+      "tris": 1499,
+      "emissive": false
+    },
+    "industrial_microscope": {
+      "file": "industrial_microscope.glb",
+      "size": [
+        0.215,
+        0.461,
+        0.494
+      ],
+      "tris": 3966,
+      "emissive": false
+    },
+    "bunsen_burner": {
+      "file": "bunsen_burner.glb",
+      "size": [
+        0.139,
+        0.173,
+        0.139
+      ],
+      "tris": 2000,
+      "emissive": false
+    },
+    "chemistry_set": {
+      "file": "chemistry_set.glb",
+      "size": [
+        1.078,
+        0.428,
+        0.353
+      ],
+      "tris": 7999,
+      "emissive": false
+    },
+    "metal_tool_chest": {
+      "file": "metal_tool_chest.glb",
+      "size": [
+        0.685,
+        0.652,
+        0.406
+      ],
+      "tris": 2990,
+      "emissive": false
+    },
+    "Barrel_01": {
+      "file": "Barrel_01.glb",
+      "size": [
+        0.562,
+        0.879,
+        0.563
+      ],
+      "tris": 900,
+      "emissive": false
+    },
+    "cement_bag": {
+      "file": "cement_bag.glb",
+      "size": [
+        0.462,
+        0.18,
+        0.7
+      ],
+      "tris": 844,
+      "emissive": false
+    },
+    "metal_toolbox": {
+      "file": "metal_toolbox.glb",
+      "size": [
+        0.4,
+        0.302,
+        0.269
+      ],
+      "tris": 1986,
+      "emissive": false
+    },
+    "bleach_bottle": {
+      "file": "bleach_bottle.glb",
+      "size": [
+        0.086,
+        0.291,
+        0.061
+      ],
+      "tris": 250,
+      "emissive": false
+    },
+    "mounted_fluorescent_lights": {
+      "file": "mounted_fluorescent_lights.glb",
+      "size": [
+        0.905,
+        0.027,
+        0.05
+      ],
+      "tris": 248,
+      "emissive": true
+    },
+    "industrial_caged_sconce": {
+      "file": "industrial_caged_sconce.glb",
+      "size": [
+        0.21,
+        0.382,
+        0.206
+      ],
+      "tris": 999,
+      "emissive": true
+    },
+    "street_lamp_01": {
+      "file": "street_lamp_01.glb",
+      "size": [
+        0.701,
+        3.87,
+        0.386
+      ],
+      "tris": 2497,
+      "emissive": false
+    },
+    "pull_chain_light_socket": {
+      "file": "pull_chain_light_socket.glb",
+      "size": [
+        0.109,
+        0.165,
+        0.11
+      ],
+      "tris": 1200,
+      "emissive": false
+    },
+    "security_camera_01": {
+      "file": "security_camera_01.glb",
+      "size": [
+        0.17,
+        0.285,
+        0.554
+      ],
+      "tris": 700,
+      "emissive": false
+    },
+    "korean_fire_extinguisher_01": {
+      "file": "korean_fire_extinguisher_01.glb",
+      "size": [
+        0.279,
+        0.657,
+        0.367
+      ],
+      "tris": 621,
+      "emissive": false
+    },
+    "security_camera_02": {
+      "file": "security_camera_02.glb",
+      "size": [
+        0.141,
+        0.204,
+        0.391
+      ],
+      "tris": 793,
+      "emissive": false
+    }
+  }
+}

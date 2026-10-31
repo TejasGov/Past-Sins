@@ -1,6 +1,7 @@
 import type { StaticBuilder } from "../builder";
 import type { MaterialKey } from "../../render/materials";
-import { V } from "../props";
+import { V, pile, type PileKind } from "../props";
+import { Rng } from "../rng";
 
 export interface ShellOpening {
   side: "north" | "south" | "east" | "west";
@@ -143,12 +144,26 @@ export function buildShell(b: StaticBuilder, def: ShellDef): void {
       for (const s of [-1, 1]) b.box(V(s * (o.width / 2 + pw / 2), o.height / 2, 0), V(pw, o.height, t + 0.1), { mat: "metal_ext", color: 0x4f5650 });
       b.box(V(0, o.height + 0.15, 0), V(o.width + pw * 2, 0.3, t + 0.12), { mat: "metal_ext", color: 0x4f5650 });
       if (o.label) b.sign(o.label, V(0, o.height + 0.55, 0.12), 0, 0xe0d5a8, 0.0042);
-      // Wall pack: dark housing + sodium lens; night-only light pool candidate.
-      b.box(V(0, o.height + 1.05, 0.12), V(0.42, 0.26, 0.22), { mat: "dark_ext", color: 0x2b302d, collide: false });
-      b.box(V(0, o.height + 0.94, 0.16), V(0.34, 0.04, 0.14), { mat: "emissive_night", collide: false, shadow: false });
+      // Caged sodium sconce over the door (lens follows the night switch) and a camera on the entry.
+      const face = (t + 0.12) / 2;
+      b.prop("industrial_caged_sconce", V(0, o.height + 0.82, face), { glow: "night" });
       b.lightPoint(V(0, o.height + 0.7, 0.9), 0xff9a45, 14, 16, true);
+      const cam = b.props.size("security_camera_01");
+      b.prop("security_camera_01", V(o.width / 2 + 0.55, o.height + 0.9 - cam.y / 2, face + cam.z / 2), { yaw: -0.35 });
       // Concrete apron outside the threshold.
       b.box(V(0, 0.02, 1.6), V(o.width + 1.6, 0.04, 3.2), { mat: "concrete_ext", color: 0x8a8b84, collide: false });
+      // Stuff stacked by the entrance: stealth cover that also blocks guard sightlines.
+      const rng = new Rng(`${def.title}:${o.side}:${o.offset}:cover`);
+      if (rng.chance(0.6)) {
+        const side = rng.sign();
+        const x = side * (o.width / 2 + 1.5 + rng.range(0, 1.6));
+        const wallLen = alongX ? w : d;
+        const crowded = def.openings.some((n) => n !== o && n.side === o.side && Math.abs(n.offset - o.offset - x) < n.width / 2 + 1.6);
+        if (!crowded && Math.abs(o.offset + x) < wallLen / 2 - 1.3) {
+          const kind = rng.weighted([["barrels", 0.4], ["crates", 0.35], ["sacks", 0.15], ["trash", 0.1]] as const) as PileKind;
+          b.within(V(x, 0, (t + 0.12) / 2 + 0.75 + rng.range(0, 0.3)), rng.range(-0.4, 0.4), () => pile(b, rng, kind, true));
+        }
+      }
     });
   }
 }

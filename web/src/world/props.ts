@@ -1,5 +1,7 @@
 import { Quaternion, Vector3 } from "three";
 import type { StaticBuilder } from "./builder";
+import type { PropId } from "./models";
+import type { Rng } from "./rng";
 
 export const V = (x: number, y: number, z: number) => new Vector3(x, y, z);
 export const deg = (d: number) => (d * Math.PI) / 180;
@@ -38,6 +40,7 @@ export function securityConsole(b: StaticBuilder): void {
 export function trashBin(b: StaticBuilder): void {
   b.cylinder(V(0, 0.42, 0), 0.26, 0.84, { mat: "metal", color: 0x48524d, collide: true });
   b.cylinder(V(0, 0.86, 0), 0.28, 0.05, { mat: "dark", color: 0x2c312e });
+  b.prop("trashbag", V(0.6, 0, 0.1), { yaw: 0.7 });
 }
 
 export function cleaningCart(b: StaticBuilder): void {
@@ -68,11 +71,11 @@ export function wallClock(b: StaticBuilder): void {
   b.box(V(0.05, 2.4, 0.075), V(0.11, 0.015, 0.01), { mat: "dark", color: 0x111111, collide: false, shadow: false });
 }
 
+/** Wall-mounted camera; the frame origin is the mount point on the wall, looking out along +Z. */
 export function cctvCamera(b: StaticBuilder): void {
-  b.box(V(0, 0, 0.08), V(0.12, 0.12, 0.16), { mat: "dark", color: 0x2a2f2c, collide: false });
-  b.box(V(0, -0.08, 0.32), V(0.16, 0.14, 0.38), { mat: "plastic", color: 0xb9bdb7, collide: false, quat: qx(deg(18)) });
-  b.box(V(0, -0.16, 0.52), V(0.11, 0.1, 0.02), { mat: "dark", color: 0x0b0d0c, collide: false, quat: qx(deg(18)) });
-  b.box(V(0.05, -0.04, 0.45), V(0.018, 0.018, 0.018), { mat: "emissive_red", collide: false, shadow: false });
+  const s = b.props.size("security_camera_02");
+  b.prop("security_camera_02", V(0, -s.y / 2, s.z / 2));
+  b.box(V(0.04, -0.02, s.z - 0.04), V(0.018, 0.018, 0.018), { mat: "emissive_red", collide: false, shadow: false });
 }
 
 export function electricalBox(b: StaticBuilder): void {
@@ -103,18 +106,14 @@ export function desk(b: StaticBuilder, width = 1.6, depth = 0.7): void {
   b.box(V(0, 0.42, -depth / 2 + 0.03), V(width - 0.15, 0.5, 0.03), { mat: "metal", color: 0x59615d, collide: false });
 }
 
+/** Plastic monobloc chair, the staple of institutional offices and canteens. */
 export function officeChair(b: StaticBuilder): void {
-  b.box(V(0, 0.5, 0), V(0.52, 0.08, 0.52), { mat: "fabric", color: 0x3e4542 });
-  b.box(V(0, 0.9, -0.24), V(0.5, 0.55, 0.06), { mat: "fabric", color: 0x3e4542, collide: false });
-  b.cylinder(V(0, 0.25, 0), 0.03, 0.45, { mat: "steel" });
-  b.box(V(0, 0.04, 0), V(0.55, 0.03, 0.06), { mat: "dark", collide: false });
-  b.box(V(0, 0.04, 0), V(0.06, 0.03, 0.55), { mat: "dark", collide: false });
+  b.prop("plastic_monobloc_chair_01", V(0, 0, 0), { collide: true });
 }
 
-export function monitor(b: StaticBuilder): void {
-  b.box(V(0, 0.92, 0), V(0.1, 0.28, 0.1), { mat: "dark", collide: false });
-  b.box(V(0, 1.18, 0), V(0.62, 0.4, 0.06), { mat: "dark", color: 0x1c2120, collide: false });
-  b.box(V(0, 1.18, 0.032), V(0.55, 0.33, 0.005), { mat: "screen", collide: false, shadow: false });
+/** CRT monitor standing on a surface whose top is `top` metres above the frame floor. */
+export function monitor(b: StaticBuilder, top = 0.775): void {
+  b.prop("Television_01", V(0, top, 0), { scale: 0.8 });
 }
 
 export function shelfUnit(b: StaticBuilder, width = 1.8, height = 2.0, depth = 0.5, color = 0x5c6660): void {
@@ -128,12 +127,85 @@ export function boxesStack(b: StaticBuilder, seed: number): void {
     const x = Math.sin(seed * 91.7 + n * 13.1) * 43758.5;
     return x - Math.floor(x);
   };
-  for (let i = 0; i < 3; i++) {
-    const w = 0.4 + r(i) * 0.25;
-    b.box(V((r(i + 5) - 0.5) * 0.3, 0.2 + i * 0.4, (r(i + 9) - 0.5) * 0.2), V(w, 0.38, 0.4), {
-      mat: "plastic", color: i % 2 ? 0x8b7556 : 0x9d8763, collide: i === 0, yaw: (r(i + 2) - 0.5) * 0.4,
-    });
+  let y = 0;
+  const layers = 2 + Math.floor(r(1) * 2);
+  for (let i = 0; i < layers; i++) {
+    const id = r(i + 3) > 0.45 ? "cardboard_box_01" : "plastic_crate_02";
+    b.prop(id, V((r(i + 5) - 0.5) * 0.12, y, (r(i + 9) - 0.5) * 0.1), { yaw: (r(i + 2) - 0.5) * 0.5, collide: i === 0, occlude: i === 0 });
+    y += b.props.size(id).y;
   }
+}
+
+/** Items on the middle shelves of a shelfUnit of the same width/height: uneven spacing, gaps, skewed. */
+export function stockShelf(b: StaticBuilder, width: number, height: number, items: PropId[], rng: Rng, fill = 0.8): void {
+  for (let level = 0; level <= 3; level++) {
+    if (level === 3 && rng.chance(0.6)) continue;
+    const y = 0.12 + (level * (height - 0.2)) / 3 + 0.015;
+    let x = -width / 2 + 0.08 + rng.range(0, 0.15);
+    while (true) {
+      const id = rng.pick(items);
+      const size = b.props.size(id);
+      if (size.y > (height - 0.2) / 3 - 0.06 && level < 3) {
+        x += 0.1;
+        if (x > width / 2) break;
+        continue;
+      }
+      if (x + size.x > width / 2 - 0.06) break;
+      if (rng.chance(fill)) b.prop(id, V(x + size.x / 2, y, rng.range(-0.08, 0.06)), { yaw: rng.range(-0.25, 0.25), shadow: false });
+      x += size.x + rng.range(0.03, 0.22);
+    }
+  }
+}
+
+export type PileKind = "crates" | "barrels" | "sacks" | "trash" | "stores";
+
+/**
+ * An irregular heap of props around the frame origin: a loose ground layer, some
+ * stacked on the bigger ones, nothing aligned. `cover` heaps get a collider that
+ * also blocks guard line of sight. Returns the heap's rough radius.
+ */
+export function pile(b: StaticBuilder, rng: Rng, kind: PileKind, cover = false): number {
+  const ground: PropId[] = {
+    crates: ["plastic_crate_02", "cardboard_box_01", "cardboard_box_01"],
+    barrels: ["Barrel_01"],
+    sacks: ["cement_bag"],
+    trash: ["trashbag"],
+    stores: ["cardboard_box_01", "plastic_crate_02", "Barrel_01", "cement_bag"],
+  }[kind] as PropId[];
+  const n = kind === "barrels" ? rng.int(2, 4) : kind === "trash" ? rng.int(2, 5) : rng.int(2, 4);
+  let radius = 0;
+  let tallest = 0;
+  const spots: { x: number; z: number; id: PropId }[] = [];
+  for (let i = 0; i < n; i++) {
+    const id = rng.pick(ground);
+    const size = b.props.size(id);
+    const r = Math.max(size.x, size.z) / 2;
+    // Each item touches or nearly touches the previous ones.
+    const a = rng.range(0, Math.PI * 2);
+    const d = i === 0 ? 0 : rng.range(r * 1.1, r * 2.0);
+    const x = i === 0 ? 0 : spots[rng.int(0, spots.length - 1)].x + Math.cos(a) * d;
+    const z = i === 0 ? 0 : spots[rng.int(0, spots.length - 1)].z + Math.sin(a) * d;
+    spots.push({ x, z, id });
+    b.prop(id, V(x, 0, z), { yaw: rng.range(-Math.PI, Math.PI), collide: !cover && size.y > 0.3, scale: rng.range(0.94, 1.06) });
+    radius = Math.max(radius, Math.hypot(x, z) + r);
+    tallest = Math.max(tallest, size.y);
+  }
+  // Stack a box or crate on a sturdy base or two.
+  if (kind === "crates" || kind === "stores" || (kind === "barrels" && rng.chance(0.5))) {
+    const bases = spots.filter((s) => s.id !== "cement_bag" && s.id !== "trashbag");
+    for (let k = 0; k < Math.min(bases.length, rng.int(1, 2)); k++) {
+      const base = bases[k];
+      const top: PropId = rng.chance(0.6) ? "cardboard_box_01" : "plastic_crate_02";
+      const h = b.props.size(base.id).y;
+      b.prop(top, V(base.x + rng.range(-0.06, 0.06), h, base.z + rng.range(-0.06, 0.06)), { yaw: rng.range(-0.6, 0.6) });
+      tallest = Math.max(tallest, h + b.props.size(top).y);
+    }
+  }
+  if (cover) {
+    const r = radius * 0.8;
+    b.blocker(V(0, tallest / 2, 0), V(r * 2, tallest, r * 2), true);
+  }
+  return radius;
 }
 
 export function table(b: StaticBuilder, w: number, d: number, h = 0.76, color = 0x8f958c, mat: "steel" | "wood" | "metal" = "steel"): void {

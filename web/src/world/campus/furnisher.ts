@@ -1,8 +1,11 @@
 import { Quaternion, Vector3 } from "three";
 import type { StaticBuilder } from "../builder";
 import {
-  V, bench, boxesStack, cctvCamera, desk, electricalBox, locker, monitor, noticeBoard, officeChair, shelfUnit, table, trashBin, wallClock,
+  V, bench, cctvCamera, cleaningCart, desk, electricalBox, locker, monitor, noticeBoard, officeChair, pile, shelfUnit, stockShelf, table, trashBin, wallClock,
+  type PileKind,
 } from "../props";
+import { Rng } from "../rng";
+import type { PropId } from "../models";
 import type { PlanRoom } from "./plans";
 
 export interface Opening {
@@ -20,7 +23,7 @@ const qx = (a: number) => new Quaternion().setFromAxisAngle(new Vector3(1, 0, 0)
  * doorway reservations (nothing is placed within a door's swing/approach).
  */
 export function furnishRoom(b: StaticBuilder, planId: string, r: PlanRoom, openings: Opening[], storyHeight: number): void {
-  const ctx = new RoomContext(b, r, openings);
+  const ctx = new RoomContext(b, r, openings, new Rng(`${planId}:${r.id}`));
   const id = r.id;
   const label = r.label.toUpperCase();
   const key = `${planId}:${id}`;
@@ -33,13 +36,24 @@ export function furnishRoom(b: StaticBuilder, planId: string, r: PlanRoom, openi
     if (id === "prep") return ctx.rowAlong("n", 2.0, 0.8, (bb) => table(bb, 1.8, 0.75, 0.9, 0x9aa19c)), ctx.center((bb) => table(bb, 2.4, 1.0, 0.9, 0x9aa19c));
     if (id === "serving") return serving(ctx);
     if (id === "wash") return ctx.rowAlong("e", 1.8, 0.8, sinkUnit), ctx.rowAlong("w", 1.9, 0.5, (bb) => shelfUnit(bb, 1.6, 1.8, 0.45, 0x8d948f));
-    if (id === "dry" || id === "cold") return ctx.perimeter(2.0, 0.5, (bb) => shelfUnit(bb, 1.8, 2.0, 0.5, id === "cold" ? 0xa3aaa6 : 0x5c6660));
-    if (id === "receiving") return ctx.scatter(4, 1.2, (bb, i) => boxesStack(bb, i + 3)), ctx.rowAlong("n", 2.2, 0.5, (bb) => shelfUnit(bb));
+    if (id === "dry" || id === "cold") {
+      let n = 0;
+      ctx.perimeter(2.0, 0.5, (bb) => {
+        shelfUnit(bb, 1.8, 2.0, 0.5, id === "cold" ? 0xa3aaa6 : 0x5c6660);
+        stockShelf(bb, 1.8, 2.0, id === "cold" ? ["plastic_crate_02"] : ["long_life_food", "russian_food_cans_01", "cardboard_box_01"], ctx.rng.fork(`shelf${n++}`));
+      });
+      return ctx.heaps(ctx.rng.int(0, 2), ["crates"]);
+    }
+    if (id === "receiving") {
+      let n = 0;
+      ctx.rowAlong("n", 2.2, 0.5, (bb) => { shelfUnit(bb); stockShelf(bb, 1.8, 2.0, ["cardboard_box_01", "plastic_crate_02", "long_life_food"], ctx.rng.fork(`shelf${n++}`), 0.6); });
+      return ctx.heaps(ctx.rng.int(3, 5), ["crates", "stores"]);
+    }
   }
   if (planId === "medical-ground") {
     if (id === "ward") return ward(ctx);
-    if (id === "exam" || id === "treatment") return ctx.rowAlong("n", 2.6, 0.9, examBed), ctx.corner((bb) => desk(bb, 1.4, 0.65)), ctx.rowAlong("s", 1.2, 0.45, (bb) => locker(bb, 0xd5dcd6));
-    if (id === "consult") return ctx.center((bb) => { desk(bb, 1.6, 0.8); bb.within(V(0, 0, -0.75), 0, () => officeChair(bb)); bb.within(V(0, 0, 0.75), Math.PI, () => officeChair(bb)); });
+    if (id === "exam" || id === "treatment") return ctx.rowAlong("n", 2.6, 0.9, examBed), ctx.corner((bb) => { desk(bb, 1.4, 0.65); bb.prop("medical_box", V(0.3, 0.775, 0.05), { yaw: -0.3 }); }), ctx.rowAlong("s", 1.2, 0.45, (bb) => locker(bb, 0xd5dcd6));
+    if (id === "consult") return ctx.center((bb) => { desk(bb, 1.6, 0.8); looseChair(bb, ctx.rng, V(0, 0, -0.75), 0); looseChair(bb, ctx.rng, V(0, 0, 0.75), Math.PI); });
     if (id === "medicine") return ctx.perimeter(1.4, 0.5, (bb) => locker(bb, 0xc9d1cb));
     if (id === "gym") return gym(ctx);
     if (id === "changing") return ctx.rowAlong("n", 0.7, 0.55, (bb) => locker(bb, 0x55708a)), ctx.rowAlong("s", 2.2, 0.45, bench);
@@ -51,18 +65,26 @@ export function furnishRoom(b: StaticBuilder, planId: string, r: PlanRoom, openi
     if (/SERVER/.test(label)) return ctx.rowsOf(2, 1.1, (bb) => serverRack(bb));
     if (/KEY|EVIDENCE|EQUIPMENT|RECORDS|ARCHIVE/.test(label)) return ctx.perimeter(1.6, 0.5, (bb) => shelfUnit(bb, 1.5, 2.1, 0.5, 0x46514b));
     if (/VISITATION/.test(label)) return visitation(ctx);
-    if (/BRIEFING|PLANNING|INTERVIEW|PROCESSING|CHECKPOINT/.test(label)) return ctx.center((bb) => meetingTable(bb, Math.min(4, r.w - 3), 1.2));
+    if (/BRIEFING|PLANNING/.test(label)) ctx.rowAlong("n", r.w, 0.8, (bb) => bb.prop("standing_chalkboard_01", V(0, 0, 0), { collide: true }), 1.0);
+    if (/BRIEFING|PLANNING|INTERVIEW|PROCESSING|CHECKPOINT/.test(label)) return ctx.center((bb) => meetingTable(bb, Math.min(4, r.w - 3), 1.2, ctx.rng));
     if (/HOLDING|WAITING/.test(label)) return ctx.rowAlong("n", 2.2, 0.45, bench), ctx.rowAlong("s", 2.2, 0.45, bench);
     if (/WC/.test(label)) return toilets(ctx);
     if (/SPECIAL ROOM/.test(label)) return ctx.center((bb) => restraintChair(bb));
     return offices(ctx);
   }
   if (planId.startsWith("maintenance")) {
+    // Bare pull-chain bulbs hang in the underground service rooms.
+    if (planId === "maintenance-b1") ctx.center((bb) => bb.prop("pull_chain_light_socket", V(0, storyHeight - b.props.size("pull_chain_light_socket").y, 0), { shadow: false }));
     if (id === "workshop") return workshop(ctx);
     if (id === "dirty" || id === "clean") return laundry(ctx, id === "clean");
     if (id === "tool") return ctx.rowAlong("w", 1.9, 0.5, (bb) => shelfUnit(bb, 1.7, 2.0, 0.5, 0x5c6660)), ctx.rowAlong("n", 2.5, 0.8, workbench);
     if (/PLANT|DISTRIBUTION|PUMP|UTILIT|VENTILATION|SUMP/.test(label)) return plant(ctx, key);
-    return ctx.perimeter(2.0, 0.5, (bb) => shelfUnit(bb)), ctx.scatter(3, 1.4, (bb, i) => boxesStack(bb, i + 11));
+    if (/WASTE/.test(label)) return ctx.heaps(ctx.rng.int(4, 6), ["trash", "trash", "barrels"]);
+    const stock: PropId[] = /JANITOR|BULK/.test(label) ? ["bleach_bottle", "bleach_bottle", "cardboard_box_01"] : ["cardboard_box_01", "metal_toolbox", "plastic_crate_02"];
+    let n = 0;
+    ctx.perimeter(2.0, 0.5, (bb) => { if (ctx.rng.chance(0.85)) { shelfUnit(bb); stockShelf(bb, 1.8, 2.0, stock, ctx.rng.fork(`shelf${n++}`)); } });
+    const kinds: PileKind[] = /SPARES|STORE|BULK/.test(label) ? ["sacks", "barrels", "stores"] : ["crates", "stores"];
+    return ctx.heaps(ctx.rng.int(2, 4), kinds);
   }
   if (planId === "nidra-b2") {
     if (id === "lab" || id === "chem") return lab(ctx);
@@ -81,9 +103,68 @@ export function furnishRoom(b: StaticBuilder, planId: string, r: PlanRoom, openi
 class RoomContext {
   readonly hw: number;
   readonly hd: number;
-  constructor(readonly b: StaticBuilder, readonly r: PlanRoom, readonly openings: Opening[]) {
+  /** Footprints already used in this room (furniture first, then clutter), so clutter never overlaps. */
+  private taken: { x: number; z: number; hx: number; hz: number }[] = [];
+  constructor(readonly b: StaticBuilder, readonly r: PlanRoom, readonly openings: Opening[], readonly rng: Rng) {
     this.hw = r.w / 2;
     this.hd = r.d / 2;
+  }
+
+  /** Big enough that extra clutter can't cut a guard's only route through the room. */
+  get roomy(): boolean {
+    return this.r.w * this.r.d > 16 && Math.min(this.r.w, this.r.d) > 3.4;
+  }
+
+  /** Clear of doorways, walls and everything already placed. */
+  free(x: number, z: number, hx: number, hz: number): boolean {
+    if (this.blocked(x, z, hx, hz)) return false;
+    return !this.taken.some((t) => Math.abs(x - t.x) < hx + t.hx + 0.15 && Math.abs(z - t.z) < hz + t.hz + 0.15);
+  }
+
+  private take(x: number, z: number, hx: number, hz: number): void {
+    this.taken.push({ x, z, hx, hz });
+  }
+
+  /** A free spot hugging a wall or tucked in a corner, facing roughly into the room. */
+  wallSpot(hx: number, hz: number, tries = 16): { x: number; z: number; yaw: number } | null {
+    for (let t = 0; t < tries; t++) {
+      const side = this.rng.weighted([["n", this.r.w], ["s", this.r.w], ["e", this.r.d], ["w", this.r.d]] as const);
+      const horizontal = side === "n" || side === "s";
+      const len = horizontal ? this.r.w : this.r.d;
+      if (len < hx * 2 + 0.8) continue;
+      const along = this.rng.chance(0.35) ? this.rng.sign() * (len / 2 - hx - 0.2) : this.rng.range(-len / 2 + hx + 0.3, len / 2 - hx - 0.3);
+      const inset = hz + 0.15 + this.rng.range(0, 0.2);
+      const x = horizontal ? along : side === "w" ? -this.hw + inset : this.hw - inset;
+      const z = horizontal ? (side === "n" ? -this.hd + inset : this.hd - inset) : along;
+      const yaw = (side === "n" ? 0 : side === "s" ? Math.PI : side === "w" ? Math.PI / 2 : -Math.PI / 2) + this.rng.range(-0.3, 0.3);
+      const ex = horizontal ? hx : hz;
+      const ez = horizontal ? hz : hx;
+      if (!this.free(x, z, ex, ez)) continue;
+      this.take(x, z, ex, ez);
+      return { x, z, yaw };
+    }
+    return null;
+  }
+
+  /** `count` irregular heaps against walls and in corners (none in cramped rooms). */
+  heaps(count: number, kinds: PileKind[], cover = false): void {
+    if (!this.roomy) return;
+    for (let i = 0; i < count; i++) {
+      const spot = this.wallSpot(0.75, 0.6);
+      if (!spot) return;
+      const kind = this.rng.pick(kinds);
+      const rng = this.rng.fork(`heap${i}`);
+      this.b.within(V(spot.x, 0, spot.z), spot.yaw, () => pile(this.b, rng, kind, cover));
+    }
+  }
+
+  /** Something left loosely against a wall: a cart, a stray chair, a bag (not in cramped rooms). */
+  againstWall(hx: number, hz: number, fn: Fn): boolean {
+    if (!this.roomy && this.r.type !== "cell" && this.r.type !== "corridor") return false;
+    const spot = this.wallSpot(hx, hz);
+    if (!spot) return false;
+    this.b.within(V(spot.x, 0, spot.z), spot.yaw, () => fn(this.b));
+    return true;
   }
 
   /** True if an item footprint (centre, half extents) intrudes on a door reservation. */
@@ -106,6 +187,7 @@ class RoomContext {
     const ex = c > 0.5 ? hx : hz;
     const ez = c > 0.5 ? hz : hx;
     if (this.blocked(x, z, ex, ez)) return false;
+    this.take(x, z, ex, ez);
     this.b.within(V(x, 0, z), yaw, () => fn(this.b));
     return true;
   }
@@ -173,13 +255,29 @@ function corridor(ctx: RoomContext, storyHeight: number): void {
     ctx.rowAlong(ctx.r.w >= ctx.r.d ? "n" : "w", 9, 0.4, (bb) => bb.within(V(0, 2.9, 0.05), 0, () => cctvCamera(bb)), 0.4);
   }
   if (long > 8) ctx.rowAlong(ctx.r.w >= ctx.r.d ? "s" : "e", 12, 0.3, (bb) => { noticeBoard(bb); trashBin(bb); }, 1.6);
+  if (long > 6) ctx.rowAlong(ctx.r.w >= ctx.r.d ? "n" : "w", 14, 0.4, (bb) => bb.prop("korean_fire_extinguisher_01", V(0, 0, 0), { collide: true }), 0.4);
+  // Whatever someone left here: a cleaner's cart, a couple of bags waiting for collection.
+  if (long > 8 && ctx.rng.chance(0.5)) {
+    const rng = ctx.rng.fork("left-behind");
+    if (rng.chance(0.45)) ctx.againstWall(0.6, 0.3, (bb) => cleaningCart(bb));
+    else ctx.againstWall(0.5, 0.35, (bb) => { pile(bb, rng, "trash"); });
+  }
 }
 
 function secureCell(ctx: RoomContext): void {
+  const rng = ctx.rng;
+  const untidy = rng.weighted([[0.1, 0.35], [0.5, 0.45], [1, 0.2]] as const);
   ctx.rowAlong("n", ctx.r.w, 1.0, (bb) => {
     bb.box(V(0, 0.43, 0), V(2.0, 0.12, 0.95), { mat: "concrete", color: 0x5a5f5b });
     bb.box(V(0, 0.55, 0), V(1.9, 0.14, 0.85), { mat: "fabric", color: 0x4d5560, collide: false });
+    bb.box(V(-0.72 + rng.range(-0.05, 0.1) * untidy, 0.66, rng.range(-0.08, 0.08) * untidy), V(0.34, 0.1, 0.7), { mat: "fabric", color: 0x6f756f, collide: false, yaw: rng.range(-0.4, 0.4) * untidy });
+    bb.box(V(0.3 + rng.range(-0.2, 0.2) * untidy, 0.64, rng.range(-0.1, 0.1) * untidy), V(1.0, 0.04 + 0.03 * untidy, 0.8), { mat: "fabric", color: 0x3b4650, collide: false, yaw: rng.range(-0.5, 0.5) * untidy });
+    if (rng.chance(0.3)) bb.prop("russian_food_cans_01", V(0.85, 0.62, rng.range(-0.25, 0.25)), { yaw: rng.range(-3, 3), shadow: false });
   }, 2.1);
+  if (rng.chance(untidy * 0.8)) ctx.againstWall(0.3, 0.25, (bb) => {
+    for (let i = rng.int(2, 4); i > 0; i--) bb.box(V(rng.range(-0.15, 0.15), 0.03 + i * 0.03, rng.range(-0.1, 0.1)), V(rng.range(0.35, 0.5), 0.05, rng.range(0.3, 0.4)), { mat: "fabric", color: rng.pick([0x555e61, 0x6b6f66, 0x8a8f86]), collide: false, yaw: rng.range(-1, 1) });
+  });
+  if (rng.chance(untidy * 0.5)) ctx.againstWall(0.3, 0.3, (bb) => bb.prop("trashbag", V(0, 0, 0), { yaw: rng.range(-3, 3), scale: 0.75 }));
   ctx.place(ctx.hw - 0.5, ctx.hd - 0.5, Math.PI, 0.3, 0.3, (bb) => {
     bb.cylinder(V(0, 0.22, 0), 0.22, 0.44, { mat: "steel", color: 0x8a928e, collide: true });
     bb.cylinder(V(0, 0.48, 0.1), 0.28, 0.16, { mat: "steel", color: 0x9aa29e });
@@ -198,6 +296,11 @@ function dining(ctx: RoomContext): void {
         bb.box(V(0, 0.45, s * 0.85), V(2.4, 0.06, 0.32), { mat: "steel", color: 0x7b827c });
         bb.box(V(0, 0.22, s * 0.85), V(0.08, 0.44, 0.08), { mat: "steel", color: 0x5f6661, collide: false });
       }
+      // Trays nobody returned, a tin or two.
+      const rng = ctx.rng;
+      for (let k = rng.weighted([[0, 3], [1, 3], [2, 2], [3, 1]] as const); k > 0; k--)
+        bb.box(V(rng.range(-1.0, 1.0), 0.795, rng.range(-0.3, 0.3)), V(0.42, 0.02, 0.3), { mat: "plastic", color: rng.pick([0x5f6d66, 0x6b5f52, 0x58646b]), collide: false, yaw: rng.range(-0.4, 0.4) });
+      if (rng.chance(0.35)) bb.prop("russian_food_cans_01", V(rng.range(-1, 1), 0.785, rng.range(-0.3, 0.3)), { yaw: rng.range(-3, 3), shadow: false });
     });
   }
   ctx.rowAlong("w", 6, 0.3, (bb) => { noticeBoard(bb); wallClock(bb); }, 1.6);
@@ -212,6 +315,7 @@ function kitchen(ctx: RoomContext): void {
   });
   for (const x of [-ctx.hw * 0.4, ctx.hw * 0.4]) ctx.place(x, 0.8, 0, 1.6, 0.6, (bb) => table(bb, 3.0, 1.1, 0.9, 0xa3aaa6));
   ctx.rowAlong("s", 2.4, 0.7, (bb) => shelfUnit(bb, 2.0, 1.8, 0.6, 0x9aa19c));
+  ctx.heaps(ctx.rng.int(1, 2), ["crates"]);
 }
 
 function serving(ctx: RoomContext): void {
@@ -291,18 +395,50 @@ function toilets(ctx: RoomContext): void {
 }
 
 function offices(ctx: RoomContext): void {
+  const rng = ctx.rng;
   const n = Math.max(1, Math.min(4, Math.floor(ctx.r.w / 3)));
+  // Cramped rooms keep their exact layout: a few centimetres there closes the only walkway.
+  const j = ctx.roomy ? 1 : 0;
   for (let i = 0; i < n; i++) {
-    const x = -ctx.hw + (i + 0.5) * (ctx.r.w / n);
-    ctx.place(x, -ctx.hd + 1.2, 0, 0.85, 0.75, (bb) => {
+    const x = -ctx.hw + (i + 0.5) * (ctx.r.w / n) + rng.range(-0.25, 0.25) * j;
+    ctx.place(x, -ctx.hd + 1.2 + rng.range(-0.05, 0.15) * j, rng.range(-0.05, 0.05) * j, 0.85, 0.75, (bb) => {
       desk(bb, 1.5, 0.7);
-      bb.within(V(0, 0, -0.1), 0, () => monitor(bb));
-      bb.within(V(0, 0, 0.7), Math.PI, () => officeChair(bb));
-      bb.box(V(-0.45, 0.8, 0.05), V(0.3, 0.02, 0.22), { mat: "paper", color: 0xd6d2c0, collide: false, shadow: false, yaw: 0.2 });
+      if (rng.chance(0.85)) bb.within(V(rng.range(-0.3, 0.05), 0, -0.1), rng.range(-0.25, 0.25), () => monitor(bb));
+      if (!ctx.roomy) bb.within(V(0, 0, 0.7), Math.PI, () => officeChair(bb));
+      else if (rng.chance(0.88)) looseChair(bb, rng, V(0, 0, 0.7), Math.PI);
+      // Paperwork: a few untidy stacks.
+      for (let k = rng.int(0, 3); k > 0; k--) {
+        const px = rng.range(-0.62, 0.55);
+        const pz = rng.range(-0.15, 0.25);
+        const yaw = rng.range(-0.6, 0.6);
+        for (let sheet = rng.int(1, 4); sheet > 0; sheet--)
+          bb.box(V(px + rng.range(-0.02, 0.02), 0.78 + sheet * 0.006, pz + rng.range(-0.02, 0.02)), V(0.3, 0.005, 0.22), { mat: "paper", color: rng.pick([0xd6d2c0, 0xcac5ad, 0xe0dccb]), collide: false, shadow: false, yaw: yaw + rng.range(-0.15, 0.15) });
+      }
+      const item = rng.weighted([["laptop", 1], ["lamp", 1.2], ["radio", 0.25], ["none", 0.8]] as const);
+      if (item === "laptop") bb.prop("classic_laptop", V(rng.range(0.25, 0.5), 0.775, rng.range(0.05, 0.15)), { yaw: rng.range(-0.5, 0.2) });
+      if (item === "lamp") bb.prop("desk_lamp_arm_01", V(rng.range(0.45, 0.62), 0.775, rng.range(-0.22, -0.1)), { yaw: 2.6 + rng.range(-0.5, 0.5), scale: 0.8 });
+      if (item === "radio") bb.prop("vintage_radio_transceiver", V(0.45, 0.775, -0.05), { yaw: rng.range(-0.4, 0.2) });
+      if (rng.chance(0.3)) bb.prop("russian_food_cans_01", V(rng.range(-0.6, 0.6), 0.775, rng.range(-0.25, 0.2)), { yaw: rng.range(-3, 3), shadow: false });
+      if (ctx.roomy && rng.chance(0.4)) bb.prop("trashbag", V(rng.sign() * rng.range(0.9, 1.1), 0, rng.range(0, 0.3)), { yaw: rng.range(-3, 3), scale: 0.7 });
     });
   }
-  ctx.rowAlong("s", 1.2, 0.55, (bb) => fileCabinet(bb));
+  ctx.rowAlong("s", 1.2, 0.55, (bb) => {
+    if (rng.chance(0.8)) bb.within(V(rng.range(-0.06, 0.06) * j, 0, rng.range(0, 0.05) * j), rng.range(-0.05, 0.05) * j, () => fileCabinet(bb));
+  });
   ctx.rowAlong("e", 4, 0.1, noticeBoard, 1.6);
+  ctx.heaps(rng.int(0, 2), ["crates"]);
+  if (rng.chance(0.3)) ctx.againstWall(0.35, 0.35, (bb) => officeChair(bb));
+}
+
+/** A chair where someone last left it: pushed back, swung round, now and then knocked over. */
+function looseChair(b: StaticBuilder, rng: Rng, at: Vector3, yaw: number): void {
+  const offset = V(rng.range(-0.25, 0.25), 0, rng.range(0, 0.35)).applyAxisAngle(new Vector3(0, 1, 0), yaw);
+  if (rng.chance(0.06)) {
+    const depth = b.props.size("plastic_monobloc_chair_01").z;
+    b.prop("plastic_monobloc_chair_01", at.clone().add(offset).add(V(0, depth / 2, 0)), { yaw: yaw + rng.range(-1, 1), pitch: Math.PI / 2 });
+    return;
+  }
+  b.within(at.clone().add(offset), yaw + rng.range(-0.55, 0.55), () => officeChair(b));
 }
 
 function fileCabinet(b: StaticBuilder): void {
@@ -310,14 +446,17 @@ function fileCabinet(b: StaticBuilder): void {
   for (let i = 0; i < 4; i++) b.box(V(0, 0.18 + i * 0.32, 0.305), V(0.16, 0.03, 0.02), { mat: "steel", collide: false, shadow: false });
 }
 
-function meetingTable(b: StaticBuilder, w: number, d: number): void {
+function meetingTable(b: StaticBuilder, w: number, d: number, rng: Rng): void {
   table(b, w, d, 0.76, 0x6e5a45, "wood");
   const n = Math.max(1, Math.floor(w / 1.0));
   for (let i = 0; i < n; i++) {
     const x = -w / 2 + 0.5 + i * ((w - 1) / Math.max(1, n - 1));
-    b.within(V(x, 0, -d / 2 - 0.45), 0, () => officeChair(b));
-    b.within(V(x, 0, d / 2 + 0.45), Math.PI, () => officeChair(b));
+    for (const [z, yaw] of [[-d / 2 - 0.45, 0], [d / 2 + 0.45, Math.PI]] as const) if (rng.chance(0.88)) looseChair(b, rng, V(x, 0, z), yaw);
   }
+  // Whatever the last briefing left on the table.
+  for (let k = rng.int(1, 4); k > 0; k--)
+    b.box(V(rng.range(-w / 2 + 0.3, w / 2 - 0.3), 0.79, rng.range(-d / 2 + 0.2, d / 2 - 0.2)), V(0.3, 0.006, 0.22), { mat: "paper", color: 0xd6d2c0, collide: false, shadow: false, yaw: rng.range(-1, 1) });
+  if (rng.chance(0.4)) b.prop("russian_food_cans_01", V(rng.range(-w / 2 + 0.3, w / 2 - 0.3), 0.785, rng.range(-0.2, 0.2)), { yaw: rng.range(-3, 3), shadow: false });
 }
 
 function surveillance(ctx: RoomContext): void {
@@ -333,7 +472,8 @@ function surveillance(ctx: RoomContext): void {
   for (const z of [-0.6, 1.4]) ctx.place(0, z, 0, Math.min(3, ctx.hw - 1), 0.5, (bb) => {
     const w = Math.min(6, ctx.r.w - 2.4);
     bb.box(V(0, 0.45, 0), V(w, 0.9, 0.75), { mat: "dark", color: 0x262b29 });
-    for (let x = -w / 2 + 0.6; x < w / 2; x += 1.2) bb.within(V(x, 0.05, -0.15), 0, () => monitor(bb));
+    for (let x = -w / 2 + 0.6; x < w / 2; x += 1.2) bb.within(V(x, 0.05, -0.15), 0, () => monitor(bb, 0.85));
+    if (z < 0) bb.prop("vintage_radio_transceiver", V(w / 2 - 0.45, 0.9, 0.12), { yaw: -0.2 });
   });
 }
 
@@ -364,13 +504,15 @@ function workshop(ctx: RoomContext): void {
     for (let i = 0; i < 6; i++) bb.box(V(-0.6 + i * 0.24, 1.6 + Math.sin(i) * 0.2, 0.08), V(0.05, 0.35, 0.04), { mat: "steel", collide: false, shadow: false });
   }, 1.6);
   ctx.place(0, 0.5, 0, 1.2, 0.6, (bb) => table(bb, 2.2, 1.0, 0.85, 0x6d736f, "metal"));
+  ctx.corner((bb) => bb.prop("metal_tool_chest", V(0, 0, 0), { collide: true }));
+  ctx.heaps(ctx.rng.int(1, 3), ["stores", "barrels", "sacks"]);
 }
 
 function workbench(b: StaticBuilder): void {
   b.box(V(0, 0.9, 0), V(2.2, 0.08, 0.8), { mat: "wood", color: 0x6b5843 });
   for (const x of [-1.0, 1.0]) b.box(V(x, 0.45, 0), V(0.08, 0.9, 0.7), { mat: "metal", color: 0x4c5550, collide: false });
   b.box(V(0, 0.25, 0), V(2.0, 0.04, 0.7), { mat: "metal", color: 0x4c5550, collide: false });
-  b.box(V(0.7, 1.0, -0.1), V(0.3, 0.12, 0.2), { mat: "metal", color: 0x9a3b2c, collide: false });
+  b.prop("metal_toolbox", V(0.7, 0.94, -0.1), { yaw: 0.15 });
   b.box(V(-0.5, 0.97, 0.1), V(0.4, 0.06, 0.25), { mat: "steel", collide: false, shadow: false });
   b.blocker(V(0, 0.47, 0), V(2.2, 0.94, 0.8));
 }
@@ -399,13 +541,12 @@ function plant(ctx: RoomContext, key: string): void {
 function lab(ctx: RoomContext): void {
   ctx.rowAlong("n", 2.2, 0.8, (bb) => {
     table(bb, 2.0, 0.75, 0.9, 0xdfe4e0, "metal");
-    bb.box(V(-0.5, 1.05, -0.1), V(0.35, 0.3, 0.3), { mat: "plastic", color: 0xd8dcd8, collide: false });
-    bb.cylinder(V(0.3, 1.0, 0), 0.04, 0.18, { mat: "glass", collide: false });
-    bb.cylinder(V(0.45, 1.0, 0.05), 0.035, 0.14, { mat: "glass", collide: false });
-    bb.within(V(0.55, 0, -0.15), 0, () => monitor(bb));
+    bb.prop("industrial_microscope", V(-0.55, 0.925, -0.05), { yaw: 0.2 });
+    bb.prop("bunsen_burner", V(0.15, 0.925, 0.08));
+    bb.within(V(0.55, 0, -0.15), 0, () => monitor(bb, 0.925));
   });
   ctx.rowAlong("s", 1.3, 0.7, fridgeUnit);
-  ctx.place(0, 0, 0, 1.3, 0.6, (bb) => table(bb, 2.4, 1.0, 0.9, 0xdfe4e0, "metal"));
+  ctx.place(0, 0, 0, 1.3, 0.6, (bb) => { table(bb, 2.4, 1.0, 0.9, 0xdfe4e0, "metal"); bb.prop("chemistry_set", V(0, 0.925, 0)); });
 }
 
 function fridgeUnit(b: StaticBuilder): void {

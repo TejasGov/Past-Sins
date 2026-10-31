@@ -9,6 +9,7 @@ import { LightPool } from "../render/lightPool";
 import { WorldLighting } from "../render/worldLighting";
 import { StaticBuilder, type ChunkInfo } from "../world/builder";
 import { buildCampus } from "../world/campus/campus";
+import { PropLibrary } from "../world/models";
 import { buildOuterGrass } from "../world/campus/ground";
 import { loadFloorPlans, type FloorPlan } from "../world/campus/plans";
 import type { BuiltFloor } from "../world/campus/blueprintFloor";
@@ -115,7 +116,13 @@ export class Game {
 
   async init(): Promise<void> {
     this.hud.setLoading("INITIALISING PHYSICS");
-    const [physics, plans, loaded, storyData] = await Promise.all([Physics.create(), loadFloorPlans(), loadSession(), loadStoryData()]);
+    const [physics, plans, loaded, storyData, props] = await Promise.all([
+      Physics.create(),
+      loadFloorPlans(),
+      loadSession(),
+      loadStoryData(),
+      PropLibrary.load(this.render.prepareMaterial),
+    ]);
     this.physics = physics;
     this.plans = plans;
     this.content = loaded.session;
@@ -126,9 +133,10 @@ export class Game {
     this.env.dayLengthSeconds = this.content.dayLengthSeconds;
     await document.fonts.load('600 56px "Oswald"').catch(() => undefined);
     this.materials = new MaterialLibrary(this.render.renderer, this.render.prepareMaterial);
+    props.applyReflections((m) => this.materials.reflections(m));
     this.hud.setLoading("BUILDING CAMPUS");
     await new Promise((r) => setTimeout(r, 0));
-    const builder = new StaticBuilder(this.physics, this.materials, this.render.prepareMaterial);
+    const builder = new StaticBuilder(this.physics, this.materials, this.render.prepareMaterial, props);
     this.floors = buildCampus(builder, this.plans);
     this.session = new Session(this.content, loaded.memories);
     this.session.buildStatic(builder, this.floors, builder.doors);
@@ -352,6 +360,11 @@ export class Game {
   update(dt: number, draw = true): void {
     const p = this.player;
     if (this.started) {
+      // Unlocked, the cursor is needed for choice buttons and documents, so they freeze the view.
+      if (!this.input.locked && this.story.ui.blocking) {
+        this.input.mouseDX = 0;
+        this.input.mouseDY = 0;
+      }
       p.update(dt);
       // Pose the camera before anything aims through it (interaction, firing).
       p.updateCamera(dt);

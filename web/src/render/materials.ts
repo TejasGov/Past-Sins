@@ -5,6 +5,7 @@ import {
   Material,
   MeshBasicMaterial,
   MeshStandardMaterial,
+  PMREMGenerator,
   RepeatWrapping,
   SRGBColorSpace,
   Texture,
@@ -12,6 +13,7 @@ import {
   type WebGLProgramParametersWithUniforms,
   type WebGLRenderer,
 } from "three";
+import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 
 /** Shared uniforms; mutating `.value` updates every patched material at once. */
 export const sharedUniforms = {
@@ -59,11 +61,13 @@ const SPECS: Record<MaterialKey, MaterialSpec> = {
   concrete: { set: T("concrete", 3), roughness: 1, grime: 1.35, normalScale: 0.9 },
   concrete_ext: { set: T("concrete", 3.2), roughness: 1, grime: 1, exterior: true, normalScale: 1 },
   plaster: { set: T("plaster", 2.5), roughness: 1, grime: 0.95, normalScale: 0.5 },
-  metal: { set: T("metal", 1.6), roughness: 0.9, metalness: 0.35, grime: 0.5, normalScale: 0.6 },
-  metal_ext: { set: T("metal", 1.6), roughness: 0.9, metalness: 0.35, grime: 0.6, exterior: true, normalScale: 0.6 },
-  dark: { set: T("metal", 1.6), color: 0x5a605c, roughness: 0.85, metalness: 0.4, grime: 0.4, normalScale: 0.5 },
-  dark_ext: { set: T("metal", 1.6), color: 0x5a605c, roughness: 0.85, metalness: 0.4, grime: 0.5, exterior: true },
-  steel: { set: T("steel", 1.2), roughness: 0.55, metalness: 0.85, grime: 0.25, normalScale: 0.4 },
+  // Painted sheet steel (lockers, shelves, frames): it reads as paint, so keep metalness low.
+  metal: { set: T("metal", 1.6), roughness: 0.75, metalness: 0.12, grime: 0.5, normalScale: 0.6 },
+  metal_ext: { set: T("metal", 1.6), roughness: 0.75, metalness: 0.12, grime: 0.6, exterior: true, normalScale: 0.6 },
+  dark: { set: T("metal", 1.6), color: 0x767c78, roughness: 0.8, metalness: 0.15, grime: 0.4, normalScale: 0.5 },
+  dark_ext: { set: T("metal", 1.6), color: 0x767c78, roughness: 0.8, metalness: 0.15, grime: 0.5, exterior: true },
+  // Stainless (toilets, sinks, counters): reflective, so it gets its own room reflections (see `reflections`).
+  steel: { set: T("steel", 1.2), roughness: 0.42, metalness: 0.65, grime: 0.25, normalScale: 0.4 },
   iron: { set: { ...T("iron", 1.0), metal: "iron_metalness" }, roughness: 0.75, metalness: 1, grime: 0.3, normalScale: 0.7 },
   wood: { set: T("wood_furniture", 1.2), roughness: 0.8, grime: 0.2, normalScale: 0.6 },
   tiles: { set: T("tiles", 1.5), roughness: 0.6, grime: 0.6, normalScale: 0.7 },
@@ -171,8 +175,14 @@ export class MaterialLibrary {
   readonly ready: Promise<void>;
   private pending: Promise<unknown>[] = [];
 
+  /** Soft neutral room reflections for metals, so they don't depend on the (night- and indoor-dimmed) scene environment. */
+  readonly roomReflections: Texture;
+
   constructor(renderer: WebGLRenderer, private prepare: MaterialPreparer) {
     this.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+    const pmrem = new PMREMGenerator(renderer);
+    this.roomReflections = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+    pmrem.dispose();
     for (const key of Object.keys(SPECS) as MaterialKey[]) this.materials.set(key, this.build(key));
     this.ready = Promise.all(this.pending).then(() => undefined);
   }
@@ -243,11 +253,18 @@ export class MaterialLibrary {
       mat.depthWrite = false;
       mat.side = DoubleSide;
     }
+    if (key === "steel" || key === "iron") this.reflections(mat);
     const strength = spec.grime ?? 0;
     const exterior = spec.exterior ?? false;
     this.prepare(mat);
     applyGrime(mat, strength, exterior);
     return mat;
+  }
+
+  /** Gives a metallic material its own soft room reflections (otherwise metals read black in dim interiors). */
+  reflections(mat: MeshStandardMaterial, intensity = 0.35): void {
+    mat.envMap = this.roomReflections;
+    mat.envMapIntensity = intensity;
   }
 
   private nightLevel = 1;
@@ -288,6 +305,22 @@ export class MaterialLibrary {
     this.nightLevel = level;
     this.applyNight(this.materials.get("emissive_night") as MeshBasicMaterial, 1);
     for (const v of this.nightVariants.values()) this.applyNight(v.mat, v.dim);
+    for (const [mat, base] of this.nightEmissives.values()) mat.emissiveIntensity = base * (0.06 + 0.94 * level);
+  }
+
+  private nightEmissives = new Map<Material, [MeshStandardMaterial, number]>();
+
+  /** A copy of a textured model material whose own emission follows the night level (single-material lamps). */
+  nightEmissive(source: MeshStandardMaterial): MeshStandardMaterial {
+    let entry = this.nightEmissives.get(source);
+    if (!entry) {
+      const mat = source.clone();
+      this.prepare(mat);
+      entry = [mat, source.emissiveIntensity];
+      this.nightEmissives.set(source, entry);
+      mat.emissiveIntensity = entry[1] * (0.06 + 0.94 * this.nightLevel);
+    }
+    return entry[0];
   }
 }
 

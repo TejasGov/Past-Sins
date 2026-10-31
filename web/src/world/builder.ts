@@ -5,6 +5,7 @@ import {
   Float32BufferAttribute,
   DoubleSide,
   Group,
+  InstancedMesh,
   Material,
   Matrix4,
   Mesh,
@@ -17,6 +18,7 @@ import {
 import { computeBoundsTree } from "three-mesh-bvh";
 import type { Physics } from "../physics/physics";
 import { type MaterialKey, type MaterialLibrary, vertexColorFor, applyGrime } from "../render/materials";
+import type { PropId, PropLibrary } from "./models";
 import { SignAtlas } from "./signAtlas";
 import type { Anchor, DoorSpec } from "./types";
 import { NAV_ANCHOR, type NavExport } from "./nav";
@@ -33,6 +35,30 @@ export interface BoxOpts {
   yaw?: number;
   /** Full local rotation (overrides yaw). */
   quat?: Quaternion;
+}
+
+export interface PropOpts {
+  /** Extra yaw on top of the current frame (radians). */
+  yaw?: number;
+  /** Tilt about the prop's own X then Z axes, e.g. a chair knocked onto its front. */
+  pitch?: number;
+  roll?: number;
+  scale?: number | Vector3;
+  /** Rapier box from the model's bounds (default false). */
+  collide?: boolean;
+  /** Include that box in the line-of-sight BVH (default false). */
+  occlude?: boolean;
+  shadow?: boolean;
+  /** Replace the model's own glow with the game's diffuser (follows night switching and lights-out), or "off" for a dead tube. */
+  glow?: "night" | "always" | "off";
+}
+
+interface PropInstance {
+  id: PropId;
+  matrix: Matrix4;
+  chunk: string;
+  glow?: "night" | "always" | "off";
+  shadow: boolean;
 }
 
 export interface Fixture {
@@ -68,6 +94,8 @@ interface Frame {
 }
 
 const UP = new Vector3(0, 1, 0);
+const _X = new Vector3(1, 0, 0);
+const _Z = new Vector3(0, 0, 1);
 const FACES: { n: [number, number, number]; u: [number, number, number]; v: [number, number, number] }[] = [
   { n: [1, 0, 0], u: [0, 0, -1], v: [0, 1, 0] },
   { n: [-1, 0, 0], u: [0, 0, 1], v: [0, 1, 0] },
@@ -111,9 +139,10 @@ export class StaticBuilder {
   private chunk!: ChunkInfo;
   readonly atlas = new SignAtlas();
   private signMaterial: MeshStandardMaterial;
+  private propInstances: PropInstance[] = [];
   colliderCount = 0;
 
-  constructor(private physics: Physics, private materials: MaterialLibrary, prepare: (m: Material) => void) {
+  constructor(private physics: Physics, private materials: MaterialLibrary, prepare: (m: Material) => void, readonly props: PropLibrary) {
     this.signMaterial = new MeshStandardMaterial({
       map: this.atlas.texture,
       emissiveMap: this.atlas.texture,
@@ -228,20 +257,22 @@ export class StaticBuilder {
   }
 
   // ── Primitives ─────────────────────────────────────────────────────────────
-  private bucket(mat: MaterialKey, shadow: boolean, chunk = this.chunk, at?: Vector3): Bucket {
-    // Exterior statics are split into 80 m cells so frustum culling (main
-    // view and each CSM cascade) can reject most of the campus.
-    if (!chunk.interior && at) {
-      const name = `${chunk.name}@${Math.floor(at.x / 80)},${Math.floor(at.z / 80)}`;
-      let cell = this.chunks.get(name);
-      if (!cell) {
-        const group = new Group();
-        group.name = `chunk:${name}`;
-        cell = { name, interior: false, bounds: new Box3(), group };
-        this.chunks.set(name, cell);
-      }
-      chunk = cell;
+  /** Exterior statics are split into 80 m cells so frustum culling (main view and each CSM cascade) can reject most of the campus. */
+  private cellChunk(chunk: ChunkInfo, at?: Vector3): ChunkInfo {
+    if (chunk.interior || !at) return chunk;
+    const name = `${chunk.name}@${Math.floor(at.x / 80)},${Math.floor(at.z / 80)}`;
+    let cell = this.chunks.get(name);
+    if (!cell) {
+      const group = new Group();
+      group.name = `chunk:${name}`;
+      cell = { name, interior: false, bounds: new Box3(), group };
+      this.chunks.set(name, cell);
     }
+    return cell;
+  }
+
+  private bucket(mat: MaterialKey, shadow: boolean, chunk = this.chunk, at?: Vector3): Bucket {
+    chunk = this.cellChunk(chunk, at);
     const key = `${chunk.name}|${mat}|${shadow ? 1 : 0}`;
     let b = this.buckets.get(key);
     if (!b) {
@@ -295,6 +326,29 @@ export class StaticBuilder {
       this.physics.addStaticBoxQuat(worldCenter, new Vector3(radius * 0.85, height / 2, radius * 0.85), q);
       this.colliderCount++;
     }
+  }
+
+  /** Places a Poly Haven model (origin at floor contact, facing +Z) in the current frame. */
+  prop(id: PropId, local: Vector3, opts: PropOpts = {}): void {
+    const at = this.toWorld(local);
+    const yaw = this.frame.yaw + (opts.yaw ?? 0);
+    const q = new Quaternion().setFromAxisAngle(UP, yaw);
+    if (opts.pitch) q.multiply(_q.setFromAxisAngle(_X, opts.pitch));
+    if (opts.roll) q.multiply(_q.setFromAxisAngle(_Z, opts.roll));
+    const s = typeof opts.scale === "number" ? new Vector3(opts.scale, opts.scale, opts.scale) : (opts.scale ?? new Vector3(1, 1, 1));
+    const chunk = this.cellChunk(this.chunk, at);
+    this.propInstances.push({ id, matrix: new Matrix4().compose(at, q, s), chunk: chunk.name, glow: opts.glow, shadow: opts.shadow ?? true });
+    const size = this.props.size(id).clone().multiply(s);
+    const half = size.clone().multiplyScalar(0.5);
+    const centre = at.clone().add(new Vector3(0, half.y, 0));
+    const r = Math.max(half.x, half.z);
+    chunk.bounds.expandByPoint(_b.set(centre.x - r, at.y, centre.z - r));
+    chunk.bounds.expandByPoint(_b.set(centre.x + r, at.y + size.y, centre.z + r));
+    if (opts.collide) {
+      this.physics.addStaticBoxQuat(centre, half, q);
+      this.colliderCount++;
+    }
+    if (opts.occlude) appendBoxOccluder(this.occPos, this.occIdx, centre, half, q);
   }
 
   /** Godot greybox_factory.bar_between: an oriented square bar from a to b. */
@@ -356,16 +410,21 @@ export class StaticBuilder {
     b.idx.push(base, base + 1, base + 2, base, base + 2, base + 3);
   }
 
-  /** Ceiling fluorescent: emissive diffuser + light-pool candidate. */
-  fixture(center: Vector3, size: Vector3, opts: { nightOnly: boolean; color?: number; intensity?: number; range?: number; flicker?: number; backplate?: boolean }): void {
-    if (opts.backplate !== false) {
-      this.box(center.clone().add(new Vector3(0, size.y / 2 + 0.03, 0)), new Vector3(size.x + 0.12, 0.06, size.z + 0.08), {
-        mat: "metal",
-        color: 0x535c55,
-        collide: false,
-      });
+  /** Ceiling fluorescent: batten model(s) whose tubes use the game's diffuser + a light-pool candidate. */
+  fixture(center: Vector3, size: Vector3, opts: { nightOnly: boolean; color?: number; intensity?: number; range?: number; flicker?: number; backplate?: boolean; broken?: boolean }): void {
+    const batten = this.props.size("mounted_fluorescent_lights");
+    const alongX = size.x >= size.z;
+    const length = alongX ? size.x : size.z;
+    const width = alongX ? size.z : size.x;
+    const tubes = width >= 0.15 ? 2 : 1;
+    const glow = opts.broken ? "off" : opts.nightOnly ? "night" : "always";
+    for (let i = 0; i < tubes; i++) {
+      const across = tubes === 1 ? 0 : (i - 0.5) * Math.min(width - batten.z, 0.12);
+      const at = center.clone().add(alongX ? new Vector3(0, size.y / 2 - batten.y, across) : new Vector3(across, size.y / 2 - batten.y, 0));
+      this.prop("mounted_fluorescent_lights", at, { yaw: alongX ? 0 : Math.PI / 2, scale: new Vector3(length / batten.x, 1, 1), glow, shadow: false });
     }
-    this.box(center, size, { mat: opts.nightOnly ? "emissive_night" : "emissive_always", collide: false, shadow: false });
+    // A dead tube casts no light: it leaves a dark pocket.
+    if (opts.broken) return;
     this.fixtures.push({
       position: this.toWorld(center.clone().add(new Vector3(0, -0.25, 0))),
       color: new Color(opts.color ?? 0xffdca0),
@@ -425,6 +484,9 @@ export class StaticBuilder {
       triangles += b.idx.length / 3;
       drawCalls++;
     }
+    const props = this.finalizeProps();
+    triangles += props.triangles;
+    drawCalls += props.drawCalls;
     for (const chunk of this.chunks.values()) root.add(chunk.group);
     const occGeo = new BufferGeometry();
     occGeo.setAttribute("position", new Float32BufferAttribute(this.occPos, 3));
@@ -435,6 +497,60 @@ export class StaticBuilder {
     occluder.updateMatrixWorld(true);
     this.buckets.clear();
     return { root, occluder, triangles, drawCalls };
+  }
+
+  /** One InstancedMesh per (chunk, model, glow, shadow) and model part. */
+  private finalizeProps(): { triangles: number; drawCalls: number } {
+    const groups = new Map<string, PropInstance[]>();
+    for (const p of this.propInstances) {
+      const key = `${p.chunk}|${p.id}|${p.glow ?? ""}|${p.shadow ? 1 : 0}`;
+      let list = groups.get(key);
+      if (!list) groups.set(key, (list = []));
+      list.push(p);
+    }
+    let triangles = 0;
+    let drawCalls = 0;
+    const tinted = new Map<BufferGeometry, BufferGeometry>();
+    for (const [key, list] of groups) {
+      const { chunk: chunkName, id, glow, shadow } = list[0];
+      const chunk = this.chunks.get(chunkName)!;
+      for (const part of this.props.get(id)) {
+        let material: Material = part.material;
+        let geometry = part.geometry;
+        const replaced = !!glow && part.glowPart;
+        if (glow === "night" && !part.glowPart && part.material.emissiveMap) material = this.materials.nightEmissive(part.material);
+        if (replaced && glow === "off") material = this.materials.get("plastic");
+        else if (replaced) {
+          material = glow === "always" ? this.materials.get("emissive_always") : chunk.interior ? this.materials.nightFor(chunkName) : this.materials.get("emissive_night");
+          // The diffusers are vertex-coloured; give the tube geometry a white colour attribute.
+          if (material.vertexColors && !geometry.getAttribute("color")) {
+            let white = tinted.get(geometry);
+            if (!white) {
+              white = geometry.clone();
+              white.setAttribute("color", new Float32BufferAttribute(new Float32Array(geometry.getAttribute("position").count * 3).fill(1), 3));
+              tinted.set(geometry, white);
+            }
+            geometry = white;
+          }
+        }
+        const mesh = new InstancedMesh(geometry, material, list.length);
+        list.forEach((p, i) => mesh.setMatrixAt(i, p.matrix));
+        mesh.instanceMatrix.needsUpdate = true;
+        mesh.computeBoundingSphere();
+        mesh.computeBoundingBox();
+        mesh.name = `prop:${key}`;
+        mesh.castShadow = shadow && !replaced && (!chunk.interior || chunkName === "cellhouseA");
+        mesh.receiveShadow = !(material instanceof MeshBasicMaterial);
+        mesh.matrixAutoUpdate = false;
+        mesh.updateMatrix();
+        chunk.group.add(mesh);
+        const tris = (geometry.index ? geometry.index.count : geometry.getAttribute("position").count) / 3;
+        triangles += tris * list.length;
+        drawCalls++;
+      }
+    }
+    this.propInstances = [];
+    return { triangles, drawCalls };
   }
 }
 
