@@ -33,8 +33,10 @@ export class WorldLighting {
     const top = s.top.clone();
     const horizon = s.horizon.clone();
     if (rainy) {
-      top.lerp(RAIN_TOP, 0.62);
-      horizon.lerp(RAIN_HORIZON, 0.68);
+      // Overcast greys only apply by day; at night the cloud deck just goes black.
+      const lit = 0.12 + 0.88 * s.daylight;
+      top.lerp(RAIN_TOP.clone().multiplyScalar(lit), 0.62);
+      horizon.lerp(RAIN_HORIZON.clone().multiplyScalar(lit), 0.68);
     }
     // Cold teal-grey cast through dusk and dawn.
     const dusk = MathUtils.clamp(1 - Math.abs(s.daylight - 0.25) / 0.25, 0, 1);
@@ -44,7 +46,7 @@ export class WorldLighting {
     const daylight = s.daylight;
     const sunUp = MathUtils.smoothstep(-sunDir.y, -0.05, 0.12);
     const sunIntensity = 3.4 * daylight * (rainy ? 0.42 : 1) * sunUp;
-    const moonIntensity = 0.32 * (1 - MathUtils.smoothstep(daylight, 0.04, 0.25)) * (rainy ? 0.5 : 1);
+    const moonIntensity = 0.14 * (1 - MathUtils.smoothstep(daylight, 0.04, 0.25)) * (rainy ? 0.35 : 1);
     const useMoon = moonIntensity > sunIntensity;
     const dir = useMoon ? new Vector3(0.35, -0.82, 0.45).normalize() : sunDir;
     r.csm.lightDirection.copy(dir);
@@ -71,16 +73,17 @@ export class WorldLighting {
 
     const indoor = this.indoor;
     const ambientSky = horizon.clone().lerp(new Color(0xcad1d2), 0.22);
-    const outdoorAmbient = MathUtils.lerp(0.09, 0.85, daylight) * (rainy ? 0.72 : 1);
+    const outdoorAmbient = MathUtils.lerp(0.025, 0.42, daylight) * (rainy ? 0.95 : 1);
     r.hemi.color.copy(ambientSky);
     r.hemi.groundColor.copy(new Color(0x2a2824)).lerp(ambientSky, 0.15);
-    r.hemi.intensity = MathUtils.lerp(outdoorAmbient, outdoorAmbient * 0.3 + 0.05, indoor);
-    r.ambient.intensity = MathUtils.lerp(0.04, 0.08, indoor);
-    r.scene.environmentIntensity = MathUtils.lerp(MathUtils.lerp(0.15, 0.9, daylight), 0.18, indoor);
+    r.hemi.intensity = MathUtils.lerp(outdoorAmbient, outdoorAmbient * 0.25 + 0.03, indoor);
+    r.ambient.intensity = MathUtils.lerp(0.015, 0.05, indoor);
+    r.scene.environmentIntensity = MathUtils.lerp(MathUtils.lerp(0.04, 0.5, daylight), 0.12, indoor);
 
-    const fogOut = horizon.clone().multiplyScalar(rainy ? 0.85 : 0.95);
+    const fogOut = horizon.clone().multiplyScalar((rainy ? 0.85 : 0.95) * (0.35 + 0.65 * daylight));
     r.fog.color.copy(fogOut).lerp(INDOOR_FOG.clone().lerp(fogOut, 0.15), indoor);
-    const outDensity = rainy ? 0.026 : 0.0125 + (1 - daylight) * 0.004;
+    // Heavy haze at dawn/dusk/night and in rain; clearer at midday.
+    const outDensity = rainy ? 0.024 : 0.0055 + (1 - daylight) * 0.009 + dusk * 0.006;
     r.fog.density = this.overrideFogDensity ?? MathUtils.lerp(outDensity, 0.012, indoor);
 
     const night = c.nightLevel();
@@ -92,8 +95,11 @@ export class WorldLighting {
     sharedUniforms.uWetness.value = this.wetness;
     sharedUniforms.uTime.value += dt;
 
-    // Exposure compensation: night and interiors are graded a touch brighter.
-    r.grade.set("exposureLift", 0.004 * (1 - daylight));
+    // Simple scene-adaptive exposure (feeds AgX via toneMappingExposure).
+    const outdoorExposure = MathUtils.lerp(1.15, 0.82, daylight);
+    const targetExposure = MathUtils.lerp(outdoorExposure, 0.95, indoor);
+    r.renderer.toneMappingExposure += (targetExposure - r.renderer.toneMappingExposure) * (1 - Math.exp(-dt * 2));
+    r.grade.set("exposureLift", 0.002 * (1 - daylight));
     void camera;
 
     this.envTimer -= dt;

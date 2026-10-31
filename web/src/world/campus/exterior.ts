@@ -26,6 +26,8 @@ export function buildPerimeter(b: StaticBuilder): void {
   const ss = (hw * 2 - 12) / 2;
   wall(V(-hw + ss / 2, h / 2, hd), V(ss, h, t));
   wall(V(hw - ss / 2, h / 2, hd), V(ss, h, t));
+  // Nav export: everything inside the wall that isn't under a roof.
+  b.navRegion(-hw + 1, -hd + 1, hw - 1, hd - 1, 0, { spacing: 6, exterior: true, tag: "exterior" });
   sallyPort(b, V(0, 0, -hd), V(10, h, 8), "NORTH SERVICE SALLY PORT");
   sallyPort(b, V(0, 0, hd), V(12, h, 10), "MAIN SECURE VEHICLE SALLY PORT");
   // Fence posts above the wall.
@@ -65,9 +67,9 @@ function sallyPort(b: StaticBuilder, center: Vector3, size: Vector3, label: stri
 
 /** CentralYardGrounds + CampusRecreationAnnex (yard dressing, pool deck, gates). */
 export function buildYard(b: StaticBuilder): void {
-  b.box(V(0, 0.005, 0), V(52, 0.01, 54), { mat: "concrete_ext", color: 0x8d8e86, collide: false, shadow: false });
-  b.box(V(-14, 0.012, 0), V(16, 0.01, 24), { mat: "court", color: 0xa29c8e, collide: false, shadow: false });
-  b.box(V(14, 0.012, -12), V(16, 0.01, 16), { mat: "concrete_ext", color: 0x84857e, collide: false, shadow: false });
+  b.box(V(0, 0.005, 0), V(52, 0.01, 54), { mat: "concrete_ext", color: 0x6c6d67, collide: false, shadow: false });
+  b.box(V(-14, 0.012, 0), V(16, 0.01, 24), { mat: "court", color: 0x7d7a70, collide: false, shadow: false });
+  b.box(V(14, 0.012, -12), V(16, 0.01, 16), { mat: "concrete_ext", color: 0x65665f, collide: false, shadow: false });
   b.box(V(14, 0.012, 12), V(16, 0.01, 16), { mat: "grass", color: 0x7f8a64, collide: false, shadow: false });
   for (const [c, s] of [[V(0, 0.02, -23.8), V(46, 0.012, 2.5)], [V(0, 0.02, 23.8), V(46, 0.012, 2.5)], [V(-22.5, 0.02, 0), V(2.5, 0.012, 50)], [V(22.5, 0.02, 0), V(2.5, 0.012, 50)]] as const) {
     b.box(c, s, { mat: "rubber", color: 0x8a4c3c, collide: false, shadow: false });

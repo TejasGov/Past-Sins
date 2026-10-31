@@ -139,10 +139,13 @@ export class Hud {
     this.env.textContent = text;
   }
 
-  setSwimming(swimming: boolean): void {
-    this.controls.textContent = swimming
-      ? "WASD SWIM   SPACE RISE   C DIVE   M MAP\nRELEASE TO FLOAT   USE STEPS TO EXIT"
-      : this.landControls;
+  /** `ceiling`: water with no surface to climb out at (the drainage culvert). */
+  setSwimming(swimming: boolean, ceiling = false): void {
+    this.controls.textContent = !swimming
+      ? this.landControls
+      : ceiling
+        ? "WASD SWIM   SPACE RISE   C DIVE\nAIR POCKETS: 2 · 7 · 1 · 8"
+        : "WASD SWIM   SPACE RISE   C DIVE   M MAP\nRELEASE TO FLOAT   USE STEPS TO EXIT";
   }
 
   setInventory(items: string[]): void {
@@ -167,6 +170,7 @@ export class Hud {
     this.memoryPlaying = true;
     this.skipRequested = false;
     this.setPrompt("");
+    this.objective.style.visibility = "hidden";
     const m = this.memory;
     m.innerHTML = "";
     const frame = el("div", "frame", m);
@@ -196,6 +200,7 @@ export class Hud {
         onComplete: () => {
           this.memoryPlaying = false;
           m.classList.remove("visible");
+          this.objective.style.visibility = "visible";
           resolve();
         },
       });

@@ -1,0 +1,403 @@
+[
+  {
+    "id": "a1_wake",
+    "act": 1,
+    "title": "TIER 3 · CELL A-3-N03",
+    "text": "Something glints on the shelf above the bunk.",
+    "when": {
+      "act": 1
+    },
+    "done": {
+      "shard": "memory_001"
+    }
+  },
+  {
+    "id": "a1_keys",
+    "act": 1,
+    "title": "THE NUMBERS",
+    "text": "2 · 7 · 1 · 8. Someone made you learn that. Get out of the cellhouse: the rack in the ground-tier dayroom holds the trusty work keys.",
+    "when": {
+      "act": 1
+    },
+    "done": {
+      "any": [
+        {
+          "item": "service_key"
+        },
+        {
+          "item": "maintenance_access_card"
+        },
+        {
+          "flag": "cycle:content:locker_open"
+        },
+        {
+          "shard": "m04_handwriting"
+        }
+      ]
+    }
+  },
+  {
+    "id": "a1_locker",
+    "act": 1,
+    "title": "MAINTENANCE · TOOL ISSUE",
+    "text": "Cross the yard to Maintenance. The tool-issue locker wants a code you already know.",
+    "when": {
+      "act": 1
+    },
+    "done": {
+      "any": [
+        {
+          "flag": "cycle:content:locker_open"
+        },
+        {
+          "item": "maintenance_access_card"
+        },
+        {
+          "shard": "m04_handwriting"
+        }
+      ]
+    }
+  },
+  {
+    "id": "a1_note",
+    "act": 1,
+    "title": "THE LOCKER",
+    "text": "A note is taped up inside the locker.",
+    "when": {
+      "act": 1
+    },
+    "done": {
+      "shard": "m04_handwriting"
+    }
+  },
+  {
+    "id": "a1_down",
+    "act": 1,
+    "title": "GO DOWN",
+    "text": "The note says pool. The card says Maintenance. The service stair at the south end of the spine goes down to B1.",
+    "when": {
+      "act": 1
+    },
+    "done": {
+      "flag": "capture_first"
+    }
+  },
+  {
+    "id": "a2_pool",
+    "act": 2,
+    "title": "HOLD YOUR BREATH",
+    "text": "Pool, the note said. The pool annex is in Medical & Wellness; yard time starts at 14:00.",
+    "when": {
+      "act": 2
+    },
+    "done": {
+      "shard": "t1_summer"
+    }
+  },
+  {
+    "id": "a2_file",
+    "act": 2,
+    "title": "WHO SIGNED YOU IN",
+    "text": "Administration & Intake keeps a file on every prisoner. Its staff doors take a security key. Bhosle hangs his on a hook in the tier-3 quarter and goes to lunch at 12:30.",
+    "when": {
+      "all": [
+        {
+          "act": 2
+        },
+        {
+          "shard": "t1_summer"
+        }
+      ]
+    },
+    "done": {
+      "shard": "m07_consent"
+    }
+  },
+  {
+    "id": "a2_kabir",
+    "act": 2,
+    "title": "SPECIAL ROOM A",
+    "text": "The witness was a Dr. M. Varma. In Cellhouse B, behind glass, is a prisoner they say never forgets anything.",
+    "when": {
+      "all": [
+        {
+          "act": 2
+        },
+        {
+          "shard": "m07_consent"
+        }
+      ]
+    },
+    "done": {
+      "shard": "m08_subject_three"
+    }
+  },
+  {
+    "id": "a2_grate",
+    "act": 2,
+    "title": "THE DRAIN",
+    "text": "There's a drain grate at the deep end. Reaching it takes the whole count: 2, 7, 1, 8. Pocket the dose so the memory comes clear.",
+    "when": {
+      "all": [
+        {
+          "act": 2
+        },
+        {
+          "shard": "t1_summer"
+        }
+      ]
+    },
+    "done": {
+      "shard": "t2_deeper"
+    }
+  },
+  {
+    "id": "a2_records",
+    "act": 2,
+    "title": "WHAT HOLDS IT UNDER",
+    "text": "The memory stops at the grate, as if something is holding it down. The medical staff room keeps NIDRA's notes.",
+    "when": {
+      "all": [
+        {
+          "act": 2
+        },
+        {
+          "shard": "t2_deeper"
+        }
+      ]
+    },
+    "done": {
+      "any": [
+        {
+          "flag": "content:jagran_known"
+        },
+        {
+          "flag": "cycle:jagran"
+        }
+      ]
+    }
+  },
+  {
+    "id": "a2_jagran",
+    "act": 2,
+    "title": "JAGRAN",
+    "text": "Secure Medicine, the red-capped vial. Take it, pocket the dose, and dive for the grate again.",
+    "when": {
+      "all": [
+        {
+          "act": 2
+        },
+        {
+          "shard": "t2_deeper"
+        }
+      ]
+    },
+    "done": {
+      "flag": "cycle:jagran"
+    }
+  },
+  {
+    "id": "a2_hand",
+    "act": 2,
+    "title": "THE GRATE",
+    "text": "Jagran is in you. Keep the dose in your pocket and go back down to the grate.",
+    "when": {
+      "all": [
+        {
+          "act": 2
+        },
+        {
+          "flag": "cycle:jagran"
+        }
+      ]
+    },
+    "done": {
+      "shard": "t3_the_hand"
+    }
+  },
+  {
+    "id": "a2_wall",
+    "act": 2,
+    "title": "THE PATTERN",
+    "text": "Whatever you find, the wall in N03 keeps it for you.",
+    "when": {
+      "act": 2
+    },
+    "done": {
+      "actAtLeast": 3
+    }
+  },
+  {
+    "id": "a3_effects",
+    "act": 3,
+    "title": "TONIGHT",
+    "text": "Whatever you carried in, they kept. Security HQ, ground floor: Evidence / Intake. HQ doors take a security key.",
+    "when": {
+      "act": 3
+    },
+    "done": {
+      "any": [
+        {
+          "shard": "m11_effects"
+        },
+        {
+          "flag": "cycle:content:at_b1"
+        }
+      ]
+    }
+  },
+  {
+    "id": "a3_lift",
+    "act": 3,
+    "title": "THE RESTRICTED LIFT",
+    "text": "2 7 1 8 2 8 1 8 2 8. The lift override is 281828. NIDRA is under HQ; the cell-key storage beside the lift keeps a lab key. Surveillance, Control and Command are upstairs.",
+    "when": {
+      "all": [
+        {
+          "act": 3
+        },
+        {
+          "shard": "m11_effects"
+        }
+      ]
+    },
+    "done": {
+      "any": [
+        {
+          "flag": "content:b2_reached"
+        },
+        {
+          "flag": "cycle:content:at_b1"
+        }
+      ]
+    }
+  },
+  {
+    "id": "a3_archive",
+    "act": 3,
+    "title": "SUBJECT ARCHIVE",
+    "text": "NIDRA keeps a tape of every cycle. The archive is behind Observation.",
+    "when": {
+      "all": [
+        {
+          "act": 3
+        },
+        {
+          "flag": "content:b2_reached"
+        }
+      ]
+    },
+    "done": {
+      "any": [
+        {
+          "shard": "m13_cycle_twelve"
+        },
+        {
+          "flag": "cycle:content:at_b1"
+        }
+      ]
+    }
+  },
+  {
+    "id": "a3_chair",
+    "act": 3,
+    "title": "INTERROGATION A",
+    "text": "The chair. This time nobody has to drag you to it.",
+    "when": {
+      "all": [
+        {
+          "act": 3
+        },
+        {
+          "shard": "m13_cycle_twelve"
+        }
+      ]
+    },
+    "done": {
+      "any": [
+        {
+          "shard": "m14_why_i_came"
+        },
+        {
+          "flag": "cycle:content:at_b1"
+        }
+      ]
+    }
+  },
+  {
+    "id": "a3_glass",
+    "act": 3,
+    "title": "OBSERVATION",
+    "text": "She's behind the glass. She always has been.",
+    "when": {
+      "all": [
+        {
+          "act": 3
+        },
+        {
+          "shard": "m14_why_i_came"
+        }
+      ]
+    },
+    "done": {
+      "any": [
+        {
+          "flag": "observation_done"
+        },
+        {
+          "flag": "cycle:content:at_b1"
+        }
+      ]
+    }
+  },
+  {
+    "id": "a3_kabir",
+    "act": 3,
+    "title": "KABIR",
+    "text": "You said it. Kabir is still behind the glass in Cellhouse B; the cell master key is kept in HQ Command.",
+    "when": {
+      "all": [
+        {
+          "act": 3
+        },
+        {
+          "flag": "confessed"
+        }
+      ]
+    },
+    "done": {
+      "any": [
+        {
+          "flag": "kabir_freed"
+        },
+        {
+          "flag": "cycle:content:at_b1"
+        }
+      ]
+    }
+  },
+  {
+    "id": "a3_exit",
+    "act": 3,
+    "title": "THE GHOST EXIT",
+    "text": "Everything here drains to the old reservoir. Maintenance B1: the gated landing, the sump, the culvert under the wall. Bhosle's card opens the landing.",
+    "when": {
+      "act": 3
+    },
+    "done": {
+      "shard": "t4_surface"
+    }
+  },
+  {
+    "id": "a3_surface",
+    "act": 3,
+    "title": "EIGHT",
+    "text": "Hold on, or let go.",
+    "when": {
+      "act": 3
+    },
+    "done": {
+      "flag": "__never__"
+    }
+  }
+]

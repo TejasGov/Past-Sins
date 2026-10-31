@@ -1,0 +1,32 @@
+/* W3 · Water overlays (src/story/features/water/overlay.ts). Shares the HUD tokens from hud.css. */
+.water-dark { position: absolute; inset: 0; pointer-events: none; opacity: 0; background: radial-gradient(ellipse 62% 58% at 50% 48%, rgba(0, 4, 4, 0.05) 0%, rgba(0, 3, 3, 0.62) 58%, rgba(0, 1, 1, 0.97) 100%); }
+.water-choke { position: absolute; inset: 0; pointer-events: none; opacity: 0; background: radial-gradient(ellipse 48% 44% at 50% 50%, rgba(40, 0, 0, 0) 0%, rgba(30, 0, 2, 0.55) 55%, rgba(0, 0, 0, 0.98) 100%); }
+.water-choke.pulse { animation: water-choke-pulse 0.9s ease-in-out infinite; }
+@keyframes water-choke-pulse { 0%, 100% { filter: brightness(1); } 50% { filter: brightness(0.55); } }
+
+.water-meter { position: absolute; left: 50%; bottom: 19%; transform: translateX(-50%); width: min(340px, 70vw); opacity: 0; transition: opacity 0.35s; pointer-events: none; }
+.water-meter.visible { opacity: 1; }
+.water-meter .caption { display: flex; justify-content: space-between; font-size: 10px; letter-spacing: 0.32em; color: var(--hud-dim); margin-bottom: 5px; text-shadow: 0 1px 4px #000; }
+.water-meter .caption .left { font-family: var(--mono); }
+.water-meter .segs { display: flex; gap: 4px; }
+.water-meter .seg { position: relative; min-width: 10px; }
+.water-meter .lbl { display: block; text-align: center; font-family: var(--display); font-size: 15px; letter-spacing: 0.05em; color: rgba(217, 223, 210, 0.42); margin-bottom: 4px; text-shadow: 0 1px 6px rgba(0, 0, 0, 0.9); transition: color 0.2s, transform 0.2s; }
+.water-meter .bar { position: relative; height: 5px; background: rgba(255, 255, 255, 0.09); overflow: hidden; box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.35); }
+.water-meter .fill { position: absolute; inset: 0 auto 0 0; width: 100%; background: linear-gradient(90deg, #9fe3ea, #d9f6f2); }
+.water-meter .seg.current .lbl { color: var(--hud-accent); transform: scale(1.25); }
+.water-meter .seg.current .fill { background: linear-gradient(90deg, #e3c77a, #f4e3ad); }
+.water-meter .seg.locked .lbl { color: rgba(217, 223, 210, 0.14); }
+.water-meter .seg.locked .bar { background: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.05) 0 3px, transparent 3px 6px); }
+.water-meter.choking .bar { background: rgba(255, 59, 63, 0.35); animation: water-bar-flash 0.45s steps(2) infinite; }
+.water-meter.choking .lbl { color: var(--hud-danger); }
+@keyframes water-bar-flash { 50% { background: rgba(255, 59, 63, 0.08); } }
+
+.water-black { position: absolute; inset: 0; pointer-events: none; background: #000; opacity: 0; }
+
+.water-hand { position: absolute; left: 50%; bottom: 22%; transform: translateX(-50%); display: flex; gap: 46px; opacity: 0; transition: opacity 0.8s; pointer-events: none; }
+.water-hand.visible { opacity: 1; }
+.water-hand .opt { display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 120px; }
+.water-hand .row { display: flex; align-items: center; gap: 10px; font-family: var(--display); font-size: 17px; letter-spacing: 0.28em; color: #e6e9e1; text-shadow: 0 2px 10px #000; }
+.water-hand .key { display: inline-block; min-width: 22px; padding: 0 6px; border: 1px solid rgba(227, 199, 122, 0.7); color: var(--hud-accent); font-family: var(--mono); font-size: 13px; line-height: 20px; text-align: center; letter-spacing: 0; }
+.water-hand .hold { width: 100%; height: 2px; background: rgba(255, 255, 255, 0.1); }
+.water-hand .hold > div { height: 100%; width: 0%; background: var(--hud-accent); }

@@ -1,0 +1,57 @@
+{
+  "$comment": "Story content manifest (src/story/director.ts). One file per workstream so parallel edits never collide; ownership in docs/story/BUILD_PLAN.md.",
+  "acts": {
+    "1": {
+      "title": "ACT I",
+      "sub": "DAY ONE"
+    },
+    "2": {
+      "title": "ACT II",
+      "sub": "THE PATTERN"
+    },
+    "3": {
+      "title": "ACT III",
+      "sub": "GHOST EXIT"
+    }
+  },
+  "triggers": [
+    "data/story/triggers/act1.json",
+    "data/story/triggers/act2.json",
+    "data/story/triggers/act3.json",
+    "data/story/triggers/loop.json",
+    "data/story/triggers/routine.json",
+    "data/story/triggers/water.json",
+    "data/story/triggers/npcs.json"
+  ],
+  "documents": [
+    "data/story/documents.json"
+  ],
+  "dialogue": [
+    "data/story/dialogue/story.json",
+    "data/story/dialogue/npcs.json"
+  ],
+  "objectives": [
+    "data/story/objectives.json"
+  ],
+  "shards": [
+    "memory_001",
+    "m03_dietary_window",
+    "t1_summer",
+    "t2_deeper",
+    "t3_the_hand",
+    "t4_surface",
+    "m06_visitor",
+    "m08_subject_three",
+    "m09_infirmary",
+    "m14_why_i_came"
+  ],
+  "features": {
+    "loop": "data/story/features/loop.json",
+    "routine": "data/story/features/routine.json",
+    "water": "data/story/features/water.json",
+    "npcs": "data/story/features/npcs.json",
+    "content": "data/story/features/content.json",
+    "audio": "data/story/features/audio.json",
+    "endings": "data/story/features/endings.json"
+  }
+}

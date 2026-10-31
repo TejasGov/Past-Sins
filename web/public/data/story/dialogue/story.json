@@ -1,0 +1,42 @@
+[
+  {
+    "id": "content_radio",
+    "nodes": [
+      {
+        "speaker": "",
+        "text": "The handset is warm. Someone left it a minute ago.",
+        "seconds": 2.6
+      },
+      {
+        "speaker": "PARTH",
+        "text": "Control to all towers. Generator test on the south feed. Lamps off till I call it back.",
+        "seconds": 4.2
+      },
+      {
+        "speaker": "TOWER TWO",
+        "text": "In this rain? Who's on the desk?",
+        "seconds": 2.6
+      },
+      {
+        "speaker": "PARTH",
+        "text": "Duty officer. Rathore wants it logged. Lamps off.",
+        "seconds": 3.2
+      },
+      {
+        "speaker": "TOWER TWO",
+        "text": "...Copy. Two going dark.",
+        "seconds": 2.4
+      },
+      {
+        "speaker": "TOWER THREE",
+        "text": "Three, copy.",
+        "seconds": 1.8
+      },
+      {
+        "speaker": "TOWER ONE",
+        "text": "One. Somebody's getting shouted at in the morning.",
+        "seconds": 3.0
+      }
+    ]
+  }
+]

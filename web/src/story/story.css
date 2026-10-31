@@ -1,0 +1,26 @@
+/* Story overlays (src/story/ui.ts). Shares the HUD's tokens from hud.css. */
+.story-subs { position: absolute; left: 50%; bottom: 12%; transform: translateX(-50%); max-width: min(880px, 84vw); text-align: center; font-size: 17px; line-height: 1.55; color: #eef1e8; text-shadow: 0 2px 8px #000, 0 0 2px #000; opacity: 0; transition: opacity 0.25s; }
+.story-subs.visible { opacity: 1; }
+.story-subs .speaker { display: block; font-family: var(--display); font-size: 12px; letter-spacing: 0.32em; color: var(--hud-accent); margin-bottom: 4px; text-transform: uppercase; }
+.story-banner { position: absolute; left: 50%; top: 34%; transform: translate(-50%, -50%); text-align: center; opacity: 0; transition: opacity 0.9s; }
+.story-banner.visible { opacity: 1; }
+.story-banner .title { font-family: var(--display); font-size: 46px; letter-spacing: 0.42em; color: #e6e9e1; text-shadow: 0 0 30px rgba(0,0,0,0.9); margin-right: -0.42em; }
+.story-banner .sub { margin-top: 12px; font-size: 12px; letter-spacing: 0.45em; color: var(--hud-accent); }
+.story-doc { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(3, 4, 4, 0.72); opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+.story-doc.visible { opacity: 1; pointer-events: auto; }
+.story-doc .sheet { width: min(620px, 86vw); max-height: 74vh; overflow: auto; padding: 34px 40px; background: #d9d3c2; color: #24231f; font-size: 14px; line-height: 1.7; box-shadow: 0 20px 60px rgba(0,0,0,0.7); transform: rotate(-0.6deg); }
+.story-doc .title { font-family: var(--display); font-size: 20px; letter-spacing: 0.18em; margin-bottom: 18px; text-transform: uppercase; }
+.story-doc .body { white-space: pre-wrap; }
+.story-doc .footer { margin-top: 22px; font-size: 11px; letter-spacing: 0.12em; color: #5d5a50; white-space: pre-wrap; }
+.story-doc.memo .sheet { background: #e4e1d6; font-family: var(--mono); }
+.story-doc.file .sheet { background: #cfc6a8; }
+.story-doc.note .sheet { background: #c9c2ae; font-family: "Bradley Hand", "Segoe Print", cursive; font-size: 17px; transform: rotate(1.4deg); }
+.story-doc.screen .sheet { background: #071012; color: #8fe0c8; font-family: var(--mono); box-shadow: 0 0 40px rgba(60, 200, 170, 0.18), 0 20px 60px rgba(0,0,0,0.7); transform: none; }
+.story-doc.screen .footer { color: #4f8d7d; }
+.story-doc .hint { margin-top: 18px; font-size: 11px; letter-spacing: 0.3em; color: var(--hud-dim); }
+.story-doc .key, .story-choice .key { display: inline-block; min-width: 20px; padding: 0 5px; margin-right: 10px; border: 1px solid rgba(227,199,122,0.7); color: var(--hud-accent); font-size: 12px; line-height: 18px; text-align: center; }
+.story-choice { position: absolute; left: 50%; bottom: 20%; transform: translateX(-50%); display: flex; flex-direction: column; gap: 8px; min-width: min(560px, 84vw); opacity: 0; pointer-events: none; transition: opacity 0.25s; }
+.story-choice.visible { opacity: 1; pointer-events: auto; }
+.story-choice .prompt { font-size: 11px; letter-spacing: 0.3em; color: var(--hud-dim); margin-bottom: 4px; text-align: center; }
+.story-choice .opt { all: unset; cursor: pointer; padding: 10px 16px; background: rgba(8, 11, 11, 0.82); border: 1px solid rgba(217, 223, 210, 0.16); color: #e6e9e1; font-family: var(--mono); font-size: 14px; letter-spacing: 0.04em; }
+.story-choice .opt:hover { border-color: rgba(227, 199, 122, 0.7); }

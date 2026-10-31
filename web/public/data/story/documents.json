@@ -1,0 +1,72 @@
+[
+  {
+    "id": "content_schedule",
+    "style": "paper",
+    "title": "CELLHOUSE A · DAILY ROUTINE",
+    "body": "06:00   Count at cell doors\n07:00   Breakfast · medication at the dietary window\n09:00   Work assignments: Maintenance, Laundry\n12:30   Lunch\n14:00   Yard · gym · pool\n18:00   Dinner · medication\n19:00   Lock-in\n21:00   Lights out\n\nVisits: Administration & Intake, third day, 10:00.",
+    "footer": "Medication is compulsory for programme participants. Missed doses will be reported."
+  },
+  {
+    "id": "content_note_parth",
+    "style": "note",
+    "title": "A NOTE, TAPED UP",
+    "body": "You've been here before.\n\nDon't trust the voice.\n\nPool. Hold your breath.",
+    "footer": "Written in something brown, not ink. The letters lean the way yours do."
+  },
+  {
+    "id": "content_intake_s07",
+    "style": "file",
+    "title": "INTAKE RECORD · S-07",
+    "body": "Name: PARTH (surname withheld under programme rules)\nAge at intake: 33\nReceived from: District Jail, 18-month sentence (theft)\nReferral: self, in response to a volunteer notice\n\nProgramme: NIDRA (trauma-memory attenuation)\nParticipation: VOLUNTARY\nConsent: signed in full, every page\n\nHousing: Cellhouse A · Tier 3 · N03\nWork: trusty, Maintenance / Laundry\nProjected cycles: 12",
+    "footer": "Subject's signature: steady.   Witness: Dr. M. Varma, Principal Investigator."
+  },
+  {
+    "id": "content_warden_memo",
+    "style": "memo",
+    "title": "OFFICE OF THE WARDEN · INTERNAL",
+    "body": "To: Warden S. Sethi\nFrom: Deputy Superintendent (Programmes)\nRe: NIDRA, subject S-07\n\nS-07 exceeds the projected cycle count. Recommend protocol termination.\n\nThe programme lead declines to close the file on clinical grounds. Funding review is next quarter. Please advise.",
+    "footer": "In pencil, in the margin: \"Ghost Exit, as before. Maintenance tunnels. No paperwork. — S.\""
+  },
+  {
+    "id": "content_warden_order",
+    "style": "memo",
+    "title": "OFFICE OF THE WARDEN · ORDER",
+    "body": "Re: NIDRA, subject S-07\n\nRecommendation of protocol termination: APPROVED.\n\nRemove from Cellhouse A at 02:00 tonight. Escort: Constable Bhosle.\nExit by Maintenance B1. No entry in the movement register.\n\nThe programme lead is not to be informed before 02:00.",
+    "footer": "Signed S. Sethi, Warden. Stamped and dated today."
+  },
+  {
+    "id": "content_medical_notes",
+    "style": "file",
+    "title": "MEDICAL RECORDS · NIDRA SUPPORT",
+    "body": "Induction agent: dispensed at the dietary window, 07:00 and 18:00, all NIDRA subjects. Report any missed dose.\n\nAntagonist: JAGRAN (anti-induction). Secure Medicine, trolley, red cap.\nOne vial before an induction blunts it. The subject wakes with partial recall. Observe overnight in the infirmary, bed 4.\n\nNot to be issued without the Principal Investigator's signature.",
+    "footer": "Last signed out: Dr. M. Varma. Reason given: \"S-07. In case.\""
+  },
+  {
+    "id": "content_room_b_card",
+    "style": "paper",
+    "title": "SPECIAL ROOM B",
+    "body": "Prepared for: S-07\nStatus: ready\n\nFor use if induction stops holding, as with S-03.\nNo mirror. No visitors.",
+    "footer": "Clipped to the wall beside the glass."
+  },
+  {
+    "id": "content_raman_notebook",
+    "style": "note",
+    "title": "RAMAN VARMA · CLASS V-B · MATHS",
+    "body": "2.71828 18284 59045 23536 02874\n71352 66249 77572 47093 69995\n\ne NEVER ENDS!!\nschool contest: say it to 50 without looking\n\nPARTH after 2718 it goes 2818 28\nLEARN IT",
+    "footer": "Pencil, pressed hard enough to dent the next page. On the back cover: two stick boys and a dog."
+  },
+  {
+    "id": "content_patrol_gaps",
+    "style": "screen",
+    "title": "ARCHIVE SEARCH · S-07 · 40 RESULTS",
+    "body": "C17 · CAM 22 · LAUNDRY\nWaits out the guard change. Crosses the east walk unseen.\n\nC33 · CAM 09 · HQ GENERATOR\nMoves while the south tower lamp is turned away.\n\nC38 · CAM 31 · MAINTENANCE SPINE\nReaches the B1 stair gate. Alarm.\n\nCross-referenced with tonight's patrol plan: sightlines marked.",
+    "footer": "Forty of you, and two of them nearly made it."
+  },
+  {
+    "id": "content_archive_index",
+    "style": "file",
+    "title": "SUBJECT ARCHIVE · S-07",
+    "body": "One tape per cycle. Review, then erase and reuse.\n\nCycles 1–11: subject recalls the tank and confesses under induction. Not accepted. Not awake.\nCycle 12: subject asks for a full wipe. Granted.\nCycles 13–40: no recall of motive.\n\nException: TAPE 12. Do not erase.",
+    "footer": "Initialled M.V. Tape 12 is still in the deck."
+  }
+]

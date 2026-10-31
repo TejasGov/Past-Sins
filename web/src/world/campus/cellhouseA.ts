@@ -37,12 +37,17 @@ export function buildCellhouseA(b: StaticBuilder, origin = V(-50, 0, 0)): void {
     structure(b);
     cells(b);
     markers(b);
+    // Nav export: each tier as a guard grid; rows run on the gallery centre
+    // lines (z = ±9) and the bridge centre (x = 0). The flights record themselves.
+    for (let tier = 0; tier < 3; tier++) {
+      b.navRegion(-21.6, -16.7, 21.6, 16.7, tier * FLOOR_HEIGHT, { spacing: 1.8, align: [0, 9], tag: `cellhouseA_floor${tier + 1}` });
+    }
   });
 }
 
 function structure(b: StaticBuilder): void {
   const floor = 0x303330;
-  const rail = 0x555b57;
+  const rail = 0x3d4541;
   b.box(V(0, -0.025, 0), V(43.2, 0.05, 33.2), { mat: "concrete", color: 0x3a3d39 });
   // Painted floor markings on the dayroom (controlled movement lanes).
   for (const z of [-6.2, 6.2]) b.box(V(0, 0.003, z), V(30, 0.004, 0.12), { mat: "hazard", collide: false, shadow: false });
@@ -143,6 +148,8 @@ function atriumRails(b: StaticBuilder, y: number, tier: number, color: number): 
 }
 
 function cells(b: StaticBuilder): void {
+  // Cell modules never see the sun: their own chunk skips the CSM passes.
+  b.setChunk("cellhouseA_cells", true);
   for (let tier = 0; tier < 3; tier++) {
     const y = tier * FLOOR_HEIGHT;
     const floor = tier + 1;
@@ -153,6 +160,7 @@ function cells(b: StaticBuilder): void {
     });
     b.within(V(CELL_X[7], y, NORTH_CELL_Z), 0, () => guardElevatorCore(b, floor));
   }
+  b.setChunk("cellhouseA", true);
 }
 
 function spawnCell(b: StaticBuilder, side: string, number: number, at: ReturnType<typeof V>, yaw: number, floor: number, isParth: boolean): void {
@@ -195,5 +203,6 @@ function markers(b: StaticBuilder): void {
     b.box(V(side * 22.17, 1.25, edge * 1.55), V(0.34, 2.5, 0.1), { mat: "metal", color: 0x555d56 });
   }
   b.anchor("cellhouse_a_dayroom", V(0, 0, 0));
+  b.anchor("cellhouse_a_skylight", V(0, 0, 0), 0, { x0: -15, z0: -5.6, x1: 15, z1: 5.6, top: 12.95, depth: 12.9 });
   b.anchor("cellhouse_a_key_rack", V(10.5, 0, 2.8), 0);
 }

@@ -22,7 +22,9 @@ export class LightPool {
   /** Day-time level of night-only interior fixtures (they never go fully dark inside). */
   interiorDayLevel = 0.32;
   /** Fixture intensities are authored in Godot-like energy units; this maps them to candela. */
-  intensityScale = 7;
+  intensityScale = 6;
+  /** Per-building multiplier on night-only interior fixtures (chunk base name → 0..1), e.g. lights out. */
+  readonly chunkDim = new Map<string, number>();
   private readonly tmp = new Vector3();
 
   constructor(scene: Scene, private fixtures: Fixture[], count = 12) {
@@ -40,7 +42,8 @@ export class LightPool {
   levelOf(f: Fixture): number {
     if (!f.nightOnly) return 1;
     const day = f.chunk === "exterior" ? 0 : this.interiorDayLevel;
-    return day + (1 - day) * this.nightLevel;
+    const dim = this.chunkDim.size ? (this.chunkDim.get(f.chunk.split("_")[0]) ?? 1) : 1;
+    return (day + (1 - day) * this.nightLevel) * dim;
   }
 
   private flicker(f: Fixture, i: number): number {

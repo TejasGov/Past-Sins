@@ -1,0 +1,285 @@
+[
+  {
+    "id": "content_security_key",
+    "kind": "interact",
+    "at": {
+      "anchor": "content_bhosle_hook"
+    },
+    "model": "none",
+    "prompt": "[E] Take the security key",
+    "once": false,
+    "when": {
+      "all": [
+        {
+          "actAtLeast": 2
+        },
+        {
+          "not": {
+            "flag": "cycle:content:security_key"
+          }
+        },
+        {
+          "any": [
+            {
+              "act": 3
+            },
+            {
+              "hours": [
+                12.5,
+                13.5
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "actions": [
+      {
+        "setFlag": "cycle:content:security_key"
+      },
+      {
+        "give": {
+          "id": "security_key",
+          "label": "Security Key",
+          "category": "KEY"
+        }
+      }
+    ]
+  },
+  {
+    "id": "content_alarm_wire",
+    "kind": "interact",
+    "at": {
+      "anchor": "content_alarm_junction"
+    },
+    "model": "none",
+    "prompt": "[E] Pull the alarm link",
+    "once": false,
+    "when": {
+      "all": [
+        {
+          "shard": "m05_stair_gate"
+        },
+        {
+          "actAtLeast": 2
+        },
+        {
+          "not": {
+            "flag": "cycle:content:alarm_cut"
+          }
+        }
+      ]
+    },
+    "actions": [
+      {
+        "setFlag": "cycle:content:alarm_cut"
+      },
+      {
+        "signal": "content:alarm_cut"
+      },
+      {
+        "message": "B1 STAIR ALARM · LOOP OPEN",
+        "seconds": 2.4
+      }
+    ]
+  },
+  {
+    "id": "content_m07_file",
+    "kind": "interact",
+    "at": {
+      "anchor": "content_intake_table"
+    },
+    "model": "none",
+    "prompt": "[E] Read the file",
+    "once": false,
+    "when": {
+      "actAtLeast": 2
+    },
+    "actions": [
+      {
+        "document": "content_intake_s07"
+      },
+      {
+        "wall": "content_varma",
+        "text": "Voluntary. I signed. Witness: Dr. M. Varma."
+      },
+      {
+        "shard": "m07_consent"
+      }
+    ]
+  },
+  {
+    "id": "content_warden_memo",
+    "kind": "interact",
+    "at": {
+      "anchor": "content_warden_desk"
+    },
+    "model": "paper",
+    "prompt": "[E] Read the memo",
+    "once": false,
+    "when": {
+      "act": 2
+    },
+    "actions": [
+      {
+        "document": "content_warden_memo"
+      },
+      {
+        "wall": "content_termination",
+        "text": "Warden: \"recommend protocol termination\". Ghost Exit = the Maintenance tunnels."
+      }
+    ]
+  },
+  {
+    "id": "content_warden_order",
+    "kind": "interact",
+    "at": {
+      "anchor": "content_warden_desk"
+    },
+    "model": "paper",
+    "prompt": "[E] Read the order",
+    "once": false,
+    "when": {
+      "act": 3
+    },
+    "actions": [
+      {
+        "document": "content_warden_order"
+      },
+      {
+        "setFlag": "termination_tonight"
+      },
+      {
+        "wall": "content_order",
+        "text": "Termination approved. 02:00 tonight. Bhosle to take me down."
+      }
+    ]
+  },
+  {
+    "id": "content_records_drawer",
+    "kind": "interact",
+    "at": {
+      "plan": "medical-ground",
+      "room": "staff",
+      "offset": [
+        0,
+        0.69,
+        3.15
+      ],
+      "yaw": 3.1416
+    },
+    "model": "none",
+    "prompt": "[E] Look in the open drawer",
+    "once": false,
+    "when": {
+      "actAtLeast": 2
+    },
+    "actions": [
+      {
+        "document": "content_medical_notes"
+      },
+      {
+        "setFlag": "content:jagran_known"
+      },
+      {
+        "wall": "content_jagran",
+        "text": "Jagran. Secure Medicine, red cap. It blunts the wipe."
+      }
+    ]
+  },
+  {
+    "id": "content_jagran",
+    "kind": "interact",
+    "at": {
+      "anchor": "content_medicine_trolley"
+    },
+    "model": "none",
+    "prompt": "[E] Take the red-capped vial",
+    "once": false,
+    "when": {
+      "all": [
+        {
+          "actAtLeast": 2
+        },
+        {
+          "not": {
+            "flag": "cycle:jagran"
+          }
+        }
+      ]
+    },
+    "actions": [
+      {
+        "setFlag": "cycle:jagran"
+      },
+      {
+        "give": {
+          "id": "jagran",
+          "label": "Jagran",
+          "category": "MISSION_ITEM"
+        }
+      },
+      {
+        "say": "Bitter. The lights look sharper at the edges.",
+        "speaker": "PARTH",
+        "seconds": 3.2
+      }
+    ]
+  },
+  {
+    "id": "content_m10_showers",
+    "kind": "zone",
+    "at": {
+      "plan": "medical-ground",
+      "room": "showers"
+    },
+    "size": [
+      3.8,
+      1.6,
+      5.8
+    ],
+    "when": {
+      "all": [
+        {
+          "shard": "t2_deeper"
+        },
+        {
+          "flag": "cycle:withdrawal"
+        }
+      ]
+    },
+    "actions": [
+      {
+        "shard": "m10_what_i_told_them"
+      },
+      {
+        "wall": "content_m10_lie",
+        "text": "I told them he went in by himself."
+      }
+    ]
+  },
+  {
+    "id": "content_room_b_card",
+    "kind": "interact",
+    "at": {
+      "plan": "cellhouse-b-0",
+      "room": "glassb",
+      "offset": [
+        -1.15,
+        1.15,
+        5.37
+      ]
+    },
+    "model": "none",
+    "prompt": "[E] Read the card",
+    "once": false,
+    "when": {
+      "actAtLeast": 2
+    },
+    "actions": [
+      {
+        "document": "content_room_b_card"
+      }
+    ]
+  }
+]

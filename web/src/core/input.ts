@@ -12,6 +12,8 @@ export class Input {
   mouseDY = 0;
   /** When false, gameplay ignores keys (e.g. while typing in the dev prompt). */
   enabled = true;
+  /** Set while a UI element deliberately releases the pointer (dev menu). */
+  suppressPause = false;
   readonly canvas: HTMLCanvasElement;
   private lockRequested = false;
 

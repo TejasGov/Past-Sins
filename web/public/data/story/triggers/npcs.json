@@ -1,0 +1,24 @@
+[
+  {
+    "id": "npcs_chair",
+    "kind": "interact",
+    "model": "none",
+    "at": { "plan": "nidra-b2", "room": "interrogationa", "offset": [0, 0.3, -0.9] },
+    "prompt": "[E] Sit down",
+    "once": false,
+    "when": { "all": [{ "actAtLeast": 3 }, { "shard": "m13_cycle_twelve" }, { "not": { "flag": "observation_done" } }] },
+    "actions": [{ "signal": "npcs:sit" }]
+  },
+  {
+    "id": "npcs_meera_greeting",
+    "kind": "zone",
+    "at": { "plan": "nidra-b2", "room": "interrogationa" },
+    "size": [3.5, 1.5, 3.6],
+    "when": { "all": [{ "actAtLeast": 3 }, { "not": { "flag": "observation_done" } }] },
+    "actions": [
+      { "wait": 0.8 },
+      { "say": "Hello, Parth.", "speaker": "MEERA" },
+      { "say": "You found your own way down this time. Sit, if you like. You know which chair.", "speaker": "MEERA" }
+    ]
+  }
+]

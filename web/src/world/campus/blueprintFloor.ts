@@ -23,15 +23,17 @@ export interface BuiltFloor {
   doors: DoorRecord[];
   /** Local (building-frame) helpers for later attachments. */
   point(x: number, z: number, y?: number): Vector3;
+  /** Nav export hook: building-frame point (point(), DoorRecord.position) → world. */
+  toWorld(local: Vector3): Vector3;
 }
 
 export function wallColorFor(planId: string): number {
-  if (planId.startsWith("food")) return 0x999b85;
-  if (planId.startsWith("medical")) return 0xb6beb6;
-  if (planId.startsWith("nidra")) return 0xabb4b1;
-  if (planId.startsWith("hq")) return 0x626c66;
-  if (planId.startsWith("admin")) return 0xa9a597;
-  return 0x858980;
+  if (planId.startsWith("food")) return 0x83856f;
+  if (planId.startsWith("medical")) return 0x98a29a;
+  if (planId.startsWith("nidra")) return 0xa3aeab;
+  if (planId.startsWith("hq")) return 0x56605a;
+  if (planId.startsWith("admin")) return 0x8f8b7d;
+  return 0x6f736a;
 }
 
 function wallMaterial(planId: string): MaterialKey {
@@ -107,10 +109,12 @@ export function buildBlueprintFloor(b: StaticBuilder, plan: FloorPlan, storyHeig
     doors.push(d);
   }
   if (plan.id === "nidra-b2") {
+    // Observation glass into Interrogation A/B, on their shared (compacted) boundary.
+    const wy = rooms.get("observation")?.y ?? 25.2;
     for (const x of [4.375, 12.125]) {
       doors.push({
-        a: "observation", b: x < 8 ? "interrogationa" : "interrogationb", x, y: 26, axis: "x", width: 3, clearWidth: 3,
-        kind: "window", position: point(x, 26), normal: V(0, 0, 1),
+        a: "observation", b: x < 8 ? "interrogationa" : "interrogationb", x, y: wy, axis: "x", width: 3, clearWidth: 3,
+        kind: "window", position: point(x, wy), normal: V(0, 0, 1),
       });
     }
   }
@@ -210,7 +214,14 @@ export function buildBlueprintFloor(b: StaticBuilder, plan: FloorPlan, storyHeig
   // ── thresholds → fixtures and door specs ──
   for (const d of doors) buildThreshold(b, plan, d, rooms, roomType, wallColor, wallMat);
 
-  return { plan, storyHeight, roomCenters, rooms, doors, point };
+  const frameOrigin = b.toWorld(V(0, 0, 0));
+  const frameYaw = b.worldYaw(0);
+  const toWorld = (local: Vector3) => {
+    const c = Math.cos(frameYaw);
+    const s = Math.sin(frameYaw);
+    return V(frameOrigin.x + c * local.x + s * local.z, frameOrigin.y + local.y, frameOrigin.z - s * local.x + c * local.z);
+  };
+  return { plan, storyHeight, roomCenters, rooms, doors, point, toWorld };
 }
 
 function mountRoom(a: PlanRoom | undefined, b: PlanRoom | undefined, d: PlanDoor): PlanRoom | undefined {

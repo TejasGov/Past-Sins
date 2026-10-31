@@ -50,8 +50,23 @@ export function buildGround(b: StaticBuilder, holes: Rect[], buildingFloors: Rec
   for (const r of visual) {
     b.box(V(r.x + r.w / 2, -0.2, r.z + r.d / 2), V(r.w, 0.4, r.d), { mat: "grass", color: 0x8a9478, collide: false, occlude: false, shadow: false });
   }
-  // Wide grass beyond the wall so the fogged horizon is not a void.
-  for (const [x, z, w, d] of [[-260, -300, 182, 600], [78, -300, 182, 600], [-78, -300, 156, 206], [-78, 94, 156, 206]]) {
-    b.box(V(x + w / 2, -0.25, z + d / 2), V(w, 0.4, d), { mat: "grass", color: 0x7a8468, collide: false, occlude: false, shadow: false });
+}
+
+/**
+ * Wide grass beyond the wall so the fogged horizon is not a void. Built last
+ * (after story features' static passes) so anything outside the wall — the
+ * reservoir — can cut its footprint out via `b.terrainCutouts`.
+ */
+export function buildOuterGrass(b: StaticBuilder): void {
+  b.setChunk("exterior", false);
+  let slabs: Rect[] = [
+    { x: -260, z: -300, w: 182, d: 600 },
+    { x: 78, z: -300, w: 182, d: 600 },
+    { x: -78, z: -300, w: 156, d: 206 },
+    { x: -78, z: 94, w: 156, d: 206 },
+  ];
+  for (const hole of b.terrainCutouts) slabs = subtract(slabs, hole);
+  for (const r of slabs) {
+    b.box(V(r.x + r.w / 2, -0.25, r.z + r.d / 2), V(r.w, 0.4, r.d), { mat: "grass", color: 0x7a8468, collide: false, occlude: false, shadow: false });
   }
 }

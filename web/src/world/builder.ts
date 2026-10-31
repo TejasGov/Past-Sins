@@ -19,6 +19,7 @@ import type { Physics } from "../physics/physics";
 import { type MaterialKey, type MaterialLibrary, vertexColorFor, applyGrime } from "../render/materials";
 import { SignAtlas } from "./signAtlas";
 import type { Anchor, DoorSpec } from "./types";
+import { NAV_ANCHOR, type NavExport } from "./nav";
 
 export interface BoxOpts {
   mat?: MaterialKey;
@@ -103,6 +104,10 @@ export class StaticBuilder {
   readonly doors: DoorSpec[] = [];
   readonly anchors = new Map<string, Anchor>();
   readonly chunks = new Map<string, ChunkInfo>();
+  /** Footprints the outer (beyond-the-wall) grass leaves out, e.g. the reservoir basin. */
+  readonly terrainCutouts: { x: number; z: number; w: number; d: number }[] = [];
+  /** Guard navigation data recorded alongside the geometry (see world/nav.ts). */
+  readonly nav: NavExport = { paths: [], regions: [] };
   private chunk!: ChunkInfo;
   readonly atlas = new SignAtlas();
   private signMaterial: MeshStandardMaterial;
@@ -125,6 +130,7 @@ export class StaticBuilder {
     prepare(this.signMaterial);
     applyGrime(this.signMaterial, 0, false);
     this.setChunk("campus", false);
+    this.anchors.set(NAV_ANCHOR, { position: new Vector3(), yaw: 0, data: this.nav as unknown as Record<string, unknown> });
   }
 
   setChunk(name: string, interior: boolean): void {
@@ -187,6 +193,13 @@ export class StaticBuilder {
   door(spec: Omit<DoorSpec, "position" | "yaw" | "chunk"> & { position: Vector3; yaw: number }): DoorSpec {
     const world: DoorSpec = { ...spec, position: this.toWorld(spec.position), yaw: this.worldYaw(spec.yaw), chunk: this.chunk.name };
     this.doors.push(world);
+    if (spec.kind !== "door") {
+      // Static key reader beside the opening; its LED is an instanced light.
+      this.within(spec.position, spec.yaw, () => {
+        this.box(new Vector3(spec.width / 2 + 0.12, 1.25, 0.12), new Vector3(0.18, 0.28, 0.12), { mat: "hazard", color: 0xd8b448, collide: false, shadow: false });
+        this.box(new Vector3(spec.width / 2 + 0.12, 1.25, 0.185), new Vector3(0.14, 0.22, 0.02), { mat: "dark", color: 0x1f2422, collide: false, shadow: false });
+      });
+    }
     return world;
   }
 
@@ -196,8 +209,39 @@ export class StaticBuilder {
     return a;
   }
 
+  /** Nav export hook: a walkable polyline in local space (stair flights, landings). */
+  navPath(points: Vector3[], tag = "path"): void {
+    this.nav.paths.push({ points: points.map((p) => this.toWorld(p)), tag });
+  }
+
+  /** Nav export hook: a walkable floor rectangle (local x/z at local height y), sampled into a guard grid. */
+  navRegion(x0: number, z0: number, x1: number, z1: number, y: number, opts: { spacing: number; align?: [number, number]; exterior?: boolean; tag?: string }): void {
+    this.nav.regions.push({
+      origin: this.toWorld(new Vector3()),
+      yaw: this.worldYaw(0),
+      x0, z0, x1, z1, y,
+      spacing: opts.spacing,
+      align: opts.align ?? [0, 0],
+      exterior: opts.exterior ?? false,
+      tag: opts.tag ?? "region",
+    });
+  }
+
   // ── Primitives ─────────────────────────────────────────────────────────────
-  private bucket(mat: MaterialKey, shadow: boolean, chunk = this.chunk): Bucket {
+  private bucket(mat: MaterialKey, shadow: boolean, chunk = this.chunk, at?: Vector3): Bucket {
+    // Exterior statics are split into 80 m cells so frustum culling (main
+    // view and each CSM cascade) can reject most of the campus.
+    if (!chunk.interior && at) {
+      const name = `${chunk.name}@${Math.floor(at.x / 80)},${Math.floor(at.z / 80)}`;
+      let cell = this.chunks.get(name);
+      if (!cell) {
+        const group = new Group();
+        group.name = `chunk:${name}`;
+        cell = { name, interior: false, bounds: new Box3(), group };
+        this.chunks.set(name, cell);
+      }
+      chunk = cell;
+    }
     const key = `${chunk.name}|${mat}|${shadow ? 1 : 0}`;
     let b = this.buckets.get(key);
     if (!b) {
@@ -218,7 +262,7 @@ export class StaticBuilder {
     else if (opts.yaw) q.multiply(_q.setFromAxisAngle(UP, opts.yaw));
     const half = _c.copy(size).multiplyScalar(0.5).clone();
     const color = vertexColorFor(mat, opts.color ?? 0x9a9a92);
-    appendBox(this.bucket(mat, shadow), worldCenter, half, q, color);
+    appendBox(this.bucket(mat, shadow, this.chunk, worldCenter), worldCenter, half, q, color);
     this.expandBounds(worldCenter, half);
     if (collide) {
       this.physics.addStaticBoxQuat(worldCenter, half, q);
@@ -245,7 +289,7 @@ export class StaticBuilder {
     const q = new Quaternion().setFromAxisAngle(UP, this.frame.yaw);
     if (opts.quat) q.multiply(opts.quat);
     const color = vertexColorFor(mat, opts.color ?? 0x8a8f8a);
-    appendCylinder(this.bucket(mat, opts.shadow ?? true), worldCenter, radius, height, q, color, radius > 0.25 ? 16 : 10);
+    appendCylinder(this.bucket(mat, opts.shadow ?? true, this.chunk, worldCenter), worldCenter, radius, height, q, color, radius > 0.25 ? 16 : 10);
     this.expandBounds(worldCenter, new Vector3(radius, height / 2, radius));
     if (opts.collide ?? false) {
       this.physics.addStaticBoxQuat(worldCenter, new Vector3(radius * 0.85, height / 2, radius * 0.85), q);
@@ -263,7 +307,7 @@ export class StaticBuilder {
   }
 
   /** Two rails + posts every ≤3 m and a single invisible 1.1 m collision fence. */
-  railing(start: Vector3, end: Vector3, color = 0x555b57, mat: MaterialKey = "iron"): void {
+  railing(start: Vector3, end: Vector3, color = 0x3d4541, mat: MaterialKey = "metal"): void {
     const up = (v: Vector3, h: number) => v.clone().add(new Vector3(0, h, 0));
     this.bar(up(start, 1.05), up(end, 1.05), 0.07, { mat, color, collide: false });
     this.bar(up(start, 0.55), up(end, 0.55), 0.05, { mat, color, collide: false });
@@ -292,7 +336,7 @@ export class StaticBuilder {
     const w = h * rect.aspect;
     const q = new Quaternion().setFromAxisAngle(UP, this.frame.yaw + yaw);
     const c = this.toWorld(center);
-    const b = this.bucket("__sign" as MaterialKey, false);
+    const b = this.bucket("__sign" as MaterialKey, false, this.chunk, c);
     const base = b.pos.length / 3;
     const corners = [
       [-w / 2, -h / 2, rect.u0, rect.v0],
@@ -361,10 +405,18 @@ export class StaticBuilder {
       geo.setIndex(new Uint32BufferAttribute(b.idx, 1));
       geo.computeBoundingSphere();
       geo.computeBoundingBox();
-      const material = matKey === "__sign" ? this.signMaterial : this.materials.get(matKey as MaterialKey);
+      const interior = this.chunks.get(chunkName)?.interior ?? false;
+      const material =
+        matKey === "__sign"
+          ? this.signMaterial
+          : matKey === "emissive_night" && interior
+            ? this.materials.nightFor(chunkName)
+            : this.materials.get(matKey as MaterialKey);
       const mesh = new Mesh(geo, material);
       mesh.name = key;
-      mesh.castShadow = shadow === "1";
+      // Interior batches sit under roofs; only Cellhouse A (skylight) needs them in the sun's shadow passes.
+      const chunk = this.chunks.get(chunkName)!;
+      mesh.castShadow = shadow === "1" && (!chunk.interior || chunkName === "cellhouseA");
       mesh.receiveShadow = !(material instanceof MeshBasicMaterial);
       mesh.matrixAutoUpdate = false;
       mesh.updateMatrix();
