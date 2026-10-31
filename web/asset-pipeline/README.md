@@ -190,17 +190,35 @@ check the preview before downloading.
 | Knocked out / takedown victim | `knocked out`, `stunned`, `choke` | `Knocked Out.fbx` → `knocked_out` |
 | Talking / radio idle | `talking`, `phone call` | `Talking.fbx` → `talking` |
 
+## Props (Poly Haven, CC0)
+
+27 props from [Poly Haven](https://polyhaven.com) dress the campus: furniture, office and lab kit, food stock, maintenance stores, light fittings and security fixtures. All are CC0, so no credit is required.
+
+```bash
+npm run fetch:props   # 1K glTFs → .cache/polyhaven/<id>/ (git-ignored; skips files already there)
+npm run build:props   # → web/public/assets/props/<id>.glb + manifest.json
+npm run build:props -- Barrel_01 cement_bag   # rebuild only some, keeping the rest of the manifest
+```
+
+`scripts/props.config.mjs` lists each prop with a triangle budget, and `nodes` where a source file packs several variants (the fluorescent pack keeps `_g`, the sconce pack `_a`). The build merges and welds meshes, simplifies to the budget (meshopt, error ≤ 0.06), moves the origin to the bottom centre, converts textures to WebP (512 px for props under 45 cm, otherwise 1024), quantizes and meshopt-compresses. The manifest records each prop's size, which the game uses for colliders and placement.
+
+To add a prop: put its Poly Haven id in `props.config.mjs`, add it to the `PropId` union in `src/world/models.ts`, run both scripts, and place it with `b.prop(id, localPosition, opts)`. Props face +Z with their origin at floor contact, like the game's own props. Check new ones in `props.html` (all built GLBs, labelled) or `props.html?src=<id>` (each root node of the source file, for picking variants) on the viewer server.
+
 ## Layout
 
 ```
 web/asset-pipeline/
-  scripts/build-characters.mjs   the pipeline
+  scripts/build-characters.mjs   the character pipeline
   scripts/clips.config.mjs       source/output paths, clip table, texture budget
+  scripts/fetch-polyhaven.mjs    downloads the props listed in props.config.mjs
+  scripts/build-props.mjs        the prop pipeline
+  scripts/props.config.mjs       prop list, triangle budgets, variant picks
   scripts/inspect-glb.mjs        prints structure of a built GLB (node scripts/inspect-glb.mjs [file])
-  viewer/                        Vite app on port 5180 (index.html, main.js, vite.config.mjs)
+  viewer/                        Vite app on port 5180 (index.html = guard clips, props.html = props)
   out/                           contact sheets + build-report.json
-  .cache/                        FBX2glTF intermediates (deleted and rebuilt each run)
+  .cache/                        FBX2glTF intermediates and Poly Haven downloads
 web/public/assets/characters/    guard.glb, manifest.json (build output, don't edit by hand)
+web/public/assets/props/         <id>.glb, manifest.json (build output, don't edit by hand)
 ```
 
 `.gdignore` files in `web/asset-pipeline/` and `web/public/assets/characters/` stop the Godot editor

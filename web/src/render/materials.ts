@@ -288,6 +288,22 @@ export class MaterialLibrary {
     this.nightLevel = level;
     this.applyNight(this.materials.get("emissive_night") as MeshBasicMaterial, 1);
     for (const v of this.nightVariants.values()) this.applyNight(v.mat, v.dim);
+    for (const [mat, base] of this.nightEmissives.values()) mat.emissiveIntensity = base * (0.06 + 0.94 * level);
+  }
+
+  private nightEmissives = new Map<Material, [MeshStandardMaterial, number]>();
+
+  /** A copy of a textured model material whose own emission follows the night level (single-material lamps). */
+  nightEmissive(source: MeshStandardMaterial): MeshStandardMaterial {
+    let entry = this.nightEmissives.get(source);
+    if (!entry) {
+      const mat = source.clone();
+      this.prepare(mat);
+      entry = [mat, source.emissiveIntensity];
+      this.nightEmissives.set(source, entry);
+      mat.emissiveIntensity = entry[1] * (0.06 + 0.94 * this.nightLevel);
+    }
+    return entry[0];
   }
 }
 

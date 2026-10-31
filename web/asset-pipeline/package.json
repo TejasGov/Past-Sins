@@ -6,6 +6,8 @@
   "description": "Builds web-ready character GLBs from the Mixamo FBX sources in assets/characters/models_mixamo",
   "scripts": {
     "build:characters": "node scripts/build-characters.mjs",
+    "fetch:props": "node scripts/fetch-polyhaven.mjs",
+    "build:props": "node scripts/build-props.mjs",
     "viewer": "vite --config viewer/vite.config.mjs"
   },
   "devDependencies": {

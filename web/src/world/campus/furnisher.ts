@@ -1,8 +1,9 @@
 import { Quaternion, Vector3 } from "three";
 import type { StaticBuilder } from "../builder";
 import {
-  V, bench, boxesStack, cctvCamera, desk, electricalBox, locker, monitor, noticeBoard, officeChair, shelfUnit, table, trashBin, wallClock,
+  V, bench, boxesStack, cctvCamera, desk, electricalBox, locker, monitor, noticeBoard, officeChair, shelfUnit, stockShelf, table, trashBin, wallClock,
 } from "../props";
+import type { PropId } from "../models";
 import type { PlanRoom } from "./plans";
 
 export interface Opening {
@@ -33,12 +34,18 @@ export function furnishRoom(b: StaticBuilder, planId: string, r: PlanRoom, openi
     if (id === "prep") return ctx.rowAlong("n", 2.0, 0.8, (bb) => table(bb, 1.8, 0.75, 0.9, 0x9aa19c)), ctx.center((bb) => table(bb, 2.4, 1.0, 0.9, 0x9aa19c));
     if (id === "serving") return serving(ctx);
     if (id === "wash") return ctx.rowAlong("e", 1.8, 0.8, sinkUnit), ctx.rowAlong("w", 1.9, 0.5, (bb) => shelfUnit(bb, 1.6, 1.8, 0.45, 0x8d948f));
-    if (id === "dry" || id === "cold") return ctx.perimeter(2.0, 0.5, (bb) => shelfUnit(bb, 1.8, 2.0, 0.5, id === "cold" ? 0xa3aaa6 : 0x5c6660));
+    if (id === "dry" || id === "cold") {
+      let seed = 0;
+      return ctx.perimeter(2.0, 0.5, (bb) => {
+        shelfUnit(bb, 1.8, 2.0, 0.5, id === "cold" ? 0xa3aaa6 : 0x5c6660);
+        stockShelf(bb, 1.8, 2.0, id === "cold" ? ["plastic_crate_02"] : ["long_life_food", "russian_food_cans_01", "cardboard_box_01"], seed++);
+      });
+    }
     if (id === "receiving") return ctx.scatter(4, 1.2, (bb, i) => boxesStack(bb, i + 3)), ctx.rowAlong("n", 2.2, 0.5, (bb) => shelfUnit(bb));
   }
   if (planId === "medical-ground") {
     if (id === "ward") return ward(ctx);
-    if (id === "exam" || id === "treatment") return ctx.rowAlong("n", 2.6, 0.9, examBed), ctx.corner((bb) => desk(bb, 1.4, 0.65)), ctx.rowAlong("s", 1.2, 0.45, (bb) => locker(bb, 0xd5dcd6));
+    if (id === "exam" || id === "treatment") return ctx.rowAlong("n", 2.6, 0.9, examBed), ctx.corner((bb) => { desk(bb, 1.4, 0.65); bb.prop("medical_box", V(0.3, 0.775, 0.05), { yaw: -0.3 }); }), ctx.rowAlong("s", 1.2, 0.45, (bb) => locker(bb, 0xd5dcd6));
     if (id === "consult") return ctx.center((bb) => { desk(bb, 1.6, 0.8); bb.within(V(0, 0, -0.75), 0, () => officeChair(bb)); bb.within(V(0, 0, 0.75), Math.PI, () => officeChair(bb)); });
     if (id === "medicine") return ctx.perimeter(1.4, 0.5, (bb) => locker(bb, 0xc9d1cb));
     if (id === "gym") return gym(ctx);
@@ -51,6 +58,7 @@ export function furnishRoom(b: StaticBuilder, planId: string, r: PlanRoom, openi
     if (/SERVER/.test(label)) return ctx.rowsOf(2, 1.1, (bb) => serverRack(bb));
     if (/KEY|EVIDENCE|EQUIPMENT|RECORDS|ARCHIVE/.test(label)) return ctx.perimeter(1.6, 0.5, (bb) => shelfUnit(bb, 1.5, 2.1, 0.5, 0x46514b));
     if (/VISITATION/.test(label)) return visitation(ctx);
+    if (/BRIEFING|PLANNING/.test(label)) ctx.rowAlong("n", r.w, 0.8, (bb) => bb.prop("standing_chalkboard_01", V(0, 0, 0), { collide: true }), 1.0);
     if (/BRIEFING|PLANNING|INTERVIEW|PROCESSING|CHECKPOINT/.test(label)) return ctx.center((bb) => meetingTable(bb, Math.min(4, r.w - 3), 1.2));
     if (/HOLDING|WAITING/.test(label)) return ctx.rowAlong("n", 2.2, 0.45, bench), ctx.rowAlong("s", 2.2, 0.45, bench);
     if (/WC/.test(label)) return toilets(ctx);
@@ -58,11 +66,18 @@ export function furnishRoom(b: StaticBuilder, planId: string, r: PlanRoom, openi
     return offices(ctx);
   }
   if (planId.startsWith("maintenance")) {
+    // Bare pull-chain bulbs hang in the underground service rooms.
+    if (planId === "maintenance-b1") ctx.center((bb) => bb.prop("pull_chain_light_socket", V(0, storyHeight - b.props.size("pull_chain_light_socket").y, 0), { shadow: false }));
     if (id === "workshop") return workshop(ctx);
     if (id === "dirty" || id === "clean") return laundry(ctx, id === "clean");
     if (id === "tool") return ctx.rowAlong("w", 1.9, 0.5, (bb) => shelfUnit(bb, 1.7, 2.0, 0.5, 0x5c6660)), ctx.rowAlong("n", 2.5, 0.8, workbench);
     if (/PLANT|DISTRIBUTION|PUMP|UTILIT|VENTILATION|SUMP/.test(label)) return plant(ctx, key);
-    return ctx.perimeter(2.0, 0.5, (bb) => shelfUnit(bb)), ctx.scatter(3, 1.4, (bb, i) => boxesStack(bb, i + 11));
+    if (/WASTE/.test(label)) return ctx.scatter(7, 0.6, (bb, i) => bb.prop("trashbag", V(0, 0, 0), { yaw: i * 1.7 })), ctx.rowAlong("e", 1.2, 0.6, (bb) => bb.prop("Barrel_01", V(0, 0, 0), { collide: true }));
+    const stock: PropId[] = /JANITOR|BULK/.test(label) ? ["bleach_bottle", "bleach_bottle", "cardboard_box_01"] : ["cardboard_box_01", "metal_toolbox", "plastic_crate_02"];
+    let seed = 0;
+    ctx.perimeter(2.0, 0.5, (bb) => { shelfUnit(bb); stockShelf(bb, 1.8, 2.0, stock, seed++); });
+    if (/SPARES|STORE|BULK/.test(label)) ctx.scatter(4, 0.8, (bb, i) => (i % 2 ? bb.prop("cement_bag", V(0, 0, 0), { yaw: i }) : bb.prop("Barrel_01", V(0, 0, 0), { collide: true })));
+    return ctx.scatter(3, 1.4, (bb, i) => boxesStack(bb, i + 11));
   }
   if (planId === "nidra-b2") {
     if (id === "lab" || id === "chem") return lab(ctx);
@@ -173,6 +188,7 @@ function corridor(ctx: RoomContext, storyHeight: number): void {
     ctx.rowAlong(ctx.r.w >= ctx.r.d ? "n" : "w", 9, 0.4, (bb) => bb.within(V(0, 2.9, 0.05), 0, () => cctvCamera(bb)), 0.4);
   }
   if (long > 8) ctx.rowAlong(ctx.r.w >= ctx.r.d ? "s" : "e", 12, 0.3, (bb) => { noticeBoard(bb); trashBin(bb); }, 1.6);
+  if (long > 6) ctx.rowAlong(ctx.r.w >= ctx.r.d ? "n" : "w", 14, 0.4, (bb) => bb.prop("korean_fire_extinguisher_01", V(0, 0, 0), { collide: true }), 0.4);
 }
 
 function secureCell(ctx: RoomContext): void {
@@ -299,6 +315,8 @@ function offices(ctx: RoomContext): void {
       bb.within(V(0, 0, -0.1), 0, () => monitor(bb));
       bb.within(V(0, 0, 0.7), Math.PI, () => officeChair(bb));
       bb.box(V(-0.45, 0.8, 0.05), V(0.3, 0.02, 0.22), { mat: "paper", color: 0xd6d2c0, collide: false, shadow: false, yaw: 0.2 });
+      if (i % 2) bb.prop("classic_laptop", V(0.42, 0.775, 0.12), { yaw: -0.25 });
+      else bb.prop("desk_lamp_arm_01", V(0.55, 0.775, -0.18), { yaw: 2.6, scale: 0.8 });
     });
   }
   ctx.rowAlong("s", 1.2, 0.55, (bb) => fileCabinet(bb));
@@ -333,7 +351,8 @@ function surveillance(ctx: RoomContext): void {
   for (const z of [-0.6, 1.4]) ctx.place(0, z, 0, Math.min(3, ctx.hw - 1), 0.5, (bb) => {
     const w = Math.min(6, ctx.r.w - 2.4);
     bb.box(V(0, 0.45, 0), V(w, 0.9, 0.75), { mat: "dark", color: 0x262b29 });
-    for (let x = -w / 2 + 0.6; x < w / 2; x += 1.2) bb.within(V(x, 0.05, -0.15), 0, () => monitor(bb));
+    for (let x = -w / 2 + 0.6; x < w / 2; x += 1.2) bb.within(V(x, 0.05, -0.15), 0, () => monitor(bb, 0.85));
+    if (z < 0) bb.prop("vintage_radio_transceiver", V(w / 2 - 0.45, 0.9, 0.12), { yaw: -0.2 });
   });
 }
 
@@ -364,13 +383,14 @@ function workshop(ctx: RoomContext): void {
     for (let i = 0; i < 6; i++) bb.box(V(-0.6 + i * 0.24, 1.6 + Math.sin(i) * 0.2, 0.08), V(0.05, 0.35, 0.04), { mat: "steel", collide: false, shadow: false });
   }, 1.6);
   ctx.place(0, 0.5, 0, 1.2, 0.6, (bb) => table(bb, 2.2, 1.0, 0.85, 0x6d736f, "metal"));
+  ctx.corner((bb) => bb.prop("metal_tool_chest", V(0, 0, 0), { collide: true }));
 }
 
 function workbench(b: StaticBuilder): void {
   b.box(V(0, 0.9, 0), V(2.2, 0.08, 0.8), { mat: "wood", color: 0x6b5843 });
   for (const x of [-1.0, 1.0]) b.box(V(x, 0.45, 0), V(0.08, 0.9, 0.7), { mat: "metal", color: 0x4c5550, collide: false });
   b.box(V(0, 0.25, 0), V(2.0, 0.04, 0.7), { mat: "metal", color: 0x4c5550, collide: false });
-  b.box(V(0.7, 1.0, -0.1), V(0.3, 0.12, 0.2), { mat: "metal", color: 0x9a3b2c, collide: false });
+  b.prop("metal_toolbox", V(0.7, 0.94, -0.1), { yaw: 0.15 });
   b.box(V(-0.5, 0.97, 0.1), V(0.4, 0.06, 0.25), { mat: "steel", collide: false, shadow: false });
   b.blocker(V(0, 0.47, 0), V(2.2, 0.94, 0.8));
 }
@@ -399,13 +419,12 @@ function plant(ctx: RoomContext, key: string): void {
 function lab(ctx: RoomContext): void {
   ctx.rowAlong("n", 2.2, 0.8, (bb) => {
     table(bb, 2.0, 0.75, 0.9, 0xdfe4e0, "metal");
-    bb.box(V(-0.5, 1.05, -0.1), V(0.35, 0.3, 0.3), { mat: "plastic", color: 0xd8dcd8, collide: false });
-    bb.cylinder(V(0.3, 1.0, 0), 0.04, 0.18, { mat: "glass", collide: false });
-    bb.cylinder(V(0.45, 1.0, 0.05), 0.035, 0.14, { mat: "glass", collide: false });
-    bb.within(V(0.55, 0, -0.15), 0, () => monitor(bb));
+    bb.prop("industrial_microscope", V(-0.55, 0.925, -0.05), { yaw: 0.2 });
+    bb.prop("bunsen_burner", V(0.15, 0.925, 0.08));
+    bb.within(V(0.55, 0, -0.15), 0, () => monitor(bb, 0.925));
   });
   ctx.rowAlong("s", 1.3, 0.7, fridgeUnit);
-  ctx.place(0, 0, 0, 1.3, 0.6, (bb) => table(bb, 2.4, 1.0, 0.9, 0xdfe4e0, "metal"));
+  ctx.place(0, 0, 0, 1.3, 0.6, (bb) => { table(bb, 2.4, 1.0, 0.9, 0xdfe4e0, "metal"); bb.prop("chemistry_set", V(0, 0.925, 0)); });
 }
 
 function fridgeUnit(b: StaticBuilder): void {

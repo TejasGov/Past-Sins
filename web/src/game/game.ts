@@ -9,6 +9,7 @@ import { LightPool } from "../render/lightPool";
 import { WorldLighting } from "../render/worldLighting";
 import { StaticBuilder, type ChunkInfo } from "../world/builder";
 import { buildCampus } from "../world/campus/campus";
+import { PropLibrary } from "../world/models";
 import { buildOuterGrass } from "../world/campus/ground";
 import { loadFloorPlans, type FloorPlan } from "../world/campus/plans";
 import type { BuiltFloor } from "../world/campus/blueprintFloor";
@@ -115,7 +116,13 @@ export class Game {
 
   async init(): Promise<void> {
     this.hud.setLoading("INITIALISING PHYSICS");
-    const [physics, plans, loaded, storyData] = await Promise.all([Physics.create(), loadFloorPlans(), loadSession(), loadStoryData()]);
+    const [physics, plans, loaded, storyData, props] = await Promise.all([
+      Physics.create(),
+      loadFloorPlans(),
+      loadSession(),
+      loadStoryData(),
+      PropLibrary.load(this.render.prepareMaterial),
+    ]);
     this.physics = physics;
     this.plans = plans;
     this.content = loaded.session;
@@ -128,7 +135,7 @@ export class Game {
     this.materials = new MaterialLibrary(this.render.renderer, this.render.prepareMaterial);
     this.hud.setLoading("BUILDING CAMPUS");
     await new Promise((r) => setTimeout(r, 0));
-    const builder = new StaticBuilder(this.physics, this.materials, this.render.prepareMaterial);
+    const builder = new StaticBuilder(this.physics, this.materials, this.render.prepareMaterial, props);
     this.floors = buildCampus(builder, this.plans);
     this.session = new Session(this.content, loaded.memories);
     this.session.buildStatic(builder, this.floors, builder.doors);
