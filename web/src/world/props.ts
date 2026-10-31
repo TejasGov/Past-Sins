@@ -1,6 +1,7 @@
 import { Quaternion, Vector3 } from "three";
 import type { StaticBuilder } from "./builder";
 import type { PropId } from "./models";
+import type { Rng } from "./rng";
 
 export const V = (x: number, y: number, z: number) => new Vector3(x, y, z);
 export const deg = (d: number) => (d * Math.PI) / 180;
@@ -135,21 +136,76 @@ export function boxesStack(b: StaticBuilder, seed: number): void {
   }
 }
 
-/** Items on the middle shelves of a shelfUnit of the same width/height. */
-export function stockShelf(b: StaticBuilder, width: number, height: number, items: PropId[], seed: number): void {
-  for (let level = 1; level <= 2; level++) {
+/** Items on the middle shelves of a shelfUnit of the same width/height: uneven spacing, gaps, skewed. */
+export function stockShelf(b: StaticBuilder, width: number, height: number, items: PropId[], rng: Rng, fill = 0.8): void {
+  for (let level = 0; level <= 3; level++) {
+    if (level === 3 && rng.chance(0.6)) continue;
     const y = 0.12 + (level * (height - 0.2)) / 3 + 0.015;
-    let x = -width / 2 + 0.12;
-    let n = 0;
+    let x = -width / 2 + 0.08 + rng.range(0, 0.15);
     while (true) {
-      const id = items[(seed + level * 3 + n) % items.length];
-      const w = b.props.size(id).x;
-      if (x + w > width / 2 - 0.1) break;
-      b.prop(id, V(x + w / 2, y, 0), { shadow: false });
-      x += w + 0.06 + ((seed * 7 + n * 13) % 5) * 0.03;
-      n++;
+      const id = rng.pick(items);
+      const size = b.props.size(id);
+      if (size.y > (height - 0.2) / 3 - 0.06 && level < 3) {
+        x += 0.1;
+        if (x > width / 2) break;
+        continue;
+      }
+      if (x + size.x > width / 2 - 0.06) break;
+      if (rng.chance(fill)) b.prop(id, V(x + size.x / 2, y, rng.range(-0.08, 0.06)), { yaw: rng.range(-0.25, 0.25), shadow: false });
+      x += size.x + rng.range(0.03, 0.22);
     }
   }
+}
+
+export type PileKind = "crates" | "barrels" | "sacks" | "trash" | "stores";
+
+/**
+ * An irregular heap of props around the frame origin: a loose ground layer, some
+ * stacked on the bigger ones, nothing aligned. `cover` heaps get a collider that
+ * also blocks guard line of sight. Returns the heap's rough radius.
+ */
+export function pile(b: StaticBuilder, rng: Rng, kind: PileKind, cover = false): number {
+  const ground: PropId[] = {
+    crates: ["plastic_crate_02", "cardboard_box_01", "cardboard_box_01"],
+    barrels: ["Barrel_01"],
+    sacks: ["cement_bag"],
+    trash: ["trashbag"],
+    stores: ["cardboard_box_01", "plastic_crate_02", "Barrel_01", "cement_bag"],
+  }[kind] as PropId[];
+  const n = kind === "barrels" ? rng.int(2, 4) : kind === "trash" ? rng.int(2, 5) : rng.int(2, 4);
+  let radius = 0;
+  let tallest = 0;
+  const spots: { x: number; z: number; id: PropId }[] = [];
+  for (let i = 0; i < n; i++) {
+    const id = rng.pick(ground);
+    const size = b.props.size(id);
+    const r = Math.max(size.x, size.z) / 2;
+    // Each item touches or nearly touches the previous ones.
+    const a = rng.range(0, Math.PI * 2);
+    const d = i === 0 ? 0 : rng.range(r * 1.1, r * 2.0);
+    const x = i === 0 ? 0 : spots[rng.int(0, spots.length - 1)].x + Math.cos(a) * d;
+    const z = i === 0 ? 0 : spots[rng.int(0, spots.length - 1)].z + Math.sin(a) * d;
+    spots.push({ x, z, id });
+    b.prop(id, V(x, 0, z), { yaw: rng.range(-Math.PI, Math.PI), collide: !cover && size.y > 0.3, scale: rng.range(0.94, 1.06) });
+    radius = Math.max(radius, Math.hypot(x, z) + r);
+    tallest = Math.max(tallest, size.y);
+  }
+  // Stack a box or crate on a sturdy base or two.
+  if (kind === "crates" || kind === "stores" || (kind === "barrels" && rng.chance(0.5))) {
+    const bases = spots.filter((s) => s.id !== "cement_bag" && s.id !== "trashbag");
+    for (let k = 0; k < Math.min(bases.length, rng.int(1, 2)); k++) {
+      const base = bases[k];
+      const top: PropId = rng.chance(0.6) ? "cardboard_box_01" : "plastic_crate_02";
+      const h = b.props.size(base.id).y;
+      b.prop(top, V(base.x + rng.range(-0.06, 0.06), h, base.z + rng.range(-0.06, 0.06)), { yaw: rng.range(-0.6, 0.6) });
+      tallest = Math.max(tallest, h + b.props.size(top).y);
+    }
+  }
+  if (cover) {
+    const r = radius * 0.8;
+    b.blocker(V(0, tallest / 2, 0), V(r * 2, tallest, r * 2), true);
+  }
+  return radius;
 }
 
 export function table(b: StaticBuilder, w: number, d: number, h = 0.76, color = 0x8f958c, mat: "steel" | "wood" | "metal" = "steel"): void {

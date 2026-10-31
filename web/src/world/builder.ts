@@ -40,21 +40,24 @@ export interface BoxOpts {
 export interface PropOpts {
   /** Extra yaw on top of the current frame (radians). */
   yaw?: number;
+  /** Tilt about the prop's own X then Z axes, e.g. a chair knocked onto its front. */
+  pitch?: number;
+  roll?: number;
   scale?: number | Vector3;
   /** Rapier box from the model's bounds (default false). */
   collide?: boolean;
   /** Include that box in the line-of-sight BVH (default false). */
   occlude?: boolean;
   shadow?: boolean;
-  /** Replace the model's own glow with the game's diffuser, so it follows night switching and lights-out. */
-  glow?: "night" | "always";
+  /** Replace the model's own glow with the game's diffuser (follows night switching and lights-out), or "off" for a dead tube. */
+  glow?: "night" | "always" | "off";
 }
 
 interface PropInstance {
   id: PropId;
   matrix: Matrix4;
   chunk: string;
-  glow?: "night" | "always";
+  glow?: "night" | "always" | "off";
   shadow: boolean;
 }
 
@@ -91,6 +94,8 @@ interface Frame {
 }
 
 const UP = new Vector3(0, 1, 0);
+const _X = new Vector3(1, 0, 0);
+const _Z = new Vector3(0, 0, 1);
 const FACES: { n: [number, number, number]; u: [number, number, number]; v: [number, number, number] }[] = [
   { n: [1, 0, 0], u: [0, 0, -1], v: [0, 1, 0] },
   { n: [-1, 0, 0], u: [0, 0, 1], v: [0, 1, 0] },
@@ -328,6 +333,8 @@ export class StaticBuilder {
     const at = this.toWorld(local);
     const yaw = this.frame.yaw + (opts.yaw ?? 0);
     const q = new Quaternion().setFromAxisAngle(UP, yaw);
+    if (opts.pitch) q.multiply(_q.setFromAxisAngle(_X, opts.pitch));
+    if (opts.roll) q.multiply(_q.setFromAxisAngle(_Z, opts.roll));
     const s = typeof opts.scale === "number" ? new Vector3(opts.scale, opts.scale, opts.scale) : (opts.scale ?? new Vector3(1, 1, 1));
     const chunk = this.cellChunk(this.chunk, at);
     this.propInstances.push({ id, matrix: new Matrix4().compose(at, q, s), chunk: chunk.name, glow: opts.glow, shadow: opts.shadow ?? true });
@@ -404,18 +411,20 @@ export class StaticBuilder {
   }
 
   /** Ceiling fluorescent: batten model(s) whose tubes use the game's diffuser + a light-pool candidate. */
-  fixture(center: Vector3, size: Vector3, opts: { nightOnly: boolean; color?: number; intensity?: number; range?: number; flicker?: number; backplate?: boolean }): void {
+  fixture(center: Vector3, size: Vector3, opts: { nightOnly: boolean; color?: number; intensity?: number; range?: number; flicker?: number; backplate?: boolean; broken?: boolean }): void {
     const batten = this.props.size("mounted_fluorescent_lights");
     const alongX = size.x >= size.z;
     const length = alongX ? size.x : size.z;
     const width = alongX ? size.z : size.x;
     const tubes = width >= 0.15 ? 2 : 1;
-    const glow = opts.nightOnly ? "night" : "always";
+    const glow = opts.broken ? "off" : opts.nightOnly ? "night" : "always";
     for (let i = 0; i < tubes; i++) {
       const across = tubes === 1 ? 0 : (i - 0.5) * Math.min(width - batten.z, 0.12);
       const at = center.clone().add(alongX ? new Vector3(0, size.y / 2 - batten.y, across) : new Vector3(across, size.y / 2 - batten.y, 0));
       this.prop("mounted_fluorescent_lights", at, { yaw: alongX ? 0 : Math.PI / 2, scale: new Vector3(length / batten.x, 1, 1), glow, shadow: false });
     }
+    // A dead tube casts no light: it leaves a dark pocket.
+    if (opts.broken) return;
     this.fixtures.push({
       position: this.toWorld(center.clone().add(new Vector3(0, -0.25, 0))),
       color: new Color(opts.color ?? 0xffdca0),
@@ -510,7 +519,8 @@ export class StaticBuilder {
         let geometry = part.geometry;
         const replaced = !!glow && part.glowPart;
         if (glow === "night" && !part.glowPart && part.material.emissiveMap) material = this.materials.nightEmissive(part.material);
-        if (replaced) {
+        if (replaced && glow === "off") material = this.materials.get("plastic");
+        else if (replaced) {
           material = glow === "always" ? this.materials.get("emissive_always") : chunk.interior ? this.materials.nightFor(chunkName) : this.materials.get("emissive_night");
           // The diffusers are vertex-coloured; give the tube geometry a white colour attribute.
           if (material.vertexColors && !geometry.getAttribute("color")) {

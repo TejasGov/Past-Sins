@@ -81,6 +81,12 @@ export class PropLibrary {
     return lib;
   }
 
+  /** Metallic prop materials get the same room reflections as the game's own metals. */
+  applyReflections(reflect: (m: MeshStandardMaterial) => void): void {
+    for (const parts of this.parts.values())
+      for (const p of parts) if (p.material.metalness > 0.05 || p.material.metalnessMap) reflect(p.material);
+  }
+
   get(id: PropId): PropPart[] {
     const parts = this.parts.get(id);
     if (!parts) throw new Error(`Prop model "${id}" is not in assets/props/manifest.json`);

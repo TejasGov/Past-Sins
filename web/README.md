@@ -15,7 +15,8 @@ npm run preview    # serve dist/ on :4173
 
 Production builds strip the developer surface: `window.__game` (the automation hook) and the Dev Mode unlock exist only under `npm run dev`. Download size is about 31 MB (one ~6 MB JS bundle, 2.2 MB gzipped, 12 MB of WebP textures and 7 MB of prop models).
 
-- `npm run textures` rebuilds `public/textures/*.webp` from the Godot `textures/` folder (needs `cwebp`).
+- `npm run textures` rebuilds `public/textures/*.webp` from the Godot `textures/` folder with sharp (`npm run textures -- metal` for one set). `ALBEDO_GAIN` in the script lifts the very dark painted-metal source to a mid grey, because box props tint their albedo.
+- Set dressing is seeded per room (`src/world/rng.ts`): layouts look hand-placed (loose chairs, clutter heaps, lived-in cells, a dead tube here and there, cover by building entrances) but are identical on every load, so colliders and the guard nav graph stay stable.
 - `?fps` in the URL shows an FPS / draw-call counter. `?fresh` deletes the save and starts a new game.
 - `web/asset-pipeline/` and `public/assets/characters/` belong to the character pipeline (Mixamo Ch35 → `guard.glb` + `manifest.json`). Rebuild with `npm --prefix web/asset-pipeline run build:characters`.
 - `public/assets/props/` holds 27 CC0 [Poly Haven](https://polyhaven.com) models (7 MB), built by the same pipeline (see its README). `src/world/models.ts` loads them before the campus is built; `StaticBuilder.prop()` places one and `finalize()` turns every placement into one `InstancedMesh` per model and chunk.

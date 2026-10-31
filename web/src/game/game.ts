@@ -133,6 +133,7 @@ export class Game {
     this.env.dayLengthSeconds = this.content.dayLengthSeconds;
     await document.fonts.load('600 56px "Oswald"').catch(() => undefined);
     this.materials = new MaterialLibrary(this.render.renderer, this.render.prepareMaterial);
+    props.applyReflections((m) => this.materials.reflections(m));
     this.hud.setLoading("BUILDING CAMPUS");
     await new Promise((r) => setTimeout(r, 0));
     const builder = new StaticBuilder(this.physics, this.materials, this.render.prepareMaterial, props);

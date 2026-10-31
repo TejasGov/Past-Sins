@@ -1,6 +1,7 @@
 import type { StaticBuilder } from "../builder";
 import type { MaterialKey } from "../../render/materials";
-import { V } from "../props";
+import { V, pile, type PileKind } from "../props";
+import { Rng } from "../rng";
 
 export interface ShellOpening {
   side: "north" | "south" | "east" | "west";
@@ -151,6 +152,18 @@ export function buildShell(b: StaticBuilder, def: ShellDef): void {
       b.prop("security_camera_01", V(o.width / 2 + 0.55, o.height + 0.9 - cam.y / 2, face + cam.z / 2), { yaw: -0.35 });
       // Concrete apron outside the threshold.
       b.box(V(0, 0.02, 1.6), V(o.width + 1.6, 0.04, 3.2), { mat: "concrete_ext", color: 0x8a8b84, collide: false });
+      // Stuff stacked by the entrance: stealth cover that also blocks guard sightlines.
+      const rng = new Rng(`${def.title}:${o.side}:${o.offset}:cover`);
+      if (rng.chance(0.6)) {
+        const side = rng.sign();
+        const x = side * (o.width / 2 + 1.5 + rng.range(0, 1.6));
+        const wallLen = alongX ? w : d;
+        const crowded = def.openings.some((n) => n !== o && n.side === o.side && Math.abs(n.offset - o.offset - x) < n.width / 2 + 1.6);
+        if (!crowded && Math.abs(o.offset + x) < wallLen / 2 - 1.3) {
+          const kind = rng.weighted([["barrels", 0.4], ["crates", 0.35], ["sacks", 0.15], ["trash", 0.1]] as const) as PileKind;
+          b.within(V(x, 0, (t + 0.12) / 2 + 0.75 + rng.range(0, 0.3)), rng.range(-0.4, 0.4), () => pile(b, rng, kind, true));
+        }
+      }
     });
   }
 }
