@@ -352,6 +352,11 @@ export class Game {
   update(dt: number, draw = true): void {
     const p = this.player;
     if (this.started) {
+      // Unlocked, the cursor is needed for choice buttons and documents, so they freeze the view.
+      if (!this.input.locked && this.story.ui.blocking) {
+        this.input.mouseDX = 0;
+        this.input.mouseDY = 0;
+      }
       p.update(dt);
       // Pose the camera before anything aims through it (interaction, firing).
       p.updateCamera(dt);

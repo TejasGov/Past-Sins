@@ -2,7 +2,8 @@ import GUI from "lil-gui";
 import { Vector3 } from "three";
 import type { Game } from "../game/game";
 
-const DEV_ACCESS_CODE = "tez";
+// Production builds compile this to "" so the code never ships and the unlock is unreachable.
+const DEV_ACCESS_CODE = import.meta.env.DEV ? "tez" : "";
 
 /**
  * Port of scripts/dev/dev_mode_manager.gd + dev_menu.gd. Play Mode is the
@@ -42,7 +43,7 @@ export class DevMode {
     game.hud.root.appendChild(this.prompt);
     this.input = this.prompt.querySelector("input")!;
     this.error = this.prompt.querySelector(".err")!;
-    window.addEventListener("keydown", (e) => this.onKey(e), true);
+    if (import.meta.env.DEV) window.addEventListener("keydown", (e) => this.onKey(e), true);
     this.input.addEventListener("keydown", (e) => {
       e.stopPropagation();
       if (e.key === "Enter") this.attempt(this.input.value);
@@ -84,7 +85,7 @@ export class DevMode {
   }
 
   attempt(code: string): boolean {
-    if (code.trim().toLowerCase() !== DEV_ACCESS_CODE) {
+    if (!DEV_ACCESS_CODE || code.trim().toLowerCase() !== DEV_ACCESS_CODE) {
       this.error.textContent = "AUTHORIZATION REJECTED";
       this.input.value = "";
       return false;

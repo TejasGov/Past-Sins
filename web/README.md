@@ -13,21 +13,24 @@ npm run preview    # serve dist/ on :4173
 
 `dist/` is a fully static site with relative paths (`base: "./"`), so you can host it from any static server or subfolder: GitHub Pages, Netlify, S3/CloudFront, `npx serve dist`, and so on. No server code or special headers are needed, because Rapier ships its wasm inlined. `public/` (textures, data and the character GLB) is copied verbatim.
 
+Production builds strip the developer surface: `window.__game` (the automation hook) and the Dev Mode unlock exist only under `npm run dev`. Download size is about 23 MB (one ~6 MB JS bundle, 2.2 MB gzipped, plus 12 MB of WebP textures).
+
 - `npm run textures` rebuilds `public/textures/*.webp` from the Godot `textures/` folder (needs `cwebp`).
-- `?fps` in the URL shows an FPS / draw-call counter.
+- `?fps` in the URL shows an FPS / draw-call counter. `?fresh` deletes the save and starts a new game.
 - `web/asset-pipeline/` and `public/assets/characters/` belong to the character pipeline (Mixamo Ch35 → `guard.glb` + `manifest.json`). Rebuild with `npm --prefix web/asset-pipeline run build:characters`.
 
 ## Controls
 
 | Action | Input |
 | --- | --- |
-| Move / look | W A S D / mouse (click the canvas to capture the pointer) |
+| Move / look | W A S D / mouse. Clicking the canvas captures the pointer; if the browser refuses or delays pointer lock, moving the cursor over the canvas still turns the view (documents and choice panels freeze it so you can click) |
 | Sprint / crouch / jump | Shift / C (or Left Ctrl) / Space |
-| Interact, collect, use | E (also skips the memory transcript once it has been typed out) |
+| Interact, collect, use | E (also skips the memory transcript once it has been typed out, and skips seen cinematics) |
 | Minimap | M |
+| Mute | N (remembered between sessions) |
 | Release pointer | Esc (keyboard movement still works) |
 | Swim / dive / rise | WASD / hold C / hold Space |
-| Dev Mode | ⌘D (or Ctrl+D), type `tez`, Enter. F8 or ⌘D toggles the menu afterwards |
+| Dev Mode (`npm run dev` only) | ⌘D (or Ctrl+D), type `tez`, Enter. F8 or ⌘D toggles the menu afterwards |
 | Pistol (Dev Mode only) | 1 equip/holster, LMB fire, hold RMB to aim, R reload, H holster, G drop |
 
 ## What is playable
@@ -39,10 +42,27 @@ npm run preview    # serve dist/ on :4173
 5. **World**: 12-real-minute day; morning/day/evening/night; fixtures on at 18:30 and off at 07:00 (interior night-only tubes idle dim by day). Rain chance is 25%, or 10% after a rainy day, with camera-local streaks that pause under roofs and wet specular ground. Three shadowed, sweeping searchlights carry volumetric cones; standing in a beam raises suspicion. Pool swimming with buoyancy and underwater tint/fog. The minimap switches between the campus and the current storey. HUD shows the clock and weather.
 6. **Dev Mode**: teleports to every named room, invulnerable / invisible / noclip, time, weather and day length, key and pistol grants, door overrides, detection cones (which also mark guards on the minimap), graphics toggles (AO, bloom, shadows, render scale, FPS), and Exit Dev Mode, which clears every override. **Pistol**: 8 + 24 rounds, 0.5 s semi-auto, 1.5 s magazine-swap reload, ADS, recovering recoil, muzzle flash, head/torso/lower damage 120/70/30 against guards, and weapon noise. A visibly held firearm is an instant ALERT.
 
+## The story ("Again")
+
+The full outline is in `docs/story/AGAIN_OUTLINE.md`. The story layer lives in `src/story/` (director, triggers, dialogue, story UI, save state) with one folder per feature under `src/story/features/`:
+
+| Feature | What it does |
+| --- | --- |
+| `loop` | Capture cinematic down to NIDRA B2 and the chair ("Again."), the wake in N03, the tally and the wall, the cistern stash, the B1 stair alarm, the 21:00 dose knock-out, and the Act III night restart |
+| `routine` | The 12-minute prison day: count, meals and the dose at the dietary window, work, yard, lock-in, lights out, and day-3 visitation; pocketing the pill causes withdrawal |
+| `water` | The 2·7·1·8 breath meter and drowning, pool memories T1–T3, and the Act III culvert swim with air pockets and the hand |
+| `npcs` | Bhosle, Kabir (freeable, follows on the nav graph), Parth's mother at visitation, and Meera at the observation glass |
+| `content` | All 18 memory shards, props, documents, doorplates, the 281828 lift and the objective chain |
+| `endings` | Let Go, Hold On and Mercy, with credits |
+| `audio` | A fully synthesised WebAudio soundscape and score (no sound files); voices are synth stand-ins until real clips go in `public/audio/voice/` |
+
+**Saving:** the cycle count, wall, learned codes, cistern stash, endings seen and story variables are saved to `localStorage` (`blacksite.ghostexit.save.v1`), so progress survives a reload. Blocked storage (private mode) just means no save.
+
 ## Content is data-driven
 
 - `public/data/content/session.json`: start hour, spawn anchor, memory shard placement, key racks, the cell-key register, lockers and their rewards, the objective chain, guard patrol routes and tuning, and restricted zones.
-- `public/data/memories/*.json`: memory title, transcript and clue (the story rewrite only touches these).
+- `public/data/memories/*.json`: the 18 memory shards (title, transcript, clue).
+- `public/data/story/`: `index.json` (features and prefetched shards), `objectives.json`, `documents.json`, `dialogue/`, `triggers/` and per-feature tuning in `features/`.
 - `public/data/campus/floor_plans.json`: copied verbatim from `data/campus/`.
 
 ## Godot → TypeScript map
@@ -83,10 +103,11 @@ npm run preview    # serve dist/ on :4173
 ## Not ported yet / known gaps
 
 - **Navigation**: guards path with A* over a waypoint graph (`src/ai/nav.ts`, `src/world/nav.ts`) built from floor plans, stairs, the Cellhouse A tiers and every door, so pursuit and search follow stairs between storeys. There is no full navmesh; open areas use grids and links.
-- **Audio**: none yet; the Godot project had no shipped audio either.
+- **Voices**: every spoken line, including "Again." and Raman's counting, is a synthesised stand-in.
+- **Input**: desktop only (keyboard + mouse). No touch or gamepad controls.
+- **Bundle**: the game ships as one ~6 MB JS chunk; there is no code splitting or per-area loading yet.
 - **Weapons beyond the pistol**: SMG, carbine, sniper, melee, suppressors, noose and tranquilizer, plus the Weapons Test Range, Dev Test Hub, health/armour probe and other dev scenes.
 - **Props**: the per-prop libraries (cafeteria kitchen, medical lab, gym/shower, environment dressing, CCTV logic, metal detectors) are approximated by `furnisher.ts`. CCTV cameras are visual only.
 - **`character_faction.gdshader`**: not ported, because it targeted the old PSX atlas; Ch35 uses its own materials.
-- **Lifts and B2**: NIDRA B2 is built and reachable only with `lab_key` (Dev Mode). Lifts stay sealed, as in Godot.
-- **Persistence**: memories, keys and unlocks persist across detention but not across a page reload, matching the Godot application-session behaviour.
+- **Lifts**: only the HQ restricted lift runs (code 281828, as a fade between lobbies); the others stay sealed, as in Godot.
 - **Automated tests**: none yet. Verification so far is by playing in the browser, plus `tsc` and `vite build`.

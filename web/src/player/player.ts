@@ -138,7 +138,7 @@ export class Player {
   }
 
   look(dt: number): void {
-    if (!this.controlEnabled || !this.input.locked) return;
+    if (!this.controlEnabled) return;
     const s = this.t.mouseSensitivity;
     this.yaw -= this.input.mouseDX * s;
     this.pitch -= this.input.mouseDY * s;
